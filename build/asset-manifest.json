@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f60d7814.css",
+    "main.js": "/static/js/main.1c42f072.js",
+    "static/js/787.7814be23.chunk.js": "/static/js/787.7814be23.chunk.js",
+    "static/media/Avenir.ttc": "/static/media/Avenir.bd849aa48220dc5266c4.ttc",
+    "static/media/Avenir-Roman.ttf": "/static/media/Avenir-Roman.69c167230fe72fa92d10.ttf",
+    "static/media/Avenir-Heavy.ttf": "/static/media/Avenir-Heavy.f728da1ab92fe217cfca.ttf",
+    "static/media/Avenir-Medium.ttf": "/static/media/Avenir-Medium.043601295d2b1aa36564.ttf",
+    "static/media/googlelogo.png": "/static/media/googlelogo.39c52b1bcccb20569aa4.png",
+    "index.html": "/index.html",
+    "main.f60d7814.css.map": "/static/css/main.f60d7814.css.map",
+    "main.1c42f072.js.map": "/static/js/main.1c42f072.js.map",
+    "787.7814be23.chunk.js.map": "/static/js/787.7814be23.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f60d7814.css",
+    "static/js/main.1c42f072.js"
+  ]
+}
