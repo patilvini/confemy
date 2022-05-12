@@ -1,0 +1,304 @@
+// Set up for variable, functions and mixins etc ********************
+
+/*  Colors */
+$primary-color: rgba(60, 49, 151, 1);
+$primary-color-transparent: rgba(60, 49, 151, 0.9);
+$secondary-color: rgba(115, 102, 191, 1);
+$tertiary-color: rgba(193, 178, 165, 1);
+$danger-color: #dc3545;
+$success-color: #28a745;
+$overlay-color: rgba(115, 102, 191, 0.8);
+$a-color: rgb(97, 97, 248);
+$light-font: #fff;
+$medium-font: #6b6b6b;
+$dark-font: #333;
+$light-grey: #f8f8f8;
+$dark-grey: #d8d8d8;
+$dark-color: #343a40;
+$light-color: #f4f4f4;
+
+/* function to give a font color based on color passed in it */
+
+@function set-font-color($color) {
+  @if (lightness($color) >60) {
+    @return rgba(50, 37, 32, 1);
+  } @else {
+    @return rgba(234, 229, 232, 1);
+  }
+}
+
+/* Set background and Text color */
+
+@mixin set-bg-color($color) {
+  background-color: $color;
+  color: set-font-color($color);
+}
+
+// Margin & Padding
+$spaceamounts: (1, 2, 3, 4, 5);
+
+@each $space in $spaceamounts {
+  // All around margin
+  .m-#{$space} {
+    margin: #{$space}rem;
+  }
+
+  // Vertical Margin
+  .my-#{$space} {
+    margin: #{$space}rem 0;
+  }
+
+  // horizontal margin
+
+  .mx-#{$space} {
+    margin: 0 #{$space}rem;
+  }
+
+  // margin top
+  .mt-#{$space} {
+    margin-top: #{$space}rem;
+  }
+  // margin right
+  .mr-#{$space} {
+    margin-right: #{$space}rem;
+  }
+  // margin left
+  .ml-#{$space} {
+    margin-left: #{$space}rem;
+  }
+  // margin bottom
+  .mb-#{$space} {
+    margin-bottom: #{$space}rem;
+  }
+
+  // All around Padding
+  .p-#{$space} {
+    padding: #{$space}rem;
+  }
+
+  // Vertical Padding
+  .py-#{$space} {
+    padding: #{$space}rem 0;
+  }
+
+  // Horizontal padding
+  .px-#{$space} {
+    padding: 0 #{$space}rem;
+  }
+  // padding top
+  .pt-#{$space} {
+    padding-top: #{$space}rem;
+  }
+  // padding right
+  .pr-#{$space} {
+    padding-right: #{$space}rem;
+  }
+  // padding left
+  .pl-#{$space} {
+    padding-left: #{$space}rem;
+  }
+  // padding bottom
+  .pb-#{$space} {
+    padding-bottom: #{$space}rem;
+  }
+}
+
+// ***********************End of functions and variables******************
+
+// ************** reusable styles start here ******************************
+
+// Containers
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 2rem;
+  overflow: hidden;
+}
+
+.container-max {
+  height: 100vh;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+}
+
+.mid-float-container {
+  margin: 1rem auto;
+  width: 450px;
+  border: 2px solid $dark-grey;
+  text-align: center;
+}
+
+.right-max-container {
+  width: calc(100vw-190px);
+  margin: 0 0 0 190px;
+  overflow: hidden;
+}
+
+.right-container {
+  margin: 1rem 200px 2rem 2rem;
+  max-width: 1100px;
+  padding: 0;
+  height: auto;
+  overflow: hidden;
+}
+
+// Search Container
+
+.search-container {
+  border: 1px solid $dark-grey;
+  width: 50%;
+  margin: 2rem auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1rem;
+  input,
+  select {
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem 0.25rem;
+    border-radius: 0.4rem;
+    border: 1px solid $dark-grey;
+    width: 10rem;
+  }
+
+  button {
+    margin-top: 1rem;
+    width: 15rem;
+  }
+}
+
+// Text Styles
+
+.x-large {
+  font-size: 4rem;
+  line-height: 1.2;
+}
+
+.large {
+  font-size: 3rem;
+  line-height: 1.2;
+}
+
+.lead {
+  font-size: 1.5rem;
+}
+
+.text-primary {
+  color: $primary-color;
+}
+
+.text-red {
+  color: #ff0000;
+}
+
+.line {
+  height: 1px;
+  background: #ccc;
+  margin: 1.5rem 0;
+}
+
+// Backgrounds
+
+.bg {
+  &-primary {
+    @include set-bg-color($primary-color);
+  }
+
+  &-primary-transparent {
+    @include set-bg-color($primary-color-transparent);
+  }
+  &-secondary {
+    @include set-bg-color($secondary-color);
+  }
+  &-overlay {
+    @include set-bg-color($overlay-color);
+  }
+  &-tertiary {
+    @include set-bg-color($tertiary-color);
+  }
+  &-light-grey {
+    @include set-bg-color($light-grey);
+  }
+  &-dark-grey {
+    @include set-bg-color($dark-grey);
+  }
+  &-white {
+    @include set-bg-color(#fff);
+  }
+}
+
+// buttons
+
+.button {
+  display: inline-block;
+  min-width: 13rem;
+  background: $dark-grey;
+  border: none;
+  margin-right: 0.5rem;
+  padding: 0.4rem 1.3rem;
+  color: $dark-font;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in;
+
+  &.button-primary {
+    @include set-bg-color($primary-color);
+    &:hover {
+      background: lighten($primary-color, 25%);
+    }
+  }
+  &.button-secondary {
+    @include set-bg-color($secondary-color);
+    &:hover {
+      background: lighten($secondary-color, 10%);
+    }
+  }
+  &.button-tertiary {
+    @include set-bg-color($tertiary-color);
+    &::hover {
+      background: lighten($tertiary-color, 5%);
+    }
+  }
+  &.button-success {
+    @include set-bg-color($success-color);
+    &:hover {
+      background: lighten($success-color, 5%);
+    }
+  }
+  &.button-danger {
+    @include set-bg-color($danger-color);
+    &:hover {
+      background: lighten($danger-color, 5%);
+    }
+  }
+  &.button-border-primary {
+    background: #fff;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+    &:hover {
+      background: lighten($primary-color, 25%);
+    }
+  }
+  &:hover {
+    background: lighten(#333, 20%);
+    color: #fff;
+  }
+}
+
+// icon
+
+.icon {
+  background-image: url('../assets/user.png');
+  height: 1.5rem;
+  width: 1.5rem;
+  display: inline-block;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0rem 0.5rem;
+}

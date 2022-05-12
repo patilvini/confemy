@@ -1,0 +1,29 @@
+.profile-table {
+  margin: 1rem auto;
+  width: 500px;
+  border-collapse: collapse;
+  border: 1px solid #dadada;
+  box-shadow: 5px 5px #e2e2e2;
+  td {
+    padding: 0.5rem;
+    text-align: left;
+    &:nth-child(odd) {
+      width: 40%;
+      background-color: #f8f8f8;
+      margin: 0;
+    }
+  }
+  tr {
+    border-bottom: 1px solid #dadada;
+  }
+  input[type='text'] {
+    padding: 0.2rem;
+    width: 100%;
+  }
+}
+
+// edit profile button
+
+.edit-profile {
+  text-align: center;
+}

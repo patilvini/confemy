@@ -1,0 +1,36 @@
+@import '../../utility/utility.styles.scss';
+
+.hero-text {
+  margin: auto 2rem auto 8rem;
+}
+
+.hero-sketch {
+  max-width: 100%;
+  width: 760px;
+  height: 626px;
+  margin: 2.3rem 8rem 0 0;
+}
+
+.landing-huge-title {
+  font-family: Arial;
+  font-size: 4vw;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  color: $primary;
+  margin: 0.7rem 1rem 3.2rem 0;
+  overflow-wrap: unset;
+}
+
+.landing-page-title {
+  font-family: Arial;
+  font-size: 2.5vw;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.02px;
+  color: $primary;
+}

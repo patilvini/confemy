@@ -1,0 +1,180 @@
+@import "../../utility/utility.styles.scss";
+
+.navbar {
+  width: 100%;
+  max-width: 144rem;
+  height: 6.4rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  background-color: $colour-white;
+  position: sticky;
+  top: 0;
+
+  // div:last-child {
+  //   margin-left: auto;
+  //   margin-right: 2.4rem;
+  //   text-align: right;
+  // }
+
+  ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+
+    a {
+      text-decoration: none;
+      margin-left: 3.2rem;
+    }
+  }
+}
+.navbar-first-container {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-second-container {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+  & > div {
+    margin-right: 3.2rem;
+  }
+}
+
+.logo {
+  width: 11.3rem;
+  height: 3.6rem;
+  vertical-align: middle;
+  margin: 1.4rem 0;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-left: 3.2rem;
+}
+
+.create-conference {
+  font-family: Avenir;
+  font-size: 1.6rem;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
+  color: $accent;
+}
+
+.signin {
+  // margin: 14px 32px;
+  font-family: Avenir;
+  font-size: 1.6rem;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
+  color: $primary;
+}
+
+.location {
+  display: flex;
+  font-family: Avenir-Roman;
+  font-size: 1.6rem;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
+  color: $primary;
+  margin-left: 1.2rem;
+  border-left: 1px solid #00000033;
+  padding-left: 1.2rem;
+  // #000000 is $confemy-black 33 => 0.2 alpha
+}
+
+.location-text {
+  margin-left: 1.2rem;
+}
+
+.nav-location-icon {
+  width: 1.6rem;
+  height: 2rem;
+}
+
+.search-box {
+  display: flex;
+  align-content: center;
+  // width: 27.9166%;
+  margin-left: 3.3rem;
+  padding: 0.7rem 3.4rem;
+  border-radius: 4px;
+  background-color: $shade-2;
+}
+
+.explore-conferences {
+  margin-left: 1.2rem;
+  font-family: Avenir-Roman;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
+  color: $gray-2;
+}
+
+.user-name-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 2.4rem;
+  svg {
+    margin-left: 0.8rem;
+  }
+}
+
+// to use hover to show and hide a element. use ~ for sibling/grandchild element. Dont use ~ for chil element
+
+// .user-name-wrapper ~ .auth-dropdown-on {
+//   display: none;
+// }
+
+// .user-name-wrapper:hover ~ .auth-dropdown-on,
+// .auth-dropdown-on:hover {
+//   display: block;
+// }
+
+// using material UI breakpoints for differnet screen sizes.
+
+@mixin small() {
+  @media only screen and (max-width: 600px) {
+    @content;
+  }
+}
+
+@mixin medium() {
+  @media only screen and (min-width: 601px) and (max-width: 960px) {
+    @content;
+  }
+}
+
+@mixin large() {
+  @media only screen and (min-width: 961px) and (max-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin xlarge {
+  @media only screen and (min-width: 1281px) and (max-width: 1920px) {
+    @content;
+  }
+}
+
+@mixin xxlarge {
+  @media only screen and (min-width: 1921px) {
+    @content;
+  }
+}

@@ -1,0 +1,62 @@
+// create conference form
+.required-label::after {
+  content: ' *';
+  color: #ff0000;
+  font-weight: bolder;
+  font-size: 0.9rem;
+}
+
+.conf-form {
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='number'],
+  input[type='time'],
+  input[type='date'],
+  input[type='submit'],
+  input[type='tel'],
+  select,
+  textarea {
+    display: block;
+    width: 100%;
+    padding: 0.4rem;
+    font-size: 1rem;
+    color: #6b6b6b;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+  }
+
+  label {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: bolder;
+  }
+  input[type='checkbox'] {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+  input[type='checkbox'] + label {
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-left: 0.4rem;
+  }
+}
+.items-makeline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.items-makeline-left {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+.big-checkbox {
+  width: 1rem;
+  height: 1rem;
+}
+
+.border-medium-grey {
+  border: 1px solid #d8d8d8;
+}
