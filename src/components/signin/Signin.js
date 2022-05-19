@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -31,6 +31,7 @@ export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { isAuthenticated, user } = auth;
@@ -41,17 +42,17 @@ export default function Signin() {
       email,
       password,
     };
+
     try {
       const response = await api.post("login", signinData);
       if (response) {
         console.log("login response:", response);
         dispatch(loginAction(response.data.data.user));
+        navigate("/");
       }
     } catch (err) {
       console.log(err);
     }
-
-    // loginAction(signinData);
   };
 
   if (isAuthenticated) {

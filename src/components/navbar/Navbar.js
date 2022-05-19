@@ -12,15 +12,6 @@ import "./navbar.styles.scss";
 const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
   const authLinks = <AuthDropdown />;
 
-  const oauthLinks = (
-    <>
-      <div>
-        <Link to="#!" className="signin">
-          Khanderao
-        </Link>
-      </div>
-    </>
-  );
   const guestLinks = (
     <>
       <div>
@@ -51,7 +42,7 @@ const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
       </div>
       <div className="navbar-second-container">
         <div>
-          <Link className="create-conference" to="#!">
+          <Link className="create-conference" to="/create-conference">
             Create Conference
           </Link>
         </div>

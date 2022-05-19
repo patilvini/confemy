@@ -25,7 +25,7 @@ export const loadUserAction = () => async (dispatch) => {
     console.log("Response LoadUser:", response);
     dispatch({
       type: USER_LOADED,
-      payload: response.data,
+      payload: response?.data.data.user,
     });
   } catch (err) {
     dispatch({
@@ -72,41 +72,12 @@ export const loginAction = (userData) => async (dispatch) => {
   });
 };
 
-// export const loginAction = (loginData) => async (dispatch) => {
-//   try {
-//     const response = await axios({
-//       method: "POST",
-//       data: loginData,
-//       withCredentials: true,
-//       url: "http://dev.confemy.com/api/login",
-//     });
-//     console.log("Login Response:", response);
-//     // api.post("login", loginData);
-//     await dispatch(loadUserAction());
-//     dispatch({
-//       type: LOGIN_SUCCESS,
-//     });
-//   } catch (err) {
-//     const errors = err.response.data.errors;
-//     if (errors) {
-//       errors.forEach((error) => dispatch(alertAction(error.msg, "danger")));
-//     }
-//     dispatch({
-//       type: LOGIN_FAILURE,
-//     });
-//   }
-// };
-
 // logout
+
 export const logoutAction = () => async (dispatch) => {
-  await axios({
-    method: "GET",
-    withCredentials: true,
-    url: "http://dev.confemy.com/api/logout",
-  });
-  dispatch({
-    type: REMOVE_PROFILE,
-  });
+  // dispatch({
+  //   type: REMOVE_PROFILE,
+  // });
   dispatch({
     type: LOGOUT,
   });

@@ -21,6 +21,7 @@ import CreateOrganizerProfilePage from "./pages/organizer-profile-page/CreateOrg
 import EditOrganizerProfilePage from "./pages/organizer-profile-page/EditOrganizerProfilePage";
 import ConfBasicInfo from "./components/conference/ConfBasicInfo";
 
+import MyPrivateRoute from "./components/routing/MyPrivateRoute";
 import PrivateAttendeeRoute from "./components/routing/PrivateAttendeeRoute";
 import PrivateOrganizerRoute from "./components/routing/PrivateOrganizerRoute";
 import CreateConfLayoutPage from "./pages/layout-pages/CreateConfLayoutPage";
@@ -47,7 +48,14 @@ const App = () => {
               element={<VerifyEmail />}
             ></Route>
             <Route path="/message" element={<MessagePage />}></Route>
-            <Route path="/create-conference" element={<CreateConfLayoutPage />}>
+            <Route
+              path="/create-conference"
+              element={
+                <MyPrivateRoute>
+                  <CreateConfLayoutPage />
+                </MyPrivateRoute>
+              }
+            >
               <Route path="" element={<ConfBasicInfo />}></Route>
             </Route>
             {/* <PrivateAttendeeRoute

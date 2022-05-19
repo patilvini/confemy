@@ -1,4 +1,4 @@
-@import '../../utility//utility.styles.scss';
+@import "../../utility//utility.styles.scss";
 .auth-dropdown {
   width: 32.5rem;
   height: 54.4rem;
@@ -32,7 +32,7 @@
 
       svg {
         position: relative;
-        top: 0.6rem;
+        top: 0.2rem;
         margin-left: 2.4rem;
         margin-right: 2.4rem;
       }

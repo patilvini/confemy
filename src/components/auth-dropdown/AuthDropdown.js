@@ -13,6 +13,7 @@ import LogoutIcon from "../icons/LogoutIcon";
 import DropdownIcon from "../icons/DropdownIcon";
 
 import "./AuthDropdown.styles.scss";
+import api from "../../utility/api";
 
 const authDropdownOptions = [
   {
@@ -83,9 +84,16 @@ export default function AuthDropdown() {
     return word[0]?.toUpperCase() + word.slice(1).toLowerCase();
   };
 
-  const onLogoutClick = () => {
-    setOpenAuthDropdown(false);
-    dispatch(logoutAction());
+  const onLogoutClick = async () => {
+    try {
+      const response = await api.get("/logout");
+      if (response) {
+        setOpenAuthDropdown(false);
+        dispatch(logoutAction());
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const dropdown = (
@@ -141,12 +149,12 @@ export default function AuthDropdown() {
             {authDropdownOptions.map((e) => (
               <li key={e.name} onClick={() => navigate(e.path)}>
                 {e.icon}
-                <span>{e.name}</span>
+                <div className="avenir-roman-18">{e.name}</div>
               </li>
             ))}
             <li onClick={onLogoutClick}>
               <LogoutIcon className="icon-size" />
-              <span>Logout</span>
+              <div className="avenir-roman-18">Logout</div>
             </li>
           </ul>
         </div>

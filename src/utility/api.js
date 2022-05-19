@@ -6,7 +6,8 @@ const api = axios.create({
   withCredentials: true,
   baseURL: "https://dev.confemy.com/api/",
   headers: {
-    "Access-Control-Allow-Origin": "http://dev.confemy.com",
+    // "Access-Control-Allow-Credentials": true,
+    // "Access-Control-Allow-Origin": "https://dev.confemy.com",
     "Content-Type": "application/json",
   },
 });
