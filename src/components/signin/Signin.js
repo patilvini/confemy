@@ -36,7 +36,7 @@ export default function Signin() {
   const auth = useSelector((state) => state.auth);
   const { isAuthenticated, user } = auth;
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, actions) => {
     const { email, password } = values;
     const signinData = {
       email,
@@ -51,7 +51,7 @@ export default function Signin() {
         navigate("/");
       }
     } catch (err) {
-      console.log(err);
+      actions.setFieldError("password", err.response?.data.message);
     }
   };
 

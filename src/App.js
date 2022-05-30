@@ -19,7 +19,11 @@ import OrganizerDashboardPage from "./pages/organizer-dashboard-page/OrganizerDa
 import OrganizerProfilePage from "./pages/organizer-profile-page/OrganizerProfilePage";
 import CreateOrganizerProfilePage from "./pages/organizer-profile-page/CreateOrganizerProfilePage";
 import EditOrganizerProfilePage from "./pages/organizer-profile-page/EditOrganizerProfilePage";
-import ConfBasicInfo from "./components/conference/ConfBasicInfo";
+import ConfBasicInfoPage from "./pages/create-conference-pages/ConfBasicInfoPage";
+import ConfDetailsPage from "./pages/create-conference-pages/ConfDetailsPage";
+import LiveStreamPage from "./pages/create-conference-pages/LiveStreamPage";
+import TicketsPage from "./pages/create-conference-pages/TicketsPage";
+import PreviewPublishPage from "./pages/create-conference-pages/PreviewPublishPage";
 
 import MyPrivateRoute from "./components/routing/MyPrivateRoute";
 import PrivateAttendeeRoute from "./components/routing/PrivateAttendeeRoute";
@@ -49,14 +53,21 @@ const App = () => {
             ></Route>
             <Route path="/message" element={<MessagePage />}></Route>
             <Route
-              path="/create-conference"
+              path="create-conference"
               element={
                 <MyPrivateRoute>
                   <CreateConfLayoutPage />
                 </MyPrivateRoute>
               }
             >
-              <Route path="" element={<ConfBasicInfo />}></Route>
+              <Route path="" element={<ConfBasicInfoPage />}></Route>
+              <Route path="details" element={<ConfDetailsPage />}></Route>
+              <Route path="live-stream" element={<LiveStreamPage />}></Route>
+              <Route path="tickets" element={<TicketsPage />}></Route>
+              <Route
+                path="preview-publish"
+                element={<PreviewPublishPage />}
+              ></Route>
             </Route>
             {/* <PrivateAttendeeRoute
               path="/attendee-dashboard"

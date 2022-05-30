@@ -1,11 +1,10 @@
 import { Outlet } from "react-router-dom";
+import ConfSteps from "../../components/conference/ConfSteps";
 
 export default function CreateConfLayoutPage() {
   return (
     <div className="container" style={{ display: "flex" }}>
-      <div style={{ width: 200, height: "100vh", backgroundColor: "#757575" }}>
-        Drawer Options
-      </div>
+      <ConfSteps />
       <div style={{ flexGrow: 1 }}>
         <Outlet />
       </div>

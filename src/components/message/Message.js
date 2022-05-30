@@ -8,11 +8,12 @@ function Message({ msg }) {
   if (msg && msg.length > 0) {
     return (
       <div className="message">
-        <p className="px-2">{msg}</p>
+        <p>{msg}</p>
       </div>
     );
+  } else {
+    return <Navigate to="/" replace={true} />;
   }
-  return <Navigate to="/" replace={true} />;
 }
 
 const mapStateToProps = (state) => {

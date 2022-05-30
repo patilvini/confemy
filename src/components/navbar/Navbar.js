@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import LocationIcon from "../icons/LocationIcon";
 import SearchIcon from "../icons/SearchIcon";
 import LogoDark from "../icons/LogoDark";
@@ -7,9 +7,19 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
+import Dialogue from "../dialogue/Dialogue";
+
 import "./navbar.styles.scss";
 
 const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
+  const [open, setopen] = useState(false);
+  const openDialogue = () => {
+    setopen(true);
+  };
+  const closeDialogue = () => {
+    setopen(false);
+  };
+
   const authLinks = <AuthDropdown />;
 
   const guestLinks = (
@@ -42,9 +52,12 @@ const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
       </div>
       <div className="navbar-second-container">
         <div>
-          <Link className="create-conference" to="/create-conference">
+          {/* <Link className="create-conference" to="/create-conference">
             Create Conference
-          </Link>
+          </Link> */}
+          <span onClick={openDialogue} className="create-conference">
+            Create Conference
+          </span>
         </div>
         {!isLoading && <>{isAuthenticated ? authLinks : guestLinks} </>}
         <div>
@@ -53,6 +66,9 @@ const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
             <span className="location-text">Location</span>
           </Link>
         </div>
+        {open && (
+          <Dialogue openDialogue={openDialogue} closeDialogue={closeDialogue} />
+        )}
       </div>
     </nav>
   );

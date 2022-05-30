@@ -87,6 +87,16 @@ $modal-background: rgba(0, 0, 0, 0.4);
   letter-spacing: 0.01px;
 }
 
+@mixin avenir-heavy-18 {
+  font-family: Avenir-Heavy;
+  font-size: 18px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+}
+
 @mixin arial-16 {
   font-family: Arial;
   font-size: 16px;

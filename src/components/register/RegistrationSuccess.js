@@ -1,14 +1,8 @@
-import React from 'react';
-import Message from '../message/Message';
+import Message from "../message/Message";
 
-function RegistrationSuccess() {
-  return (
-    <div className='signin-modal white-modal'>
-      <div className='modal-form-wrapper'>
-        <Message />
-      </div>
-    </div>
-  );
+function RegistrationSuccess({ msg }) {
+  console.log("from registration success", msg);
+  return <div style={{ fontSize: 18 }}>{msg}</div>;
 }
 
 export default RegistrationSuccess;
