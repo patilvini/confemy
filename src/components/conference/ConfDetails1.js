@@ -1,70 +1,80 @@
+import { useState } from "react";
 import { useFormik } from "formik";
+import { Editor, EditorState } from "draft-js";
 import * as yup from "yup";
+import Select from "react-select";
 import TextError from "../formik/TextError";
+
 import "./createConference.styles.scss";
+import "draft-js/dist/Draft.css";
+
+const options = [
+  { value: "Physician", label: "Physician" },
+  { value: "Nurse", label: "Nurse" },
+  { value: "Pharmacist", label: "Pharmacist" },
+  { value: "Example 1", label: "Example 1" },
+  { value: "Example 2", label: "Example 2" },
+];
+
+const validationSchema = yup.object({
+  professions: yup.array().required("Required"),
+});
 
 const initialValues = {
-  title: "",
   professions: [],
   specialties: [],
   tags: [],
+  credits: [],
+  refundPolicy: "",
 };
 
-const validationSchema = yup.object({
-  title: yup.string().required("Required"),
-});
-
 export default function ConfDetails1() {
-  function onSubmit(values, actions) {
-    console.log(values);
-  }
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+
+  const onSubmit = (values, actions) => {
+    console.log("form values form onSubmit", values);
+  };
+
   const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: validationSchema,
-    onSubmit: onSubmit,
+    initialValues,
+    // validationSchema,
+    onSubmit,
   });
 
+  const {
+    errors,
+    touched,
+    values,
+    isSubmitting,
+    handleSubmit,
+    getFieldProps,
+    handleChange,
+  } = formik;
+
+  console.log(formik);
   return (
     <div className="conf-form-wrap">
-      <h2>Basic Info</h2>
-      <form
-        className="form-type-1"
-        onSubmit={formik.handleSubmit}
-        autoComplete="off"
-      >
+      <h2>Details 1</h2>
+      <form autoComplete="off" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="title">Title</label>
-          <div>
-            <input
-              id="title"
-              type="text"
-              name="title"
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              placeholder="Conference Title*"
-            />
-          </div>
-          {formik.touched.title && Boolean(formik.errors.title) && (
-            <TextError>{formik.errors.title}</TextError>
-          )}
+          <label>
+            {" "}
+            <h4>Professions</h4>{" "}
+          </label>
+          <Select
+            isMulti
+            label="professions"
+            // name="professions"
+            options={options}
+            onChange={(value) => {
+              console.log("value from onchange handler", value);
+              formik.setFieldValue("professions", value);
+            }}
+            value={formik.values.professions}
+          />
         </div>
-        <div>
-          <label htmlFor="professions">Professions</label>
-          <div>
-            <input
-              id="professions"
-              type="text"
-              name="professions"
-              value={formik.values.professions}
-              onChange={formik.handleChange}
-              placeholder="Professions*"
-            />
-          </div>
-          {formik.touched.professions && Boolean(formik.errors.professions) && (
-            <TextError>{formik.errors.professions}</TextError>
-          )}
-        </div>
-        <button className="text-button text-button-primary">Cancel</button>
         <button className="button button-primary" type="submit">
           Next
         </button>
