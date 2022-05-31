@@ -5,7 +5,8 @@ import "./confSteps.styles.scss";
 
 const steps = [
   { label: "Basic Info", path: "/create-conference" },
-  { label: "Details", path: "/create-conference/details" },
+  { label: "Details 1", path: "/create-conference/details-1" },
+  { label: "Details 2", path: "/create-conference/details-2" },
   { label: "Live Stream", path: "/create-conference/live-stream" },
   { label: "Tickets", path: "/create-conference/tickets" },
   { label: "Preview and Publish", path: "/create-conference/preview-publish" },

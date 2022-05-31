@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
-
 import "./createConference.styles.scss";
 
 const initialValues = {
@@ -15,7 +14,7 @@ const validationSchema = yup.object({
   title: yup.string().required("Required"),
 });
 
-export default function ConfBasicInfo() {
+export default function ConfDetails1() {
   function onSubmit(values, actions) {
     console.log(values);
   }

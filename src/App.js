@@ -20,7 +20,8 @@ import OrganizerProfilePage from "./pages/organizer-profile-page/OrganizerProfil
 import CreateOrganizerProfilePage from "./pages/organizer-profile-page/CreateOrganizerProfilePage";
 import EditOrganizerProfilePage from "./pages/organizer-profile-page/EditOrganizerProfilePage";
 import ConfBasicInfoPage from "./pages/create-conference-pages/ConfBasicInfoPage";
-import ConfDetailsPage from "./pages/create-conference-pages/ConfDetailsPage";
+import ConfDetailsPage1 from "./pages/create-conference-pages/ConfDetailsPage1";
+import ConfDetailsPage2 from "./pages/create-conference-pages/ConfDetailsPage2";
 import LiveStreamPage from "./pages/create-conference-pages/LiveStreamPage";
 import TicketsPage from "./pages/create-conference-pages/TicketsPage";
 import PreviewPublishPage from "./pages/create-conference-pages/PreviewPublishPage";
@@ -61,7 +62,8 @@ const App = () => {
               }
             >
               <Route path="" element={<ConfBasicInfoPage />}></Route>
-              <Route path="details" element={<ConfDetailsPage />}></Route>
+              <Route path="details-1" element={<ConfDetailsPage1 />}></Route>
+              <Route path="details-2" element={<ConfDetailsPage2 />}></Route>
               <Route path="live-stream" element={<LiveStreamPage />}></Route>
               <Route path="tickets" element={<TicketsPage />}></Route>
               <Route
