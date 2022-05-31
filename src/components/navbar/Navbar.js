@@ -12,16 +12,7 @@ import Dialogue from "../dialogue/Dialogue";
 import "./navbar.styles.scss";
 
 const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
-  const [open, setopen] = useState(false);
-  const openDialogue = () => {
-    setopen(true);
-  };
-  const closeDialogue = () => {
-    setopen(false);
-  };
-
   const authLinks = <AuthDropdown />;
-
   const guestLinks = (
     <>
       <div>
@@ -52,12 +43,9 @@ const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
       </div>
       <div className="navbar-second-container">
         <div>
-          {/* <Link className="create-conference" to="/create-conference">
+          <Link className="create-conference" to="/create-conference">
             Create Conference
-          </Link> */}
-          <span onClick={openDialogue} className="create-conference">
-            Create Conference
-          </span>
+          </Link>
         </div>
         {!isLoading && <>{isAuthenticated ? authLinks : guestLinks} </>}
         <div>
@@ -66,9 +54,6 @@ const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
             <span className="location-text">Location</span>
           </Link>
         </div>
-        {open && (
-          <Dialogue openDialogue={openDialogue} closeDialogue={closeDialogue} />
-        )}
       </div>
     </nav>
   );

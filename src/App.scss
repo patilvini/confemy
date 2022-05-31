@@ -496,60 +496,109 @@ $spaceamounts: (
 
 .button {
   display: inline-block;
-  border: none;
-  @include button-text;
-  cursor: pointer;
   outline: none;
+  border: 2px solid black;
+  cursor: pointer;
   transition: all 0.12s ease-in;
   min-width: 10rem;
   padding: 1.6rem 3.2rem;
   border-radius: 4px;
+  @include button-text;
 
   &.button-green {
     background: $accent;
+    border-color: $accent;
     &:hover {
       background-color: #45a93e;
+      border-color: #45a93e;
     }
     &:active {
       background-color: #3c9436;
+      border-color: #3c9436;
     }
   }
   &.button-secondary {
     background: $shade-4;
+    border-color: $shade-4;
     &:hover {
       background: $shade-2;
+      border-color: $shade-2;
     }
   }
 
   &.button-primary {
     background: $primary;
+    border-color: $primary;
     &:hover {
       background: #073b54;
+      border-color: #073b54;
     }
     &:active {
       background-color: #063449;
+      border-color: #063449;
     }
   }
 }
 
-.text-button {
+.button-text {
   display: inline-block;
   border: none;
-  cursor: pointer;
   outline: none;
+  cursor: pointer;
   transition: all 0.12s ease-in;
   background-color: #fff;
-  font-family: Avenir;
-  font-size: 16px;
-  font-weight: 900;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  letter-spacing: 0.41px;
-  text-align: center;
+  @include button-text;
 
-  &.text-button-primary {
+  min-width: 10rem;
+  padding: 1.6rem 3.2rem;
+  border-radius: 4px;
+
+  &.button-text-primary {
     color: $primary;
+    &:hover {
+      background: $shade-1;
+    }
+  }
+}
+
+.button-outlined {
+  display: inline-block;
+  outline: none;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: all 0.12s ease-in;
+  min-width: 10rem;
+  padding: 1.6rem 3.2rem;
+  border-radius: 4px;
+  @include button-text;
+  background-color: #fff;
+
+  &.button-outlined-primary {
+    color: $primary;
+    border-color: $primary;
+
+    &:hover {
+      color: #073b54;
+      border-color: #073b54;
+    }
+    &:active {
+      color: #063449;
+      border-color: #063449;
+    }
+  }
+
+  &.button-outlined-green {
+    color: $accent;
+    border-color: $accent;
+
+    &:hover {
+      color: #45a93e;
+      border-color: #45a93e;
+    }
+    &:active {
+      color: #3c9436;
+      border-color: #3c9436;
+    }
   }
 }
 
