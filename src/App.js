@@ -24,6 +24,7 @@ import ConfDetailsPage1 from "./pages/create-conference-pages/ConfDetailsPage1";
 import ConfDetailsPage2 from "./pages/create-conference-pages/ConfDetailsPage2";
 import LiveStreamPage from "./pages/create-conference-pages/LiveStreamPage";
 import TicketsPage from "./pages/create-conference-pages/TicketsPage";
+import OCreateConference from "./components/conference/OCreateConference"
 import PreviewPublishPage from "./pages/create-conference-pages/PreviewPublishPage";
 
 import MyPrivateRoute from "./components/routing/MyPrivateRoute";
@@ -45,6 +46,7 @@ const App = () => {
           <Navbar />
           <Alert />
           <Routes>
+          <Route path="/test" element={<OCreateConference />} />
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>
@@ -70,6 +72,7 @@ const App = () => {
                 path="preview-publish"
                 element={<PreviewPublishPage />}
               ></Route>
+              
             </Route>
             {/* <PrivateAttendeeRoute
               path="/attendee-dashboard"

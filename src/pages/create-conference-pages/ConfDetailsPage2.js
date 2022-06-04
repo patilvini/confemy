@@ -1,3 +1,5 @@
+import ConfDetails2 from "../../components/conference/ConfDetails2";
+
 export default function ConfDetailsPage2() {
-  return <div>ConfDetailsPage2</div>;
+  return <ConfDetails2/>
 }
