@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef} from "react";
 import { useFormik } from "formik";
-import {Editor} from "react-draft-wysiwyg"
 import { EditorState } from 'draft-js';
 
 import * as yup from "yup";
@@ -9,8 +8,8 @@ import TextError from "../formik/TextError";
 import Switch from "./Switch";
 
 import "./createConference.styles.scss";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import './conferDetails1.scss'
+import RichTextEditor from "./RichTextEditor";
 
 
 const options = [
@@ -28,7 +27,7 @@ const validationSchema = yup.object({
   tags: yup.array().min(1).required("Required"),
   credits: yup.array().min(1).required("Required"),
   amount: yup.string().required("Required"),
-  refundPolicy: yup.string().required("Required"),
+  refundPolicy: yup.array().min(1).required("Required"),
 });
 
 const initialValues = {
@@ -36,25 +35,20 @@ const initialValues = {
   specialties: [],
   tags: [],
   credits: [],
-  refundPolicy: "",
+  refundPolicy: [],
   
 };
 
 export default function ConfDetails1() {
   
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
-
-  
-
-  
 
   const [tag, setTag] = useState("");
   const [amount, setAmount] = useState("");
   const [cType, setCType] = useState("");
-  const [valueCred, setValueCred] = useState(false);
-  const [valueRefund, setValueRefund] = useState(false);
+  const [editorState, setEditorState] = useState(
+    () => EditorState.createEmpty(),
+  );
+ 
 
   const onSubmit = (values, actions) => {
     console.log("form values form onSubmit", values);
@@ -159,10 +153,10 @@ export default function ConfDetails1() {
 
         <div>
           <label>
-            <Switch
+            {/* <Switch
               isOn={valueCred}
               handleToggle={() => setValueCred(!valueCred)}
-            />{" "}
+            />{" "} */}
             <h4>Credits</h4>{" "}
             <ul>
               {formik.values.credits.map((i) => {
@@ -208,25 +202,20 @@ export default function ConfDetails1() {
         </div>
 
         <div>
-          <Switch
+          {/* <Switch
             isOn={valueRefund}
             handleToggle={() => { setValueRefund(!valueRefund) }}
-          />
+          /> */}
           <label>
             <h4>Refund Policy</h4>
           </label>
-          <div className="editor">
-          <div style={{ padding: '2px', minHeight: '400px' }}>
-        <Editor
-          editorState={editorState}
-          onEditorStateChange={setEditorState}
-          onChange={(e)=>console.log(e)}
-          
-        />
-      </div>
-
-
-          </div>
+          <RichTextEditor editorState={editorState} onEditorStateChange={setEditorState} onChange={(e)=>{
+            console.log(e)
+            formik.setFieldValue('refundPolicy', e.blocks)
+          }} />
+          {touched.refundPolicy && Boolean(errors.refundPolicy) && (
+            <TextError>{errors.refundPolicy}</TextError>
+          )}
 
         </div>
 

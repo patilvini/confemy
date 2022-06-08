@@ -31,3 +31,49 @@
     background-color: white;
     overflow: hidden;
   }
+
+  .speaker-box{
+    width: 388px;
+    height: 290px;
+    margin: 31px 0.5px 24px 80.5px;
+    padding: 30px 60px 15px;
+    border-radius: 4px;
+    border: solid 1px lightgray;
+    background-color: white;
+  }
+
+  .speaker-name{
+    width: 172px;
+  height: 40px;
+  margin: 25px 48px 8px;
+  font-family: Avenir;
+  font-size: 20px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: var(--confemy-black);
+}
+  
+
+.speaker-info{
+  width: 268px;
+  height: 32px;
+  margin: 8px 0 0;
+  font-family: Avenir-Roman;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+}
+
+.speaker-image{
+  width: 140px;
+  height: 140px;
+  margin: 0 64px 25px;
+}
