@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik, TextError } from "formik";
-import { Editor, EditorState } from "draft-js";
+import {Editor} from "react-draft-wysiwyg"
+import { EditorState } from "draft-js";
 import * as yup from "yup";
 
 import "./conferDetails2.scss";
-
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 
 const fileTypes = ["JPG", "PNG"];
@@ -34,7 +35,10 @@ const validationSchema = yup.object({
 });
 
 export default function ConfDetails2() {
- 
+
+  const days = [{date:"2 jan 22", title: "Day1"}, {date:"3 jan 22", title: "Day2"}, {date:"4 jan 22", title: "Day3"}]
+
+  const [isActive, setIsActive] = useState(false);
   const [description, setDescription] = useState(() =>
     EditorState.createEmpty()
   );
@@ -43,7 +47,7 @@ export default function ConfDetails2() {
 
   const [schedule, setSchedule] = useState(() => EditorState.createEmpty());
 
-  
+
   const onSubmit = (values, actions) => {
     console.log("form values form onSubmit", values);
   };
@@ -78,20 +82,24 @@ export default function ConfDetails2() {
                 660px x 380px.{" "}
               </p>
             </label>
-            
+
           </div>
 
           <div>
             <label>
               <h4>Description</h4>
             </label>
-            <div className='editor'>
+            <div className="editor">
+            <div style={{ padding: '2px', minHeight: '400px' }}>
               <Editor
                 placeholder="Descriptions"
                 editorState={description}
-                onChange={setDescription}
+                onEditorStateChange={setDescription}
               />
             </div>
+
+            </div>
+            
           </div>
           <div>
             <label>
@@ -103,33 +111,63 @@ export default function ConfDetails2() {
             <label>
               <h4>Course Outline</h4>
             </label>
-            <div className='editor'>
+            <div className="editor">
+            <div style={{ padding: '2px', minHeight: '400px' }}>
               <Editor
                 placeholder="Course Outline"
                 editorState={outline}
-                onChange={setOutline}
+                onEditorStateChange={setOutline}
               />
             </div>
+
+            </div>
+            
           </div>
 
           <div>
             <label>
               <h4>Conference Schedule</h4>
             </label>
+
+            {days.map((i)=>{
+              return(
+                <div key={i.date}> 
+                <button onClick={e=>{
+                  e.preventDefault()
+                  setIsActive(!isActive)
+                
+                }}class="accordion">{i.title}</button>
+            <div class="panel">
+            {isActive && <div>{i.date}</div>}
+            </div>
+                
+                </div>
+              )
+            })}
+
+            
+
+            
+
             <input type="date" />
             <input type="date" />
-            <div className='editor'>
+            <div className="editor">
+            <div style={{ padding: '2px', minHeight: '400px' }}>
               <Editor
                 placeholder="Add Schedule (Be more specific about time interval, topics, speakers and all the fun activities in between)"
                 editorState={schedule}
-                onChange={setSchedule}
+                onEditorStateChange={setSchedule}
+               
               />
             </div>
+
+            </div>
+           
           </div>
 
           <button className="button button-primary" type="submit">
-          Next
-        </button>
+            Next
+          </button>
         </form>
       </div>
     </>

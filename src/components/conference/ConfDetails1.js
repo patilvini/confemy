@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useFormik } from "formik";
-import { Editor, EditorState } from "draft-js";
+import {Editor} from "react-draft-wysiwyg"
+import { EditorState } from 'draft-js';
+
 import * as yup from "yup";
 import Select from "react-select";
 import TextError from "../formik/TextError";
 import Switch from "./Switch";
 
 import "./createConference.styles.scss";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import './conferDetails1.scss'
-import "draft-js/dist/Draft.css";
+
 
 const options = [
   { value: "Physician", label: "Physician" },
@@ -34,12 +37,18 @@ const initialValues = {
   tags: [],
   credits: [],
   refundPolicy: "",
+  
 };
 
 export default function ConfDetails1() {
+  
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+
+  
+
+  
 
   const [tag, setTag] = useState("");
   const [amount, setAmount] = useState("");
@@ -56,6 +65,8 @@ export default function ConfDetails1() {
     validationSchema,
     onSubmit,
   });
+
+  
 
   const {
     errors,
@@ -131,7 +142,9 @@ export default function ConfDetails1() {
           />
           <button
             onClick={(e) => {
+
               e.preventDefault();
+              if (e.target.value.length <= 1) return
               console.log(tag);
               formik.setFieldValue("tags", [...formik.values.tags, tag]);
               setTag("");
@@ -197,16 +210,24 @@ export default function ConfDetails1() {
         <div>
           <Switch
             isOn={valueRefund}
-            handleToggle={() => {setValueRefund(!valueRefund)}}
+            handleToggle={() => { setValueRefund(!valueRefund) }}
           />
           <label>
             <h4>Refund Policy</h4>
           </label>
           <div className="editor">
-          <Editor placeholder="Refund Policy" editorState={editorState} onChange={setEditorState} />
+          <div style={{ padding: '2px', minHeight: '400px' }}>
+        <Editor
+          editorState={editorState}
+          onEditorStateChange={setEditorState}
+          onChange={(e)=>console.log(e)}
+          
+        />
+      </div>
+
 
           </div>
-          
+
         </div>
 
         <button className="button button-primary" type="submit">
