@@ -77,3 +77,27 @@
   height: 140px;
   margin: 0 64px 25px;
 }
+
+.drag-box{
+  width: 808px;
+  height: 460px;
+  border-radius: 15px;
+  margin: 32px 0;
+  padding: 143px 256px 184px 281px;
+  background-color: #ecf0f2;
+}
+
+.dragbox-text{
+  width: 271px;
+  height: 48px;
+  margin: 15px 0 0;
+  font-family: Avenir-Roman;
+  font-size: 18px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: var(--gray-3);
+}

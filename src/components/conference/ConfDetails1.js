@@ -138,7 +138,7 @@ export default function ConfDetails1() {
             onClick={(e) => {
 
               e.preventDefault();
-              if (e.target.value.length <= 1) return
+              if (e.target.value.length <= 1) 
               console.log(tag);
               formik.setFieldValue("tags", [...formik.values.tags, tag]);
               setTag("");
@@ -174,6 +174,7 @@ export default function ConfDetails1() {
             onChange={(value) => {
               setCType(value);
               console.log("value from onchange handler", cType);
+              
             }}
             value={formik.values.creditType}
           />

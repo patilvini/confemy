@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useFormik, TextError } from "formik";
+import { EditorState } from 'draft-js';
 import Select from "react-select";
 
 import * as yup from "yup";
-
+import DragDrop from "./DragDrop";
 import "./conferDetails2.scss";
 import api from "../../utility/api";
+import RichTextEditor from "./RichTextEditor";
 
 
 
-const fileTypes = ["JPG", "PNG"];
+
 
 const initialValues = {
   bannerImage: [],
@@ -37,16 +39,29 @@ const validationSchema = yup.object({
 
 export default function ConfDetails2() {
 
-  useEffect(()=>{
+  // const onDrop = useCallback((acceptedFiles) => {
+   
+  //   console.log(acceptedFiles)
+  // }, []);
+
+  const [description, setDescription] = useState(
+    () => EditorState.createEmpty(),
+  );
+
+  const [outline, setOutline] = useState(
+    () => EditorState.createEmpty(),
+  );
+
+  useEffect(() => {
     api.get('/speakers')
-    .then((r)=>{
-      setSpeakerData(r.data.data)
+      .then((r) => {
+        setSpeakerData(r.data.data)
 
-    })
+      })
 
-  },[])
+  }, [])
 
-  const days = [{date:"2 jan 22", title: "Day1"}, {date:"3 jan 22", title: "Day2"}, {date:"4 jan 22", title: "Day3"}]
+  const days = [{ date: "2 jan 22", title: "Day1" }, { date: "3 jan 22", title: "Day2" }, { date: "4 jan 22", title: "Day3" }]
   const [isActive, setIsActive] = useState(false);
   const [speakerData, setSpeakerData] = useState([])
 
@@ -85,6 +100,7 @@ export default function ConfDetails2() {
                 Put out a great first impression. Use a high quality image:
                 660px x 380px.{" "}
               </p>
+              <DragDrop/>
             </label>
 
           </div>
@@ -93,34 +109,33 @@ export default function ConfDetails2() {
             <label>
               <h4>Description</h4>
             </label>
-            <div className="editor">
-            <div style={{ padding: '2px', minHeight: '400px' }}>
-              {/* <Editor
-                placeholder="Descriptions"
-                editorState={description}
-                onEditorStateChange={setDescription}
-              /> */}
-            </div>
+            <div>
+              <div style={{ padding: '2px', minHeight: '400px' }}>
+                <RichTextEditor editorState={description} onEditorStateChange={setDescription} onChange={(e) => {
+                  console.log(e)
+                  // formik.setFieldValue('refundPolicy', e.blocks)
+                }} />
+              </div>
 
             </div>
-            
+
           </div>
           <div>
             <label>
               <h4>Speakers</h4>
               <Select
-            isMulti
-            label="speakers"
-      
-            options={speakerData}
-            onChange={(value) => {
-              console.log("value from onchange handler", value);
-              // formik.setFieldValue("professions", value);
-            }}
-            // value={formik.values.professions}
-          />
+                isMulti
+                label="speakers"
 
-             {/* {speakerData.map((i)=>{
+                options={speakerData}
+                onChange={(value) => {
+                  console.log("value from onchange handler", value);
+                  // formik.setFieldValue("professions", value);
+                }}
+              // value={formik.values.professions}
+              />
+
+              {/* {speakerData.map((i)=>{
                return(
                  <div key={i._id} className="speaker-box">
                  <div>
@@ -139,7 +154,7 @@ export default function ConfDetails2() {
              })} */}
 
 
-             
+
 
 
             </label>
@@ -149,13 +164,18 @@ export default function ConfDetails2() {
             <label>
               <h4>Course Outline</h4>
             </label>
-            
-            
+            <RichTextEditor editorState={outline} onEditorStateChange={setOutline} onChange={(e) => {
+                console.log(e)
+                // formik.setFieldValue('refundPolicy', e.blocks)
+              }} />
+
+
           </div>
 
           <div>
             <label>
               <h4>Conference Schedule</h4>
+              
             </label>
 
             {/* {days.map((i)=>{
@@ -174,24 +194,16 @@ export default function ConfDetails2() {
               )
             })} */}
 
-            
 
-            
+
+
 
             <input type="date" />
             <input type="date" />
-            <div className="editor">
-            <div style={{ padding: '2px', minHeight: '400px' }}>
-              {/* <Editor
-                placeholder="Add Schedule (Be more specific about time interval, topics, speakers and all the fun activities in between)"
-                editorState={schedule}
-                onEditorStateChange={setSchedule}
-               
-              /> */}
-            </div>
+            
+            
 
-            </div>
-           
+
           </div>
 
           <button className="button button-primary" type="submit">
