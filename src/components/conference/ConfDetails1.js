@@ -45,9 +45,7 @@ export default function ConfDetails1() {
   const [tag, setTag] = useState("");
   const [amount, setAmount] = useState("");
   const [cType, setCType] = useState("");
-  const [editorState, setEditorState] = useState(
-    () => EditorState.createEmpty(),
-  );
+  
  
 
   const onSubmit = (values, actions) => {
@@ -210,7 +208,7 @@ export default function ConfDetails1() {
           <label>
             <h4>Refund Policy</h4>
           </label>
-          <RichTextEditor editorState={editorState} onEditorStateChange={setEditorState} onChange={(e)=>{
+          <RichTextEditor onChange={(e)=>{
             console.log(e)
             formik.setFieldValue('refundPolicy', e.blocks)
           }} />

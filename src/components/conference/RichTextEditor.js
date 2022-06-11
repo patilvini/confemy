@@ -1,10 +1,16 @@
+import { useState } from "react";
 import { Editor } from "react-draft-wysiwyg"
+import { EditorState } from 'draft-js';
 import './conferDetails1.scss'
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 
 export default function RichTextEditor(props) {
+
+    const [editorState, setEditorState] = useState(
+        () => EditorState.createEmpty(),
+      );
     
     return (
 
@@ -12,8 +18,8 @@ export default function RichTextEditor(props) {
             <div style={{ padding: '2px', minHeight: '400px' }}>
                 <Editor
                     placeholder="Course Outline"
-                    editorState={props.editorState}
-                    onEditorStateChange={props.onEditorStateChange}
+                    editorState={editorState}
+                    onEditorStateChange={setEditorState}
                     toolbarClassName="toolbarClassName"
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"

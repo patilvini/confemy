@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
 import { useFormik, TextError } from "formik";
-import { EditorState } from 'draft-js';
 import Select from "react-select";
 
 import * as yup from "yup";
@@ -15,23 +14,28 @@ import RichTextEditor from "./RichTextEditor";
 
 const initialValues = {
   bannerImage: [],
-  description: "",
+  description: [],
   speakers: [],
-  courseOutline: "",
-  conferenceSchedule: [],
-  venueImage: "",
+  courseOutline: [],
+  date: "",
+  startDate: "",
+  endDate:"",
+  details: [],
+  venueImage: [],
   venueName: "",
   venueCity: "",
   venueAmenities: [],
 };
 
 const validationSchema = yup.object({
-  // bannerImage: yup.array().min(1).required("Required"),
-  description: yup.string().required("Required"),
+  bannerImage: yup.array().min(1).required("Required"),
+  description: yup.array().min(1).required("Required"),
   speakers: yup.array().min(1).required("Required"),
   courseOutline: yup.array().min(1).required("Required"),
-  conferenceSchedule: yup.array().min(1).required("Required"),
-  // venueImage: yup.string().required("Required"),
+  date: yup.string().required("Required"),
+  startDate: yup.string().required("Required"),
+  endDate: yup.string().required("Required"),
+  venueImage: yup.array().min(1).required("Required"),
   venueName: yup.string().required("Required"),
   venueCity: yup.string().required("Required"),
   venueAmenities: yup.array().min(1).required("Required"),
@@ -44,13 +48,6 @@ export default function ConfDetails2() {
   //   console.log(acceptedFiles)
   // }, []);
 
-  const [description, setDescription] = useState(
-    () => EditorState.createEmpty(),
-  );
-
-  const [outline, setOutline] = useState(
-    () => EditorState.createEmpty(),
-  );
 
   useEffect(() => {
     api.get('/speakers')
@@ -62,9 +59,18 @@ export default function ConfDetails2() {
   }, [])
 
   const days = [{ date: "2 jan 22", title: "Day1" }, { date: "3 jan 22", title: "Day2" }, { date: "4 jan 22", title: "Day3" }]
-  const [isActive, setIsActive] = useState(false);
+  const [clicked, setClicked] = useState(false);
   const [speakerData, setSpeakerData] = useState([])
 
+
+
+  const toggle = i =>{
+    if(clicked === i){
+      return setClicked(null)
+    }
+
+    setClicked(i)
+  }
 
 
   const onSubmit = (values, actions) => {
@@ -100,7 +106,9 @@ export default function ConfDetails2() {
                 Put out a great first impression. Use a high quality image:
                 660px x 380px.{" "}
               </p>
-              <DragDrop/>
+              <DragDrop
+                onChange={(e)=>console.log(e)}
+              />
             </label>
 
           </div>
@@ -111,7 +119,7 @@ export default function ConfDetails2() {
             </label>
             <div>
               <div style={{ padding: '2px', minHeight: '400px' }}>
-                <RichTextEditor editorState={description} onEditorStateChange={setDescription} onChange={(e) => {
+                <RichTextEditor onChange={(e) => {
                   console.log(e)
                   // formik.setFieldValue('refundPolicy', e.blocks)
                 }} />
@@ -164,7 +172,7 @@ export default function ConfDetails2() {
             <label>
               <h4>Course Outline</h4>
             </label>
-            <RichTextEditor editorState={outline} onEditorStateChange={setOutline} onChange={(e) => {
+            <RichTextEditor onChange={(e) => {
                 console.log(e)
                 // formik.setFieldValue('refundPolicy', e.blocks)
               }} />
@@ -178,28 +186,46 @@ export default function ConfDetails2() {
               
             </label>
 
-            {/* {days.map((i)=>{
-              return(
-                <div key={i.date}> 
-                <button onClick={e=>{
-                  e.preventDefault()
-                  setIsActive(!isActive)
-                
-                }} className="accordion">{i.title}</button>
-            <div className="panel">
-            {isActive && <div>{i.date}</div>}
-            </div>
-                
+            {days.map((item, index) => {
+            return (
+              <>
+                <div className="wrap acc-container" onClick={() => toggle(index)} key={index}>
+                  <h4>{item.date}</h4>
+                  <span>{clicked === index ? <h4 style={{marginRight:'3rem'}}>  -  </h4> : <h4 style={{marginRight:'2rem'}}>  +  </h4>}</span>
                 </div>
-              )
-            })} */}
+                {clicked === index ? (
+                  <div className="dropdown">
+                    <h4>{item.title}</h4>
+                      <h5>Timings</h5>
+                                  
+                      <label>
+                        <h5>Start time</h5>
+                        
+                      </label>
+                      <input style={{width: '15rem'}} type="time"/>
+
+                      <label>
+                        <h5>End time</h5>
+                        
+                      </label>
+                      <input style={{width: '15rem'}} type="time"/>
+
+                      <label>
+                        <h5>Additional Details</h5>
+                      </label>
+                      <textarea style={{ padding: '15px', minHeight: '200px' }} onChange={(e)=>{console.log(e.target.value)}}/>
+                    
+
+                  </div>
+                ) : null}
+                </>
+            );
+          })}
 
 
 
 
-
-            <input type="date" />
-            <input type="date" />
+            
             
             
 
