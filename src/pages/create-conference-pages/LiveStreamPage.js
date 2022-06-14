@@ -1,3 +1,7 @@
+import LiveStream from "../../components/conference/LiveStream";
+
 export default function LiveStreamPage() {
-  return <div>LiveStreamPage</div>;
+  return <div>
+    <LiveStream/>
+  </div>;
 }

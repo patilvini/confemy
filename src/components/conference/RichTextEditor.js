@@ -17,7 +17,7 @@ export default function RichTextEditor(props) {
         <div className="editor">
             <div style={{ padding: '2px', minHeight: '400px' }}>
                 <Editor
-                    placeholder="Course Outline"
+                    placeholder={props.placeholder}
                     editorState={editorState}
                     onEditorStateChange={setEditorState}
                     toolbarClassName="toolbarClassName"
