@@ -13,6 +13,8 @@ const initialValues = {
   coverImage: [],
   text: [],
   video: [],
+  linkTitle:"",
+  link: "",
   file: [],
 };
 
@@ -22,6 +24,8 @@ const validationSchema = yup.object({
   coverImage: yup.array().min(1).required("Please enter your cover Image"),
   text: yup.array(),
   video: yup.array(),
+  linkTitle: yup.string(),
+  link: yup.string(),
   file: yup.array(),
 });
 
@@ -66,7 +70,7 @@ export default function LiveStreamForm() {
     handleChange,
   } = formik;
 
-//   console.log(values);
+  // console.log(values);
 
   return (
     <>
@@ -78,13 +82,17 @@ export default function LiveStreamForm() {
             <input
               type="text"
               placeholder="enter URL"
-              onChange={(e) => console.log(e.target.value)}
+              onChange={(e) =>{
+                formik.setFieldValue("confUrl", e.target.value)
+              }}
             />
           </div>
           <div style={{ paddingTop: "10px" }}>
             <RichTextEditor
               placeholder="Add meeting instructions (optional)"
-              onChange={(e) => console.log(e.blocks)}
+              onChange={(e) => {
+                formik.setFieldValue("instructions", e.blocks)
+              }}
             />
             {/* {touched.description && Boolean(errors.description) && (
             <TextError>{errors.description}</TextError>
@@ -117,7 +125,7 @@ export default function LiveStreamForm() {
             </label>
 
             <RichTextEditor
-                onChange={e=>console.log(e.blocks)}
+                onChange={e=>{formik.setFieldValue('text', e.blocks)}}
                 />
 
 
@@ -148,8 +156,8 @@ export default function LiveStreamForm() {
                 <h4>Link</h4>
 
             </label>
-            <input type="text" placeholder="Link Title" onChange={e=>console.log(e.target.value)}/>
-            <input type="text" placeholder="Paste Link here" onChange={e=>console.log(e.target.value)}/>
+            <input type="text" placeholder="Link Title" onChange={e=>{formik.setFieldValue('linkTitle', e.target.value)}}/>
+            <input type="text" placeholder="Paste Link here" onChange={e=>{formik.setFieldValue('link', e.target.value)}}/>
             <div {...getRootProps()}>
               <input {...getInputProps()} />
               <div className="drag-box">
@@ -165,6 +173,10 @@ export default function LiveStreamForm() {
 
           
           </div>
+
+          <button className="button button-primary" type="submit">
+            Next
+          </button>
         </form>
       </div>
     </>
