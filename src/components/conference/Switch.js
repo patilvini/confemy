@@ -4,9 +4,9 @@ import './switch.scss'
 const Switch = ({ isOn, handleToggle }) => {
   return (
     <>
-      <label class="switch">
+      <label className="switch">
         <input type="checkbox" value={isOn} onChange={handleToggle}/>
-        <span class="slider round"></span>
+        <span className="slider round"></span>
       </label>
     </>
   );

@@ -1,6 +1,6 @@
-import { useState, useRef} from "react";
+import { useState, useRef } from "react";
 import { useFormik } from "formik";
-import { EditorState } from 'draft-js';
+import { EditorState } from "draft-js";
 
 import * as yup from "yup";
 import Select from "react-select";
@@ -8,9 +8,9 @@ import TextError from "../formik/TextError";
 import Switch from "./Switch";
 
 import "./createConference.styles.scss";
-import './conferDetails1.scss'
+import "./conferDetails1.scss";
 import RichTextEditor from "./RichTextEditor";
-
+import api from "../../utility/api";
 
 const options = [
   { value: "Physician", label: "Physician" },
@@ -22,34 +22,69 @@ const options = [
 // please choose at least 1 profession
 
 const validationSchema = yup.object({
-  professions: yup.array().min(1).required("Required"),
-  specialties: yup.array().min(1).required("Required"),
-  tags: yup.array().min(1).required("Required"),
-  credits: yup.array().min(1).required("Required"),
-  amount: yup.string().required("Required"),
-  refundPolicy: yup.array().min(1).required("Required"),
+  profession: yup.array().min(1).required("Please choose at least one profession"),
+  specialities: yup.array().min(1).required("Please choose at least one specialities"),
+  tags: yup.array().min(1).required("Please add at least 1 tag"),
+  // isCreditBased : yup.boolean(),
+
+  // credits: yup.array().min(1).required("Required"),
+  // refundPolicy: yup.boolean(),
+  refundDescription: yup.array(),
+  // conferenceId: yup.string()
 });
 
 const initialValues = {
-  professions: [],
-  specialties: [],
+  profession: [],
+  specialities: [],
   tags: [],
+  isCreditBased: "",
   credits: [],
-  refundPolicy: [],
-  
+  refundPolicy: "",
+  refundDescription: [],
+  conferenceId: "62a0be470ba7277038691ed2"
 };
 
 export default function ConfDetails1() {
-  
-
   const [tag, setTag] = useState("");
   const [amount, setAmount] = useState("");
   const [cType, setCType] = useState("");
-  
- 
+  const [valueCred, setValueCred]= useState(true);
+  const [valueRefund, setValueRefund] = useState(true);
 
-  const onSubmit = (values, actions) => {
+  const onSubmit = async (values, actions) => {
+    
+    let conferenceDetails = {
+
+      "profession": ["internal medicine", " hospitalist medicine"], 
+      "tags":["css"],
+      "conferenceId":"62a0be470ba7277038691ed2",
+      "specialities": ["internal medicine", "Cardiology", " hospitalist medicine"], 
+      "isCreditBased":true,
+       "credits": [
+           {"creditType":"ama", "quantity": 10}, 
+           {"creditType":"aecp", "quantity": 10}
+      
+       ],
+       "refundPolicy":false,
+      "refundDescription":"this is rule"
+      
+      }
+    
+
+
     console.log("form values form onSubmit", values);
+
+    conferenceDetails = values
+    try{
+      const res = await api.post("/conferences/step2", {conferenceDetails})
+        
+        
+        console.log(res)
+
+    } catch (err){
+      console.log(err)
+    }
+    
   };
 
   const formik = useFormik({
@@ -57,8 +92,6 @@ export default function ConfDetails1() {
     validationSchema,
     onSubmit,
   });
-
-  
 
   const {
     errors,
@@ -72,6 +105,8 @@ export default function ConfDetails1() {
 
   console.log(formik.values);
 
+  
+
   return (
     <div className="conf-form-wrap">
       <h2>Details 1</h2>
@@ -83,17 +118,17 @@ export default function ConfDetails1() {
           </label>
           <Select
             isMulti
-            label="professions"
-            // name="professions"
+            label="profession"
+            // name="profession"
             options={options}
             onChange={(value) => {
               console.log("value from onchange handler", value);
-              formik.setFieldValue("professions", value);
+              formik.setFieldValue("profession", value);
             }}
-            value={formik.values.professions}
+            value={formik.values.profession}
           />
-          {touched.professions && Boolean(errors.professions) && (
-            <TextError>{errors.professions}</TextError>
+          {touched.profession && Boolean(errors.profession) && (
+            <TextError>{errors.profession}</TextError>
           )}
         </div>
 
@@ -104,16 +139,16 @@ export default function ConfDetails1() {
           </label>
           <Select
             isMulti
-            label="specialties"
+            label="specialities"
             options={options}
             onChange={(value) => {
               console.log("value from onchange handler", value);
-              formik.setFieldValue("specialties", value);
+              formik.setFieldValue("specialities", value);
             }}
-            value={formik.values.specialties}
+            value={formik.values.specialities}
           />
-          {touched.specialties && Boolean(errors.specialties) && (
-            <TextError>{errors.specialties}</TextError>
+          {touched.specialities && Boolean(errors.specialities) && (
+            <TextError>{errors.specialities}</TextError>
           )}
         </div>
         <div>
@@ -134,15 +169,24 @@ export default function ConfDetails1() {
           />
           <button
             onClick={(e) => {
-
               e.preventDefault();
-              if (e.target.value.length <= 1) 
-              console.log(tag);
+              if (e.target.value.length <= 1) console.log(tag);
               formik.setFieldValue("tags", [...formik.values.tags, tag]);
               setTag("");
             }}
           >
             Add
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              formik.values.tags.pop()
+              formik.setFieldValue("tags", [
+                ...formik.values.tags,
+              ]);
+            }}
+          >
+            Remove
           </button>
           {touched.tags && Boolean(errors.tags) && (
             <TextError>{errors.tags}</TextError>
@@ -151,10 +195,11 @@ export default function ConfDetails1() {
 
         <div>
           <label>
-            {/* <Switch
+            <Switch
+              // onChange={console.log(valueCred)}
               isOn={valueCred}
               handleToggle={() => setValueCred(!valueCred)}
-            />{" "} */}
+            />
             <h4>Credits</h4>{" "}
             <ul>
               {formik.values.credits.map((i) => {
@@ -167,18 +212,20 @@ export default function ConfDetails1() {
             </ul>
           </label>
           <Select
+            isDisabled={valueCred}
             label="credits"
             options={options}
             onChange={(value) => {
               setCType(value);
               console.log("value from onchange handler", cType);
-              
             }}
             value={formik.values.creditType}
           />
 
           <input
-            type="text"
+            disabled={valueCred}
+            type="number"
+            placeholder="amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
@@ -195,30 +242,48 @@ export default function ConfDetails1() {
           >
             Add
           </button>
+
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              formik.values.credits.pop()
+              formik.setFieldValue("credits", [
+                ...formik.values.credits,
+              ]);
+            }}
+          >
+            Remove
+          </button>
           {touched.credits && Boolean(errors.credits) && (
             <TextError>{errors.credits}</TextError>
           )}
         </div>
 
         <div>
-          {/* <Switch
+          <Switch
             isOn={valueRefund}
             handleToggle={() => { setValueRefund(!valueRefund) }}
-          /> */}
+          />
           <label>
             <h4>Refund Policy</h4>
           </label>
-          <RichTextEditor onChange={(e)=>{
-            console.log(e)
-            formik.setFieldValue('refundPolicy', e.blocks)
-          }} />
-          {touched.refundPolicy && Boolean(errors.refundPolicy) && (
-            <TextError>{errors.refundPolicy}</TextError>
+          <RichTextEditor
+            readOnly={valueRefund}
+            onChange={(e) => {
+              console.log(e);
+              formik.setFieldValue("refundDescription", e.blocks);
+            }}
+          />
+          {touched.refundDescription && Boolean(errors.refundDescription) && (
+            <TextError>{errors.refundDescription}</TextError>
           )}
-
         </div>
 
-        <button className="button button-primary" type="submit">
+        <button onClick={()=>{
+          
+    formik.setFieldValue("isCreditBased", !valueCred)
+    formik.setFieldValue("refundPolicy", !valueRefund)
+        }} className="button button-primary" type="submit">
           Next
         </button>
       </form>

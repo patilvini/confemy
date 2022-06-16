@@ -17,6 +17,7 @@ export default function RichTextEditor(props) {
         <div className="editor">
             <div style={{ padding: '2px', minHeight: '400px' }}>
                 <Editor
+                    readOnly={props.readOnly}
                     placeholder={props.placeholder}
                     editorState={editorState}
                     onEditorStateChange={setEditorState}
