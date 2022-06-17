@@ -8,39 +8,39 @@ import api from "../../utility/api";
 import RichTextEditor from "./RichTextEditor";
 
 const initialValues = {
-  confUrl: "",
+  link: "",
   instructions: [],
-  coverImage: [],
+  image: [],
   text: [],
   video: [],
   linkTitle:"",
-  link: "",
-  file: [],
+  link2: "",
+  document: [],
 };
 
 const validationSchema = yup.object({
-  confUrl: yup.string().required("Please enter a URL to your session"),
+  link: yup.string().required("Please enter a URL to your session"),
   instructions: yup.array(),
-  coverImage: yup.array().min(1).required("Please enter your cover Image"),
+  image: yup.array().min(1).required("Please enter your cover Image"),
   text: yup.array(),
   video: yup.array(),
   linkTitle: yup.string(),
-  link: yup.string(),
-  file: yup.array(),
+  link2: yup.string(),
+  document: yup.array(),
 });
 
-export default function LiveStreamForm() {
+export default function LiveStreamForm(props) {
     const onDrop = useCallback((acceptedFiles) => {
         console.log(acceptedFiles);
         let type = acceptedFiles[0].type.split('/')[0]
         console.log(type)
         if(type === "image"){
-            formik.setFieldValue('coverImage', acceptedFiles)
+            formik.setFieldValue('image', acceptedFiles)
         }
         else if(type === "video"){
             formik.setFieldValue('video', acceptedFiles)
         } else {
-            formik.setFieldValue('file', acceptedFiles)
+            formik.setFieldValue('document', acceptedFiles)
         }
 
      
@@ -70,20 +70,20 @@ export default function LiveStreamForm() {
     handleChange,
   } = formik;
 
-  // console.log(values);
+  console.log(values);
 
   return (
-    <>
-      <div className="conf-form-wrap">
+    <div style={props.style}>
+      <div>
         <form autoComplete="off" onSubmit={handleSubmit}>
-          <h2>Google Meet</h2>
+          <h2>{props.source}</h2>
 
           <div>
             <input
               type="text"
               placeholder="enter URL"
               onChange={(e) =>{
-                formik.setFieldValue("confUrl", e.target.value)
+                formik.setFieldValue("link", e.target.value)
               }}
             />
           </div>
@@ -157,7 +157,7 @@ export default function LiveStreamForm() {
 
             </label>
             <input type="text" placeholder="Link Title" onChange={e=>{formik.setFieldValue('linkTitle', e.target.value)}}/>
-            <input type="text" placeholder="Paste Link here" onChange={e=>{formik.setFieldValue('link', e.target.value)}}/>
+            <input type="text" placeholder="Paste Link here" onChange={e=>{formik.setFieldValue('link2', e.target.value)}}/>
             <div {...getRootProps()}>
               <input {...getInputProps()} />
               <div className="drag-box">
@@ -174,11 +174,11 @@ export default function LiveStreamForm() {
           
           </div>
 
-          <button className="button button-primary" type="submit">
+          <button onClick={onSubmit} className="button button-primary" type="submit">
             Next
           </button>
         </form>
       </div>
-    </>
+    </div>
   );
 }
