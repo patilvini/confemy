@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState } from "draft-js";
+import { convertFromRaw, convertToRaw, convertFromHTML, EditorState } from "draft-js";
+
 import "./conferDetails1.scss";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -9,11 +10,13 @@ import api from "../../utility/api";
 export default function DraftTesting() {
   const [text, setText] = useState([]);
   const [data, setData] = useState([]);
+  const [content, setContent] = useState("")
 
   useEffect(()=>{
     api.get('/conferences/draft/62ad9c0c087a452f7bad9437')
     .then((r)=>{
         console.log(r);
+        
     }).catch((err)=>{
         console.log(err);
     })
@@ -50,7 +53,9 @@ export default function DraftTesting() {
             toolbarClassName="toolbarClassName"
             wrapperClassName="wrapperClassName"
             editorClassName="editorClassName"
-            onChange={(e) => setText(e.blocks)}
+            onChange={(e) => {setText(e.blocks)
+            
+            }}
           />
         </div>
       </div>
@@ -58,6 +63,8 @@ export default function DraftTesting() {
 
 
       <div>
+        {content}
+
         
       </div>
     </>
