@@ -23,9 +23,14 @@ export default function LiveStream(){
 <LiveStreamForm source={activeTab} style={{display: visibility ? 'initial' : 'none'}}/>
 
 
-        <ul className="flex-container">
-            {tabs.map((item, index)=>{
-                return(<li className="list" key={index}>
+      
+
+ 
+        
+        <div style={{padding:'100px'}}>
+            
+        {tabs.map((item, index)=>{
+                return(<div className="grid-container" key={index}>
                     <button className="buttons" onClick={()=>{
                         if(activeTab===null || activeTab!==tabs[index]){
                             setActiveTab(tabs[index]);
@@ -35,13 +40,15 @@ export default function LiveStream(){
                             setVisibility(false);
                         }
                     }}>{item}</button>
-                </li>)
+                </div>)
 
             })}
-            
-            
-        </ul>
-        
         </div>
+           
+            
+            
+        </div>
+        
+      
     )
 }
