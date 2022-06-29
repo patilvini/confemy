@@ -31,6 +31,7 @@ import MyPrivateRoute from "./components/routing/MyPrivateRoute";
 import PrivateAttendeeRoute from "./components/routing/PrivateAttendeeRoute";
 import PrivateOrganizerRoute from "./components/routing/PrivateOrganizerRoute";
 import CreateConfLayoutPage from "./pages/layout-pages/CreateConfLayoutPage";
+import DashboardLayoutPage from "./pages/layout-pages/DashboardLayoutPage";
 import { loadUserAction } from "./redux/auth/authAction";
 import "./App.scss";
 
@@ -55,25 +56,31 @@ const App = () => {
               element={<VerifyEmail />}
             ></Route>
             <Route path="/message" element={<MessagePage />}></Route>
-            <Route
-              path="create-conference"
+            {/* <Route
+              path="organizers-dashboard"
               element={
                 <MyPrivateRoute>
-                  <CreateConfLayoutPage />
+                  <OrganizersDashboardLayoutPage />
                 </MyPrivateRoute>
               }
-            >
-              <Route path="" element={<ConfBasicInfoPage />}></Route>
-              <Route path="details-1" element={<ConfDetailsPage1 />}></Route>
-              <Route path="details-2" element={<ConfDetailsPage2 />}></Route>
-              <Route path="live-stream" element={<LiveStreamPage />}></Route>
-              <Route path="tickets" element={<TicketsPage />}></Route>
+            ></Route> */}
+            <Route path="dashboard" element={<DashboardLayoutPage />}>
               <Route
-                path="preview-publish"
-                element={<PreviewPublishPage />}
-              ></Route>
-              
+                path="create-conference"
+                element={<CreateConfLayoutPage />}
+              >
+                <Route path="" element={<ConfBasicInfoPage />}></Route>
+                <Route path="details-1" element={<ConfDetailsPage1 />}></Route>
+                <Route path="details-2" element={<ConfDetailsPage2 />}></Route>
+                <Route path="live-stream" element={<LiveStreamPage />}></Route>
+                <Route path="tickets" element={<TicketsPage />}></Route>
+                <Route
+                  path="preview-publish"
+                  element={<PreviewPublishPage />}
+                ></Route>
+              </Route>
             </Route>
+
             {/* <PrivateAttendeeRoute
               path="/attendee-dashboard"
               element={AttendeeDashboardPage}

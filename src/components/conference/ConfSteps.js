@@ -4,12 +4,12 @@ import RadioFilledIcon from "../icons/RadioFilled";
 import "./confSteps.styles.scss";
 
 const steps = [
-  { label: "Basic Info", path: "/create-conference" },
-  { label: "Details 1", path: "/create-conference/details-1" },
-  { label: "Details 2", path: "/create-conference/details-2" },
-  { label: "Live Stream", path: "/create-conference/live-stream" },
-  { label: "Tickets", path: "/create-conference/tickets" },
-  { label: "Preview and Publish", path: "/create-conference/preview-publish" },
+  { label: "Basic Info", path: "/dashboard/create-conference" },
+  { label: "Details 1", path: "/dashboard/create-conference/details-1" },
+  { label: "Details 2", path: "/dashboard/create-conference/details-2" },
+  { label: "Live Stream", path: "/dashboard/create-conference/live-stream" },
+  { label: "Tickets", path: "/dashboard/create-conference/tickets" },
+  { label: "Preview and Publish", path: "/dashboard/create-conference/preview-publish" },
 ];
 
 export default function ConfSteps() {

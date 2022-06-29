@@ -1,4 +1,3 @@
-import { useState } from "react";
 import LocationIcon from "../icons/LocationIcon";
 import SearchIcon from "../icons/SearchIcon";
 import LogoDark from "../icons/LogoDark";
@@ -6,8 +5,6 @@ import AuthDropdown from "../auth-dropdown/AuthDropdown";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-
-import Dialogue from "../dialogue/Dialogue";
 
 import "./navbar.styles.scss";
 
@@ -43,7 +40,7 @@ const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
       </div>
       <div className="navbar-second-container">
         <div>
-          <Link className="create-conference" to="/create-conference">
+          <Link className="create-conference" to="dashboard/create-conference">
             Create Conference
           </Link>
         </div>
