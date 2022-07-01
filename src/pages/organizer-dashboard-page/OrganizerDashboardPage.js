@@ -1,10 +1,13 @@
-import React, { useEffect, Fragment } from 'react';
+import React, {Fragment } from 'react';
 import { connect } from 'react-redux';
+
+import OrganizationDash from '../../components/organizer-profile/OrganizationDash';
+
 const OrganizerDashboardPage = () => {
-  useEffect(() => {}, []);
+  
   return (
     <Fragment>
-      <div className='right-max-container'>Organizer Dashboard Page </div>
+      <OrganizationDash/>
     </Fragment>
   );
 };

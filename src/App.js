@@ -34,6 +34,7 @@ import CreateConfLayoutPage from "./pages/layout-pages/CreateConfLayoutPage";
 import DashboardLayoutPage from "./pages/layout-pages/DashboardLayoutPage";
 import { loadUserAction } from "./redux/auth/authAction";
 import "./App.scss";
+import CreateOrgs from "./pages/organizer-profile-page/CreateOrgs";
 
 const App = () => {
   useEffect(() => {
@@ -56,14 +57,23 @@ const App = () => {
               element={<VerifyEmail />}
             ></Route>
             <Route path="/message" element={<MessagePage />}></Route>
-            {/* <Route
-              path="organizers-dashboard"
+            <Route
+              path="organizations-dashboard"
               element={
                 <MyPrivateRoute>
-                  <OrganizersDashboardLayoutPage />
+                  <OrganizerDashboardPage />
                 </MyPrivateRoute>
               }
-            ></Route> */}
+            ></Route>
+            <Route
+              path="create-organization"
+              element={
+                <MyPrivateRoute>
+                  <CreateOrgs/>
+                  
+                </MyPrivateRoute>
+              }
+            ></Route>
             <Route path="dashboard" element={<DashboardLayoutPage />}>
               <Route
                 path="create-conference"
