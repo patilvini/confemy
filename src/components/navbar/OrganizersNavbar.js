@@ -45,8 +45,8 @@ const SingleLevel = ({ item }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location.pathname);
-  console.log(item.path);
+  // console.log(location.pathname);
+  // console.log(item.path);
   return (
     <li
       onClick={() => {

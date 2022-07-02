@@ -83,6 +83,10 @@ const App = () => {
                 path="create-organization"
                 element={<CreateOrgs />}
               ></Route>
+              <Route
+                path="add-manager"
+                element={<OrganizerDashboardPage />}
+              ></Route>
             </Route>
 
             {/* <PrivateAttendeeRoute
