@@ -23,8 +23,8 @@ const authDropdownOptions = [
   },
   {
     icon: <ODashboardIcon className="icon-size" />,
-    name: "Organize a Conference",
-    path: "#!",
+    name: "Organizer's Dashboard",
+    path: "/dashboard",
   },
   {
     icon: <ProfileIcon className="icon-size" />,
@@ -95,47 +95,6 @@ export default function AuthDropdown() {
       console.log(err);
     }
   };
-
-  const dropdown = (
-    <div className={openAuthDropdown ? "" : "display-none"}>
-      <div className="auth-dropdown">
-        <ul>
-          <li>
-            <ExploreIcon className="icon-size" />
-            <span>Browse Conference</span>
-          </li>
-          <li>
-            <ODashboardIcon className="icon-size" />
-            <span>Organize a Conference</span>
-          </li>
-          <li>
-            <ProfileIcon className="icon-size" />
-            <span>Profile</span>
-          </li>
-          <li>
-            <PassesIcon className="icon-size" />
-            <span>Passes</span>
-          </li>
-          <li>
-            <LikeBlueIcon className="icon-size" />
-            <span>Saved Conference</span>
-          </li>
-          <li>
-            <HelpIcon className="icon-size" />
-            <span>Help</span>
-          </li>
-          <li>
-            <SettingsIcon className="icon-size" />
-            <span>Account Settings</span>
-          </li>
-          <li>
-            <LogoutIcon className="icon-size" />
-            <span>Logout</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
 
   return (
     <div ref={ref}>

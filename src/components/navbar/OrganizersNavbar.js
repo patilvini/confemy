@@ -2,15 +2,13 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  drawerWidth,
-  drawerBackground,
-  drawerTextColor,
-  drawerActiveListBackgroundColor,
-} from "./OrganizersNavbarUtils";
+import { sidemenuOptions } from "./OrganizersNavbarUtil";
+import { hasChildren } from "./OrganizersNavbarUtil";
 
-import { sidemenuOptions } from "./OrganizersNavbarUtils";
-import { hasChildren } from "./OrganizersNavbarUtils";
+import DropdownIcon from "../icons/DropdownIcon";
+import NextIcon from "../icons/NextIcon";
+
+import "./organizersNavbar.styles.scss";
 
 // active sidebar menu color
 
@@ -26,45 +24,15 @@ export default function OrganizersNavbar() {
   const { user } = auth;
 
   return (
-    <>
-      <div
-        style={{
-          width: drawerWidth,
-          flexShrink: 0,
-          //   backgroundColor: drawerBackground,
-          color: drawerTextColor,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            // alignItems: '',
-            // backgroundColor: 'rgba(255, 255, 255, 0.04)',
-            minHeight: 90,
-            margin: 2,
-            padding: 2,
-            borderRadius: 1,
-          }}
-        >
-          <div>Khanderao</div>
-        </div>
-
-        {/** Drawer menu list goes here. See  */}
-
-        <ul
-          style={{
-            marginLeft: 2,
-            marginRight: 2,
-          }}
-        >
+    <div className="sidemenu-container">
+      <div className="organizers-dashboard">
+        <ul>
           {sidemenuOptions.map((item, key) => (
             <MenuItem key={key} item={item} />
           ))}
         </ul>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -77,11 +45,14 @@ const SingleLevel = ({ item }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.log(location.pathname);
+  console.log(item.path);
   return (
     <li
       onClick={() => {
         navigate(item.path);
       }}
+      className={location.pathname == item.path ? "active-sidenav-item" : null}
     >
       <i>{item.icon}</i>
       <span>{item.text}</span>
@@ -95,19 +66,28 @@ const MultiLevel = ({ item }) => {
   // const location = useLocation();
 
   const handleClick = () => {
-    console.log("cliked");
     setOpen((prev) => !prev);
   };
 
   return (
     <>
-      <li onClick={handleClick}>
+      <li
+        onClick={handleClick}
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <i>{item.icon}</i>
         <span>{item.text}</span>
-        {open ? <span>C</span> : <span>O</span>}
+        {open ? (
+          <DropdownIcon className="icon-size" />
+        ) : (
+          <NextIcon className="icon-size" />
+        )}
       </li>
-      <div>
-        <ul>
+      <div className={open ? null : "display-none"}>
+        <ul style={{ paddingLeft: "16px" }}>
           {children.map((child, key) => (
             <MenuItem key={key} item={child} />
           ))}

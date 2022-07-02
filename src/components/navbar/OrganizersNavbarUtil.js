@@ -1,6 +1,8 @@
 import ODashboardIcon from "../icons/ODashboardIcon";
+
 // set side drawer width
 export const drawerWidth = 250;
+
 // set drawer background color
 export const drawerBackground = "#757575";
 export const drawerTextColor = "black";
@@ -31,27 +33,33 @@ export function hasChildren(item) {
 
 export const sidemenuOptions = [
   {
+    text: "Organizer's Dashboard",
+    // icon: <ODashboardIcon className="icon-size" />,
+    path: "/dashboard",
+    items: [],
+  },
+  {
     text: "Create Conference",
-    icon: <ODashboardIcon className="icon-size" />,
-    path: "create-conference",
+    // icon: <ODashboardIcon className="icon-size" />,
+    path: "/dashboard/create-conference",
     items: [],
   },
   {
     text: "My Conferences",
-    icon: <ODashboardIcon className="icon-size" />,
-    path: "my-conferences",
+    // icon: <ODashboardIcon className="icon-size" />,
+    path: "/dashboard/my-conferences",
     items: [],
   },
   {
     text: "Tickets",
-    icon: <ODashboardIcon className="icon-size" />,
-    path: "tickets",
+    // icon: <ODashboardIcon className="icon-size" />,
+    path: "/dashboard/tickets",
     items: [],
   },
 
   {
     text: "Organization",
-    icon: <ODashboardIcon className="icon-size" />,
+    // icon: <ODashboardIcon className="icon-size" />,
     items: [
       {
         text: "Add Manager",
@@ -60,7 +68,7 @@ export const sidemenuOptions = [
 
       {
         text: "Add Organization",
-        path: "add-organization",
+        path: "/dashboard/create-organization",
       },
 
       {
@@ -71,20 +79,20 @@ export const sidemenuOptions = [
   },
   {
     text: "Refunds",
-    icon: <ODashboardIcon className="icon-size" />,
-    path: "refunds",
+    // icon: <ODashboardIcon className="icon-size" />,
+    path: "/dashboard/refunds",
     items: [],
   },
   {
     text: "Earnings",
-    icon: <ODashboardIcon className="icon-size" />,
-    path: "earnings",
+    // icon: <ODashboardIcon className="icon-size" />,
+    path: "/dashboard/earnings",
     items: [],
   },
   {
     text: "Credit Requests",
-    icon: <ODashboardIcon className="icon-size" />,
-    path: "credit-requests",
+    // icon: <ODashboardIcon className="icon-size" />,
+    path: "/dashboard/credit-requests",
     items: [],
   },
 ];
