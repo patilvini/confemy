@@ -1,16 +1,29 @@
 @import "../../utility/utility.styles.scss";
 
+.conf-steps-container {
+  padding: 90px 20px 20px 80.5px;
+  width: 100%;
+  h2 {
+    margin-bottom: 50px;
+    color: $primary;
+  }
+}
+
 .conf-steps {
-  padding: 125px 38px 20px;
-  width: 337px;
-  height: auto;
-  background-color: $background;
+  display: flex;
+  // justify-content: space-between;
+  // padding: 125px 38px 20px;
+  // width: 337px;
+  // height: auto;
+  // background-color: $background;
 
   li {
     display: flex;
-    margin-bottom: 43px;
+    margin-right: 24px;
+    // margin-bottom: 43px;
     svg {
-      margin-right: 20px;
+      // margin-right: 20px;
+      margin-right: 4px;
     }
   }
 }

@@ -26,6 +26,14 @@ export default function OrganizersNavbar() {
   return (
     <div className="sidemenu-container">
       <div className="organizers-dashboard">
+        <h2
+          onClick={() => {
+            navigate("/dashboard");
+          }}
+          className="ml-16 mb-30"
+        >
+          Organizer's Dashboard
+        </h2>
         <ul>
           {sidemenuOptions.map((item, key) => (
             <MenuItem key={key} item={item} />

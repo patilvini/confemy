@@ -33,12 +33,6 @@ export function hasChildren(item) {
 
 export const sidemenuOptions = [
   {
-    text: "Organizer's Dashboard",
-    // icon: <ODashboardIcon className="icon-size" />,
-    path: "/dashboard",
-    items: [],
-  },
-  {
     text: "Create Conference",
     // icon: <ODashboardIcon className="icon-size" />,
     path: "/dashboard/create-conference",
@@ -63,7 +57,7 @@ export const sidemenuOptions = [
     items: [
       {
         text: "Add Manager",
-        path: "add-manager",
+        path: "/dashboard/add-manager",
       },
 
       {

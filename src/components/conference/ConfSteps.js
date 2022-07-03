@@ -9,32 +9,38 @@ const steps = [
   { label: "Details 2", path: "/dashboard/create-conference/details-2" },
   { label: "Live Stream", path: "/dashboard/create-conference/live-stream" },
   { label: "Tickets", path: "/dashboard/create-conference/tickets" },
-  { label: "Preview and Publish", path: "/dashboard/create-conference/preview-publish" },
+  {
+    label: "Preview",
+    path: "/dashboard/create-conference/preview-publish",
+  },
 ];
 
 export default function ConfSteps() {
   const navigate = useNavigate();
   const location = useLocation();
   return (
-    <ul className="conf-steps">
-      {steps.map((step) => (
-        <li onClick={() => navigate(step.path)} key={step.label}>
-          {location.pathname == step.path ? (
-            <RadioFilledIcon className="icon-size" />
-          ) : (
-            <RadioIcon className="icon-size" />
-          )}
-          <div
-            className={
-              location.pathname == step.path
-                ? "active-conf-step"
-                : "inactive-conf-step "
-            }
-          >
-            {step.label}
-          </div>
-        </li>
-      ))}
-    </ul>
+    <div className="conf-steps-container">
+      <h2>Create Conference Steps</h2>
+      <ul className="conf-steps">
+        {steps.map((step) => (
+          <li onClick={() => navigate(step.path)} key={step.label}>
+            {location.pathname == step.path ? (
+              <RadioFilledIcon className="icon-size" />
+            ) : (
+              <RadioIcon className="icon-size" />
+            )}
+            <div
+              className={
+                location.pathname == step.path
+                  ? "active-conf-step"
+                  : "inactive-conf-step "
+              }
+            >
+              {step.label}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
