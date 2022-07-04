@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useFormik, validateYupSchema } from "formik";
-import { useDropzone } from "react-dropzone";
+import Dropzone from "react-dropzone";
 import TextError from "../formik/TextError";
 import * as yup from "yup";
 
@@ -30,26 +30,11 @@ const validationSchema = yup.object({
 });
 
 export default function LiveStreamForm(props) {
-    const onDrop = useCallback((acceptedFiles) => {
-        console.log(acceptedFiles);
-        let type = acceptedFiles[0].type.split('/')[0]
-        console.log(type)
-        if(type === "image"){
-            formik.setFieldValue('image', acceptedFiles)
-        }
-        else if(type === "video"){
-            formik.setFieldValue('video', acceptedFiles)
-        } else {
-            formik.setFieldValue('document', acceptedFiles)
-        }
 
-     
-      }, []);
-
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop
-  });
+  const [img, setImg] = useState("")
+  const [vid, setVid] = useState("")
+  const [file, setFile] = useState("")
+    
 
   const onSubmit = (values, actions) => {
     console.log("form on submit", values);
@@ -103,18 +88,38 @@ export default function LiveStreamForm(props) {
             <label>
               <h4>Image</h4>
             </label>
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
-              <div className="drag-box">
-                {isDragActive ? (
-                  <p className="dragbox-text">Drop the files here ...</p>
-                ) : (
-                  <p className="dragbox-text">
-                    Drag 'n' drop some files here, or click to select files
-                  </p>
-                )}
-              </div>
-            </div>
+            <Dropzone multiple={false} onDrop={(acceptedFiles) => {
+            
+              let filetype = acceptedFiles[0].type.split("/")
+              
+
+              if(filetype[0] === "image") {
+                
+                formik.setFieldValue("image", acceptedFiles)
+                console.log(formik.values.image[0].name)
+                // setImg(formik.values.image[0].path)
+
+              }
+              
+              
+              }}>
+              {({ getRootProps, getInputProps }) => (
+                <section >
+                  
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p  className="drag-box">
+                      Drag 'n' drop some files here, or click to select files
+                    </p>
+                   
+                    {/* <h4>{img}</h4> */}
+                    
+                    
+                    
+                  </div>
+                </section>
+              )}
+            </Dropzone>
             
           </div>
 
@@ -136,18 +141,35 @@ export default function LiveStreamForm(props) {
             <label>
                 <h4>Video</h4>
             </label>
-          <div {...getRootProps()}>
-              <input {...getInputProps()} />
-              <div className="drag-box">
-                {isDragActive ? (
-                  <p className="dragbox-text">Drop the files here ...</p>
-                ) : (
-                  <p className="dragbox-text">
-                    Drag 'n' drop some files here, or click to select files
-                  </p>
-                )}
-              </div>
-            </div>
+            <Dropzone multiple={false} onDrop={(acceptedFiles) => {
+              let filetype = acceptedFiles[0].type.split("/")
+              // console.log(formik.values.image[0].path)
+
+              if(filetype[0] === "image") {
+                // formik.setFieldValue("image", acceptedFiles)
+                // setImg(formik.values.image[0].path)
+
+              }
+              
+              
+              }}>
+              {({ getRootProps, getInputProps }) => (
+                <section >
+                  
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p  className="drag-box">
+                      Drag 'n' drop some files here, or click to select files
+                    </p>
+                   
+                    <h4>{img}</h4>
+                    
+                    
+                    
+                  </div>
+                </section>
+              )}
+            </Dropzone>
             
           </div>
 
@@ -158,18 +180,35 @@ export default function LiveStreamForm(props) {
             </label>
             <input type="text" placeholder="Link Title" onChange={e=>{formik.setFieldValue('linkTitle', e.target.value)}}/>
             <input type="text" placeholder="Paste Link here" onChange={e=>{formik.setFieldValue('link2', e.target.value)}}/>
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
-              <div className="drag-box">
-                {isDragActive ? (
-                  <p className="dragbox-text">Drop the files here ...</p>
-                ) : (
-                  <p className="dragbox-text">
-                    Drag 'n' drop some files here, or click to select files
-                  </p>
-                )}
-              </div>
-            </div>
+            <Dropzone multiple={false} onDrop={(acceptedFiles) => {
+              let filetype = acceptedFiles[0].type.split("/")
+              // console.log(formik.values.image[0].path)
+
+              if(filetype[0] === "image") {
+                // formik.setFieldValue("file", acceptedFiles)
+                // setFile(formik.values.image[0].path)
+
+              }
+              
+              
+              }}>
+              {({ getRootProps, getInputProps }) => (
+                <section >
+                  
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p  className="drag-box">
+                      Drag 'n' drop some files here, or click to select files
+                    </p>
+                   
+                    <h4>{img}</h4>
+                    
+                    
+                    
+                  </div>
+                </section>
+              )}
+            </Dropzone>
 
           
           </div>

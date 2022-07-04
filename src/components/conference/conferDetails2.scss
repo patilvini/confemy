@@ -58,18 +58,12 @@
 
 .drag-box{
   width: 600px;
-  height: 460px;
+  height: 260px;
   border-radius: 15px;
   margin: 32px 0;
-  padding: 150px 150px;
+  padding: 100px 150px;
   background-color: #ecf0f2;
-  // text-align: center;
-}
-
-.dragbox-text{
-  width: 271px;
-  height: 48px;
-  // margin: 15px 0 0;
+  text-align: center;
   font-family: Avenir-Roman;
   font-size: 18px;
   font-weight: normal;
@@ -80,6 +74,7 @@
   text-align: center;
   color: lightgray;
 }
+
 
 .accordion{
   display: flex;

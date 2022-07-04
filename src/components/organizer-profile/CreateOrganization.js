@@ -30,14 +30,6 @@ export default function CreateOrganization() {
  
   const user = useSelector(state => state.auth.user.id)
   
-
-  
-
-  
-  
- 
-
-  
   
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles);

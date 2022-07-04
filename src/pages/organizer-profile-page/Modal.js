@@ -24,6 +24,7 @@ export default function Modal(props) {
     try{
         const res = await api.post("/organizations/organizers", {organizerDetails})
         console.log(res)
+        props.close()
     }catch (err){
         console.log(err)
     }
