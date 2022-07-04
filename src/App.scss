@@ -333,6 +333,10 @@ h4 {
   input[type="text"],
   input[type="date"],
   input[type="submit"],
+  input[type="datetime-local"],
+  input[type="date"],
+  input[type="time"],
+  input[type="number"],
   select,
   textarea,
   input[type="email"],
@@ -600,6 +604,60 @@ $spaceamounts: (
       border-color: #3c9436;
     }
   }
+}
+
+// create conference form  buttons
+
+.button-outlined-inactive {
+  display: inline-block;
+  outline: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.12s ease-in;
+  min-width: 10rem;
+  padding: 16px 32px;
+  border-radius: 4px;
+  // background-color: #fff;
+  // text style
+
+  font-family: Avenir-Roman;
+  opacity: 0.6;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: center;
+  color: $confemy-black;
+}
+
+.button-outlined-active {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.12s ease-in;
+  min-width: 10rem;
+  padding: 16px 32px;
+  border-radius: 4px;
+  // border: 1px solid rgba(0, 0, 0, 0.2);
+  // background-color: #fff;
+  border: solid 1px #00529b;
+  background-color: $shade-2;
+
+  // text styles
+
+  opacity: 0.87;
+  font-family: Avenir-Heavy;
+  font-size: 16px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: center;
+
+  color: #00529b;
 }
 
 // using material UI breakpoints for differnet screen sizes.

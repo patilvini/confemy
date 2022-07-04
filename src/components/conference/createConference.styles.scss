@@ -11,13 +11,21 @@
 }
 
 .conf-form-wrap {
-  h2 {
-    color: $primary;
-    margin-bottom: 48px;
-  }
   padding: 64px 239px 40px 80.5px;
   background-color: $background;
   min-height: 100vh;
+
+  h2 {
+    color: $primary;
+    margin-bottom: 48px;
+    margin-top: 56px;
+  }
+
+  h4 {
+    color: $primary;
+    margin-bottom: 8px;
+    margin-top: 24px;
+  }
 
   // input[type='checkbox'] {
   //   width: 0.8rem;
