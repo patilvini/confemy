@@ -35,6 +35,7 @@ import DashboardLayoutPage from "./pages/layout-pages/DashboardLayoutPage";
 import { loadUserAction } from "./redux/auth/authAction";
 import "./App.scss";
 import CreateOrgs from "./pages/organizer-profile-page/CreateOrgs";
+import Verify from "./pages/verify-manager/Verify";
 
 const App = () => {
   useEffect(() => {
@@ -48,6 +49,7 @@ const App = () => {
           <Navbar />
           <Alert />
           <Routes>
+            
             <Route path="/test" element={<OCreateConference />} />
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
@@ -88,6 +90,7 @@ const App = () => {
                 element={<OrganizerDashboardPage />}
               ></Route>
             </Route>
+            <Route path="/verify/:token" element={<Verify/>}/>
 
             {/* <PrivateAttendeeRoute
               path="/attendee-dashboard"

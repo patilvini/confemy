@@ -6,7 +6,7 @@ import Dropzone from "react-dropzone";
 import TextError from "../formik/TextError";
 
 import * as yup from "yup";
-// import DragDrop from "./DragDrop";
+
 import "./conferDetails2.scss";
 import api from "../../utility/api";
 import RichTextEditor from "./RichTextEditor";
