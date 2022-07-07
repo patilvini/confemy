@@ -171,7 +171,7 @@ const Register = ({ registerAction, isAuthenticated }) => {
                       <button
                         disable={isSubmitting}
                         type="submit"
-                        className="button button-primary"
+                        className="button button-primary mb-34"
                       >
                         {isSubmitting
                           ? "Submitting..."

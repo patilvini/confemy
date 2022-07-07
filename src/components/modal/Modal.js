@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom";
-import "./modal.styles.scss";
 
 function Modal(props) {
   return ReactDOM.createPortal(

@@ -9,7 +9,9 @@ export default function DashboardLayoutPage() {
     >
       <OrganizersNavbar />
       <div style={{ flexGrow: 1 }}>
-        <Outlet />
+        <div className="container-offSidemenu">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

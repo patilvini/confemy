@@ -206,6 +206,10 @@ h4 {
   margin: 0 auto;
   overflow: hidden;
 }
+.container-offSidemenu {
+  margin: 96px 20px 64px 120px;
+  overflow: hidden;
+}
 
 // grids
 
@@ -293,11 +297,35 @@ h4 {
   width: 2.8rem;
   height: 2.8rem;
 }
-// common modal classes
+
+// modal classes
+
+.modal-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  // max-width: 144rem;
+  height: 100%;
+  z-index: 100;
+  background-color: $modal-background;
+}
+
+.modal-body {
+  margin: 0 auto;
+  position: fixed;
+  z-index: 110;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+}
 
 .white-modal {
   position: relative;
-  border-radius: 1.6rem;
+  border-radius: 16px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
   background-color: $colour-white;
 }
@@ -305,7 +333,7 @@ h4 {
 .modal-form-wrapper {
   width: 80%;
   margin: 0 auto;
-  padding: 6rem 0 2.4rem;
+  padding: 56px 0 48px;
 
   h2 {
     text-align: center;
@@ -315,11 +343,9 @@ h4 {
 
   button {
     width: 100%;
-    margin-bottom: 3.4rem;
+    // margin-bottom: 3.4rem;
   }
 }
-
-// common signin registar component classes
 
 .modal-footer {
   text-align: center;
@@ -630,6 +656,11 @@ $spaceamounts: (
   letter-spacing: 0.01px;
   text-align: center;
   color: $confemy-black;
+
+  &:hover {
+    color: #45a93e;
+    border-color: #45a93e;
+  }
 }
 
 .button-outlined-active {
@@ -658,6 +689,15 @@ $spaceamounts: (
   text-align: center;
 
   color: #00529b;
+}
+
+// transition classes
+.zero-height {
+  height: 0px;
+}
+.slow-height {
+  height: 450px;
+  transition: all ease-in 0.4s;
 }
 
 // using material UI breakpoints for differnet screen sizes.
