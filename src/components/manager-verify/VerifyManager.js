@@ -1,7 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
 import { Form, Formik, useFormik } from "formik";
-// import TextError from "../formik/TextError";
-import * as yup from "yup";
 import api from "../../utility/api";
 
 import NameForm from "../../components/register/NameForm";
@@ -17,17 +15,8 @@ const initialValues = {
   profession: "",
 };
 
-// const validationSchema = yup.object({
-//   firstName: yup.string().required("Required"),
-//   lastName: yup.string().required("Required"),
-//   password: yup.string().required("Required"),
-//   confirmPassword: yup.string().required("Required"),
-//   profession: "",
-// });
-
 export default function VerifyManager() {
-
-  const [msg,  setMsg] = useState("")
+  const [msg, setMsg] = useState("");
   const [open, setopen] = useState(false);
   const openDialogue = () => {
     setopen(true);
@@ -67,17 +56,15 @@ export default function VerifyManager() {
       if (response) {
         console.log("Register response", response);
         actions.setSubmitting(false);
-        setMsg(response.data.message)
-        
-        openDialogue()
+        setMsg(response.data.message);
 
+        openDialogue();
       }
     } catch (err) {
-     
-      setMsg(err.response.data.message)
-      console.log(msg)
-      openDialogue()
-      
+      setMsg(err.response.data.message);
+      console.log(msg);
+      openDialogue();
+
       if (err) actions.setFieldError("email", err.response?.data.message);
     }
   }
@@ -99,13 +86,14 @@ export default function VerifyManager() {
         </div>
       </div>
       {open && (
-  <Dialogue
-    msg={msg}
-    title="Message"
-    closeDialogue={closeDialogue}
-    yesAction={yesAction}
-  />
-)}
+        <Dialogue
+          msg={msg}
+          title="Message"
+          closeDialogue={closeDialogue}
+          yesAction={yesAction}
+        />
+      )}
     </div>
   );
 }
+

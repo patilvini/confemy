@@ -48,7 +48,7 @@ export default function ConfDetails2() {
   //   });
   // }, []);
 
-  const [bannerImg, setBanner] = useState("")
+  
 
   const days = [
     { date: "2 jan 22", title: "Day1" },
@@ -100,6 +100,7 @@ export default function ConfDetails2() {
   } = formik;
 
   console.log(values);
+  const [bannerImg, setBanner] = useState("")
 
   return (
     <>
@@ -116,7 +117,7 @@ export default function ConfDetails2() {
 
               if(filetype[0] === "image") {
                 formik.setFieldValue("bannerImage", acceptedFiles)
-                setBanner(formik.values.bannerImage[0].path)
+                setBanner(<h4>{formik.values.bannerImage[0].name}</h4>)
 
               }
               
@@ -131,7 +132,7 @@ export default function ConfDetails2() {
                       Drag 'n' drop some files here, or click to select files
                     </p>
                    
-                    <h4>{bannerImg}</h4>
+                    
                     
                     
                     
@@ -139,6 +140,7 @@ export default function ConfDetails2() {
                 </section>
               )}
             </Dropzone>
+            {bannerImg}
 
         
             
