@@ -17,6 +17,9 @@ $info: #55a0fa;
 $colour-white: #ffffff;
 $modal-background: rgba(0, 0, 0, 0.4);
 
+// dashboar side menu width
+$organizersNavbarWidth: 360px;
+
 @mixin body-regular {
   font-family: Avenir-Roman;
   font-size: 18px;

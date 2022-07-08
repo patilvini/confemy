@@ -1,4 +1,5 @@
 @import "../../utility/utility.styles.scss";
+
 // create conference form
 .required-label {
   font-size: 18px;
@@ -11,14 +12,12 @@
 }
 
 .conf-form-wrap {
-  padding: 64px 239px 40px 80.5px;
-  background-color: $background;
   min-height: 100vh;
 
   h2 {
     color: $primary;
     margin-bottom: 48px;
-    margin-top: 56px;
+    // margin-top: 56px;
   }
 
   h4 {
@@ -26,17 +25,6 @@
     margin-bottom: 8px;
     margin-top: 24px;
   }
-
-  // input[type='checkbox'] {
-  //   width: 0.8rem;
-  //   height: 0.8rem;
-  // }
-
-  // input[type='checkbox'] + label {
-  //   display: inline-block;
-  //   font-size: 0.8rem;
-  //   margin-left: 0.4rem;
-  // }
 }
 
 .items-makeline {
@@ -58,4 +46,12 @@
 
 .border-medium-grey {
   border: 1px solid #d8d8d8;
+}
+
+// ConfBasicInfo classes
+
+.conf-schedule {
+  grid {
+    grid-gap: 8px;
+  }
 }

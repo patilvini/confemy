@@ -21,16 +21,13 @@ const initialValues = {
   state: "",
   country: "",
   city: "",
-
 };
 
 // component start
 
 export default function CreateOrganization() {
- 
-  const user = useSelector(state => state.auth.user.id)
-  
-  
+  const user = useSelector((state) => state.auth.user.id);
+
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles);
     formik.setFieldValue("bannerImage", acceptedFiles);
@@ -39,18 +36,14 @@ export default function CreateOrganization() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const onSubmit = async (values, actions) => {
-    
-    
+    const organization = values;
+    console.log(values);
 
-    const organization = values
-    console.log(values)
-
-    try{
-        const res = await api.post("/organizations", {organization})
-        console.log(res)
-    }
-    catch (err){
-        console.log(err)
+    try {
+      const res = await api.post("/organizations", { organization });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -71,9 +64,7 @@ export default function CreateOrganization() {
     setFieldValue,
   } = formik;
 
-
-
-//   console.log(formik.values);
+  //   console.log(formik.values);
 
   return (
     <>
@@ -103,7 +94,8 @@ export default function CreateOrganization() {
             <div>
               <input
                 onChange={(e) => {
-                    if(e.target.value.length > 1) setFieldValue("name", e.target.value);
+                  if (e.target.value.length > 1)
+                    setFieldValue("name", e.target.value);
                 }}
                 type="text"
                 placeholder="Organization Name"
@@ -115,7 +107,8 @@ export default function CreateOrganization() {
             <div>
               <input
                 onChange={(e) => {
-                    if(e.target.value.length > 1) setFieldValue("description", e.target.value);
+                  if (e.target.value.length > 1)
+                    setFieldValue("description", e.target.value);
                 }}
                 type="text"
                 placeholder="description"
@@ -124,7 +117,8 @@ export default function CreateOrganization() {
             <div>
               <input
                 onChange={(e) => {
-                    if(e.target.value.length > 1) setFieldValue("state", e.target.value);
+                  if (e.target.value.length > 1)
+                    setFieldValue("state", e.target.value);
                 }}
                 type="text"
                 placeholder="State"
@@ -136,7 +130,8 @@ export default function CreateOrganization() {
             <div>
               <input
                 onChange={(e) => {
-                    if(e.target.value.length > 1) setFieldValue("country", e.target.value);
+                  if (e.target.value.length > 1)
+                    setFieldValue("country", e.target.value);
                 }}
                 type="text"
                 placeholder="Country"
@@ -148,7 +143,8 @@ export default function CreateOrganization() {
             <div>
               <input
                 onChange={(e) => {
-                    if(e.target.value.length > 1) setFieldValue("city", e.target.value);
+                  if (e.target.value.length > 1)
+                    setFieldValue("city", e.target.value);
                 }}
                 type="text"
                 placeholder="City"
@@ -157,8 +153,8 @@ export default function CreateOrganization() {
             <div>
               <input
                 onChange={(e) => {
-                    if(e.target.value.length > 1)  setFieldValue("website", e.target.value);
-                 
+                  if (e.target.value.length > 1)
+                    setFieldValue("website", e.target.value);
                 }}
                 type="text"
                 placeholder="website"
@@ -166,9 +162,13 @@ export default function CreateOrganization() {
             </div>
           </div>
 
-          <button onClick={()=>{
-            setFieldValue('user', user)
-          }}className="button button-primary" type="submit">
+          <button
+            onClick={() => {
+              setFieldValue("user", user);
+            }}
+            className="button button-primary"
+            type="submit"
+          >
             Save
           </button>
         </form>
