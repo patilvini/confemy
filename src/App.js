@@ -84,7 +84,7 @@ const App = () => {
                 element={<CreateOrganizationPage />}
               ></Route>
               <Route
-                path="add-manager"
+                path="manage-organizations"
                 element={<OrganizerDashboardPage />}
               ></Route>
             </Route>
