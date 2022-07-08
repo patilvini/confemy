@@ -35,7 +35,7 @@ import DashboardLayoutPage from "./pages/layout-pages/DashboardLayoutPage";
 import { loadUserAction } from "./redux/auth/authAction";
 import "./App.scss";
 import CreateOrgs from "./pages/organizer-profile-page/CreateOrgs";
-
+import CreateOrganizationPage from "./pages/organization-pages/CreateOrganizationPage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -81,7 +81,7 @@ const App = () => {
               </Route>
               <Route
                 path="create-organization"
-                element={<CreateOrgs />}
+                element={<CreateOrganizationPage />}
               ></Route>
               <Route
                 path="add-manager"
