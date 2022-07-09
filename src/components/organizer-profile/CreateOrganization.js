@@ -1,11 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import Select from "react-select";
 import { useDropzone } from "react-dropzone";
 import TextError from "../formik/TextError";
 import * as yup from "yup";
 import api from "../../utility/api";
-import { useSelector } from "react-redux";
 
 const SelectOptions = [];
 
@@ -18,9 +18,11 @@ const validationSchema = yup.object({
 const initialValues = {
   name: "",
   user: "",
+  street1: "",
+  street2: "",
+  city: "",
   state: "",
   country: "",
-  city: "",
 };
 
 // component start

@@ -56,8 +56,8 @@ export const sidemenuOptions = [
     // icon: <ODashboardIcon className="icon-size" />,
     items: [
       {
-        text: "Add Manager",
-        path: "/dashboard/add-manager",
+        text: "Manage Organizations",
+        path: "/dashboard/manage-organizations",
       },
 
       {
