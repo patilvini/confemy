@@ -8,6 +8,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import api from "../../utility/api";
 import "./createConference.styles.scss";
+import TimeZones from "../timezones/TimeZones";
+import PassesIcon from "../icons/PassesIcon";
 
 const initialValues = {
   title: "",
@@ -81,7 +83,7 @@ export default function ConfBasicInfo() {
         isFree,
         startTime,
         endTime,
-        timezone: "Asia/Kolkata",
+        timezone,
         mode: format,
         host,
         venue: {
@@ -191,6 +193,12 @@ export default function ConfBasicInfo() {
         </section>
         <section className="conf-schedule">
           <h2>Conference Schedule</h2>
+          <TimeZones label="timezone" values={formik.values.timezone} handleChange={(value) => {
+             
+             formik.setFieldValue("timezone", value.value);
+           }} />
+
+           
           <div className="grid-col-2">
             <div className="grid-1st-col input-container">
               <DateView
@@ -260,6 +268,7 @@ export default function ConfBasicInfo() {
         <div>
           <h2>Location</h2>
           <div>
+          
             <input
               style={{ display: "none" }}
               type="checkbox"

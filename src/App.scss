@@ -753,3 +753,24 @@ $spaceamounts: (
     @content;
   }
 }
+
+// drag box
+
+.drag-box{
+  width: 600px;
+  height: 260px;
+  border-radius: 15px;
+  margin: 32px 0;
+  padding: 100px 150px;
+  background-color: #ecf0f2;
+  text-align: center;
+  font-family: Avenir-Roman;
+  font-size: 18px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: lightgray;
+}

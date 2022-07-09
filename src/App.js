@@ -36,6 +36,7 @@ import { loadUserAction } from "./redux/auth/authAction";
 import "./App.scss";
 import CreateOrgs from "./pages/organizer-profile-page/CreateOrgs";
 import CreateOrganizationPage from "./pages/organization-pages/CreateOrganizationPage";
+import VerifyManagerPage from "./pages/verify-manager-page/VerifyManagerPage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -89,7 +90,7 @@ const App = () => {
                 element={<OrganizerDashboardPage />}
               ></Route>
             </Route>
-            <Route path="/verify/:token" element={<Verify/>}/>
+            <Route path="/verify/:token" element={<VerifyManagerPage/>}/>
 
             {/* <PrivateAttendeeRoute
               path="/attendee-dashboard"

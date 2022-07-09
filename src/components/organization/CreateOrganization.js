@@ -10,6 +10,7 @@ import Address from "../address/Address";
 import Submit from "../submit/Submit";
 
 import "./createOrganization.styles.scss";
+import DragDrop from "../drag-drop/DragDrop";
 
 const initialValues = {
   name: "",
@@ -48,6 +49,9 @@ export default function CreateOrganization() {
         autoComplete="off"
       >
         <h2 className="mb-16">Logo</h2>
+
+
+        <DragDrop/>
         <h2 className="mb-16">Basic Information</h2>
         <div className="input-container">
           <input

@@ -35,9 +35,7 @@ export default function AddManager() {
           </label>
           <div className="orgFlex">
                     <div className="grid-item"><strong>Organization Name</strong> </div>
-                    <div className="grid-item"><strong>Country</strong></div>
-                    <div className="grid-item"><strong>State</strong></div>
-                    <div className="grid-item"><strong>City</strong></div>
+                 
                     <div className="grid-item"><strong>Actions</strong></div>
                   </div>
           <div className="">
@@ -46,14 +44,12 @@ export default function AddManager() {
                 <div key={i.organization._id}>
                   <div className="orgFlex">
                     <div className="grid-item">{i.organization.name} </div>
-                    <div className="grid-item">{i.organization.country} </div>
-                    <div className="grid-item">{i.organization.state} </div>
-                    <div className="grid-item">{i.organization.city} </div>
+                   
                     <div onClick={()=>{
                     setModal(true)
                     setId(i.organization._id)
 
-                    }} className="grid-item"><button>Add Manager</button></div>
+                    }} className="grid-item"><button>Manage</button></div>
                   </div>
                 </div>
               );
