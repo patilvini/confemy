@@ -105,6 +105,8 @@ export default function CreateOrganization() {
       },
     };
 
+    
+
     // console.log("actions", actions);
     // actions.resetForm({ initialValues });
 
@@ -118,6 +120,7 @@ export default function CreateOrganization() {
       }
     } catch (err) {
       if (err) {
+        console.log(err)
         actions.setFieldError("name", err.response?.data.message);
       }
     }
@@ -156,6 +159,7 @@ export default function CreateOrganization() {
       <div style={thumbInner}>
         <img
           src={file.preview}
+          alt="logo"
           style={img}
           // Revoke data uri after image is loaded
           onLoad={() => {

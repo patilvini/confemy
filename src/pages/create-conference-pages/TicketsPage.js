@@ -1,8 +1,7 @@
-import DraftTesting from "../../components/conference/DraftTesting";
+import CreatePass from "../../components/conference/CreatePass";
+
 
 export default function TicketsPage() {
-  return <div style={{paddingTop: '4rem'}}>
-    <DraftTesting/>
-    
-  </div>;
+  return <CreatePass/>
+  
 }
