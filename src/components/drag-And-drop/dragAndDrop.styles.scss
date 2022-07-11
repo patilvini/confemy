@@ -1,0 +1,77 @@
+.dnd-title {
+  font-size: 2rem;
+  text-align: center !important;
+  margin-top: 10%;
+  color: #4aa1f3;
+  font-weight: bold;
+}
+
+.dnd-content {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropbox-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  border-width: 2px;
+  border-radius: 10px;
+  //   border-color: ${(props) => getColor(props)};
+  border-style: dashed;
+  background-color: #fafafa;
+  color: black;
+  font-weight: bold;
+  font-size: 1.4rem;
+  outline: none;
+  transition: border 0.24s ease-in-out;
+}
+
+.dropbox {
+  text-align: center;
+  padding: 20px;
+  width: 90%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.dnd-container {
+  display: flex;
+
+  flex-wrap: wrap;
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.dnd-container img {
+  height: 200px;
+  width: 200px;
+  margin-right: 15px;
+}
+
+.btn {
+  padding: 15px;
+  background-color: #de1a1a;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #945c5c;
+}
+
+.dropzone {
+  width: 600px;
+  height: 200px;
+  border: 1px solid red;
+}
