@@ -1,6 +1,5 @@
-import spinner from "./spinner.gif";
 import "./spinner.styles.scss";
-
+let spinner;
 function Spinner() {
   return (
     <div className="spinner">

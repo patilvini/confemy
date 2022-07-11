@@ -1,7 +1,6 @@
 import TextError from "../formik/TextError";
 
-export default function Address(props) {
-  const { formik } = props;
+export default function Address({ formik }) {
   return (
     <>
       <div className="input-container">

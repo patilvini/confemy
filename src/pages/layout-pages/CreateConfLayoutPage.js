@@ -19,7 +19,7 @@ export default function CreateConfLayoutPage() {
     navigate("/dashboard/create-organization");
   };
 
-  if (!user.hasOrganization && !skip) {
+  if (!user?.hasOrganization && !skip) {
     return (
       <>
         <Modal>
