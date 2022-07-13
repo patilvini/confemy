@@ -10,6 +10,10 @@ import * as yup from "yup";
 import "./conferDetails2.scss";
 import api from "../../utility/api";
 import RichTextEditor from "./RichTextEditor";
+import { useSelector } from "react-redux";
+import Modal from "../modal/Modal";
+import TextInput from "../formik/TextInput";
+import AddSpeaker from "./AddSpeaker";
 
 const initialValues = {
   bannerImage: [],
@@ -38,17 +42,26 @@ const validationSchema = yup.object({
 });
 
 export default function ConfDetails2() {
+  const userID = useSelector((state) => state.auth.user._id);
 
+  const [visibility, setVisibitly] = useState(false);
 
+  function onClose() {
+    setVisibitly(false);
+  }
+  function onOpen() {
+    setVisibitly(true);
+  }
 
-
-  // useEffect(() => {
-  //   api.get("/speakers").then((r) => {
-  //     setSpeakerData(r.data.data);
-  //   });
-  // }, []);
-
-  
+  useEffect(() => {
+    api
+      .get("/speakers?_id="+userID+"&type=user")
+      .then((r) => {
+        console.log(r.data.data);
+        setSpeakerData(r.data.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const days = [
     { date: "2 jan 22", title: "Day1" },
@@ -99,8 +112,8 @@ export default function ConfDetails2() {
     handleChange,
   } = formik;
 
-  console.log(values);
-  const [bannerImg, setBanner] = useState("")
+  // console.log(values);
+  const [bannerImg, setBanner] = useState("");
 
   return (
     <>
@@ -110,40 +123,31 @@ export default function ConfDetails2() {
             <label>
               <h4>Banner Image</h4>
             </label>
-       
-            <Dropzone multiple={false} onDrop={(acceptedFiles) => {
-              let filetype = acceptedFiles[0].type.split("/")
-              // console.log(formik.values.bannerImage[0].path)
 
-              if(filetype[0] === "image") {
-                formik.setFieldValue("bannerImage", acceptedFiles)
-                setBanner(<h4>{formik.values.bannerImage[0].name}</h4>)
+            <Dropzone
+              multiple={false}
+              onDrop={(acceptedFiles) => {
+                let filetype = acceptedFiles[0].type.split("/");
+                // console.log(formik.values.bannerImage[0].path)
 
-              }
-              
-              
-              }}>
+                if (filetype[0] === "image") {
+                  formik.setFieldValue("bannerImage", acceptedFiles);
+                  setBanner(<h4>{formik.values.bannerImage[0].name}</h4>);
+                }
+              }}
+            >
               {({ getRootProps, getInputProps }) => (
-                <section >
-                  
+                <section>
                   <div {...getRootProps()}>
                     <input {...getInputProps()} />
-                    <p  className="drag-box">
+                    <p className="drag-box">
                       Drag 'n' drop some files here, or click to select files
                     </p>
-                   
-                    
-                    
-                    
-                    
                   </div>
                 </section>
               )}
             </Dropzone>
             {bannerImg}
-
-        
-            
           </div>
 
           <div>
@@ -166,6 +170,25 @@ export default function ConfDetails2() {
           <div>
             <label>
               <h4>Speakers</h4>
+            </label>
+
+            <div>
+              <button type={"button"} onClick={onOpen}>
+                Add speaker
+              </button>
+
+              {visibility && (
+                <Modal onDismiss={onClose}>
+                  <AddSpeaker
+                    id={userID}
+                    createdBy={"user"}
+                    close={() => setVisibitly(false)}
+                  />
+                </Modal>
+              )}
+            </div>
+
+            <div>
               <Select
                 isMulti
                 label="speakers"
@@ -178,7 +201,7 @@ export default function ConfDetails2() {
               {touched.speakers && Boolean(errors.speakers) && (
                 <TextError>{errors.speakers}</TextError>
               )}
-            </label>
+            </div>
           </div>
 
           <div>

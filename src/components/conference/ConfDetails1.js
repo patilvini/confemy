@@ -29,7 +29,7 @@ const validationSchema = yup.object({
 
   // credits: yup.array().min(1).required("Required"),
   // refundPolicy: yup.boolean(),
-  refundDescription: yup.array(),
+  refundDescription: yup.object(),
   // conferenceId: yup.string()
 });
 
@@ -37,10 +37,10 @@ const initialValues = {
   profession: [],
   specialities: [],
   tags: [],
-  isCreditBased: "",
+  isCreditBased: false,
   credits: [],
-  refundPolicy: "",
-  refundDescription: [],
+  refundPolicy: false,
+  refundDescription: {},
   conferenceId: "62a0be470ba7277038691ed2"
 };
 
@@ -52,29 +52,42 @@ export default function ConfDetails1() {
   const [valueRefund, setValueRefund] = useState(true);
 
   const onSubmit = async (values, actions) => {
-    
-    let conferenceDetails = {
 
-      "profession": ["internal medicine", " hospitalist medicine"], 
-      "tags":["css"],
-      "conferenceId":"62a0be470ba7277038691ed2",
-      "specialities": ["internal medicine", "Cardiology", " hospitalist medicine"], 
-      "isCreditBased":true,
-       "credits": [
-           {"creditType":"ama", "quantity": 10}, 
-           {"creditType":"aecp", "quantity": 10}
+    let professionV = []
+    let specialtiesV = []
+
+    values.profession.forEach( i => {
+      professionV.push(i.value)
       
-       ],
-       "refundPolicy":false,
-      "refundDescription":"this is rule"
+    });
+
+    values.specialities.forEach( i => {
+      specialtiesV.push(i.value)
+      
+    });
+    
+
+    console.log(values)
+    
+   const conferenceDetails = {
+
+
+      "profession": professionV, 
+      "tags":values.tags,
+      "conferenceId":"62a0be470ba7277038691ed2",
+      "specialities": specialtiesV, 
+      "isCreditBased":values.isCreditBased,
+       "credits": values.credits,
+       "refundPolicy":values.refundPolicy,
+      // "refundDescription":values.refundDescription
       
       }
     
 
 
-    console.log("form values form onSubmit", values);
+    console.log("form values form onSubmit", conferenceDetails);
 
-    conferenceDetails = values
+    
     try{
       const res = await api.post("/conferences/step2", {conferenceDetails})
         
@@ -103,7 +116,7 @@ export default function ConfDetails1() {
     handleChange,
   } = formik;
 
-  console.log(formik.values);
+  // console.log(formik.values);
 
   
 
@@ -198,14 +211,18 @@ export default function ConfDetails1() {
             <Switch
               // onChange={console.log(valueCred)}
               isOn={valueCred}
-              handleToggle={() => setValueCred(!valueCred)}
+              handleToggle={() => {
+                
+                setValueCred(!valueCred)
+                formik.setFieldValue('isCreditBased', valueCred)
+              }}
             />
             <h4>Credits</h4>{" "}
             <ul>
               {formik.values.credits.map((i) => {
                 return (
-                  <li key={i.type.value}>
-                    Type: {i.type.value}, Amount: {i.amount}
+                  <li key={i.creditType}>
+                    Type: {i.creditType}, Quantity: {i.amount}
                   </li>
                 );
               })}
@@ -216,10 +233,10 @@ export default function ConfDetails1() {
             label="credits"
             options={options}
             onChange={(value) => {
-              setCType(value);
+              setCType(value.value);
               console.log("value from onchange handler", cType);
             }}
-            value={formik.values.creditType}
+            
           />
 
           <input
@@ -233,9 +250,11 @@ export default function ConfDetails1() {
             onClick={(e) => {
               e.preventDefault();
               if (cType === "" || amount === "") return;
+
+     
               formik.setFieldValue("credits", [
                 ...formik.values.credits,
-                { type: cType, amount: amount },
+                { creditType: cType, quantity: amount },
               ]);
               console.log("value from onchange handler", amount);
             }}
@@ -262,7 +281,12 @@ export default function ConfDetails1() {
         <div>
           <Switch
             isOn={valueRefund}
-            handleToggle={() => { setValueRefund(!valueRefund) }}
+            handleToggle={() => { 
+              
+              setValueRefund(!valueRefund) 
+              formik.setFieldValue("refundPolicy", !formik.values.refundPolicy)
+            
+            }}
           />
           <label>
             <h4>Refund Policy</h4>
@@ -271,7 +295,7 @@ export default function ConfDetails1() {
             readOnly={valueRefund}
             onChange={(e) => {
               console.log(e);
-              formik.setFieldValue("refundDescription", e.blocks);
+              formik.setFieldValue("refundDescription", e);
             }}
           />
           {touched.refundDescription && Boolean(errors.refundDescription) && (
@@ -279,11 +303,7 @@ export default function ConfDetails1() {
           )}
         </div>
 
-        <button onClick={()=>{
-          
-    formik.setFieldValue("isCreditBased", !valueCred)
-    formik.setFieldValue("refundPolicy", !valueRefund)
-        }} className="button button-primary" type="submit">
+        <button className="button button-primary" type="submit">
           Next
         </button>
       </form>
