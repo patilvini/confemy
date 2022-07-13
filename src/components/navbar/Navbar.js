@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import LocationIcon from "../icons/LocationIcon";
 import SearchIcon from "../icons/SearchIcon";
@@ -64,3 +63,7 @@ export default function Navbar() {
     </nav>
   );
 }
+
+Navbar.protoType = {
+  auth: PropTypes.object.isRequired,
+};
