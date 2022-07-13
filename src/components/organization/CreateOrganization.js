@@ -89,12 +89,15 @@ export default function CreateOrganization() {
     } = values;
     console.log(values);
 
+    const myLogoData = {
+      file: logos,
+    };
+
     const formData = {
       organization: {
-        logos,
         name,
         description,
-        user: user?.id,
+        user: user?._id,
         street1,
         street2,
         state,
@@ -106,14 +109,21 @@ export default function CreateOrganization() {
 
     // console.log("actions", actions);
     // actions.resetForm({ initialValues });
+    const imageData = new FormData();
+    imageData.append("file", logos[0]);
 
     try {
-      const response = await api.post("organizations", formData);
-      if (response) {
-        console.log("organization submitted", response);
-        console.log("actions", actions);
-        actions.resetForm({ values: initialValues });
-        setFiles([]);
+      const imagesResponse = await api.post("fileUploads", imageData);
+      console.log("images upload response", imagesResponse);
+      if (imagesResponse) {
+        formData.organization.logos = imagesResponse.data.data;
+        const response = await api.post("organizations", formData);
+        if (response) {
+          console.log("organization submitted", response);
+          console.log("actions", actions);
+          actions.resetForm({ values: initialValues });
+          setFiles([]);
+        }
       }
     } catch (err) {
       if (err) {
@@ -170,7 +180,6 @@ export default function CreateOrganization() {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, []);
 
-  console.log(formik.isSubmitting);
   return (
     <div className="create-org-wrap">
       <form
@@ -363,11 +372,11 @@ export default function CreateOrganization() {
             <button
               type="submit"
               className="button button-primary"
-              disabled={formik.isSubmitting}
+              // disabled={formik.isSubmitting}
             >
               Submit
             </button>
-            {formik.isSubmitting && (
+            {/* {formik.isSubmitting && (
               <div
                 style={{
                   width: 24,
@@ -382,7 +391,7 @@ export default function CreateOrganization() {
               >
                 ...Loading
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </form>
