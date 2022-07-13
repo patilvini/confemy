@@ -11,8 +11,6 @@ export default function Navbar() {
   const auth = useSelector((state) => state.auth);
   const { isAuthenticated, user } = auth;
 
-  console.log("navbar loaded");
-
   return (
     <nav className="navbar">
       <div className="navbar-first-container">
