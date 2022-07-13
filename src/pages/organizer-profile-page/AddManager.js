@@ -7,7 +7,7 @@ import "./addManager.scss";
 
 export default function AddManager() {
   const [orgs, setOrgs] = useState([]);
-  const user = useSelector(state => state.auth.user.id)
+  const userID = useSelector(state => state.auth.user._id)
   const [orgId, setId] = useState('')
 
   const [modal, setModal] = useState(false)
@@ -16,7 +16,7 @@ export default function AddManager() {
 
   useEffect(() => {
     api
-      .get("/organizations/users/"+user)
+      .get("/organizations/users/"+userID)
       .then((r) => {
      
         setOrgs(r.data.data.organization);
