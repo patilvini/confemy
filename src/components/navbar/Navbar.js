@@ -1,29 +1,17 @@
+import { useSelector } from "react-redux";
 import LocationIcon from "../icons/LocationIcon";
 import SearchIcon from "../icons/SearchIcon";
 import LogoDark from "../icons/LogoDark";
 import AuthDropdown from "../auth-dropdown/AuthDropdown";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-
 import "./navbar.styles.scss";
 
-const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
-  const authLinks = <AuthDropdown />;
-  const guestLinks = (
-    <>
-      <div>
-        <Link to="/register" className="signin">
-          Register
-        </Link>
-      </div>
-      <div>
-        <Link to="/signin" className="signin">
-          Sign in
-        </Link>
-      </div>
-    </>
-  );
+export default function Navbar() {
+  const auth = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = auth;
+
+  console.log("navbar loaded");
 
   return (
     <nav className="navbar">
@@ -44,7 +32,27 @@ const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
             Create Conference
           </Link>
         </div>
-        {!isLoading && <>{isAuthenticated ? authLinks : guestLinks} </>}
+        {/* {!auth?.isLoading && (
+          <> {auth?.isAuthenticated ? authLinks : guestLinks} </>
+        )} */}
+        {isAuthenticated && user ? (
+          <>
+            <AuthDropdown />
+          </>
+        ) : (
+          <>
+            <div>
+              <Link to="/register" className="signin">
+                Register
+              </Link>
+            </div>
+            <div>
+              <Link to="/signin" className="signin">
+                Sign in
+              </Link>
+            </div>
+          </>
+        )}
         <div>
           <Link className="location" to="#!">
             <LocationIcon className="nav-location-icon" />
@@ -54,14 +62,8 @@ const Navbar = ({ auth: { isAuthenticated, isLoading } }) => {
       </div>
     </nav>
   );
-};
+}
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-
-Navbar.propTypes = {
+Navbar.protoType = {
   auth: PropTypes.object.isRequired,
 };
-
-export default connect(mapStateToProps)(Navbar);
