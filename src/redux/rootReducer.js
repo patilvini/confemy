@@ -1,16 +1,18 @@
-import { combineReducers } from 'redux';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { combineReducers } from "redux";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
-import alertReducer from './alert/alertReducer';
-import authReducer from './auth/authReducer';
-import messageReducer from './message/messageReducer';
-import profileReducer from './profile/profileReducer';
+import alertReducer from "./alert/alertReducer";
+import authReducer from "./auth/authReducer";
+import messageReducer from "./message/messageReducer";
+import profileReducer from "./profile/profileReducer";
+
+import organizationsReducer from "./organization/organizationsReducer";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['profile'],
+  whitelist: ["profile"],
 };
 
 const rootReducer = combineReducers({
@@ -18,6 +20,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   message: messageReducer,
   profile: profileReducer,
+  organizations: organizationsReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

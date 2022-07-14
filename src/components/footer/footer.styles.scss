@@ -1,9 +1,9 @@
-@import '../../utility/utility.styles.scss';
+@import "../../utility/utility.styles.scss";
 
 .footer {
   width: 100%;
   height: 18.1rem;
-  max-width: 144rem;
+  max-width: $containerWidth;
   margin: 0 auto;
   overflow: hidden;
   display: grid;

@@ -1,0 +1,106 @@
+@import "../../utility/utility.styles.scss";
+
+.my-orgs-wrap {
+  margin: 20px 100px 64px 64px;
+
+  h2 {
+    margin-bottom: 32px;
+    color: $primary;
+  }
+
+  h4 {
+    color: $primary;
+  }
+
+  table {
+    width: 100%;
+    border-spacing: 2px 32px;
+    tbody {
+      tr {
+        min-height: 60px;
+        background-color: $shade-2;
+        &:hover {
+          cursor: pointer;
+          background-color: $shade-1;
+        }
+        // first td of every row
+        & > td:nth-child(3n + 1) {
+          //   border: 1px solid $shade-1;
+          //   background-color: white;
+          vertical-align: middle;
+          text-align: center;
+          font-size: 16px;
+          padding: 8px;
+        }
+
+        // second td fo every row
+        & > td:nth-child(3n + 2) {
+          padding: 12px;
+        }
+
+        // 3rd td of every row
+        & > td:nth-child(3n + 3) {
+          text-align: center;
+          padding: 12px;
+        }
+      }
+      td {
+        min-height: 60px;
+        min-width: 80px;
+        // padding: 16px;
+      }
+    }
+  }
+}
+
+.org-logo-container {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border: 1px solid $colour-white;
+
+  img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+// .my-organizations {
+//   display: grid;
+//   width: 100%;
+//   grid-template-columns: 100px auto 100px;
+//   grid-auto-rows: minmax(64px, auto);
+//   row-gap: 40px;
+
+//   & > div:nth-child(n + 1) {
+//     cursor: pointer;
+//     background-color: $shade-2;
+//     display: flex;
+//     align-items: center;
+//   }
+
+//   & > div:nth-child(3n + 1) {
+//     display: flex;
+//     justify-content: center;
+//     border-right: 2px solid $colour-white;
+//     // background-color: #fff;
+//     // border: 1px solid $shade-4;
+//   }
+
+//   & > div:nth-child(3n + 3) {
+//     display: flex;
+//     justify-content: center;
+//     border-left: 2px solid $colour-white;
+//   }
+//   & > div:nth-child(3n + 2) {
+//     padding: 8px;
+//   }
+// }
+
+// & > div:nth-child(n + 1)
+// this selcts all cells in the grid
+// & > div:nth-child(3n + 1)
+// this selcts 1st and every 3rd cell after that.
+// & > div:nth-child(3n + 3)
+// this selcts 3rd and every 3rd cell after that.

@@ -17,8 +17,15 @@ $info: #55a0fa;
 $colour-white: #ffffff;
 $modal-background: rgba(0, 0, 0, 0.4);
 
+// main website container width
+$containerWidth: 1440px;
+
 // dashboar side menu width
 $organizersNavbarWidth: 360px;
+
+// margins container-offSidemenu
+$mlContainerOffSidemenu: 120px;
+$mrContainerOffSidemenu: 20px;
 
 @mixin body-regular {
   font-family: Avenir-Roman;

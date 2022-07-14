@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutAction } from "../../redux/auth/authAction";
@@ -97,16 +97,31 @@ export default function AuthDropdown() {
   };
 
   return (
-    <div ref={ref}>
-      <div className="user-name-wrapper" onClick={onDropdownClick}>
+    <div style={{ height: "100%" }} ref={ref}>
+      <div
+        className="user-name-wrapper"
+        onClick={onDropdownClick}
+        // onMouseEnter={() => setOpenAuthDropdown(true)}
+        // onMouseLeave={() => setOpenAuthDropdown(false)}
+      >
         <span className="signin">{user && user?.firstName}</span>
         <DropdownIcon className="icon-size" />
       </div>
-      <div className={openAuthDropdown ? "" : "display-none"}>
+      <div
+        className={openAuthDropdown ? "" : "display-none"}
+        // onMouseEnter={() => setOpenAuthDropdown(true)}
+        // onMouseLeave={() => setOpenAuthDropdown(false)}
+      >
         <div className="auth-dropdown">
           <ul>
             {authDropdownOptions.map((e) => (
-              <li key={e.name} onClick={() => navigate(e.path)}>
+              <li
+                key={e.name}
+                onClick={() => {
+                  navigate(e.path);
+                  setOpenAuthDropdown(false);
+                }}
+              >
                 {e.icon}
                 <div className="avenir-roman-18">{e.name}</div>
               </li>

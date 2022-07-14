@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.ed6899e5.css",
-    "main.js": "/static/js/main.37b70d1b.js",
+    "main.css": "/static/css/main.9746a556.css",
+    "main.js": "/static/js/main.1a2d3ab2.js",
     "static/js/787.7814be23.chunk.js": "/static/js/787.7814be23.chunk.js",
     "static/media/Avenir.ttc": "/static/media/Avenir.bd849aa48220dc5266c4.ttc",
     "static/media/Avenir-Roman.ttf": "/static/media/Avenir-Roman.69c167230fe72fa92d10.ttf",
@@ -9,12 +9,12 @@
     "static/media/Avenir-Medium.ttf": "/static/media/Avenir-Medium.043601295d2b1aa36564.ttf",
     "static/media/googlelogo.png": "/static/media/googlelogo.39c52b1bcccb20569aa4.png",
     "index.html": "/index.html",
-    "main.ed6899e5.css.map": "/static/css/main.ed6899e5.css.map",
-    "main.37b70d1b.js.map": "/static/js/main.37b70d1b.js.map",
+    "main.9746a556.css.map": "/static/css/main.9746a556.css.map",
+    "main.1a2d3ab2.js.map": "/static/js/main.1a2d3ab2.js.map",
     "787.7814be23.chunk.js.map": "/static/js/787.7814be23.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ed6899e5.css",
-    "static/js/main.37b70d1b.js"
+    "static/css/main.9746a556.css",
+    "static/js/main.1a2d3ab2.js"
   ]
 }

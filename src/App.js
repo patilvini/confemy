@@ -37,6 +37,8 @@ import "./App.scss";
 import CreateOrgs from "./pages/organizer-profile-page/CreateOrgs";
 import CreateOrganizationPage from "./pages/organization-pages/CreateOrganizationPage";
 import VerifyManagerPage from "./pages/verify-manager-page/VerifyManagerPage";
+import MyOrganizationsPage from "./pages/organization-pages/MyOrganizationsPage";
+import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDetailsPage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -49,7 +51,6 @@ const App = () => {
           <Navbar />
           <Alert />
           <Routes>
-            
             <Route path="/test" element={<OCreateConference />} />
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
@@ -86,11 +87,16 @@ const App = () => {
                 element={<CreateOrganizationPage />}
               ></Route>
               <Route
-                path="manage-organizations"
-                element={<OrganizerDashboardPage />}
+                path="my-organizations"
+                // element={<OrganizerDashboardPage />}
+                element={<MyOrganizationsPage />}
+              ></Route>
+              <Route
+                path="my-organizations/:organizationId"
+                element={<OrganizationDetailsPage />}
               ></Route>
             </Route>
-            <Route path="/verify/:token" element={<VerifyManagerPage/>}/>
+            <Route path="/verify/:token" element={<VerifyManagerPage />} />
 
             {/* <PrivateAttendeeRoute
               path="/attendee-dashboard"

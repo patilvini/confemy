@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDropzone } from "react-dropzone";
 import TextError from "../formik/TextError";
@@ -73,8 +74,8 @@ export default function CreateOrganization() {
   // for the drop zone and logo upload
 
   const user = useSelector((state) => state.auth.user);
-
   const [files, setFiles] = useState([]);
+  const navigate = useNavigate();
 
   const onSubmit = async (values, actions) => {
     const {
@@ -108,8 +109,6 @@ export default function CreateOrganization() {
       },
     };
 
-    
-
     // console.log("actions", actions);
     // actions.resetForm({ initialValues });
     const imageData = new FormData();
@@ -126,11 +125,12 @@ export default function CreateOrganization() {
           console.log("actions", actions);
           actions.resetForm({ values: initialValues });
           setFiles([]);
+          navigate("/dashboard/my-organizations");
         }
       }
     } catch (err) {
       if (err) {
-        console.log(err)
+        console.log(err);
         actions.setFieldError("name", err.response?.data.message);
       }
     }

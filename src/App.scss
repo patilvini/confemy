@@ -201,13 +201,16 @@ h4 {
 
 .container {
   width: 100%;
-  max-width: 144rem;
+  max-width: $containerWidth;
   min-height: calc(100vh - 6.4rem);
   margin: 0 auto;
   overflow: hidden;
 }
 .container-offSidemenu {
-  margin: 96px 20px 64px 120px;
+  max-width: calc(
+    #{$containerWidth} - #{$organizersNavbarWidth + $mrContainerOffSidemenu + $mlContainerOffSidemenu}
+  );
+  margin: 96px $mrContainerOffSidemenu 64px $mlContainerOffSidemenu;
   overflow: hidden;
 }
 
@@ -227,6 +230,10 @@ h4 {
 }
 .grid-2nd-col {
   grid-column: 2/3;
+}
+
+.grid-3rd-col {
+  grid-column: 3/4;
 }
 
 .grid-col-4 {
@@ -756,7 +763,7 @@ $spaceamounts: (
 
 // drag box
 
-.drag-box{
+.drag-box {
   width: 600px;
   height: 260px;
   border-radius: 15px;
