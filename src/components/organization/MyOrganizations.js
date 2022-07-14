@@ -1,6 +1,6 @@
-import { useMemo, useCallback, useState, useEffect, Fragment } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../../utility/api";
 import "./myOrganizations.styles.scss";
 
@@ -47,12 +47,11 @@ export default function MyOrganizations() {
       <table>
         <tbody>
           {organizations.myOrganizations.map((item) => (
-            <tr key={item.organization._id}>
-              <td
-                key={item._id}
-                onClick={() => openOrganiztion(item.organization._id)}
-                className="org-logo-container"
-              >
+            <tr
+              key={item.organization._id}
+              onClick={() => openOrganiztion(item.organization._id)}
+            >
+              <td key={item._id} className="org-logo-container">
                 {item.organization?.logo[0]?.Location ? (
                   <img
                     src={`${item.organization?.logo[0]?.Location}`}
@@ -63,13 +62,10 @@ export default function MyOrganizations() {
                   <>Add Logo</>
                 )}
               </td>
-              <td
-                key={item.organization.name}
-                onClick={() => openOrganiztion(item.organization._id)}
-              >
+              <td key={item.organization.name}>
                 <h4>{item.organization.name}</h4>
               </td>
-              <td onClick={() => openOrganiztion(item.organization._id)}>
+              <td>
                 <NextIcon className="large-icon" />
               </td>
             </tr>
