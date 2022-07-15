@@ -48,7 +48,7 @@ export default function AddSocials(props) {
 
   return (
     <>
-    <h3>{props.social}</h3>
+    <h2>{props.social}</h2>
     <button type="button" onClick={()=>setShow(!show)}>Link</button>
     
       <div style={{ visibility: show ? "visible" : "hidden" }}>
