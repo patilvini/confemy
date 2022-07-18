@@ -53,14 +53,38 @@ export default function ConfDetails2() {
     setVisibitly(true);
   }
 
+  // const [days, setDays] = useState([])
+  const createDays = (startDate, endDate)=>{
+
+    
+    console.log(days)
+
+
+  }
+
   useEffect(() => {
-    api
-      .get("/speakers?_id="+userID+"&type=user")
-      .then((r) => {
-        console.log(r.data.data);
+    const getSpeaker = async () => {
+      try {
+        const r = await api.get("/speakers?_id=" + userID + "&type=user");
         setSpeakerData(r.data.data);
-      })
-      .catch((err) => console.log(err));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const getConference = async () => {
+      try {
+        const res = await api.get("conferences/62a0be470ba7277038691ed2");
+        console.log(res);
+
+
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getSpeaker();
+    getConference();
   }, []);
 
   const days = [

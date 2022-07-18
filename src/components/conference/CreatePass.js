@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import * as yup from "yup";
 import api from "../../utility/api";
@@ -11,17 +11,20 @@ import TextInput from "../formik/TextInput";
 import RadioButtons from "../formik/RadioButtons";
 import TextError from "../formik/TextError";
 
-const validationSchema1 = yup.object({
+const validationSchema = yup.object({
   passName: yup.string().required("Required"),
   price: yup.number().required("Required").moreThan(-1),
   currency: yup.string().required("Required"),
 });
 
-const validationSchema2 = yup.object({
-  passName: yup.string().required("Required"),
-  // price: yup.number().required("Required").moreThan(-1),
-  // currency: yup.string().required("Required"),
-});
+// const validationSchema2 = yup.object({
+//   passName: yup.string().required("Required"),
+//   // price: yup.number().required("Required").moreThan(-1),
+//   // currency: yup.string().required("Required"),
+// });
+
+
+
 
 const initialValues = {
   type: "",
@@ -36,9 +39,34 @@ const initialValues = {
 const currencies = [{value:"USD", label:"USD"}, {value:"INR", label:"INR"}, {value:"EUR", label:"EUR"}]
 
 export default function CreatePass() {
+
+const [tickets, setTickets] = useState([])
+
+  useEffect(()=>{
+    
+    const call = async ()=>{
+
+      try{
+        const r = await api.get("conferences/62a0be470ba7277038691ed2")
+        setTickets(r.data.data.conferences.tickets)
+        console.log(r.data.data.conferences.tickets)
+
+      } catch(err){
+        console.log(err)
+      }
+      
+
+    
+    } 
+
+    call()
+  }, [])
+
+
+
   const [disabled, setdisabled] = useState(false);
 
-  const [validationSchema, setValidationSchema] = useState(validationSchema1);
+  
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -71,6 +99,7 @@ export default function CreatePass() {
     // try {
     //   const r = await api.post("/conferences/step5", { ticketDetails });
     //   console.log(r);
+    //   setVisibitly(false)
     // } catch (err) {
     //   console.log(err);
     // }
@@ -78,6 +107,43 @@ export default function CreatePass() {
 
   return (
     <div className="conf-form-wrap">
+
+      <div>
+        <table>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Sales Start</th>
+            <th>Price</th>
+            <th>Currency</th>
+            <th>Information</th>
+          </tr>
+
+          </thead>
+          
+          <tbody>
+          {tickets.map((item)=>{
+            return(
+              <tr key={item._id}>
+                <td>{item.name}</td>
+                <td>{item.type}</td>
+                <td>{item.quantity}</td>
+                <td>{item.saleStart}</td>
+                <td>{item.price}</td>
+                <td>{item.currency}</td>
+                <td>{item.info}</td>
+
+              </tr>
+            )
+          })}
+
+          </tbody>
+          
+        </table>
+
+      </div>
       <button className="" onClick={() => onOpen()}>
         Add Pass
       </button>
@@ -96,7 +162,7 @@ export default function CreatePass() {
                       formik.setFieldValue("type", "FREE");
                       formik.setFieldValue("currency", 'none')
                       formik.setFieldValue("price", 0);
-                      setValidationSchema(validationSchema2);
+                      
 
                       setdisabled(true);
                     }}
@@ -113,7 +179,7 @@ export default function CreatePass() {
                     onClick={() => {
                       formik.setFieldValue("type", "PAID");
                       setdisabled(false);
-                      setValidationSchema(validationSchema1);
+                      
                     }}
                   >
                     Paid
@@ -159,7 +225,7 @@ export default function CreatePass() {
 
                 <div className="input-container">
                   <Select
-                    disabled={disabled}
+                    isDisabled={disabled}
                     
                     label="currency"
                     name="currency"
@@ -188,7 +254,7 @@ export default function CreatePass() {
                   )}
                 </div>
                 <div className="input-container">
-                  <input type="date" name="saleStartDate" />
+                  <input type="date" name="saleStartDate" onChange={formik.handleChange} />
                   {formik.touched.saleStartDate &&
                     Boolean(formik.errors.saleStartDate) && (
                       <TextError>{formik.errors.saleStartDate}</TextError>
