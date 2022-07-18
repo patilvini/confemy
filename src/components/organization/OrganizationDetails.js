@@ -16,6 +16,7 @@ import DragDrop from "../drag-drop/DragDrop";
 import AddOrganizers from "./AddOrganizers";
 import AddSocials from "./AddSocials";
 import SaveInput from "./SaveInput";
+import PsaveInput from "./PsaveInput";
 
 const thumbsContainer = {
   display: "flex",
@@ -76,6 +77,7 @@ let isSubmitting = true;
 
 export default function OrganizationDetails() {
   const user = useSelector((state) => state.auth.user);
+  const organizationID = useParams().organizationId;
   const [files, setFiles] = useState([]);
   const navigate = useNavigate();
 
@@ -190,7 +192,17 @@ export default function OrganizationDetails() {
   return (
     <div>
       <div className="create-org-wrap">
-        <SaveInput formik={formik} />
+        <PsaveInput
+          label={"Name"}
+          id={"name"}
+          name={"name"}
+          validationSchema={yup.object({
+            name: yup.string().required("Required"),
+          })}
+          url={"/organizations/" + organizationID}
+          apiData="hello"
+        />
+
         <form
           className="form-type-1"
           onSubmit={formik.handleSubmit}
