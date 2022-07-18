@@ -15,7 +15,7 @@ import "./createOrganization.styles.scss";
 import DragDrop from "../drag-drop/DragDrop";
 import AddOrganizers from "./AddOrganizers";
 import AddSocials from "./AddSocials";
-
+import SaveInput from "./SaveInput";
 
 const thumbsContainer = {
   display: "flex",
@@ -73,8 +73,6 @@ const validationSchema = yup.object({
 });
 
 let isSubmitting = true;
-
-
 
 export default function OrganizationDetails() {
   const user = useSelector((state) => state.auth.user);
@@ -189,147 +187,150 @@ export default function OrganizationDetails() {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, []);
 
-  return <div>
-  <div className="create-org-wrap">
-      <form
-        className="form-type-1"
-        onSubmit={formik.handleSubmit}
-        autoComplete="off"
-      >
-        <h2 className="mb-32">Logo</h2>
-        <section>
-          <div className="logo-upload-wrap">
-            <div {...getRootProps({ className: "logo-dropzone" })}>
-              <input {...getInputProps()} />
-              <CameraIcon className="camera-icon" />
+  return (
+    <div>
+      <div className="create-org-wrap">
+        <SaveInput formik={formik} />
+        <form
+          className="form-type-1"
+          onSubmit={formik.handleSubmit}
+          autoComplete="off"
+        >
+          <h2 className="mb-32">Logo</h2>
+          <section>
+            <div className="logo-upload-wrap">
+              <div {...getRootProps({ className: "logo-dropzone" })}>
+                <input {...getInputProps()} />
+                <CameraIcon className="camera-icon" />
+              </div>
+              <div className="logo-upload-textbox">
+                <span>Drag and drop your logo here or</span>
+                <span>Browse</span>
+                <span>to choose a file</span>
+              </div>
             </div>
-            <div className="logo-upload-textbox">
-              <span>Drag and drop your logo here or</span>
-              <span>Browse</span>
-              <span>to choose a file</span>
-            </div>
-          </div>
-          <aside style={thumbsContainer}>
-            {thumbs}
-            {/* <div>
+            <aside style={thumbsContainer}>
+              {thumbs}
+              {/* <div>
             <button className="button-outlined button-outlined-green">
               Reset
             </button>
           </div> */}
-          </aside>
-        </section>
-        <h2 className="mb-16 mt-40">Basic Information</h2>
-        <div className="input-container">
-          <input
-            id="name"
-            type="text"
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            placeholder="Organization name*"
-          />
-          {formik.touched.name && Boolean(formik.errors.name) && (
-            <TextError>{formik.errors.name}</TextError>
-          )}
-        </div>
-        <div className="input-container">
-          <input
-            id="city"
-            type="text"
-            name="city"
-            value={formik?.values.city}
-            onChange={formik?.handleChange}
-            placeholder="City*"
-          />
-          {formik?.touched.city && Boolean(formik?.errors.city) && (
-            <TextError>{formik?.errors.city}</TextError>
-          )}
-        </div>
-        <div className="input-container">
-          <input
-            id="country"
-            type="text"
-            name="country"
-            value={formik?.values.country}
-            onChange={formik?.handleChange}
-            placeholder="Country*"
-          />
-          {formik?.touched.country && Boolean(formik?.errors.country) && (
-            <TextError>{formik?.errors.country}</TextError>
-          )}
-        </div>
+            </aside>
+          </section>
+          <h2 className="mb-16 mt-40">Basic Information</h2>
+          <div className="input-container">
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              placeholder="Organization name*"
+            />
+            {formik.touched.name && Boolean(formik.errors.name) && (
+              <TextError>{formik.errors.name}</TextError>
+            )}
+          </div>
+          <div className="input-container">
+            <input
+              id="city"
+              type="text"
+              name="city"
+              value={formik?.values.city}
+              onChange={formik?.handleChange}
+              placeholder="City*"
+            />
+            {formik?.touched.city && Boolean(formik?.errors.city) && (
+              <TextError>{formik?.errors.city}</TextError>
+            )}
+          </div>
+          <div className="input-container">
+            <input
+              id="country"
+              type="text"
+              name="country"
+              value={formik?.values.country}
+              onChange={formik?.handleChange}
+              placeholder="Country*"
+            />
+            {formik?.touched.country && Boolean(formik?.errors.country) && (
+              <TextError>{formik?.errors.country}</TextError>
+            )}
+          </div>
 
-        <div className="input-container mt-40 ">
-          <input
-            id="street1"
-            type="text"
-            name="street1"
-            value={formik?.values.street1}
-            onChange={formik?.handleChange}
-            placeholder="Address line 1 (optional)"
-          />
+          <div className="input-container mt-40 ">
+            <input
+              id="street1"
+              type="text"
+              name="street1"
+              value={formik?.values.street1}
+              onChange={formik?.handleChange}
+              placeholder="Address line 1 (optional)"
+            />
 
-          {formik?.touched.street1 && Boolean(formik?.errors.street1) && (
-            <TextError>{formik?.errors.street1}</TextError>
-          )}
-        </div>
+            {formik?.touched.street1 && Boolean(formik?.errors.street1) && (
+              <TextError>{formik?.errors.street1}</TextError>
+            )}
+          </div>
 
-        <div className="input-container">
-          <input
-            id="street2"
-            type="text"
-            name="street2"
-            value={formik?.values.street2}
-            onChange={formik?.handleChange}
-            placeholder="Address line 2 (optional)"
-          />
+          <div className="input-container">
+            <input
+              id="street2"
+              type="text"
+              name="street2"
+              value={formik?.values.street2}
+              onChange={formik?.handleChange}
+              placeholder="Address line 2 (optional)"
+            />
 
-          {formik?.touched.street2 && Boolean(formik?.errors.street2) && (
-            <TextError>{formik?.errors.street2}</TextError>
-          )}
-        </div>
+            {formik?.touched.street2 && Boolean(formik?.errors.street2) && (
+              <TextError>{formik?.errors.street2}</TextError>
+            )}
+          </div>
 
-        <div className="input-container">
-          <input
-            id="state"
-            type="text"
-            name="state"
-            value={formik?.values.state}
-            onChange={formik?.handleChange}
-            placeholder="State (optional)"
-          />
+          <div className="input-container">
+            <input
+              id="state"
+              type="text"
+              name="state"
+              value={formik?.values.state}
+              onChange={formik?.handleChange}
+              placeholder="State (optional)"
+            />
 
-          {formik?.touched.state && Boolean(formik?.errors.state) && (
-            <TextError>{formik?.errors.state}</TextError>
-          )}
-        </div>
+            {formik?.touched.state && Boolean(formik?.errors.state) && (
+              <TextError>{formik?.errors.state}</TextError>
+            )}
+          </div>
 
-        <div className="input-container">
-          <input
-            id="website"
-            type="text"
-            name="website"
-            value={formik.values.website}
-            onChange={formik.handleChange}
-            placeholder="Website (optional)"
-          />
-          {formik.touched.website && Boolean(formik.errors.website) && (
-            <TextError>{formik.errors.website}</TextError>
-          )}
-        </div>
-        <div className="input-container">
-          <textarea
-            id="description"
-            name="description"
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            placeholder="Describe your organization (optional)"
-          />
-          {formik.touched.description && Boolean(formik.errors.description) && (
-            <TextError>{formik.errors.description}</TextError>
-          )}
-        </div>
-        {/* <div className="mt-40">
+          <div className="input-container">
+            <input
+              id="website"
+              type="text"
+              name="website"
+              value={formik.values.website}
+              onChange={formik.handleChange}
+              placeholder="Website (optional)"
+            />
+            {formik.touched.website && Boolean(formik.errors.website) && (
+              <TextError>{formik.errors.website}</TextError>
+            )}
+          </div>
+          <div className="input-container">
+            <textarea
+              id="description"
+              name="description"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              placeholder="Describe your organization (optional)"
+            />
+            {formik.touched.description &&
+              Boolean(formik.errors.description) && (
+                <TextError>{formik.errors.description}</TextError>
+              )}
+          </div>
+          {/* <div className="mt-40">
           <div>
             <button
               onClick={onCancel}
@@ -362,30 +363,30 @@ export default function OrganizationDetails() {
           </div>
         </div> */}
 
-        <div
-          style={{
-            display: "flex",
-            marginTop: 6,
-            marginBotton: 3,
-          }}
-        >
-          <button
-            type="button"
-            onClick={onCancel}
-            className="button button-green mr-24"
+          <div
+            style={{
+              display: "flex",
+              marginTop: 6,
+              marginBotton: 3,
+            }}
           >
-            Cancel
-          </button>
-
-          <div style={{ position: "relative" }}>
             <button
-              type="submit"
-              className="button button-primary"
-              // disabled={formik.isSubmitting}
+              type="button"
+              onClick={onCancel}
+              className="button button-green mr-24"
             >
-              Submit
+              Cancel
             </button>
-            {/* {formik.isSubmitting && (
+
+            <div style={{ position: "relative" }}>
+              <button
+                type="submit"
+                className="button button-primary"
+                // disabled={formik.isSubmitting}
+              >
+                Submit
+              </button>
+              {/* {formik.isSubmitting && (
               <div
                 style={{
                   width: 24,
@@ -401,21 +402,18 @@ export default function OrganizationDetails() {
                 ...Loading
               </div>
             )} */}
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
+
+      <AddOrganizers />
+
+      <h2>Social Media</h2>
+      <AddSocials social="Facebook" />
+      <AddSocials social="Instagram" />
+      <AddSocials social="Twitter" />
+      <AddSocials social="LinkedIn" />
     </div>
-
-
-    <AddOrganizers/>
-
-    <h2>Social Media</h2>
-    <AddSocials social="Facebook"/>
-    <AddSocials social="Instagram"/>
-    <AddSocials social="Twitter"/>
-    <AddSocials social="LinkedIn"/>
-    
-  
-  
-  </div>;
+  );
 }

@@ -1,0 +1,49 @@
+// // for label notching input fild border on top
+// This code is commented as we are using the same classes in form.styles.scss for material-textfield
+
+// .material-textfield {
+//   position: relative;
+// }
+
+// .material-textfield label {
+//   position: absolute;
+//   font-size: 1rem;
+//   left: 0;
+//   top: 50%;
+//   transform: translateY(-50%);
+//   background-color: white;
+//   color: gray;
+//   padding: 0 0.3rem;
+//   margin: 0 0.5rem;
+//   transition: 0.1s ease-out;
+//   transform-origin: left top;
+//   pointer-events: none;
+// }
+
+// .material-textfield input {
+//   font-size: 1rem;
+//   outline: none;
+//   width: 100%;
+//   border: 1px solid gray;
+//   border-radius: 5px;
+//   padding: 1rem 0.7rem;
+//   color: gray;
+//   transition: 0.1s ease-out;
+// }
+
+// .material-textfield input:focus {
+//   border: 2px solid rgb(10, 143, 220);
+//   //  border-color: #6200ee;
+// }
+
+// .material-textfield input:focus + label {
+//   color: rgb(10, 143, 220);
+//   top: 0;
+//   font-weight: 600;
+//   transform: translateY(-50%) scale(0.9);
+// }
+
+// .material-textfield input:not(:placeholder-shown) + label {
+//   top: 0;
+//   transform: translateY(-50%) scale(0.9);
+// }

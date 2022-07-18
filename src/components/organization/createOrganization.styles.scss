@@ -1,8 +1,7 @@
 @import "../../utility/utility.styles.scss";
 
 .create-org-wrap {
-  //  width: 514px;
-  margin: 84px 310px 64px 64px;
+  margin: 20px 310px 64px 64px;
   h2 {
     color: $primary;
   }
@@ -39,9 +38,7 @@
 }
 
 .logo-dropzone {
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
+  position: relative;
   width: 168px;
   height: 168px;
   padding: 50px;
@@ -52,4 +49,14 @@
 .camera-icon {
   width: 50px;
   height: 45px;
+}
+
+.socialmedia-wrap {
+  input[type="text"] {
+    padding-left: 80px;
+
+    &:focus {
+      border: solid 2px $info;
+    }
+  }
 }

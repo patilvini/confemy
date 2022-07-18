@@ -7,7 +7,8 @@ import authReducer from "./auth/authReducer";
 import messageReducer from "./message/messageReducer";
 import profileReducer from "./profile/profileReducer";
 
-import organizationsReducer from "./organization/organizationsReducer";
+import myOrganizationsReducer from "./organization/myOrganizationsReducer";
+import organizationReducer from "./organization/organizationReducer";
 
 const persistConfig = {
   key: "root",
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   message: messageReducer,
   profile: profileReducer,
-  organizations: organizationsReducer,
+  myOrganizations: myOrganizationsReducer,
+  organization: organizationReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

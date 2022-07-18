@@ -11,29 +11,36 @@
 
 .conf-steps {
   display: flex;
-  // justify-content: space-between;
-  // padding: 125px 38px 20px;
-  // width: 337px;
-  // height: auto;
-  // background-color: $background;
-
+  align-items: center;
   li {
     display: flex;
-    margin-right: 24px;
-    // margin-bottom: 43px;
+    align-items: center;
+    // margin-right: 24px;
     svg {
-      // margin-right: 20px;
       margin-right: 4px;
     }
+  }
+  & > li:last-child .steps-line {
+    display: none;
   }
 }
 
 .active-conf-step {
   @include avenir-heavy-18;
   color: $primary;
+  white-space: nowrap;
 }
 
 .inactive-conf-step {
   @include avenir-heavy-18;
   color: $gray-2;
+  white-space: nowrap;
+}
+
+.steps-line {
+  margin-left: 4px;
+  display: inline-block;
+  width: 48px;
+  height: 2px;
+  background-color: $gray-1;
 }

@@ -71,45 +71,46 @@ export default function Signin() {
           onSubmit={onSubmit}
         >
           <Form className="form-type-1" autoComplete="off">
-            <div className="input-container">
+            <div className="material-textfield">
               <Field
                 id="email"
                 type="text"
-                placeholder="Email"
+                placeholder=" "
                 name="email"
                 autoComplete="username"
               />
+              <label>Email</label>
+            </div>
+            <div className="mb-24">
               <ErrorMessage name="email" component={TextError} />
             </div>
-            <div className="input-container">
-              <div className="position-relative">
-                <Field
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  name="password"
-                  autoComplete="current-password"
-                />
-                <i
-                  onClick={togglePassword}
-                  className={
-                    showPassword ? "display-none" : "input-icon-location"
-                  }
-                >
-                  <ClosedEyeIcon className="large-icon" />
-                </i>
 
-                <i
-                  onClick={togglePassword}
-                  className={
-                    showPassword ? "input-icon-location" : "display-none"
-                  }
-                >
-                  <OpenEyeIcon className="large-icon" />
-                </i>
-              </div>
+            <div className="material-textfield">
+              <Field
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder=" "
+                name="password"
+                autoComplete="current-password"
+              />
+              <label>Password</label>
+              <i
+                onClick={togglePassword}
+                className={showPassword ? "display-none" : "right-input-icon"}
+              >
+                <ClosedEyeIcon className="large-icon" />
+              </i>
+              <i
+                onClick={togglePassword}
+                className={showPassword ? "right-input-icon" : "display-none"}
+              >
+                <OpenEyeIcon className="large-icon" />
+              </i>
+            </div>
+            <div className="mb-24">
               <ErrorMessage name="password" component={TextError} />
             </div>
+
             <button className="button button-primary mb-34" type="submit">
               Sign in
             </button>

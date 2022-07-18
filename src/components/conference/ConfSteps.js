@@ -38,6 +38,7 @@ export default function ConfSteps() {
             >
               {step.label}
             </div>
+            <div className="steps-line"></div>
           </li>
         ))}
       </ul>
