@@ -16,7 +16,7 @@ const MyPrivateRoute = ({ children }) => {
       }}
     >
       {/* show loading spinner */}
-      <div>Loading ....</div>
+      <div style={{ fontSize: 20 }}>Loading ....</div>
     </div>
   ) : isAuthenticated ? (
     children

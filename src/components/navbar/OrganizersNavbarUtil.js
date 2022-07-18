@@ -61,7 +61,7 @@ export const sidemenuOptions = [
       },
 
       {
-        text: "Add Organization",
+        text: "Create Organization",
         path: "/dashboard/create-organization",
       },
 

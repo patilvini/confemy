@@ -1,0 +1,31 @@
+@import "../../utility//utility.styles.scss";
+
+.save-input-wrap {
+  width: 500px;
+}
+
+.saveinput-buttons-wrap {
+  button {
+    padding: 4px;
+    margin-top: 8px;
+    margin-right: 8px;
+  }
+}
+
+// .material-textfield .saveinput-error {
+//   position: absolute;
+//   left: 2.4rem;
+//   bottom: 0.4rem;
+//   margin-top: 8px;
+//   transition: 0.1s ease-out;
+// }
+
+// .material-textfield .saveinput-error:focus {
+//   bottom: 0.8rem;
+//   left: 2.4rem;
+// }
+
+// .material-textfield .saveinput-error:not(:placeholder-shown) {
+//   bottom: 0.8rem;
+//   left: 2.4rem;
+// }

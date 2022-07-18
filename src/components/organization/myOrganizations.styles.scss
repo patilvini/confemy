@@ -4,7 +4,7 @@
   margin: 20px 100px 64px 64px;
 
   h2 {
-    margin-bottom: 32px;
+    // margin-bottom: 32px;
     color: $primary;
   }
 
@@ -50,6 +50,16 @@
         // padding: 16px;
       }
     }
+  }
+}
+
+.my-orgs-header {
+  display: flex;
+  h2 {
+    flex-grow: 1;
+  }
+  button {
+    background-color: $shade-2;
   }
 }
 
