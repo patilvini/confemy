@@ -4,6 +4,7 @@ import Select from "react-select";
 // import { useDropzone } from "react-dropzone";
 import Dropzone from "react-dropzone";
 import TextError from "../formik/TextError";
+import moment from "moment";
 
 import * as yup from "yup";
 
@@ -53,19 +54,18 @@ export default function ConfDetails2() {
     setVisibitly(true);
   }
 
-  const [dayz, setDays] = useState([])
+  const [days, setDays] = useState([])
   const createDays = (startDate, endDate)=>{
   
-    const date = new Date(startDate);
-
-    const dates = [];
-   
-    while (date <= endDate) {
-     dates.push(new Date(date));
-     date.setDate(date.getDate() + 1);
+    var dateArray = [];
+    var currentDate = moment(startDate);
+    var stopDate = moment(endDate);
+    while (currentDate <= stopDate) {
+        dateArray.push({date: moment(currentDate).format('YYYY, MMM, DD'), day: moment(currentDate).format("dddd")})
+        currentDate = moment(currentDate).add(1, 'days');
     }
-   
-    return dates;
+  
+    return dateArray;
 
     
 
@@ -92,11 +92,25 @@ export default function ConfDetails2() {
 
     const getConference = async () => {
       try {
-        const res = await api.get("conferences/62a0be470ba7277038691ed2");
+        const res = await api.get("conferences/62d7e94dc98888b8b9fbe48c");
+        console.log(res)
       
 
         setDays(createDays(new Date(res.data.data.conferences.startDate), new Date(res.data.data.conferences.endDate)))
 
+        let scheduleTemplate = []
+
+
+        for (let a=0; a<days.length; a++){
+          scheduleTemplate.push({date:"", startTime:"", endTime:"", description:""})
+          
+          
+          }
+
+
+
+        formik.setFieldValue('schedule', scheduleTemplate)
+        console.log(scheduleTemplate)
 
       } catch (err) {
         console.log(err);
@@ -107,11 +121,7 @@ export default function ConfDetails2() {
     getConference();
   }, []);
 
-  const days = [
-    { date: "2 jan 22", title: "Day1" },
-    { date: "3 jan 22", title: "Day2" },
-    { date: "4 jan 22", title: "Day3" },
-  ];
+  
   const [clicked, setClicked] = useState(false);
   const [speakerData, setSpeakerData] = useState([]);
   const [scheduleInput, setScheduleInput] = useState({
@@ -129,15 +139,43 @@ export default function ConfDetails2() {
     setClicked(i);
   };
 
-  const onSubmit = (values, actions) => {
-    console.log("form values form onSubmit", values);
+  const onSubmit = async (values, actions) => {
+    // console.log("form values form onSubmit", values);
+
+    const conferenceDetails = {
+      bannerImage:"dasd",
+      courseOutline: "dasdas",
+      description: "dasda",
+      schedules: values.schedule,
+      speakers: values.speakers,
+      conferenceId: "62d7e94dc98888b8b9fbe48c"
+
+    }
+
+    console.log("form values form onSubmit", conferenceDetails);
+
+    try{
+      const res = await api.post("/conferences/step3", {conferenceDetails})
+        
+        
+        console.log(res)
+
+    } catch (err){
+      console.log(err)
+    }
   };
 
-  const submitSch = () => {
-    formik.setFieldValue("schedule", [
-      ...formik.values.schedule,
-      scheduleInput,
-    ]);
+  const submitSch = (i) => {
+    const schedule = formik.values.schedule
+    
+
+    schedule[i] = scheduleInput
+
+    formik.setFieldValue("schedule", schedule)
+
+    // console.log(formik.values.schedule)
+
+
   };
 
   const formik = useFormik({
@@ -156,8 +194,8 @@ export default function ConfDetails2() {
     handleChange,
   } = formik;
 
-  console.log(dayz);
-  
+
+  // console.log(formik.values)
   const [bannerImg, setBanner] = useState("");
 
   return (
@@ -270,6 +308,7 @@ export default function ConfDetails2() {
             </label>
 
             {days.map((item, index) => {
+              
               return (
                 <div key={index}>
                   <div
@@ -287,7 +326,8 @@ export default function ConfDetails2() {
                   </div>
                   {clicked === index ? (
                     <div className="dropdown">
-                      <h4>{item.title}</h4>
+                      
+                      <h4>{item.day}</h4>
                       <h5>Timings</h5>
 
                       <label>
@@ -334,8 +374,9 @@ export default function ConfDetails2() {
                         }}
                       />
                       <button
+                        type="button"
                         className="button button-primary"
-                        onClick={submitSch}
+                        onClick={()=>submitSch(index)}
                       >
                         Add
                       </button>
