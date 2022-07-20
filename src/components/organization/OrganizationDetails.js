@@ -80,6 +80,9 @@ export default function OrganizationDetails() {
   const organizationID = useParams().organizationId;
   const [files, setFiles] = useState([]);
   const navigate = useNavigate();
+  const [organizationData, setOrganizationData] = useState({})
+
+
 
   const onSubmit = async (values, actions) => {
     const {
@@ -151,6 +154,25 @@ export default function OrganizationDetails() {
     formik.resetForm({ values: initialValues });
   };
 
+
+  useEffect(()=>{
+    const apiCall = async ()=>{
+
+      try{
+        const r = await api.get("/organizations/organizers/"+organizationID+"?userId="+user._id)
+     
+        setOrganizationData(r.data.data.organization)
+        console.log(organizationData)
+      } catch (err){
+        console.log(err)
+      }
+      
+      
+    } 
+
+    apiCall()
+  },[])
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [".jpeg", ".png"],
@@ -200,7 +222,8 @@ export default function OrganizationDetails() {
             name: yup.string().required("Required"),
           })}
           url={"/organizations/" + organizationID}
-          apiData="hello"
+          apiData={organizationData}
+
         />
 
         <form

@@ -22,13 +22,17 @@ export default function PsaveInput({ name, id, label, validationSchema, url, api
   const [show, setShow] = useState(false);
   const ref = useRef();
 
-  let initialValues = {saveInputName:""}
+
+  let initialValues = {name: apiData.name}
+
+
+
 
 //   declare in paren
 
-if(apiData!==""){
-    initialValues.saveInputName = apiData
-}
+// if(apiData){
+//     initialValues.name = apiData.name
+// }
 
   const onSubmit = async (values, actions) => {
     console.log("SaveInput", values);
@@ -51,8 +55,8 @@ if(apiData!==""){
   };
 
   // import this as props
-  const formik = useFormik({ initialValues: {apiData} || initialValues 
-    , validationSchema, onSubmit });
+  const formik = useFormik({ initialValues, validationSchema, onSubmit });
+
 
   function onInputFocus(e) {
     e.target.style.paddingBottom = "40px";
@@ -65,6 +69,8 @@ if(apiData!==""){
     ref.current.style.paddingBottom = "1.6rem";
   };
 
+
+  console.log(initialValues)
   return (
     <>
       <form
@@ -78,7 +84,7 @@ if(apiData!==""){
             id={id}
             type="text"
             name={name}
-            value={formik.values.saveInputName}
+            // value={formik.values.name}
             onChange={formik.handleChange}
             placeholder=" "
             onFocus={(e) => onInputFocus(e)}

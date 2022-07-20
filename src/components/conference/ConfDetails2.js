@@ -53,14 +53,32 @@ export default function ConfDetails2() {
     setVisibitly(true);
   }
 
-  // const [days, setDays] = useState([])
+  const [dayz, setDays] = useState([])
   const createDays = (startDate, endDate)=>{
+  
+    const date = new Date(startDate);
+
+    const dates = [];
+   
+    while (date <= endDate) {
+     dates.push(new Date(date));
+     date.setDate(date.getDate() + 1);
+    }
+   
+    return dates;
 
     
-    console.log(days)
+
+  };
+    
+   
+    
+    
 
 
-  }
+  
+
+  
 
   useEffect(() => {
     const getSpeaker = async () => {
@@ -75,7 +93,9 @@ export default function ConfDetails2() {
     const getConference = async () => {
       try {
         const res = await api.get("conferences/62a0be470ba7277038691ed2");
-        console.log(res);
+      
+
+        setDays(createDays(new Date(res.data.data.conferences.startDate), new Date(res.data.data.conferences.endDate)))
 
 
       } catch (err) {
@@ -136,7 +156,8 @@ export default function ConfDetails2() {
     handleChange,
   } = formik;
 
-  // console.log(values);
+  console.log(dayz);
+  
   const [bannerImg, setBanner] = useState("");
 
   return (
