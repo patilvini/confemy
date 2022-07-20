@@ -10,6 +10,22 @@ import {
 
 import "./myOrganizations.styles.scss";
 
+const initialValues = {
+  logos: [],
+  name: "",
+  street1: "",
+  street2: "",
+  city: "",
+  state: "",
+  country: "",
+  website: "",
+  description: "",
+  facebook: "",
+  twitter: "",
+  linkedin: "",
+  instagram: "",
+};
+
 export default function MyOrganizations() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
