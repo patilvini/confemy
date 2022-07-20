@@ -1,87 +1,81 @@
-import { useRef } from "react";
-import { useFormik } from "formik";
-import { useState, useEffect } from "react";
-import * as yup from "yup";
-
-import TextError from "../formik/TextError";
+import { useRef, useState, useEffect, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "../../utility/api";
 import "./saveInput.styles.scss";
 
-// declare in parent component
-// const validationSchema = yup.object({
-//   name: yup.string().required("Required"),
-// });
+export default function SaveInput({ label, textName, inputApiValue }) {
+  const [showButtons, setShowButtons] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-// declare in parent component
-// const initialValues = {
-//   name: "",
-// };
+  const textInputRef = useRef();
 
-export default function SaveInput({ formik, name, id, label }) {
-  const [show, setShow] = useState(false);
-  const ref = useRef();
-
-  // declare in parent
-  // const onSubmit = async (values, actions) => {
-  //   console.log("SaveInput", values);
-  //   ref.current.style.paddingBottom = "1.6rem";
-  //   setShow(false);
-  // };
-
-  // import this as props
-  // const formik = useFormik({ initialValues, validationSchema, onSubmit });
-
-  function onInputFocus(e) {
-    e.target.style.paddingBottom = "40px";
-    e.target.style.border = "solid 2px #ced9de";
-    setShow(true);
+  function handleInputChange(e) {
+    setInputValue(e.target.value);
   }
 
-  const handleCancel = () => {
-    setShow(false);
-    ref.current.style.paddingBottom = "1.6rem";
+  function handleInputSubmit(e) {
+    e.preventDefault();
+    setShowButtons(false);
+    console.log("text submitted", inputValue);
+    textInputRef.current.style.paddingBottom = "1.6rem";
+  }
+
+  function onInputFocus(e) {
+    e.target.style.paddingBottom = "48px";
+    e.target.style.border = "solid 2px #ced9de";
+    setShowButtons(true);
+  }
+
+  const handleInputCancel = () => {
+    setInputValue(inputApiValue);
+    setShowButtons(false);
+    textInputRef.current.style.paddingBottom = "1.6rem";
   };
 
+  useEffect(() => {
+    setInputValue(inputApiValue);
+  }, [inputApiValue]);
+
+  console.log("from SaveInput", inputApiValue);
+
   return (
-    <>
-      <form
-        className="form-type-1"
-        onSubmit={formik.handleSubmit}
-        autoComplete="off"
-      >
-        <div className="material-textfield">
-          <input
-            ref={ref}
-            id={id}
-            type="text"
-            name={name}
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            placeholder=" "
-            onFocus={(e) => onInputFocus(e)}
-          />
-          <label>{label}</label>
-        </div>
-        <div className="saveinput-error">
-          {formik.touched.name && Boolean(formik.errors.name) && (
-            <TextError>{formik.errors.name}</TextError>
-          )}
-        </div>
+    <form className="form-type-1" onSubmit={handleInputSubmit}>
+      <div className="material-textfield">
+        <input
+          ref={textInputRef}
+          id={textName}
+          type="text"
+          name={textName}
+          value={inputValue}
+          onChange={(e) => handleInputChange(e)}
+          placeholder=" "
+          onFocus={(e) => onInputFocus(e)}
+        />
+        <label>{label}</label>
+      </div>
+      <div className="saveinput-error">
+        {errorMsg}
+        {/* {formik.touched.name && Boolean(formik.errors.name) && (
+              <TextError>{formik.errors.name}</TextError>
+            )} */}
+      </div>
+      <div className="mb-20">
         <div
-          style={{ visibility: show ? "visible" : "hidden" }}
-          className="saveinput-buttons-wrap"
+          className={showButtons ? "saveinput-buttons-wrap" : "display-none"}
         >
           <button type="submit" className="button button-primary">
-            Submit
+            Save
           </button>
           <button
             type="button"
-            onClick={handleCancel}
+            onClick={handleInputCancel}
             className="button-text button-text-primary"
           >
             Cancel
           </button>
         </div>
-      </form>
-    </>
+      </div>
+    </form>
   );
 }

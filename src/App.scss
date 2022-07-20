@@ -502,7 +502,7 @@ $spaceamounts: (
   border: 2px solid black;
   cursor: pointer;
   transition: all 0.12s ease-in;
-  min-width: 10rem;
+  min-width: 1.6rem;
   padding: 1.6rem 3.2rem;
   border-radius: 4px;
   @include button-text;
@@ -544,14 +544,14 @@ $spaceamounts: (
 
 .button-text {
   display: inline-block;
-  border: none;
+  border: 2px solid $shade-3;
   outline: none;
   cursor: pointer;
   transition: all 0.12s ease-in;
-  // background-color: #fff;
+  background-color: $shade-3;
   @include button-text;
 
-  min-width: 10rem;
+  min-width: 1rem;
   padding: 1.8rem 3.4rem;
   border-radius: 4px;
 
@@ -560,6 +560,7 @@ $spaceamounts: (
 
     &:hover {
       background: $shade-1;
+      border: 2px solid $shade-1;
     }
   }
 }
