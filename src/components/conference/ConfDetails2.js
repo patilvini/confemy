@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useFormik } from "formik";
 import Select from "react-select";
-// import { useDropzone } from "react-dropzone";
-import Dropzone from "react-dropzone";
+import { thumb, thumbInner, img } from "./conferenceDragdropUtils";
+import Dropzone, { useDropzone } from "react-dropzone";
 import TextError from "../formik/TextError";
 import moment from "moment";
 
@@ -44,8 +44,17 @@ const validationSchema = yup.object({
 
 export default function ConfDetails2() {
   const userID = useSelector((state) => state.auth.user._id);
-
+  const [files, setFiles] = useState([]);
   const [visibility, setVisibitly] = useState(false);
+  const [days, setDays] = useState([]);
+  const [clicked, setClicked] = useState(false);
+  const [speakerData, setSpeakerData] = useState([]);
+  const [scheduleInput, setScheduleInput] = useState({
+    date: "",
+    startTime: "",
+    endTime: "",
+    description: "",
+  });
 
   function onClose() {
     setVisibitly(false);
@@ -54,31 +63,29 @@ export default function ConfDetails2() {
     setVisibitly(true);
   }
 
-  const [days, setDays] = useState([])
-  const createDays = (startDate, endDate)=>{
   
+  const toggle = (i) => {
+    if (clicked === i) {
+      return setClicked(null);
+    }
+
+    setClicked(i);
+  };
+
+  const createDays = (startDate, endDate) => {
     var dateArray = [];
     var currentDate = moment(startDate);
     var stopDate = moment(endDate);
     while (currentDate <= stopDate) {
-        dateArray.push({date: moment(currentDate).format('YYYY, MMM, DD'), day: moment(currentDate).format("dddd")})
-        currentDate = moment(currentDate).add(1, 'days');
+      dateArray.push({
+        date: moment(currentDate).format("YYYY, MMM, DD"),
+        day: moment(currentDate).format("dddd"),
+      });
+      currentDate = moment(currentDate).add(1, "days");
     }
-  
+
     return dateArray;
-
-    
-
   };
-    
-   
-    
-    
-
-
-  
-
-  
 
   useEffect(() => {
     const getSpeaker = async () => {
@@ -93,25 +100,28 @@ export default function ConfDetails2() {
     const getConference = async () => {
       try {
         const res = await api.get("conferences/62d7e94dc98888b8b9fbe48c");
-        console.log(res)
-      
+        console.log(res);
 
-        setDays(createDays(new Date(res.data.data.conferences.startDate), new Date(res.data.data.conferences.endDate)))
+        setDays(
+          createDays(
+            new Date(res.data.data.conferences.startDate),
+            new Date(res.data.data.conferences.endDate)
+          )
+        );
 
-        let scheduleTemplate = []
+        let scheduleTemplate = [];
 
+        for (let a = 0; a < days.length; a++) {
+          scheduleTemplate.push({
+            date: "",
+            startTime: "",
+            endTime: "",
+            description: "",
+          });
+        }
 
-        for (let a=0; a<days.length; a++){
-          scheduleTemplate.push({date:"", startTime:"", endTime:"", description:""})
-          
-          
-          }
-
-
-
-        formik.setFieldValue('schedule', scheduleTemplate)
-        console.log(scheduleTemplate)
-
+        formik.setFieldValue("schedule", scheduleTemplate);
+        console.log(scheduleTemplate);
       } catch (err) {
         console.log(err);
       }
@@ -121,61 +131,38 @@ export default function ConfDetails2() {
     getConference();
   }, []);
 
-  
-  const [clicked, setClicked] = useState(false);
-  const [speakerData, setSpeakerData] = useState([]);
-  const [scheduleInput, setScheduleInput] = useState({
-    date: "",
-    startTime: "",
-    endTime: "",
-    description: "",
-  });
-
-  const toggle = (i) => {
-    if (clicked === i) {
-      return setClicked(null);
-    }
-
-    setClicked(i);
-  };
 
   const onSubmit = async (values, actions) => {
     // console.log("form values form onSubmit", values);
 
     const conferenceDetails = {
-      bannerImage:"dasd",
+      bannerImage: "dasd",
       courseOutline: "dasdas",
       description: "dasda",
       schedules: values.schedule,
       speakers: values.speakers,
-      conferenceId: "62d7e94dc98888b8b9fbe48c"
-
-    }
+      conferenceId: "62d7e94dc98888b8b9fbe48c",
+    };
 
     console.log("form values form onSubmit", conferenceDetails);
 
-    try{
-      const res = await api.post("/conferences/step3", {conferenceDetails})
-        
-        
-        console.log(res)
+    try {
+      const res = await api.post("/conferences/step3", { conferenceDetails });
 
-    } catch (err){
-      console.log(err)
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const submitSch = (i) => {
-    const schedule = formik.values.schedule
-    
+    const schedule = formik.values.schedule;
 
-    schedule[i] = scheduleInput
+    schedule[i] = scheduleInput;
 
-    formik.setFieldValue("schedule", schedule)
+    formik.setFieldValue("schedule", schedule);
 
     // console.log(formik.values.schedule)
-
-
   };
 
   const formik = useFormik({
@@ -194,44 +181,69 @@ export default function ConfDetails2() {
     handleChange,
   } = formik;
 
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      "image/*": [".jpeg", ".png"],
+    },
+    maxFiles: 1,
+    onDrop: (acceptedFiles) => {
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+      formik.setFieldValue("bannerImage", acceptedFiles);
+    },
+  });
+
+  const thumbs = files.map((file) => (
+    <div style={thumb} key={file.name}>
+      <div style={thumbInner}>
+        <img
+          src={file.preview}
+          alt="logo"
+          style={img}
+          // Revoke data uri after image is loaded
+          onLoad={() => {
+            URL.revokeObjectURL(file.preview);
+          }}
+        />
+      </div>
+    </div>
+  ));
 
   // console.log(formik.values)
   const [bannerImg, setBanner] = useState("");
+
+  useEffect(() => {
+    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, []);
 
   return (
     <>
       <div className="conf-form-wrap">
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div>
-            <label>
-              <h4>Banner Image</h4>
-            </label>
-
-            <Dropzone
-              multiple={false}
-              onDrop={(acceptedFiles) => {
-                let filetype = acceptedFiles[0].type.split("/");
-                // console.log(formik.values.bannerImage[0].path)
-
-                if (filetype[0] === "image") {
-                  formik.setFieldValue("bannerImage", acceptedFiles);
-                  setBanner(<h4>{formik.values.bannerImage[0].name}</h4>);
-                }
-              }}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <section>
-                  <div {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    <p className="drag-box">
-                      Drag 'n' drop some files here, or click to select files
-                    </p>
-                  </div>
-                </section>
-              )}
-            </Dropzone>
-            {bannerImg}
+            
           </div>
+          <h2 className="mb-32">Banner Image</h2>
+          <section>
+            <div className="logo-upload-wrap">
+              <div {...getRootProps({ className: "logo-dropzone" })}>
+                <input {...getInputProps()} />
+                
+                {thumbs}
+              </div>
+              <div className="logo-upload-textbox">
+                <span>Drag and drop your logo here or</span>
+                <span>Browse</span>
+                <span>to choose a file</span>
+              </div>
+            </div>
+          </section>
 
           <div>
             <label>
@@ -308,7 +320,6 @@ export default function ConfDetails2() {
             </label>
 
             {days.map((item, index) => {
-              
               return (
                 <div key={index}>
                   <div
@@ -326,7 +337,6 @@ export default function ConfDetails2() {
                   </div>
                   {clicked === index ? (
                     <div className="dropdown">
-                      
                       <h4>{item.day}</h4>
                       <h5>Timings</h5>
 
@@ -376,7 +386,7 @@ export default function ConfDetails2() {
                       <button
                         type="button"
                         className="button button-primary"
-                        onClick={()=>submitSch(index)}
+                        onClick={() => submitSch(index)}
                       >
                         Add
                       </button>

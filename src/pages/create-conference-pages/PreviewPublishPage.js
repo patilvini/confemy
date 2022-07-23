@@ -1,3 +1,5 @@
+import Preview from "../../components/conference/Preview";
+
 export default function PreviewPublishPage() {
-  return <div>PreviewPublishPage</div>;
+  return <div><Preview/></div>;
 }
