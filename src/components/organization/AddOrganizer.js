@@ -1,48 +1,44 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import api from "../../utility/api";
-import "./saveInput.styles.scss";
 import { loadOrganization } from "./organizationUtil";
+import "./saveInput.styles.scss";
 
-export default function SaveInput({
-  label,
-  inputName,
-  inputApiValue,
-  organizationId,
-}) {
+export default function AddOrganizer({ organizationId }) {
   const [showButtons, setShowButtons] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   const user = useSelector((state) => state.auth.user);
+
   const textInputRef = useRef();
 
   function handleInputChange(e) {
     setInputValue(e.target.value);
   }
 
-  const handleInputSubmit = async (e) => {
-    e.preventDefault();
-    const key = inputName;
-    const formData = {
-      organization: {
-        [key]: inputValue,
-      },
+  async function handleInputSubmit(e) {
+    const organizerDetails = {
+      email: inputValue,
+      organizationId,
     };
-
-    const url = `organizations/${organizationId}`;
+    e.preventDefault();
 
     try {
-      const response = await api.patch(url, formData);
+      const response = await api.post("/organizations/organizers", {
+        organizerDetails,
+      });
       if (response) {
+        console.log("organizer Submit resp", response);
         loadOrganization(organizationId, user._id);
+        setInputValue("");
         setShowButtons(false);
         textInputRef.current.style.paddingBottom = "1.6rem";
       }
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   function onInputFocus(e) {
     e.target.style.paddingBottom = "48px";
@@ -51,29 +47,29 @@ export default function SaveInput({
   }
 
   const handleInputCancel = () => {
-    setInputValue(inputApiValue);
+    setInputValue("");
     setShowButtons(false);
     textInputRef.current.style.paddingBottom = "1.6rem";
   };
 
-  useEffect(() => {
-    setInputValue(inputApiValue);
-  }, [inputApiValue]);
+  // useEffect(() => {
+  //   setInputValue(inputApiValue);
+  // }, [inputApiValue]);
 
   return (
     <form className="form-type-1" onSubmit={handleInputSubmit}>
       <div className="material-textfield">
         <input
           ref={textInputRef}
-          id={inputName}
-          type="text"
-          name={inputName}
+          id="organizersEmail"
+          type="email"
+          name="organizersEmail"
           value={inputValue}
-          onChange={(e) => handleInputChange(e)}
+          onChange={handleInputChange}
           placeholder=" "
-          onFocus={(e) => onInputFocus(e)}
+          onFocus={onInputFocus}
         />
-        <label>{label}</label>
+        <label>+ Add organizer's email</label>
       </div>
       <div className="saveinput-error">
         {errorMsg}

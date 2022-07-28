@@ -1,0 +1,211 @@
+@import "./utility.styles.scss";
+
+// buttons
+
+@mixin button-text {
+  font-family: Avenir;
+  font-size: 16px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.41px;
+  text-align: center;
+  color: $colour-white;
+}
+
+.button {
+  display: inline-block;
+  outline: none;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: all 0.12s ease-in;
+  min-width: 1.6rem;
+  padding: 1.6rem 3.2rem;
+  border-radius: 4px;
+  @include button-text;
+
+  &.button-green {
+    background: $accent;
+    border-color: $accent;
+    &:hover {
+      background-color: #45a93e;
+      border-color: #45a93e;
+    }
+    &:active {
+      background-color: #3c9436;
+      border-color: #3c9436;
+    }
+  }
+  &.button-secondary {
+    background: $shade-4;
+    border-color: $shade-4;
+    &:hover {
+      background: $shade-2;
+      border-color: $shade-2;
+    }
+  }
+
+  &.button-primary {
+    background: $primary;
+    border-color: $primary;
+    &:hover {
+      background: #073b54;
+      border-color: #073b54;
+    }
+    &:active {
+      background-color: #063449;
+      border-color: #063449;
+    }
+  }
+}
+
+.button-text {
+  display: inline-block;
+  border: 2px solid $shade-3;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.12s ease-in;
+  background-color: $shade-3;
+  @include button-text;
+
+  min-width: 1rem;
+  padding: 1.8rem 3.4rem;
+  border-radius: 4px;
+
+  &.button-text-primary {
+    color: $primary;
+
+    &:hover {
+      background: $shade-1;
+      border: 2px solid $shade-1;
+    }
+  }
+
+  &.button-text-red {
+    color: $warning;
+
+    &:hover {
+      color: #c6000b;
+      //   border-color: #c6000b;
+    }
+    &:active {
+      color: #ac0009;
+      //   border-color: #ac0009;
+    }
+  }
+}
+
+.button-outlined {
+  display: inline-block;
+  outline: none;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: all 0.12s ease-in;
+  min-width: 10rem;
+  padding: 1.6rem 3.2rem;
+  border-radius: 4px;
+  @include button-text;
+  background-color: $background;
+
+  &.button-outlined-primary {
+    color: $primary;
+    border-color: $primary;
+
+    &:hover {
+      color: #073b54;
+      border-color: #073b54;
+    }
+    &:active {
+      color: #063449;
+      border-color: #063449;
+    }
+  }
+
+  &.button-outlined-green {
+    color: $accent;
+    border-color: $accent;
+
+    &:hover {
+      color: #45a93e;
+      border-color: #45a93e;
+    }
+    &:active {
+      color: #3c9436;
+      border-color: #3c9436;
+    }
+  }
+
+  &.button-outlined-red {
+    color: $warning;
+    border-color: $warning;
+
+    &:hover {
+      color: #c6000b;
+      border-color: #c6000b;
+    }
+    &:active {
+      color: #ac0009;
+      border-color: #ac0009;
+    }
+  }
+}
+
+// create conference form  buttons
+
+.button-outlined-inactive {
+  display: inline-block;
+  outline: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.12s ease-in;
+  min-width: 10rem;
+  padding: 16px 32px;
+  border-radius: 4px;
+  // background-color: #fff;
+  // text style
+
+  font-family: Avenir-Roman;
+  opacity: 0.6;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: center;
+  color: $confemy-black;
+
+  &:hover {
+    color: #45a93e;
+    border-color: #45a93e;
+  }
+}
+
+.button-outlined-active {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.12s ease-in;
+  min-width: 10rem;
+  padding: 16px 32px;
+  border-radius: 4px;
+  // border: 1px solid rgba(0, 0, 0, 0.2);
+  // background-color: #fff;
+  border: solid 1px #00529b;
+  background-color: $shade-2;
+
+  // text styles
+
+  opacity: 0.87;
+  font-family: Avenir-Heavy;
+  font-size: 16px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  text-align: center;
+
+  color: #00529b;
+}

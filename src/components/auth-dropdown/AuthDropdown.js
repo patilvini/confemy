@@ -14,6 +14,7 @@ import DropdownIcon from "../icons/DropdownIcon";
 
 import "./AuthDropdown.styles.scss";
 import api from "../../utility/api";
+// import { capitalize } from "../../utility/commonUtil";
 
 const authDropdownOptions = [
   {
@@ -79,10 +80,6 @@ export default function AuthDropdown() {
       });
     };
   }, []);
-
-  const capitalize = (word) => {
-    return word[0]?.toUpperCase() + word.slice(1).toLowerCase();
-  };
 
   const onLogoutClick = async () => {
     try {

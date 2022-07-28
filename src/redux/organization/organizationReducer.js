@@ -1,4 +1,8 @@
-import { ORGANIZATION_LOADED, ORGANIZATION_ERROR } from "./organizationTypes";
+import {
+  ORGANIZATION_LOADED,
+  ORGANIZATION_REMOVED,
+  ORGANIZATION_ERROR,
+} from "./organizationTypes";
 
 const initialState = {
   isLoading: true,
@@ -16,7 +20,7 @@ export default function organizationReducer(state = initialState, action) {
         isError: false,
         organization: payload,
       };
-
+    case ORGANIZATION_REMOVED:
     case ORGANIZATION_ERROR:
       return {
         ...state,

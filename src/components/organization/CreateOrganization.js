@@ -79,7 +79,7 @@ export default function CreateOrganization() {
         const imagesResponse = await api.post("fileUploads", formDataObj);
         console.log("images upload response", imagesResponse);
         if (imagesResponse) {
-          formData.organization.logos = imagesResponse.data.data;
+          formData.organization.logo = imagesResponse.data.data;
           console.log("formData", logos.length, formData);
           const response = await api.post("organizations", formData);
           if (response) {
