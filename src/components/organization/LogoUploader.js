@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import CameraIcon from "../icons/CameraIcon";
 import { useDropzone } from "react-dropzone";
 import { thumb, thumbInner, img, loadOrganization } from "./organizationUtil";
@@ -19,7 +20,6 @@ export default function LogoUploader({ apiLogo, organizationId }) {
     },
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
-      // console.log("accepted files ondrop", acceptedFiles);
       setFiles(
         acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -60,7 +60,7 @@ export default function LogoUploader({ apiLogo, organizationId }) {
     formDataObj.append("file", files[0]);
     try {
       const imagesResponse = await api.post("fileUploads", formDataObj);
-      // console.log("images upload response", imagesResponse);
+
       if (imagesResponse) {
         const data = {
           organization: {
@@ -84,9 +84,6 @@ export default function LogoUploader({ apiLogo, organizationId }) {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files.forEach((file) => URL.revokeObjectURL(file.Location));
   }, [apiLogo]);
-
-  // console.log("LogoUloader files state", files);
-  // console.log("LogoUploader apiLogo", apiLogo);
 
   return (
     <>
@@ -128,3 +125,8 @@ export default function LogoUploader({ apiLogo, organizationId }) {
     </>
   );
 }
+
+LogoUploader.propTypes = {
+  apiLogo: PropTypes.array,
+  organizationId: PropTypes.string.isRequired,
+};

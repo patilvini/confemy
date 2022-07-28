@@ -63,4 +63,5 @@ export default function ShowOrganizers({ organizers, organizationId }) {
 
 ShowOrganizers.propTypes = {
   organizers: PropTypes.array.isRequired,
+  organizationId: PropTypes.string.isRequired,
 };
