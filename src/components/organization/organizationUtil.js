@@ -1,3 +1,11 @@
+import {
+  loadOrganizationAction,
+  organizationErrorAction,
+} from "../../redux/organization/organizationAction";
+import { store } from "../../redux/store";
+import api from "../../utility/api";
+import "../../utility/utility.styles.scss";
+
 export const thumb = {
   borderRadius: 2,
   padding: 4,
@@ -14,10 +22,9 @@ export const thumb = {
 
 export const thumbInner = {
   minWidth: 0,
-  width: "88px",
-  maxWidth: "104px",
+  width: "70%",
+  maxWidth: "70%",
   height: "auto",
-  border: "1px solid #fcfdfd",
   overflow: "hidden",
   display: "flex",
   alignItems: "center",
@@ -25,7 +32,24 @@ export const thumbInner = {
 };
 
 export const img = {
+  border: "1px solid #fcfdfd",
   width: "100%",
   height: "auto",
   // objectFit: "cover",
+};
+
+export const loadOrganization = async (organizationId, userId) => {
+  const url = `organizations/${organizationId}/users/${userId}`;
+  try {
+    const response = await api.get(url);
+    if (response) {
+      // console.log("get current organization call", response);
+      store.dispatch(loadOrganizationAction(response.data.data.organization));
+    }
+  } catch (err) {
+    if (err) {
+      console.log(err);
+      store.dispatch(organizationErrorAction());
+    }
+  }
 };

@@ -75,7 +75,7 @@ export default function MyOrganizations() {
                   {item.organization.logo ? (
                     <>
                       <img
-                        src={`${item.organization.logo[0]?.Location}`}
+                        src={`${item.organization.logo[0].Location}`}
                         alt="Logo"
                         className="org-logo"
                       />

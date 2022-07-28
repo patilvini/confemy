@@ -1,0 +1,129 @@
+@import "./utility.styles.scss";
+
+// body styles
+
+body {
+  font-family: Avenir, sans-serif;
+}
+
+// Heading styles
+
+.huge-title {
+  font-family: Avenir;
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 1;
+  color: $primary;
+}
+
+// h1 = Page-Title in zeplin project
+
+h1 {
+  font-family: Avenir-Heavy;
+  font-size: 40px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: 0.25px;
+  color: $primary;
+}
+
+// h2 = Section-title-1 in zeplin project
+
+h2 {
+  font-family: Avenir-Heavy;
+  font-size: 30px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
+  color: $confemy-black;
+}
+
+// h3 = Heading in zeplin project
+
+h3 {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+// h4 = Subheading in zeplin project
+
+h4 {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.body-bold {
+  font-family: Avenir;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.33;
+  letter-spacing: 0.2px;
+  color: $gray-3;
+}
+
+.body-regular-gray3 {
+  @include body-regular-gray3;
+}
+
+.caption-1-regular-gray3 {
+  @include caption-1-regular;
+  color: $gray-3;
+}
+
+.caption-1-regular-cblack {
+  @include caption-1-regular;
+  color: $confemy-black;
+}
+
+.caption-1-medium-primary {
+  @include caption-1-medium;
+  color: $primary;
+}
+
+.caption-1-medium-cblack {
+  @include caption-1-medium;
+  color: $confemy-black;
+}
+
+.caption-1-heavy-primary {
+  @include caption-1-heavy;
+  color: $primary;
+}
+
+.caption-2-bold-cblack {
+  @include caption-2-bold;
+  color: $confemy-black;
+}
+
+.caption-2-bold-gray3 {
+  @include caption-2-bold;
+  color: $gray-3;
+}
+
+.caption-2-regular-gray3 {
+  @include caption-2-regular;
+  color: $gray-3;
+}
+
+.caption-3 {
+  font-family: Avenir-Roman;
+  font-size: 12px;
+}
+
+// Some other font styles
+
+// avenir-roman-18-used for footer links
+
+.avenir-roman-18 {
+  font-family: Avenir-Roman;
+  font-size: 18px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
+}

@@ -1,6 +1,7 @@
 function CameraIcon({ className }) {
   return (
     <svg
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
       width="71"
       height="70"

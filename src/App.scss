@@ -1,5 +1,7 @@
 @import "./utility/utility.styles.scss";
 @import "./utility/form.styles.scss";
+@import "./utility/font.styles.scss";
+@import "./utility/button.styles.scss";
 
 /* Universal set up */
 
@@ -52,134 +54,6 @@ a {
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-}
-
-// body styles
-
-body {
-  font-family: Avenir, sans-serif;
-}
-
-// Heading styles
-
-.huge-title {
-  font-family: Avenir;
-  font-size: 50px;
-  font-weight: 900;
-  line-height: 1;
-  color: $primary;
-}
-
-// h1 = Page-Title in zeplin project
-
-h1 {
-  font-family: Avenir-Heavy;
-  font-size: 40px;
-  font-weight: 900;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.2;
-  letter-spacing: 0.25px;
-  color: $primary;
-}
-
-// h2 = Section-title-1 in zeplin project
-
-h2 {
-  font-family: Avenir-Heavy;
-  font-size: 30px;
-  font-weight: 900;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  letter-spacing: 0.01px;
-  color: $confemy-black;
-}
-
-// h3 = Heading in zeplin project
-
-h3 {
-  font-size: 24px;
-  font-weight: 900;
-}
-
-// h4 = Subheading in zeplin project
-
-h4 {
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.body-bold {
-  font-family: Avenir;
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1.33;
-  letter-spacing: 0.2px;
-  color: $gray-3;
-}
-
-.body-regular-gray3 {
-  @include body-regular-gray3;
-}
-
-.caption-1-regular-gray3 {
-  @include caption-1-regular;
-  color: $gray-3;
-}
-
-.caption-1-regular-cblack {
-  @include caption-1-regular;
-  color: $confemy-black;
-}
-
-.caption-1-medium-primary {
-  @include caption-1-medium;
-  color: $primary;
-}
-
-.caption-1-medium-cblack {
-  @include caption-1-medium;
-  color: $confemy-black;
-}
-
-.caption-1-heavy-primary {
-  @include caption-1-heavy;
-  color: $primary;
-}
-
-.caption-2-bold-cblack {
-  @include caption-2-bold;
-  color: $confemy-black;
-}
-
-.caption-2-bold-gray3 {
-  @include caption-2-bold;
-  color: $gray-3;
-}
-
-.caption-2-regular-gray3 {
-  @include caption-2-regular;
-  color: $gray-3;
-}
-
-.caption-3 {
-  font-family: Avenir-Roman;
-  font-size: 12px;
-}
-
-// Some other font styles
-
-// avenir-roman-18-used for footer links
-
-.avenir-roman-18 {
-  font-family: Avenir-Roman;
-  font-size: 18px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  letter-spacing: 0.01px;
 }
 
 // background color classes
@@ -281,9 +155,39 @@ h4 {
   text-align: center;
 }
 
+// flexbox, vertical center
+
+.flex-vc {
+  display: flex;
+  align-items: center;
+}
+// flexbox, horizontal center
+
+.flex-hc {
+  display: flex;
+  justify-content: center;
+}
+
+// flexbox, vertical center, horizontal center
+
+.flex-vchc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// regular icon size
+
 .icon-size {
   width: 2.4rem;
   height: 2.4rem;
+}
+
+// large icon size
+
+.large-icon {
+  width: 2.8rem;
+  height: 2.8rem;
 }
 
 .right-input-icon {
@@ -309,11 +213,6 @@ h4 {
   transform: translateY(-50%);
   transform-origin: left top;
   pointer-events: none;
-}
-
-.large-icon {
-  width: 2.8rem;
-  height: 2.8rem;
 }
 
 // modal classes
@@ -413,7 +312,17 @@ $spaceamounts: (
   37,
   38,
   39,
-  40
+  40,
+  44,
+  48,
+  52,
+  56,
+  60,
+  64,
+  68,
+  72,
+  76,
+  80
 );
 
 @each $space in $spaceamounts {
@@ -480,189 +389,6 @@ $spaceamounts: (
   .pb-#{$space} {
     padding-bottom: #{$space}px;
   }
-}
-
-// buttons
-
-@mixin button-text {
-  font-family: Avenir;
-  font-size: 16px;
-  font-weight: 900;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  letter-spacing: 0.41px;
-  text-align: center;
-  color: $colour-white;
-}
-
-.button {
-  display: inline-block;
-  outline: none;
-  border: 2px solid black;
-  cursor: pointer;
-  transition: all 0.12s ease-in;
-  min-width: 1.6rem;
-  padding: 1.6rem 3.2rem;
-  border-radius: 4px;
-  @include button-text;
-
-  &.button-green {
-    background: $accent;
-    border-color: $accent;
-    &:hover {
-      background-color: #45a93e;
-      border-color: #45a93e;
-    }
-    &:active {
-      background-color: #3c9436;
-      border-color: #3c9436;
-    }
-  }
-  &.button-secondary {
-    background: $shade-4;
-    border-color: $shade-4;
-    &:hover {
-      background: $shade-2;
-      border-color: $shade-2;
-    }
-  }
-
-  &.button-primary {
-    background: $primary;
-    border-color: $primary;
-    &:hover {
-      background: #073b54;
-      border-color: #073b54;
-    }
-    &:active {
-      background-color: #063449;
-      border-color: #063449;
-    }
-  }
-}
-
-.button-text {
-  display: inline-block;
-  border: 2px solid $shade-3;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.12s ease-in;
-  background-color: $shade-3;
-  @include button-text;
-
-  min-width: 1rem;
-  padding: 1.8rem 3.4rem;
-  border-radius: 4px;
-
-  &.button-text-primary {
-    color: $primary;
-
-    &:hover {
-      background: $shade-1;
-      border: 2px solid $shade-1;
-    }
-  }
-}
-
-.button-outlined {
-  display: inline-block;
-  outline: none;
-  border: 2px solid black;
-  cursor: pointer;
-  transition: all 0.12s ease-in;
-  min-width: 10rem;
-  padding: 1.6rem 3.2rem;
-  border-radius: 4px;
-  @include button-text;
-  background-color: #fff;
-
-  &.button-outlined-primary {
-    color: $primary;
-    border-color: $primary;
-
-    &:hover {
-      color: #073b54;
-      border-color: #073b54;
-    }
-    &:active {
-      color: #063449;
-      border-color: #063449;
-    }
-  }
-
-  &.button-outlined-green {
-    color: $accent;
-    border-color: $accent;
-
-    &:hover {
-      color: #45a93e;
-      border-color: #45a93e;
-    }
-    &:active {
-      color: #3c9436;
-      border-color: #3c9436;
-    }
-  }
-}
-
-// create conference form  buttons
-
-.button-outlined-inactive {
-  display: inline-block;
-  outline: none;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: all 0.12s ease-in;
-  min-width: 10rem;
-  padding: 16px 32px;
-  border-radius: 4px;
-  // background-color: #fff;
-  // text style
-
-  font-family: Avenir-Roman;
-  opacity: 0.6;
-  font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: 0.01px;
-  text-align: center;
-  color: $confemy-black;
-
-  &:hover {
-    color: #45a93e;
-    border-color: #45a93e;
-  }
-}
-
-.button-outlined-active {
-  display: inline-block;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.12s ease-in;
-  min-width: 10rem;
-  padding: 16px 32px;
-  border-radius: 4px;
-  // border: 1px solid rgba(0, 0, 0, 0.2);
-  // background-color: #fff;
-  border: solid 1px #00529b;
-  background-color: $shade-2;
-
-  // text styles
-
-  opacity: 0.87;
-  font-family: Avenir-Heavy;
-  font-size: 16px;
-  font-weight: 900;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: 0.01px;
-  text-align: center;
-
-  color: #00529b;
 }
 
 // transition classes

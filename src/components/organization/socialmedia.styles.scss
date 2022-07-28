@@ -1,0 +1,45 @@
+@import "../../utility//utility.styles.scss";
+
+.social-display-grid {
+  width: 100%;
+  // margin-bottom: 16px;
+  margin-top: 40px;
+
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  grid-template-rows: auto;
+  column-gap: 8px;
+  align-items: center;
+
+  & > div:nth-child(2) {
+    max-width: 300px;
+    justify-self: end;
+  }
+
+  & > div:last-child {
+    justify-self: end;
+  }
+  p {
+    font-family: Avenir-Heavy;
+  }
+}
+
+.ellipsis-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.social-delete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: inherit;
+  width: 24px;
+  height: 24px;
+
+  &:hover {
+    background-color: $shade-1;
+  }
+}
