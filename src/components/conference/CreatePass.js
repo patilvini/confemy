@@ -10,6 +10,7 @@ import Modal from "../modal/Modal";
 import TextInput from "../formik/TextInput";
 import RadioButtons from "../formik/RadioButtons";
 import TextError from "../formik/TextError";
+import "./createPass.scss";
 
 const validationSchema = yup.object({
   passName: yup.string().required("Required"),
@@ -23,9 +24,6 @@ const validationSchema = yup.object({
 //   // currency: yup.string().required("Required"),
 // });
 
-
-
-
 const initialValues = {
   type: "",
   passName: "",
@@ -36,37 +34,30 @@ const initialValues = {
   saleStartDate: "",
 };
 
-const currencies = [{value:"USD", label:"USD"}, {value:"INR", label:"INR"}, {value:"EUR", label:"EUR"}]
+const currencies = [
+  { value: "USD", label: "USD" },
+  { value: "INR", label: "INR" },
+  { value: "EUR", label: "EUR" },
+];
 
 export default function CreatePass() {
+  const [tickets, setTickets] = useState([]);
 
-const [tickets, setTickets] = useState([])
-
-  useEffect(()=>{
-    
-    const call = async ()=>{
-
-      try{
-        const r = await api.get("conferences/62a0be470ba7277038691ed2")
-        setTickets(r.data.data.conferences.tickets)
-        console.log(r.data.data.conferences.tickets)
-
-      } catch(err){
-        console.log(err)
+  useEffect(() => {
+    const call = async () => {
+      try {
+        const r = await api.get("conferences/62e0f66f9f2a6559fceca71a");
+        setTickets(r.data.data.conferences.tickets);
+        console.log(r.data.data);
+      } catch (err) {
+        console.log(err);
       }
-      
+    };
 
-    
-    } 
-
-    call()
-  }, [])
-
-
+    call();
+  }, []);
 
   const [disabled, setdisabled] = useState(false);
-
-  
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -91,99 +82,99 @@ const [tickets, setTickets] = useState([])
       quantity: values.quantity,
       price: values.price,
       saleStartDate: values.saleStartDate,
-      conferenceId: "62a0be470ba7277038691ed2",
+      conferenceId: "62e0f66f9f2a6559fceca71a",
     };
 
     console.log(ticketDetails);
 
-    // try {
-    //   const r = await api.post("/conferences/step5", { ticketDetails });
-    //   console.log(r);
-    //   setVisibitly(false)
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      const r = await api.post("/conferences/step5", { ticketDetails });
+      console.log(r);
+      setVisibitly(false)
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
     <div className="conf-form-wrap">
-
       <div>
-        <table>
+        <h2>Passes</h2>
+        <table className="ticketsTable">
           <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Quantity</th>
-            <th>Sales Start</th>
-            <th>Price</th>
-            <th>Currency</th>
-            <th>Information</th>
-          </tr>
+            <tr>
+              <th style={{ width: "400px" }}>Pass</th>
 
+              <th>QTY.</th>
+
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
           </thead>
-          
+
           <tbody>
-          {tickets.map((item)=>{
-            return(
-              <tr key={item._id}>
-                <td>{item.name}</td>
-                <td>{item.type}</td>
-                <td>{item.quantity}</td>
-                <td>{item.saleStart}</td>
-                <td>{item.price}</td>
-                <td>{item.currency}</td>
-                <td>{item.info}</td>
+            {tickets.map((item) => {
+              return (
+                <tr key={item._id}>
+                  <td>{item.name}</td>
 
-              </tr>
-            )
-          })}
+                  <td>{item.quantity}</td>
 
+                  <td>
+                    {item.currency} {item.price}
+                  </td>
+
+                  <td>
+                    <button>Action</button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
-          
         </table>
-
       </div>
-      <button className="" onClick={() => onOpen()}>
-        Add Pass
+      <button className="button button-primary" onClick={() => onOpen()}>
+        Add Passes
       </button>
       {visibility && (
         <Modal onDismiss={onClose}>
           <div className="register-modal white-modal">
             <div className="modal-form-wrapper">
               <form onSubmit={formik.handleSubmit} className="form-type-1">
-                <div className="input-container">
-                  <button
-                    type="button"
-                    id="free"
-                    name="type"
-                    value="FREE"
-                    onClick={() => {
-                      formik.setFieldValue("type", "FREE");
-                      formik.setFieldValue("currency", 'none')
-                      formik.setFieldValue("price", 0);
-                      
+                <div className="flex-container">
+                  <div className="flex-item">
+                    <button
+                      type="button"
+                      id="free"
+                      name="type"
+                      value="FREE"
+                      className="button button-primary"
+                      onClick={() => {
+                        formik.setFieldValue("type", "FREE");
+                        formik.setFieldValue("currency", "none");
+                        formik.setFieldValue("price", 0);
 
-                      setdisabled(true);
-                    }}
-                  >
-                    Free
-                  </button>
-
-                  <br />
-                  <button
-                    type="button"
-                    id="paid"
-                    name="type"
-                    value="PAID"
-                    onClick={() => {
-                      formik.setFieldValue("type", "PAID");
-                      setdisabled(false);
-                      
-                    }}
-                  >
-                    Paid
-                  </button>
+                        setdisabled(true);
+                      }}
+                    >
+                      Free
+                    </button>
+                  </div>
+                  <div className="flex-item">
+                    <button
+                      type="button"
+                      id="paid"
+                      name="type"
+                      className="button button-green"
+                      value="PAID"
+                      onClick={() => {
+                        formik.setFieldValue("type", "PAID");
+                        setdisabled(false);
+                      }}
+                    >
+                      Paid
+                    </button>
+                  </div>
                 </div>
 
                 <div className="input-container">
@@ -226,7 +217,6 @@ const [tickets, setTickets] = useState([])
                 <div className="input-container">
                   <Select
                     isDisabled={disabled}
-                    
                     label="currency"
                     name="currency"
                     options={currencies}
@@ -254,17 +244,33 @@ const [tickets, setTickets] = useState([])
                   )}
                 </div>
                 <div className="input-container">
-                  <input type="date" name="saleStartDate" onChange={formik.handleChange} />
+                  <input
+                    type="date"
+                    name="saleStartDate"
+                    onChange={formik.handleChange}
+                  />
                   {formik.touched.saleStartDate &&
                     Boolean(formik.errors.saleStartDate) && (
                       <TextError>{formik.errors.saleStartDate}</TextError>
                     )}
                 </div>
 
-                <button type="submit">submit</button>
-                <button typr="button" onClick={() => setVisibitly(false)}>
-                  cancel
-                </button>
+                <div className="flex-container">
+                  <div className="flex-item">
+                    <button
+                      className="button button-secondary"
+                      type="button"
+                      onClick={() => setVisibitly(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div className="flex-item">
+                    <button className="button button-primary" type="submit">
+                      Submit
+                    </button>
+                  </div>
+                </div>
               </form>
             </div>
           </div>

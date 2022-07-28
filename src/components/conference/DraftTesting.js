@@ -79,14 +79,14 @@ export default function DraftTesting() {
     console.log(text)
     let contents = text
   
-    console.log(convertedContent)
+   
     
-    // try{
-    //    const res = await api.post('/conferences/draft', {contents})
-    //    console.log(res)
-    // } catch (err){
-    //     console.log(err)
-    // }
+    try{
+       const res = await api.post('/conferences/draft', {contents})
+       console.log(res)
+    } catch (err){
+        console.log(err)
+    }
 
   }
 
@@ -111,16 +111,10 @@ export default function DraftTesting() {
             }}
            
             
-            // toolbarClassName="toolbarClassName"
-            // wrapperClassName="wrapperClassName"
-            // editorClassName="editorClassName"
-            // onChange={(e) => {
-              
-            //   setText(editorState.getCurrentContent())
-            //   let currentC = setText(convertToRaw(text))
-              
+            toolbarClassName="toolbarClassName"
+            wrapperClassName="wrapperClassName"
+            editorClassName="editorClassName"
            
-            // }}
           />
         </div>
       </div>

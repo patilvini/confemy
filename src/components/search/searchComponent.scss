@@ -1,0 +1,48 @@
+.sidenav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index:0;
+    top: 0;
+    left: 0;
+    background-color: #fafbfc;
+    overflow-x: hidden;
+    // padding-top: 10rem;
+    margin-top: 7rem;
+  }
+  
+  .sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+  }
+
+  .sidenav h2 {
+    padding: 6px 8px 6px 16px;
+    
+    display: block;
+  }
+
+  .sidenav li {
+    padding: 6px 8px 6px 16px;
+    
+    display: block;
+  }
+  
+
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+
+  .search-nav {
+    margin-left: 160px; /* Same as the width of the sidenav */
+  
+    padding: 0px 2rem;
+  }
+
+  .accordion-button{
+    border: none;
+    background-color: #fafbfc;
+  }
