@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
+
 import api from "../../utility/api";
 import "./saveInput.styles.scss";
 import { loadOrganization } from "./organizationUtil";
@@ -100,3 +102,10 @@ export default function SaveInput({
     </form>
   );
 }
+
+SaveInput.propTypes = {
+  label: PropTypes.string,
+  inputName: PropTypes.string.isRequired,
+  inputApiValue: PropTypes.string,
+  organizationId: PropTypes.string.isRequired,
+};

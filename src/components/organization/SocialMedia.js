@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
+
 import api from "../../utility/api";
 import CloseIcon from "../icons/CloseIcon";
 import { loadOrganization } from "./organizationUtil";
@@ -153,3 +155,12 @@ export default function SocialMedia({
     </>
   );
 }
+
+SocialMedia.propTypes = {
+  socialMediaIcon: PropTypes.func,
+  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  removeName: PropTypes.string.isRequired,
+  socialMediaApiValue: PropTypes.string,
+  organizationId: PropTypes.string.isRequired,
+};

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import api from "../../utility/api";
 import { loadOrganization } from "./organizationUtil";
 import "./saveInput.styles.scss";
@@ -29,7 +30,6 @@ export default function AddOrganizer({ organizationId }) {
         organizerDetails,
       });
       if (response) {
-        console.log("organizer Submit resp", response);
         loadOrganization(organizationId, user._id);
         setInputValue("");
         setShowButtons(false);
@@ -51,10 +51,6 @@ export default function AddOrganizer({ organizationId }) {
     setShowButtons(false);
     textInputRef.current.style.paddingBottom = "1.6rem";
   };
-
-  // useEffect(() => {
-  //   setInputValue(inputApiValue);
-  // }, [inputApiValue]);
 
   return (
     <form className="form-type-1" onSubmit={handleInputSubmit}>
@@ -96,3 +92,7 @@ export default function AddOrganizer({ organizationId }) {
     </form>
   );
 }
+
+AddOrganizer.propTypes = {
+  organizationId: PropTypes.string.isRequired,
+};

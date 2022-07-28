@@ -38,9 +38,9 @@ import CreateOrgs from "./pages/organizer-profile-page/CreateOrgs";
 import CreateOrganizationPage from "./pages/organization-pages/CreateOrganizationPage";
 import VerifyManagerPage from "./pages/verify-manager-page/VerifyManagerPage";
 import MyOrganizationsPage from "./pages/organization-pages/MyOrganizationsPage";
-import MyOrganizationDetailsPage from "./pages/organization-pages/MyOrganizationDetailsPage";
+import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDetailsPage";
 
-import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
+import MyOrganizationDetails from "./components/organization/OrganizationDetails";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -95,7 +95,7 @@ const App = () => {
               ></Route>
               <Route
                 path="my-organizations/:organizationId"
-                element={<MyOrganizationDetailsPage />}
+                element={<OrganizationDetailsPage />}
               ></Route>
             </Route>
             <Route path="/verify/:token" element={<VerifyManagerPage />} />
