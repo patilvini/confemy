@@ -24,7 +24,7 @@
 .flex-container{
     display: flex;
     flex-wrap: wrap;
-    text-align: center;
+    // text-align: center;
 }
 
 .drag-box{
@@ -44,4 +44,8 @@
     letter-spacing: 0.2px;
     text-align: center;
     color: lightgray;
+  }
+
+  .flex-item{
+    padding: 1.5rem
   }
