@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import CameraIcon from "../icons/CameraIcon";
 import { useDropzone } from "react-dropzone";
 import { thumb, thumbInner, img, loadOrganization } from "./organizationUtil";
+import { loadOrganizationAction } from "../../redux/organization/organizationAction";
+
 import "./createOrganization.styles.scss";
 
 import api from "../../utility/api";
@@ -13,6 +15,7 @@ export default function LogoUploader({ apiLogo, organizationId }) {
   const [showButtons, setShowButtons] = useState(false);
 
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
 
   const myDropZone = useDropzone({
     accept: {
@@ -60,18 +63,20 @@ export default function LogoUploader({ apiLogo, organizationId }) {
     formDataObj.append("file", files[0]);
     try {
       const imagesResponse = await api.post("fileUploads", formDataObj);
-
       if (imagesResponse) {
         const data = {
           organization: {
             logo: imagesResponse.data.data,
+            user: user._id,
           },
         };
         const url = `organizations/${organizationId}`;
         const response = await api.patch(url, data);
         if (response) {
           setShowButtons(false);
-          loadOrganization(organizationId, user._id);
+          console.log("logo patched res", response);
+          dispatch(loadOrganizationAction(response.data.data.organization));
+          // loadOrganization(organizationId, user._id);
         }
       }
     } catch (err) {

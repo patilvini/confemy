@@ -1,11 +1,13 @@
 import { useRef, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import api from "../../utility/api";
 import CloseIcon from "../icons/CloseIcon";
-import { loadOrganization } from "./organizationUtil";
+
 import { capitalize } from "../../utility/commonUtil";
+
+import { loadOrganizationAction } from "../../redux/organization/organizationAction";
 
 import "./socialmedia.styles.scss";
 
@@ -21,6 +23,8 @@ export default function SocialMedia({
   const [inputValue, setInputValue] = useState("");
 
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+
   const socialInputRef = useRef();
 
   function handleInputChange(e) {
@@ -33,13 +37,16 @@ export default function SocialMedia({
       const key = name;
       const formData = {
         organization: {
+          user: user._id,
           [key]: inputValue,
         },
       };
       const url = `organizations/${organizationId}`;
       const response = await api.patch(url, formData);
       if (response) {
-        loadOrganization(organizationId, user._id);
+        setInputValue("");
+        socialInputRef.current.value = "";
+        dispatch(loadOrganizationAction(response.data.data.organization));
         setShowInput(false);
         socialInputRef.current.style.paddingBottom = "1.6rem";
       }
@@ -55,7 +62,7 @@ export default function SocialMedia({
   }
 
   const handleInputCancel = () => {
-    setInputValue(socialMediaApiValue);
+    setInputValue("");
     setShowInput(false);
     socialInputRef.current.style.paddingBottom = "1.6rem";
   };
@@ -65,26 +72,21 @@ export default function SocialMedia({
       const key = removeName;
       const formData = {
         organization: {
+          user: user._id,
           [key]: true,
         },
       };
       const url = `organizations/${organizationId}`;
-
-      console.log("url", url);
-      console.log("formData", formData);
       const response = await api.patch(url, formData);
       if (response) {
-        setInputValue("");
-        loadOrganization(organizationId, user._id);
+        setInputValue(" ");
+        socialInputRef.current.value = "";
+        dispatch(loadOrganizationAction(response.data.data.organization));
       }
     } catch (err) {
       console.log(err.response?.data.message);
     }
   };
-
-  useEffect(() => {
-    setInputValue(socialMediaApiValue);
-  }, [socialMediaApiValue]);
 
   return (
     <>
@@ -123,8 +125,15 @@ export default function SocialMedia({
       <form
         onSubmit={handleInputSubmit}
         className={showInput ? " form-type-1 mt-8 " : "display-none"}
+        autoComplete="off"
       >
         <div className="material-textfield">
+          <input
+            autoComplete="false"
+            name="hidden"
+            type="text"
+            style={{ display: "none" }}
+          />
           <input
             ref={socialInputRef}
             id={name}
@@ -157,7 +166,7 @@ export default function SocialMedia({
 }
 
 SocialMedia.propTypes = {
-  socialMediaIcon: PropTypes.func,
+  socialMediaIcon: PropTypes.object,
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
   removeName: PropTypes.string.isRequired,

@@ -1,20 +1,25 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import api from "../../utility/api";
 import CloseIcon from "../icons/CloseIcon";
 import { loadOrganization } from "./organizationUtil";
+import { loadOrganizationAction } from "../../redux/organization/organizationAction";
 
 import "./showOrganizers.styles.scss";
 
 export default function ShowOrganizers({ organizers, organizationId }) {
   const user = useSelector((state) => state.auth.user);
 
+  const dispatch = useDispatch();
+
   const removeOrganizer = async (orgnizerId) => {
     const url = `organizations/${organizationId}/organizers/${orgnizerId}/users/${user._id}`;
-    console.log("url remove orgnizer", url);
+
     try {
       const response = await api.delete(url);
-      if (response) loadOrganization(organizationId, user._id);
+      // if (response) loadOrganization(organizationId, user._id);
+      if (response)
+        dispatch(loadOrganizationAction(response.data.data.organization));
     } catch (err) {
       console.log(err.response?.data.message);
     }

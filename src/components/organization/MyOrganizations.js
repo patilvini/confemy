@@ -17,22 +17,19 @@ export default function MyOrganizations() {
   const myOrganizations = useSelector((state) => state.myOrganizations);
   const { isLoading, isError, organizations } = myOrganizations;
 
-  const getMyOrganizations = useCallback(
-    async (id) => {
-      const url = `organizations/users/${id}`;
-      try {
-        const response = await api.get(url);
-        if (response) {
-          dispatch(loadMyOrganizationsAction(response.data.data.organization));
-        }
-      } catch (err) {
-        if (err) {
-          dispatch(myOrganizationsErrorAction());
-        }
+  const getMyOrganizations = useCallback(async (id) => {
+    const url = `organizations/users/${id}`;
+    try {
+      const response = await api.get(url);
+      if (response) {
+        dispatch(loadMyOrganizationsAction(response.data.data.organization));
       }
-    },
-    [id]
-  );
+    } catch (err) {
+      if (err) {
+        dispatch(myOrganizationsErrorAction());
+      }
+    }
+  }, []);
 
   useEffect(() => {
     getMyOrganizations(user?._id);

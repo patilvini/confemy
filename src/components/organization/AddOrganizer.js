@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import api from "../../utility/api";
 import { loadOrganization } from "./organizationUtil";
+import { loadOrganizationAction } from "../../redux/organization/organizationAction";
+
 import "./saveInput.styles.scss";
 
 export default function AddOrganizer({ organizationId }) {
@@ -11,6 +13,8 @@ export default function AddOrganizer({ organizationId }) {
   const [errorMsg, setErrorMsg] = useState("");
 
   const user = useSelector((state) => state.auth.user);
+
+  const dispatch = useDispatch();
 
   const textInputRef = useRef();
 
@@ -22,6 +26,7 @@ export default function AddOrganizer({ organizationId }) {
     const organizerDetails = {
       email: inputValue,
       organizationId,
+      user: user._id,
     };
     e.preventDefault();
 
@@ -30,7 +35,8 @@ export default function AddOrganizer({ organizationId }) {
         organizerDetails,
       });
       if (response) {
-        loadOrganization(organizationId, user._id);
+        dispatch(loadOrganizationAction(response.data.data.organization));
+        // loadOrganization(organizationId, user._id);
         setInputValue("");
         setShowButtons(false);
         textInputRef.current.style.paddingBottom = "1.6rem";
@@ -53,7 +59,12 @@ export default function AddOrganizer({ organizationId }) {
   };
 
   return (
-    <form className="form-type-1" onSubmit={handleInputSubmit}>
+    <form
+      autoComplete="off"
+      autoCorrect="off"
+      className="form-type-1"
+      onSubmit={handleInputSubmit}
+    >
       <div className="material-textfield">
         <input
           ref={textInputRef}

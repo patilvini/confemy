@@ -1,11 +1,13 @@
 import { useRef, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import api from "../../utility/api";
-import "./saveInput.styles.scss";
-import { loadOrganization } from "./organizationUtil";
 
+import { loadOrganization } from "./organizationUtil";
+import { loadOrganizationAction } from "../../redux/organization/organizationAction";
+
+import "./saveInput.styles.scss";
 export default function SaveInput({
   label,
   inputName,
@@ -17,6 +19,7 @@ export default function SaveInput({
   const [errorMsg, setErrorMsg] = useState("");
 
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
   const textInputRef = useRef();
 
   function handleInputChange(e) {
@@ -28,6 +31,7 @@ export default function SaveInput({
     const key = inputName;
     const formData = {
       organization: {
+        user: user._id,
         [key]: inputValue,
       },
     };
@@ -37,7 +41,7 @@ export default function SaveInput({
     try {
       const response = await api.patch(url, formData);
       if (response) {
-        loadOrganization(organizationId, user._id);
+        dispatch(loadOrganizationAction(response.data.data.organization));
         setShowButtons(false);
         textInputRef.current.style.paddingBottom = "1.6rem";
       }
@@ -63,8 +67,18 @@ export default function SaveInput({
   }, [inputApiValue]);
 
   return (
-    <form className="form-type-1" onSubmit={handleInputSubmit}>
+    <form
+      autoComplete="off"
+      className="form-type-1"
+      onSubmit={handleInputSubmit}
+    >
       <div className="material-textfield">
+        <input
+          autoComplete="false"
+          name="hidden"
+          type="text"
+          style={{ display: "none" }}
+        />
         <input
           ref={textInputRef}
           id={inputName}
