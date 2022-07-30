@@ -6,8 +6,10 @@ export default function PriceSelect({close}){
         <button onClick={close} className="filter-back-button">
         <BackIcon className="icon-size" /> 
         Filters
-
         </button>
+        <h3 className="component-title">Price</h3>
+
+        
         
         
         </>

@@ -1,7 +1,7 @@
 import Select from "react-select";
 import BackIcon from "../icons/BackIcon"
 import NextIcon from "../icons/NextIcon";
-export default function CreditsSelect({close}) {
+export default function CreditsSelect({close, setValue}) {
   const options = [
     { value: "physician", label: "Physician" },
     { value: "physicianAssistant", label: "Physician Assistant" },
@@ -26,12 +26,27 @@ export default function CreditsSelect({close}) {
         Filters
       </button>
 
+      <h3 className="component-title">Credits</h3>
+
+
+      {/* <h4 style={{marginTop:'2rem'}} className="component-label">Type</h4> */}
       <Select
         isMulti
         options={options}
         className="select-input"
-        onChange={(e) => console.log(e.value)}
+        onChange={(e) => setValue(e)}
+        theme={(theme) => ({
+          ...theme,
+          borderRadius: 5,
+          colors: {
+            ...theme.colors,
+            primary25: '#4cb944',
+            primary: '#08415c',
+          },
+        })}
+       
       />
+      
     </>
   );
 }

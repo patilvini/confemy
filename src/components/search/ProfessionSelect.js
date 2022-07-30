@@ -20,18 +20,34 @@ const options = [
 
 
 
-export default function ProfessionSelect({close}){
+export default function ProfessionSelect({close, setValue}){
+
+
+  
+
+
     return (<>
     <button className="filter-back-button" onClick={close}>
     <BackIcon className="icon-size"/> 
-        Filters
+         Filters
 
     </button>
+
+    <h3 className="component-title">Profession</h3>
     
     <Select
                 options={options}
                 className="select-input"
-                onChange={(e) => console.log(e.value)}
+                theme={(theme) => ({
+                  ...theme,
+                  borderRadius: 5,
+                  colors: {
+                    ...theme.colors,
+                    primary25: '#4cb944',
+                    primary: '#08415c',
+                  },
+                })}
+                onChange={(e) => setValue(e)}
               />
     
     </>)

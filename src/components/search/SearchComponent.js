@@ -14,6 +14,8 @@ import LocationSelect from "./LocationSelect";
 import ProfessionSelect from './ProfessionSelect'
 import CreditsSelect from "./CreditsSelect";
 import PriceSelect from "./PriceSelect";
+import CreditsTabButton from "./CreditsTabButton";
+import BackIcon from "../icons/BackIcon";
 
 export default function SearchComponent() {
   const [data, setData] = useState([]);
@@ -24,6 +26,13 @@ export default function SearchComponent() {
   const [specialityVisibility, setSpecialityVisibility] = useState(false)
   const [creditsVisibility, setCreditsVisibility] = useState(false)
   const [priceVisibility, setPriceVisibility] = useState(false)
+
+  const [dateValue, setDateValue] = useState({})
+  const [locationValue, setLocationValue] = useState({})
+  const [professionValue, setProfessionValue] = useState({})
+  const [specialityValue, setSpecialityValue] = useState({})
+  const [creditsValue, setCreditsValue] = useState({})
+  const [priceValue, setPriceValue] = useState({})
 
   useEffect(() => {
     const loadData = async () => {
@@ -41,6 +50,8 @@ export default function SearchComponent() {
     loadData();
   }, []);
 
+
+
   return (
     <>
    
@@ -52,7 +63,14 @@ export default function SearchComponent() {
           </div>
           <div className="title-grid-item">
             <button
-              onClick={() => console.log("clear all")}
+              onClick={() => {
+                setDateValue({});
+                setLocationValue({});
+                setProfessionValue({});
+                setSpecialityValue({});
+                setCreditsValue({});
+                setPriceValue({});
+              }}
               className="clear-all-button"
             >
               Clear all
@@ -63,13 +81,13 @@ export default function SearchComponent() {
 
         <ul>
           <li>
-            {visibility && <TabButton name="Date" open={
+            {visibility && <TabButton selected={dateValue} name="Date" open={
               ()=>{
                 setVisibility(false)
                 setDateVisibility(true)
 
               }}/>}
-            {dateVisibility && <DateSelect close={()=>{
+            {dateVisibility && <DateSelect setValue={(value)=>setDateValue(value)} close={()=>{
               setVisibility(true)
               setDateVisibility(false)
               }}/> }
@@ -90,39 +108,39 @@ export default function SearchComponent() {
           </li>
           
           <li>
-          {visibility && <TabButton name="Profession" open={
+          {visibility && <TabButton selected={professionValue} name="Profession" open={
             ()=>{
               setVisibility(false)
               setProfessionVisibility(true)
 
             }}/>}
-            {professionVisibility && <ProfessionSelect close={()=>{
+            {professionVisibility && <ProfessionSelect  setValue={(value)=>{setProfessionValue(value)}} close={()=>{
               setVisibility(true)
               setProfessionVisibility(false)
               }}/> }
          
           </li>
           <li>
-          {visibility && <TabButton name="Speciality" open={
+          {visibility && <TabButton selected={specialityValue} name="Speciality" open={
             ()=>{
               setVisibility(false)
               setSpecialityVisibility(true)
 
             }}/>}
-            {specialityVisibility && <ProfessionSelect close={()=>{
+            {specialityVisibility && <ProfessionSelect setValue={(value)=>{setSpecialityValue(value)}} close={()=>{
               setVisibility(true)
               setSpecialityVisibility(false)
               }}/> }
          
           </li>
           <li>
-          {visibility && <TabButton name="Credits" open={
+          {visibility && <CreditsTabButton selected={creditsValue} name="Credits" open={
             ()=>{
               setVisibility(false)
               setCreditsVisibility(true)
 
             }}/>}
-            {creditsVisibility && <CreditsSelect close={()=>{
+            {creditsVisibility && <CreditsSelect setValue={(value)=>setCreditsValue(value)} close={()=>{
               setVisibility(true)
               setCreditsVisibility(false)
               }}/> }
@@ -146,6 +164,7 @@ export default function SearchComponent() {
       </div>
 
       <div className="search-nav">
+      <BackIcon className="icon-size" />
         <div className="flex-container">
           <div className="flex-item">
             <input

@@ -81,6 +81,16 @@
   color: $primary;
 }
 
+.component-title{
+  color: $primary;
+  margin-left: 1.5rem;
+}
+
+.component-label{
+  color: $gray-2
+
+}
+
 .tab-button{
   text-align: left;
   padding: .75rem 0;
@@ -93,6 +103,12 @@
   background-color: $shade-2;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
 
+}
+
+.tab-button-selected{
+  border-left: solid $accent .5rem;
+  background-color: white;
+  
 }
 
 .clear-all-button {
@@ -117,12 +133,13 @@
 
 .select-input{
   width:90%;
-  height: 5.5rem;
+  // height: 5.5rem;
   margin: 1.5rem 0;
   font-family: Avenir-Heavy;
   font-size: 1.5rem;
   border: none;
-  color: #757575;
+  color: black;
+  
 }
 
 
@@ -155,7 +172,7 @@
   border: none;
   background-color: #fafbfc;
   font-family: Avenir-Heavy;
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-align:left;
   
 }
