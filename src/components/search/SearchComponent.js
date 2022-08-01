@@ -79,36 +79,36 @@ export default function SearchComponent() {
         </div>}
         
 
-        <ul>
-          <li>
-            {visibility && <TabButton selected={dateValue} name="Date" open={
+        <div>
+          <div>
+            {visibility && <TabButton clear={()=>setDateValue({})} selected={dateValue} name="Date" open={
               ()=>{
                 setVisibility(false)
                 setDateVisibility(true)
 
               }}/>}
-            {dateVisibility && <DateSelect setValue={(value)=>setDateValue(value)} close={()=>{
+            {dateVisibility && <DateSelect setValue={(value)=>setDateValue(value)}  close={()=>{
               setVisibility(true)
               setDateVisibility(false)
               }}/> }
             
          
-          </li>
-          <li>
-          {visibility && <TabButton name="Location" open={
+          </div>
+          <div>
+          {visibility && <TabButton name="Location" clear={()=>setLocationValue({})} open={
             ()=>{
               setVisibility(false)
               setLocationVisibility(true)
 
             }}/>}
-          {locationVisibility && <LocationSelect close={()=>{
+          {locationVisibility && <LocationSelect  close={()=>{
             setVisibility(true)
             setLocationVisibility(false)
             }}/> }
-          </li>
+          </div>
           
-          <li>
-          {visibility && <TabButton selected={professionValue} name="Profession" open={
+          <div>
+          {visibility && <TabButton clear={()=>setProfessionValue({})} selected={professionValue} name="Profession" open={
             ()=>{
               setVisibility(false)
               setProfessionVisibility(true)
@@ -119,9 +119,9 @@ export default function SearchComponent() {
               setProfessionVisibility(false)
               }}/> }
          
-          </li>
-          <li>
-          {visibility && <TabButton selected={specialityValue} name="Speciality" open={
+          </div>
+          <div>
+          {visibility && <TabButton clear={()=>setSpecialityValue({})} selected={specialityValue} name="Speciality" open={
             ()=>{
               setVisibility(false)
               setSpecialityVisibility(true)
@@ -132,9 +132,9 @@ export default function SearchComponent() {
               setSpecialityVisibility(false)
               }}/> }
          
-          </li>
-          <li>
-          {visibility && <CreditsTabButton selected={creditsValue} name="Credits" open={
+          </div>
+          <div>
+          {visibility && <TabButton  clear={()=>setCreditsValue({})} selected={creditsValue} name="Credits" open={
             ()=>{
               setVisibility(false)
               setCreditsVisibility(true)
@@ -144,21 +144,21 @@ export default function SearchComponent() {
               setVisibility(true)
               setCreditsVisibility(false)
               }}/> }
-          </li>
-          <li>
-          {visibility && <TabButton name="Price" open={
+          </div>
+          <div>
+          {visibility && <TabButton selected={priceValue} clear={()=>setPriceValue({})} name="Price" open={
             ()=>{
               setVisibility(false)
               setPriceVisibility(true)
 
             }}/>}
-            {priceVisibility && <PriceSelect close={()=>{
+            {priceVisibility && <PriceSelect setValue={(value)=>setPriceValue(value)} close={()=>{
               setVisibility(true)
               setPriceVisibility(false)
               }}/> }
          
-          </li>
-        </ul>
+          </div>
+        </div>
 
         
       </div>

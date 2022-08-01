@@ -15,30 +15,7 @@
   border-right: solid lightgrey;
 }
 
-.sidenav a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-}
 
-.sidenav h2 {
-  padding: 6px 8px 6px 16px;
-
-  display: block;
-}
-
-.sidenav li {
-  padding: 6px 8px 6px 16px;
-
-  display: block;
-}
-
-
-// .sidenav a:hover {
-//   color: $primary;
-// }
 
 .search-nav {
   margin-left: 360px;
@@ -47,68 +24,97 @@
   padding: 0px 2rem;
 }
 
-.accordion-button {
+.title-grid {
+
   border: none;
   background-color: #fafbfc;
-  font-size: 1.8rem;
-  padding: 2rem 0rem;
-  color: $gray-2;
-}
-
-
-
-
-
-.title-grid {
-  
-  border: none;
-  background-color: #fafbfc ;
   font-family: Avenir-Heavy;
-  width:100%;
+  margin-left:1rem;
+  width: 95%;
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 60% 40%;
 
 }
 
 .title-grid-item {
+  margin-top: 1rem;
+  align-self: center;
 
-  margin: 0rem;
-  // border: solid red;
+
+  // border-top:1rem;
 }
 
-.title{
-  margin:4rem 2rem;
+.filter-component{
+  margin: 2.5rem;
+}
+
+.item {
+  margin-top: 1rem
+}
+
+.item-tab {
+  margin-top: 1rem
+}
+
+.item-icon {
+  
+  margin-left: 50%;
+
+
+
+}
+
+.filter-icon {
+  width: 1.5rem;
+}
+
+.delete-icon{
+  width:2rem;
+}
+
+.title {
+  margin: 4rem 2rem;
   color: $primary;
 }
 
-.component-title{
+.component-title {
   color: $primary;
   margin-left: 1.5rem;
 }
 
-.component-label{
-  color: $gray-2
+.component-label {
+  color: $gray-2;
+  margin-top: 1rem;
 
 }
 
-.tab-button{
-  text-align: left;
-  padding: .75rem 0;
-  color:$gray-2;
-  padding-left:2.5rem ;
+.tab-button {
+  
+  color: $gray-2;
+  padding-left: 2.5rem;
+  margin-top: 0.3rem;
+  
 
 }
 
-.tab-button:hover{
+.credits-button{
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+   
+}
+
+
+
+.tab-button:hover {
   background-color: $shade-2;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
 
 }
 
-.tab-button-selected{
+.tab-button-selected {
   border-left: solid $accent .5rem;
   background-color: white;
-  
+
 }
 
 .clear-all-button {
@@ -116,12 +122,12 @@
   margin-left: 7rem;
   margin-top: 5.5rem;
   color: #757575;
-  border:none;
+  border: none;
   background-color: #fafbfc;
 }
 
-.date-input{
-  width:90%;
+.date-input {
+  width: 90%;
   height: 5.5rem;
   padding: 1.5rem;
   margin: 1.5rem 0;
@@ -131,19 +137,19 @@
   color: #757575;
 }
 
-.select-input{
-  width:90%;
+.select-input {
+  width: 90%;
   // height: 5.5rem;
   margin: 1.5rem 0;
   font-family: Avenir-Heavy;
   font-size: 1.5rem;
   border: none;
   color: black;
-  
+
 }
 
 
-.buttons-date{
+.buttons-date {
   margin-top: 2.5rem;
   color: $gray-2;
   font-size: 1.5rem;
@@ -151,29 +157,26 @@
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
   width: 90%;
   border: none
-  
-
 }
 
 
-.buttons-date:hover{
-  
-  
+.buttons-date:hover {
+
+
   background-color: $shade-2;
 
-  
-  
+
+
 
 
 }
 
-.filter-back-button{
+.filter-back-button {
   color: $gray-2;
   border: none;
   background-color: #fafbfc;
   font-family: Avenir-Heavy;
-  font-size: 1.5rem;
-  text-align:left;
-  
-}
+  font-size: 1.8rem;
+  text-align: left;
 
+}

@@ -5,9 +5,9 @@ export default function DateSelect({ close, setValue }) {
   const [date, setStartDate] = useState();
 
   return (
-    <div>
+    <div className="filter-component">
       <button className="filter-back-button" onClick={close}>
-        <BackIcon className="icon-size" fill="#757575" />
+        <BackIcon className="filter-icon" fill="#757575" />
         Filters
       </button>
 

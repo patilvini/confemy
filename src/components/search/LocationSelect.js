@@ -4,7 +4,7 @@ export default function LocationSelect({close}){
     return(
         <>
         <button className="filter-back-button" onClick={close}>
-        <BackIcon className="icon-size" /> 
+        <BackIcon  fill="#757575" className="filter-icon" /> 
         Filters
 
         </button>

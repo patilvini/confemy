@@ -363,7 +363,7 @@ export default function ConfBasicInfo() {
           <h2>Conference Schedule</h2>
           <TimeZones
             label="timezone"
-            values={formik.values.timezone}
+            // value={formik.values.timezone}
             handleChange={(value) => {
               formik.setFieldValue("timezone", value.value);
             }}

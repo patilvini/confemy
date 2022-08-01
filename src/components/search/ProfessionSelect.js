@@ -26,9 +26,9 @@ export default function ProfessionSelect({close, setValue}){
   
 
 
-    return (<>
+    return (<div className="filter-component">
     <button className="filter-back-button" onClick={close}>
-    <BackIcon className="icon-size"/> 
+    <BackIcon fill="#757575" className="filter-icon"/> 
          Filters
 
     </button>
@@ -50,5 +50,5 @@ export default function ProfessionSelect({close, setValue}){
                 onChange={(e) => setValue(e)}
               />
     
-    </>)
+    </div>)
 }
