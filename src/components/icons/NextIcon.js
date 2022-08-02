@@ -1,4 +1,10 @@
-function NextIcon({ className }) {
+function NextIcon({ className, fill }) {
+
+  if(!fill){
+    fill='#444'
+
+  }
+
   return (
     <svg
       className={className}
@@ -16,7 +22,7 @@ function NextIcon({ className }) {
                 transform="translate(-265.000000, -374.000000) translate(16.000000, 354.000000) translate(249.000000, 20.000000)"
               />
               <path
-                fill="#444"
+                fill={fill}
                 d="M10.838 7.828c-.455.455-.455 1.19 0 1.645L15.365 14l-4.527 4.527c-.455.455-.455 1.19 0 1.645.455.455 1.19.455 1.645 0l5.355-5.355c.455-.455.455-1.19 0-1.645l-5.355-5.355c-.443-.444-1.19-.444-1.645.011z"
                 transform="translate(-265.000000, -374.000000) translate(16.000000, 354.000000) translate(249.000000, 20.000000)"
               />

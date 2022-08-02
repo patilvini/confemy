@@ -29,15 +29,15 @@
   border: none;
   background-color: #fafbfc;
   font-family: Avenir-Heavy;
-  margin-left:1rem;
-  width: 95%;
+  margin-left:1.8rem;
+  width: 90%;
   display: grid;
   grid-template-columns: 60% 40%;
 
 }
 
 .title-grid-item {
-  margin-top: 1rem;
+  margin: 1.1rem 0;
   align-self: center;
 
 
@@ -48,13 +48,7 @@
   margin: 2.5rem;
 }
 
-.item {
-  margin-top: 1rem
-}
 
-.item-tab {
-  margin-top: 1rem
-}
 
 .item-icon {
   
@@ -119,8 +113,8 @@
 
 .clear-all-button {
   font-size: 1.5rem;
-  margin-left: 7rem;
-  margin-top: 5.5rem;
+  margin-left: 6.5rem;
+  // margin-top: 5.5rem;
   color: #757575;
   border: none;
   background-color: #fafbfc;

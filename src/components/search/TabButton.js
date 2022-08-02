@@ -12,7 +12,7 @@ export default function TabButton({visibility, name, open, selected, clear}){
       {!visibility && 
         <div className="title-grid tab-button">
         <div className="title-grid-item">
-          <h4 className="item-tab">{name}</h4>
+          <h4>{name}</h4>
           
         </div>
         <div onClick={open} className="title-grid-item">
@@ -30,7 +30,7 @@ export default function TabButton({visibility, name, open, selected, clear}){
       {!visibility && 
         <div  className="title-grid tab-button tab-button-selected">
         <div className="title-grid-item">
-          <h5 className="item">{name}</h5>
+          <h5>{name}</h5>
           <h4>{selected.label}</h4>
           
         </div>
@@ -44,31 +44,8 @@ export default function TabButton({visibility, name, open, selected, clear}){
       </>
     )
 
-  } else {
-    return(
-      <>
-      {!visibility && 
-        <div  className="title-grid tab-button">
-          
-        <div className="title-grid-item">
-          <h4 className="item-tab">{name}</h4>
-          
-        </div>
-        <div onClick={open} className="title-grid-item">
-          
-           <NextIcon className="item-icon" /> 
-          
-        </div>
-      </div>}
-      
-      </>
-
-
-    )
-    
-
-  }
-
+  } 
+  
   
     
 }

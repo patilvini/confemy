@@ -15,8 +15,10 @@ export default function DateSelect({ close, setValue }) {
 
       <h4 className="component-label">Pick a Date</h4>
       <input
-        onChange={(e) =>
+        onChange={(e) =>{
           setValue({ value: e.target.value, label: e.target.value })
+          close()
+        }
         }
         className="date-input"
         type="date"
@@ -27,8 +29,9 @@ export default function DateSelect({ close, setValue }) {
         onClick={() => {
           var future = new Date();
           future.setDate(future.getDate() + 7);
-          console.log(future)
+          
           setValue({value: future, label: "This Week"})
+          close()
         }}
         className="buttons-date"
       >
@@ -38,8 +41,9 @@ export default function DateSelect({ close, setValue }) {
         onClick={() => {
           var future = new Date();
           future.setDate(future.getDate() + 30);
-          console.log(future)
+          
           setValue({value: future, label: "This Month"})
+          close()
         }}
         className="buttons-date"
       >

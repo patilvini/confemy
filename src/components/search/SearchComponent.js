@@ -16,6 +16,7 @@ import CreditsSelect from "./CreditsSelect";
 import PriceSelect from "./PriceSelect";
 import CreditsTabButton from "./CreditsTabButton";
 import BackIcon from "../icons/BackIcon";
+import DisabledTab from "./DisabledTab";
 
 export default function SearchComponent() {
   const [data, setData] = useState([]);
@@ -27,12 +28,12 @@ export default function SearchComponent() {
   const [creditsVisibility, setCreditsVisibility] = useState(false)
   const [priceVisibility, setPriceVisibility] = useState(false)
 
-  const [dateValue, setDateValue] = useState({})
-  const [locationValue, setLocationValue] = useState({})
-  const [professionValue, setProfessionValue] = useState({})
-  const [specialityValue, setSpecialityValue] = useState({})
-  const [creditsValue, setCreditsValue] = useState({})
-  const [priceValue, setPriceValue] = useState({})
+  const [dateValue, setDateValue] = useState()
+  const [locationValue, setLocationValue] = useState()
+  const [professionValue, setProfessionValue] = useState()
+  const [specialityValue, setSpecialityValue] = useState()
+  const [creditsValue, setCreditsValue] = useState()
+  const [priceValue, setPriceValue] = useState()
 
   useEffect(() => {
     const loadData = async () => {
@@ -64,12 +65,12 @@ export default function SearchComponent() {
           <div className="title-grid-item">
             <button
               onClick={() => {
-                setDateValue({});
-                setLocationValue({});
-                setProfessionValue({});
-                setSpecialityValue({});
-                setCreditsValue({});
-                setPriceValue({});
+                setDateValue();
+                setLocationValue();
+                setProfessionValue();
+                setSpecialityValue();
+                setCreditsValue();
+                setPriceValue();
               }}
               className="clear-all-button"
             >
@@ -81,7 +82,7 @@ export default function SearchComponent() {
 
         <div>
           <div>
-            {visibility && <TabButton clear={()=>setDateValue({})} selected={dateValue} name="Date" open={
+            {visibility && <TabButton clear={()=>setDateValue()} selected={dateValue} name="Date" open={
               ()=>{
                 setVisibility(false)
                 setDateVisibility(true)
@@ -95,7 +96,7 @@ export default function SearchComponent() {
          
           </div>
           <div>
-          {visibility && <TabButton name="Location" clear={()=>setLocationValue({})} open={
+          {visibility && <TabButton name="Location" clear={()=>setLocationValue()} open={
             ()=>{
               setVisibility(false)
               setLocationVisibility(true)
@@ -108,7 +109,11 @@ export default function SearchComponent() {
           </div>
           
           <div>
-          {visibility && <TabButton clear={()=>setProfessionValue({})} selected={professionValue} name="Profession" open={
+          {visibility && <TabButton clear={()=>{
+            setProfessionValue()
+            setSpecialityValue()
+          
+          }} selected={professionValue} name="Profession" open={
             ()=>{
               setVisibility(false)
               setProfessionVisibility(true)
@@ -121,7 +126,7 @@ export default function SearchComponent() {
          
           </div>
           <div>
-          {visibility && <TabButton clear={()=>setSpecialityValue({})} selected={specialityValue} name="Speciality" open={
+          {visibility && <DisabledTab prerequisite={professionValue} clear={()=>setSpecialityValue()} selected={specialityValue} name="Speciality" open={
             ()=>{
               setVisibility(false)
               setSpecialityVisibility(true)
@@ -134,7 +139,7 @@ export default function SearchComponent() {
          
           </div>
           <div>
-          {visibility && <TabButton  clear={()=>setCreditsValue({})} selected={creditsValue} name="Credits" open={
+          {visibility && <TabButton  clear={()=>setCreditsValue()} selected={creditsValue} name="Credits" open={
             ()=>{
               setVisibility(false)
               setCreditsVisibility(true)
@@ -146,7 +151,7 @@ export default function SearchComponent() {
               }}/> }
           </div>
           <div>
-          {visibility && <TabButton selected={priceValue} clear={()=>setPriceValue({})} name="Price" open={
+          {visibility && <TabButton selected={priceValue} clear={()=>setPriceValue()} name="Price" open={
             ()=>{
               setVisibility(false)
               setPriceVisibility(true)

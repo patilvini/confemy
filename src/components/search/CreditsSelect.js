@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Select from "react-select";
-import BackIcon from "../icons/BackIcon"
+import BackIcon from "../icons/BackIcon";
 import NextIcon from "../icons/NextIcon";
 
 const options = [
@@ -20,22 +20,40 @@ const options = [
   { value: "other", label: "Other" },
 ];
 
-export default function CreditsSelect({close, setValue}) {
- 
-  const [type, setType] = useState()
-  const [amount, setAmount] = useState()
+export default function CreditsSelect({ close, setValue }) {
+  const [type, setType] = useState();
+  const [amount, setAmount] = useState();
+  const [errorAmount, setErrorAmount] = useState();
+  const [errorSelect, setErrorSelect] = useState();
 
- 
+  const submit = () => {
+    if (type && amount) {
+      setValue({
+        value: { type: type, amount: amount },
+        label: type.label + ", " + amount,
+      });
+      close()
+    }
+    if (!type) {
+      setErrorSelect("Please select a Credit Type");
+    } else {
+      setErrorSelect();
+    }
+    if (!amount) {
+      setErrorAmount("Please enter an Amount");
+    } else {
+      setErrorAmount();
+    }
+  };
 
   return (
     <div className="filter-component">
       <button className="filter-back-button" onClick={close}>
-        <BackIcon fill="#757575" className="filter-icon" /> 
+        <BackIcon fill="#757575" className="filter-icon" />
         Filters
       </button>
 
       <h3 className="component-title">Credits</h3>
-
 
       {/* <h4 style={{marginTop:'2rem'}} className="component-label">Type</h4> */}
       <Select
@@ -50,23 +68,27 @@ export default function CreditsSelect({close, setValue}) {
             primary: "#08415c",
           },
         })}
-        onChange={(e)=>setType(e)}
+        onChange={(e) => setType(e)}
       />
+      <p style={{ color: "red", paddingBottom: "1rem" }}>{errorSelect}</p>
 
-      <h4 className="component-label">Min. Price</h4>
+      <h4 className="component-label">Amount</h4>
 
       <input
-        onChange={(e) =>
-          setAmount(e.target.value)
-        }
+        onChange={(e) => setAmount(e.target.value)}
         className="date-input"
         type="number"
       />
+      <p style={{ color: "red", paddingBottom: "1rem" }}>{errorAmount}</p>
 
-      <button className="button button-green" onClick={()=>{setValue({value:{type: type, amount:amount}, label: type.label + ", " + amount})}}>
+      <button
+        className="button button-green"
+        onClick={() => {
+          submit();
+        }}
+      >
         set
       </button>
-      
     </div>
   );
 }

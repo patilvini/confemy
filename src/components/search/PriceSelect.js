@@ -173,6 +173,43 @@ export default function PriceSelect({ close, setValue }) {
     const [min, setMin] = useState();
     const [max, setMax] = useState();
     const [currency, setCurrency] = useState();
+    const [errorMin, setErrorMin] = useState();
+    const [errorMax, setErrorMax] = useState();
+    const [errorCurrency, setErrorCurrency] = useState();
+
+    const submit = () => {
+      if(min && max && currency){
+        const values = {
+          label: currency.value + ", " + min + " - " + max,
+          value: {currency: currency, min: min, max: max}
+      }
+
+      
+
+      setValue(values)
+      close()
+      }
+
+      if(!currency){
+        setErrorCurrency("Select a Currency")
+      } else {
+        setErrorCurrency()
+      }
+
+      if(!min){
+        setErrorMin("Set a Minimum Price")
+      } else {
+        setErrorMin()
+      }
+
+      if(!max){
+        setErrorMax("Set a Maximum Price")
+      } else{
+        setErrorMax()
+      }
+    }
+
+
 
   return (
     <div className="filter-component">
@@ -198,6 +235,7 @@ export default function PriceSelect({ close, setValue }) {
         })}
         onChange={(e)=>setCurrency(e)}
       />
+      <p style={{ color: "red", paddingBottom: "1rem" }}>{errorCurrency}</p>
 
       <h4 className="component-label">Min. Price</h4>
 
@@ -208,6 +246,7 @@ export default function PriceSelect({ close, setValue }) {
         className="date-input"
         type="number"
       />
+      <p style={{ color: "red", paddingBottom: "1rem" }}>{errorMin}</p>
 
       <h4 className="component-label">Max. Price</h4>
       <input
@@ -217,15 +256,9 @@ export default function PriceSelect({ close, setValue }) {
         className="date-input"
         type="number"
       />
+      <p style={{ color: "red", paddingBottom: "1rem" }}>{errorMax}</p>
       <button onClick={()=>{
-        const values = {
-            label: currency.value + ", " + min + " - " + max,
-            value: {currency: currency, min: min, max: max}
-        }
-
-        // console.log(currency, min, max)
-
-        setValue(values)
+       submit() 
 
       }} className="button button-green">Set</button>
     </div>
