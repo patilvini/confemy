@@ -2,7 +2,22 @@ import { useState } from "react";
 import BackIcon from "../icons/BackIcon";
 
 export default function DateSelect({ close, setValue }) {
-  const [date, setStartDate] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState()
+
+  const submit = () =>{
+    const start = new Date(startDate);
+    const end = new Date(endDate)
+
+
+    
+      setValue({value: {startDate: start, endDate: end} , label: startDate + " - " + endDate })
+      close()
+    
+
+    
+
+  }
 
   return (
     <div className="filter-component">
@@ -13,25 +28,31 @@ export default function DateSelect({ close, setValue }) {
 
       <h3 className="component-title">Dates</h3>
 
-      <h4 className="component-label">Pick a Date</h4>
+      <h4 className="component-label">Start Date</h4>
       <input
         onChange={(e) =>{
-          setValue({ value: e.target.value, label: e.target.value })
-          close()
-        }
+          setStartDate(e.target.value)
+         }
         }
         className="date-input"
         type="date"
       />
-      {/* <h4 className="component-label">End Date</h4>
-      <input className="date-input" type="date" /> */}
-      <button
+      <h4 className="component-label">End Date</h4>
+      <input onChange={(e)=>{
+        setEndDate(e.target.value)
+      }} className="date-input" type="date" />
+      {/* <button
         onClick={() => {
+          var today = new Date()
           var future = new Date();
+
           future.setDate(future.getDate() + 7);
+          setStartDate(today)
+          setEndDate(future)
+          console.log({value: {startDate: startDate, endDate: endDate} , label: startDate + " - " + endDate })
           
-          setValue({value: future, label: "This Week"})
-          close()
+          setValue({value: {startDate: startDate, endDate: endDate} , label: startDate + " - " + endDate })
+          // close()
         }}
         className="buttons-date"
       >
@@ -48,7 +69,9 @@ export default function DateSelect({ close, setValue }) {
         className="buttons-date"
       >
         This Month
-      </button>
+      </button> */}
+
+      <button onClick={submit} className="button button-green">Set</button>
     </div>
   );
 }

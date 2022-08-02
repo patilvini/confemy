@@ -2,21 +2,44 @@ import NextIcon from "../icons/NextIcon";
 import CloseIcon from "../icons/CloseIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 
-export default function CreditsTabButton({
+export default function MultiTabButton({
   visibility,
   name,
   open,
   selected,
   clear,
   clearOne,
+  prerequisite
 }) {
   console.log(selected);
+
+
   const labels = [];
-  for (let i = 0; i < selected.length; i++) {
+  for (let i = 0; i < selected?.length; i++) {
     labels.push(selected[i].label);
   }
 
-  if (selected === undefined) {
+  if (prerequisite === undefined) {
+    return (
+      <>
+      {!visibility && (
+          <div className="title-grid tab-button">
+            <div className="title-grid-item">
+              <h4  style={{color:"#c4c4c4"}} className="item-tab">{name}</h4>
+            </div>
+            <div className="title-grid-item">
+              <NextIcon fill={'#c4c4c4'} className="item-icon" />
+            </div>
+          </div>
+        )}
+      
+      </>
+    )
+      
+
+  }
+
+ else if (prerequisite && selected===undefined) {
     return (
       <>
         {!visibility && (
@@ -76,7 +99,8 @@ export default function CreditsTabButton({
         )}
       </>
     );
-  } else {
+  }
+   else {
     return (
       <>
         {!visibility && (

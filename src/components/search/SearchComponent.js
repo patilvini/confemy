@@ -14,9 +14,10 @@ import LocationSelect from "./LocationSelect";
 import ProfessionSelect from './ProfessionSelect'
 import CreditsSelect from "./CreditsSelect";
 import PriceSelect from "./PriceSelect";
-import CreditsTabButton from "./CreditsTabButton";
+import MultiTabButton from "./MultiTabButton";
 import BackIcon from "../icons/BackIcon";
 import DisabledTab from "./DisabledTab";
+import SpecialitySelect from "./SpecialitySelect";
 
 export default function SearchComponent() {
   const [data, setData] = useState([]);
@@ -31,7 +32,7 @@ export default function SearchComponent() {
   const [dateValue, setDateValue] = useState()
   const [locationValue, setLocationValue] = useState()
   const [professionValue, setProfessionValue] = useState()
-  const [specialityValue, setSpecialityValue] = useState()
+  const [specialityValue, setSpecialityValue] = useState([])
   const [creditsValue, setCreditsValue] = useState()
   const [priceValue, setPriceValue] = useState()
 
@@ -126,13 +127,22 @@ export default function SearchComponent() {
          
           </div>
           <div>
-          {visibility && <DisabledTab prerequisite={professionValue} clear={()=>setSpecialityValue()} selected={specialityValue} name="Speciality" open={
+          {visibility && <MultiTabButton clearOne={(value)=>{
+            
+            let values = specialityValue.filter((item)=>{
+              if(item.label !== value){
+                return item
+              }
+            })
+            setSpecialityValue(values)
+
+          }} prerequisite={professionValue} clear={()=>setSpecialityValue([])} selected={specialityValue} name="Speciality" open={
             ()=>{
               setVisibility(false)
               setSpecialityVisibility(true)
 
             }}/>}
-            {specialityVisibility && <ProfessionSelect setValue={(value)=>{setSpecialityValue(value)}} close={()=>{
+            {specialityVisibility && <SpecialitySelect setValue={(value)=>{setSpecialityValue(value)}} close={()=>{
               setVisibility(true)
               setSpecialityVisibility(false)
               }}/> }
