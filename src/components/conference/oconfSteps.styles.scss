@@ -1,28 +1,18 @@
 @import "../../utility/utility.styles.scss";
 
 .conf-steps-container {
-  width: 100%;
-  margin-bottom: 64px;
-
-  h2 {
-    margin-bottom: 50px;
-    color: $primary;
-  }
+  margin-right: 88px;
+  // margin-top: 120px;
 }
 
 .conf-steps {
-  display: flex;
-  align-items: center;
   li {
     display: flex;
     align-items: center;
-    // margin-right: 24px;
+    margin-bottom: 32px;
     svg {
-      margin-right: 4px;
+      margin-right: 20px;
     }
-  }
-  & > li:last-child .steps-line {
-    display: none;
   }
 }
 

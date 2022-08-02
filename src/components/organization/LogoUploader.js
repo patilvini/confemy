@@ -74,9 +74,7 @@ export default function LogoUploader({ apiLogo, organizationId }) {
         const response = await api.patch(url, data);
         if (response) {
           setShowButtons(false);
-          console.log("logo patched res", response);
           dispatch(loadOrganizationAction(response.data.data.organization));
-          // loadOrganization(organizationId, user._id);
         }
       }
     } catch (err) {
@@ -108,7 +106,9 @@ export default function LogoUploader({ apiLogo, organizationId }) {
         </div>
         <div className="mb-40">
           <div
-            className={showButtons ? "savelogo-buttons-wrap" : "display-none"}
+            className={`${
+              showButtons ? "savelogo-buttons-wrap" : "display-none"
+            }`}
           >
             <button
               type="submit"

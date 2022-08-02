@@ -29,10 +29,10 @@ export default function ShowOrganizers({ organizers, organizationId }) {
     <>
       {organizers &&
         organizers.map((org) => (
-          <div className="show-organizers-grid">
+          <div key={org._id} className="show-organizers-grid">
             <div className="grid-1st-col">
               <p className="body-bold">
-                {org?.user?.firstName} {org?.user?.lastName}{" "}
+                {org?.user?.firstName} {org?.user?.lastName}
               </p>
               <div className="body-regular-gray3">{org?.user?.email}</div>
             </div>
@@ -42,21 +42,23 @@ export default function ShowOrganizers({ organizers, organizationId }) {
               )}
             </div>
             <div className="grid-3rd-col">
-              {!org?.user?.userRegistered ? (
-                <button
-                  onClick={() => removeOrganizer(org._id)}
-                  type="button"
-                  className="social-delete-button"
-                >
-                  <CloseIcon className="icon-size" />
-                </button>
-              ) : (
+              {org?.isAdmin ? (
+                <button className="button button-primary">Admin</button>
+              ) : org?.active ? (
                 <button
                   onClick={() => removeOrganizer(org._id)}
                   type="button"
                   className="button button-primary"
                 >
                   Remove
+                </button>
+              ) : (
+                <button
+                  onClick={() => removeOrganizer(org._id)}
+                  type="button"
+                  className="social-delete-button"
+                >
+                  <CloseIcon className="icon-size" />
                 </button>
               )}
             </div>

@@ -99,7 +99,9 @@ export default function SaveInput({
       </div>
       <div className="mb-20">
         <div
-          className={showButtons ? "saveinput-buttons-wrap" : "display-none"}
+          className={`${
+            showButtons ? "saveinput-buttons-wrap" : "display-none"
+          }`}
         >
           <button type="submit" className="button button-primary">
             Save

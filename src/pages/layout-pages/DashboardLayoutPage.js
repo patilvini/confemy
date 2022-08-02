@@ -3,7 +3,7 @@ import OrganizersNavbar from "../../components/navbar/OrganizersNavbar";
 
 export default function DashboardLayoutPage() {
   return (
-    <div
+    <main
       className="container"
       style={{ display: "flex", backgroundColor: "#fafbfc" }}
     >
@@ -13,6 +13,6 @@ export default function DashboardLayoutPage() {
           <Outlet />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

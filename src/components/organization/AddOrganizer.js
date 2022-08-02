@@ -25,16 +25,19 @@ export default function AddOrganizer({ organizationId }) {
   async function handleInputSubmit(e) {
     const organizerDetails = {
       email: inputValue,
-      organizationId,
+      organizationId: organizationId,
       user: user._id,
     };
     e.preventDefault();
+
+    console.log(organizerDetails);
 
     try {
       const response = await api.post("/organizations/organizers", {
         organizerDetails,
       });
       if (response) {
+        console.log("organizer patched", response);
         dispatch(loadOrganizationAction(response.data.data.organization));
         // loadOrganization(organizationId, user._id);
         setInputValue("");
@@ -86,7 +89,9 @@ export default function AddOrganizer({ organizationId }) {
       </div>
       <div className="mb-20">
         <div
-          className={showButtons ? "saveinput-buttons-wrap" : "display-none"}
+          className={`${
+            showButtons ? "saveinput-buttons-wrap" : "display-none"
+          }`}
         >
           <button type="submit" className="button button-primary">
             Save

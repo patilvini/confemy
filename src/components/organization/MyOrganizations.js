@@ -21,6 +21,7 @@ export default function MyOrganizations() {
     const url = `organizations/users/${id}`;
     try {
       const response = await api.get(url);
+      console.log("load my organizations", response);
       if (response) {
         dispatch(loadMyOrganizationsAction(response.data.data.organization));
       }
