@@ -5,7 +5,7 @@ import CloseIcon from "../icons/CloseIcon";
 
 
 
-export default function SearchBar({onClick}){
+export default function SearchBar({onClear, setValue, value}){
 
     const [showSearch , setShowSearch] = useState(true)
     
@@ -17,6 +17,7 @@ export default function SearchBar({onClick}){
             <input
               id="searchBar"
               type="text"
+              value={value}
         
               className="search-input"
               onChange={(e)=>{
@@ -29,16 +30,18 @@ export default function SearchBar({onClick}){
                     setShowSearch(true)
                 }
 
+                setValue(e.target.value)
+
 
               }}
               
             
             />
-            <i className={showSearch ? "left-input-icon" : "display-none" }>
+            <i className={showSearch===""|| showSearch ? "left-input-icon" : "display-none" }>
               <SearchIcon width="3rem" height="3rem" className="large-icon" />
             </i>
 
-            <i className={showSearch ?  "display-none" : "right-input-icon"}>
+            <i onClick={onClear} className={showSearch==="" || showSearch ?  "display-none" : "right-input-icon"}>
               <CloseIcon width="3rem" height="3rem" fill="#757575" className="large-icon" />
             </i>
           </div>

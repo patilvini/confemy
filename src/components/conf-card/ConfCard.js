@@ -9,13 +9,14 @@ import "./ConfCard.styles.scss";
 
 function ConfCard({
   src,
-  confNamem,
+  confName,
   startDate,
   startTime,
   location,
   creditType,
   currency,
   creditAmount,
+  price
 }) {
   return (
     <div className="conf-card">
@@ -26,27 +27,26 @@ function ConfCard({
         />
       </div>
       <p className="conf-title">
-        The National Conference on Wilderness Medicine. Really Really long
-        conference title.
+        {confName}
       </p>
       <div>
         <DateIcon className="conf-card-icons" />
         <span className="conf-card-text caption-2-regular-gray3">
-          Wed, May 23, 2021 - 05:00 IST
+          {startDate}
         </span>
       </div>
       <div className="conf-card-location">
         <LocationIcon className="conf-card-icons" />
-        <span className="conf-card-text caption-2-regular-gray3">London</span>
+        <span className="conf-card-text caption-2-regular-gray3">{location}</span>
       </div>
       <div>
         <CreditsIcon className="conf-card-icons" />
         <span className="conf-card-text caption-2-regular-gray3">
-          AMA Cat 1
+        AMA Cat 1
         </span>
       </div>
       <div className="conf-price-box">
-        <span className="caption-2-bold-cblack">$20 onwards</span>
+        <span className="caption-2-bold-cblack">{price} onwards</span>
         <LikeInactiveIcon className="conf-likeicon" />
       </div>
     </div>

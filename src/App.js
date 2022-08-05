@@ -40,7 +40,7 @@ import VerifyManagerPage from "./pages/verify-manager-page/VerifyManagerPage";
 import MyOrganizationsPage from "./pages/organization-pages/MyOrganizationsPage";
 import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDetailsPage";
 
-import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
+// import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
 import SearchConferencePage from "./pages/search-conference-page/SearchConferene";
 const App = () => {
   useEffect(() => {

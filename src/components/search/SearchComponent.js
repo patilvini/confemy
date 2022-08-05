@@ -37,6 +37,7 @@ export default function SearchComponent() {
   const [specialityValue, setSpecialityValue] = useState([]);
   const [creditsValue, setCreditsValue] = useState();
   const [priceValue, setPriceValue] = useState();
+  const [search, setSearch] = useState("")
 
   const [filters, setFilter] = useState([]);
 
@@ -59,7 +60,7 @@ export default function SearchComponent() {
 
     const call = async () => {
       try {
-        const r = await api.post("/conferences/search?page=1&limit=10", {
+        const r = await api.post("/conferences/search?page=1&limit=50", {
           filters: filters,
         });
         console.log(r);
@@ -71,6 +72,23 @@ export default function SearchComponent() {
 
     call();
   }, [filters]);
+
+
+  
+  const submit = async () =>{
+    console.log(search)
+
+    try{
+
+    const r = await api.post("/conferences/search?page=1&limit=10&&text="+search)
+    console.log(r)
+    setData(r.data.data.conferences)
+
+    } catch (err){
+      console.log(err)
+    }
+
+  }
 
   return (
     <>
@@ -107,7 +125,7 @@ export default function SearchComponent() {
                   setDateValue();
 
                   const values = filters.filter((item) => {
-                    if (item.label !== "dates") {
+                    if (item.label !== "date") {
                       return item;
                     }
                   });
@@ -130,9 +148,9 @@ export default function SearchComponent() {
                   setFilter([
                     ...filters,
                     {
-                      label: "dates",
-                      startDate: value.startDate,
-                      endDate: value.endDate,
+                      label: "date",
+                      start: value.startDate,
+                      end: value.endDate,
                     },
                   ]);
                 }}
@@ -217,7 +235,34 @@ export default function SearchComponent() {
                   });
                   setSpecialityValue(values);
                   
-                  console.log(values)
+                  let specialities = []
+
+                  for (let i in values){
+                    specialities.push(values[i].value)
+
+                  }
+                 
+
+                  if(specialities.length < 1){
+                    let filterState = filters.filter((item)=>{
+                      if(item.label !== "specialities"){
+                        return item
+                      }
+                    })
+                    setFilter(filterState)
+                  } else {
+
+                    let filterState = filters.filter((item)=>{
+                      if(item.label === "specialities"){
+                        item.values = specialities
+                        
+                      }
+
+                      return item
+                    })
+                    setFilter(filterState)
+
+                  }
 
                  
 
@@ -364,21 +409,33 @@ export default function SearchComponent() {
         <BackIcon className="icon-size" />
         <div className="flex-container">
           <div className="flex-item">
-            <SearchBar />
+            <SearchBar value={search} onClear={()=>{
+              
+              setSearch("")
+              
+              }} setValue={(value)=>setSearch(value)}/>
           </div>
           <div className="flex-item">
-            <button className="button button-secondary">Search</button>
+            <button onClick={submit} className="button button-secondary">Search</button>
           </div>
         </div>
 
         <div className="flex-container">
           {data.map((item) => {
+          
             return (
               <div className="flex-item" key={item._id}>
                 <ConfCard
-                  title={item.title}
-                  startDate={item.startDate}
-                  startTime={item.startTime}
+                
+                confName={item.title}
+                startDate={item.startDate}
+                
+                location={item.location}
+                price={item.basePrice}
+                
+                // creditAmount
+                  
+                  
                 />
               </div>
             );
