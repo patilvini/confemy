@@ -111,6 +111,19 @@ a {
   grid-column: 3/4;
 }
 
+.grid-col-3 {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+}
+
+.conf-search-grid {
+  margin-top: 3.1rem;
+  grid-gap: 4.2rem;
+  height: 34.1rem;
+}
+
 .grid-col-4 {
   width: 100%;
   display: grid;
@@ -394,10 +407,6 @@ $spaceamounts: (
 // transition classes
 .zero-height {
   height: 0px;
-}
-.slow-height {
-  height: 450px;
-  transition: all ease-in 0.4s;
 }
 
 // using material UI breakpoints for differnet screen sizes.

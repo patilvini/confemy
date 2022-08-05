@@ -19,37 +19,15 @@ import Dialogue from "../dialogue/Dialogue";
 import { loadOrganization } from "./organizationUtil";
 import { removeOrganizationAction } from "../../redux/organization/organizationAction";
 import { store } from "../../redux/store";
-import "./myOrganizationDetails.styles.scss";
+import "./organizationDetails.styles.scss";
 
-export default function MyOrganizationDetails() {
+export default function OrganizationDetails() {
   const [open, setopen] = useState(false);
-  // const [organization, setOrganization] = useState(null);
-  // const [organizaitonLogo, setOrganizaitonLogo] = useState([]);
-  // const [organizerInputValue, setOrganizerInputValue] = useState("");
 
   const { organizationId } = useParams();
   const user = useSelector((state) => state.auth.user);
   const { organization } = useSelector((state) => state.organization);
-
   const navigate = useNavigate();
-
-  // const getCurrentOrganization = useCallback(async (id, userId) => {
-  //   const url = `organizations/${id}/users/${userId}`;
-  //   try {
-  //     const response = await api.get(url);
-  //     if (response) {
-  //       // console.log("get current organization call", response);
-  //       setOrganization(response.data.data.organization);
-  //       // setOrganizers(response.data.data.organizers);
-  //       if (response.data.data.organization.logo)
-  //         setOrganizaitonLogo(response.data.data.organization.logo);
-  //     }
-  //   } catch (err) {
-  //     if (err) {
-  //       console.log(err);
-  //     }
-  //   }
-  // }, []);
 
   const yesAction = async () => {
     const url = `organizations/${organizationId}/users/${user?._id}`;
@@ -67,30 +45,7 @@ export default function MyOrganizationDetails() {
     setopen(false);
   };
 
-  // async function onOrganizerSubmit() {
-  //   const organizerDetails = {
-  //     email: organizerInputValue,
-  //     organizationId,
-  //   };
-
-  //   // e.preventDefault();
-
-  //   try {
-  //     const response = await api.post("/organizations/organizers", {
-  //       organizerDetails,
-  //     });
-  //     if (response) {
-  //       console.log("organizer Submit resp", response);
-  //       setOrganizerInputValue("");
-  //       getCurrentOrganization(organizationId);
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
-
   useEffect(() => {
-    // getCurrentOrganization(organizationId, user._id);
     loadOrganization(organizationId, user._id);
     return () => store.dispatch(removeOrganizationAction());
   }, [organizationId, user._id]);

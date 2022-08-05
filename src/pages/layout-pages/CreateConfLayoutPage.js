@@ -53,11 +53,11 @@ export default function CreateConfLayoutPage() {
   }
 
   return (
-    <>
+    <div style={{ marginLeft: 32 }}>
       <ConfSteps />
       <div>
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }

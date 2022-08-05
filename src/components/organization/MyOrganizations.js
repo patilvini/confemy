@@ -10,22 +10,6 @@ import {
 
 import "./myOrganizations.styles.scss";
 
-const initialValues = {
-  logos: [],
-  name: "",
-  street1: "",
-  street2: "",
-  city: "",
-  state: "",
-  country: "",
-  website: "",
-  description: "",
-  facebook: "",
-  twitter: "",
-  linkedin: "",
-  instagram: "",
-};
-
 export default function MyOrganizations() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,8 +21,8 @@ export default function MyOrganizations() {
     const url = `organizations/users/${id}`;
     try {
       const response = await api.get(url);
+      console.log("load my organizations", response);
       if (response) {
-        console.log("get myOrganizations api", response);
         dispatch(loadMyOrganizationsAction(response.data.data.organization));
       }
     } catch (err) {
@@ -72,10 +56,10 @@ export default function MyOrganizations() {
                 onClick={() => navigate(item.organization._id)}
               >
                 <td key={item._id} className="org-logo-container">
-                  {item.organization.logo ? (
+                  {item.organization?.logo[0] ? (
                     <>
                       <img
-                        src={`${item.organization.logo[0].Location}`}
+                        src={`${item.organization?.logo[0]?.Location}`}
                         alt="Logo"
                         className="org-logo"
                       />

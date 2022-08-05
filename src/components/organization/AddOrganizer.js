@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 import api from "../../utility/api";
 import { loadOrganization } from "./organizationUtil";
+import { loadOrganizationAction } from "../../redux/organization/organizationAction";
+
 import "./saveInput.styles.scss";
 
 export default function AddOrganizer({ organizationId }) {
@@ -10,6 +13,8 @@ export default function AddOrganizer({ organizationId }) {
   const [errorMsg, setErrorMsg] = useState("");
 
   const user = useSelector((state) => state.auth.user);
+
+  const dispatch = useDispatch();
 
   const textInputRef = useRef();
 
@@ -20,17 +25,21 @@ export default function AddOrganizer({ organizationId }) {
   async function handleInputSubmit(e) {
     const organizerDetails = {
       email: inputValue,
-      organizationId,
+      organizationId: organizationId,
+      user: user._id,
     };
     e.preventDefault();
+
+    console.log(organizerDetails);
 
     try {
       const response = await api.post("/organizations/organizers", {
         organizerDetails,
       });
       if (response) {
-        console.log("organizer Submit resp", response);
-        loadOrganization(organizationId, user._id);
+        console.log("organizer patched", response);
+        dispatch(loadOrganizationAction(response.data.data.organization));
+        // loadOrganization(organizationId, user._id);
         setInputValue("");
         setShowButtons(false);
         textInputRef.current.style.paddingBottom = "1.6rem";
@@ -52,12 +61,13 @@ export default function AddOrganizer({ organizationId }) {
     textInputRef.current.style.paddingBottom = "1.6rem";
   };
 
-  // useEffect(() => {
-  //   setInputValue(inputApiValue);
-  // }, [inputApiValue]);
-
   return (
-    <form className="form-type-1" onSubmit={handleInputSubmit}>
+    <form
+      autoComplete="off"
+      autoCorrect="off"
+      className="form-type-1"
+      onSubmit={handleInputSubmit}
+    >
       <div className="material-textfield">
         <input
           ref={textInputRef}
@@ -79,7 +89,9 @@ export default function AddOrganizer({ organizationId }) {
       </div>
       <div className="mb-20">
         <div
-          className={showButtons ? "saveinput-buttons-wrap" : "display-none"}
+          className={`${
+            showButtons ? "saveinput-buttons-wrap" : "display-none"
+          }`}
         >
           <button type="submit" className="button button-primary">
             Save
@@ -96,3 +108,7 @@ export default function AddOrganizer({ organizationId }) {
     </form>
   );
 }
+
+AddOrganizer.propTypes = {
+  organizationId: PropTypes.string.isRequired,
+};
