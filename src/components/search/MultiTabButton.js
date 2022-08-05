@@ -11,7 +11,7 @@ export default function MultiTabButton({
   clearOne,
   prerequisite
 }) {
-  console.log(selected);
+
 
 
   const labels = [];

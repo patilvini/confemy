@@ -3,21 +3,36 @@ import BackIcon from "../icons/BackIcon";
 
 export default function DateSelect({ close, setValue }) {
   const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState()
+  const [endDate, setEndDate] = useState();
+  const [errorStart, setErrorStart] = useState();
+  const [errorEnd, setErrorEnd] = useState();
 
-  const submit = () =>{
-    const start = new Date(startDate);
-    const end = new Date(endDate)
+  const submit = () => {
+    if (!startDate) {
+      setErrorStart("Please set a Start Date");
+    } else {
+      setErrorStart();
+    }
 
+    if (!endDate) {
+      setErrorEnd("Please set an End Date");
+    } else {
+      setErrorEnd();
+    }
 
-    
-      setValue({value: {startDate: start, endDate: end} , label: startDate + " - " + endDate })
-      close()
-    
+    if (startDate && endDate) {
+      console.log("hello");
 
-    
-
-  }
+      const start = new Date(startDate).toISOString();
+      const end = new Date(endDate).toISOString();
+      setValue({
+        startDate: start,
+        endDate: end,
+        label: startDate + " - " + endDate,
+      });
+      close();
+    }
+  };
 
   return (
     <div className="filter-component">
@@ -30,17 +45,22 @@ export default function DateSelect({ close, setValue }) {
 
       <h4 className="component-label">Start Date</h4>
       <input
-        onChange={(e) =>{
-          setStartDate(e.target.value)
-         }
-        }
+        onChange={(e) => {
+          setStartDate(e.target.value);
+        }}
         className="date-input"
         type="date"
       />
+      <p style={{ color: "red", paddingBottom: "1rem" }}>{errorStart}</p>
       <h4 className="component-label">End Date</h4>
-      <input onChange={(e)=>{
-        setEndDate(e.target.value)
-      }} className="date-input" type="date" />
+      <input
+        onChange={(e) => {
+          setEndDate(e.target.value);
+        }}
+        className="date-input"
+        type="date"
+      />
+      <p style={{ color: "red", paddingBottom: "1rem" }}>{errorEnd}</p>
       {/* <button
         onClick={() => {
           var today = new Date()
@@ -71,7 +91,9 @@ export default function DateSelect({ close, setValue }) {
         This Month
       </button> */}
 
-      <button onClick={submit} className="button button-green">Set</button>
+      <button onClick={submit} className="button button-green">
+        Set
+      </button>
     </div>
   );
 }

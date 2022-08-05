@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Select from "react-select";
 import BackIcon from "../icons/BackIcon";
 
@@ -22,6 +23,9 @@ const options = [
 
 export default function SpecialitySelect({close, setValue}){
 
+  const [selected, setSelected] = useState([])
+  const [errorSelect, setErrorSelect] = useState();
+
 
   
 
@@ -39,7 +43,7 @@ export default function SpecialitySelect({close, setValue}){
         isMulti
         options={options}
         className="select-input"
-        onChange={(e) => setValue(e)}
+        onChange={(e) => setSelected(e)}
         theme={(theme) => ({
           ...theme,
           borderRadius: 5,
@@ -54,6 +58,22 @@ export default function SpecialitySelect({close, setValue}){
        
         
       />
+       <p style={{ color: "red", paddingBottom: "1rem" }}>{errorSelect}</p>
+
+      <button className="button button-green" onClick={()=>{
+        
+        if (selected.length > 0){
+          setValue(selected)
+          close()
+        } else{
+          setErrorSelect("Select at least one Speciality")
+        }
+
+        
+        
+        }}>
+        Set
+      </button>
 
     
     </div>)

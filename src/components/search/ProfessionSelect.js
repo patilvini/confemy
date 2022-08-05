@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Select from "react-select";
 import BackIcon from "../icons/BackIcon";
 
@@ -21,6 +22,9 @@ const options = [
 
 
 export default function ProfessionSelect({close, setValue}){
+
+  const [profession, setProfession] = useState()
+  const [error, setError] = useState()
 
 
   
@@ -47,8 +51,21 @@ export default function ProfessionSelect({close, setValue}){
                     primary: '#08415c',
                   },
                 })}
-                onChange={(e) => setValue(e)}
+                onChange={(e) => setProfession(e)}
               />
+    <p style={{ color: "red", paddingBottom: "1rem" }}>{error}</p>
+    <button className="button button-green" onClick={()=>{
+
+      if(profession){
+        setValue(profession)
+        close()
+
+      }else {
+        setError("Please select a Profession")
+      }
+      
+
+    }}>Set</button>
     
     </div>)
 }
