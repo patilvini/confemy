@@ -3,20 +3,20 @@ import Select from "react-select";
 import BackIcon from "../icons/BackIcon";
 
 const options = [
-    { value: "physician", label: "Physician" },
-    { value: "physicianAssistant", label: "Physician Assistant" },
-    { value: "nursePractitioner", label: "Nurse Practitioner" },
-    { value: "dentist", label: "Dentist" },
-    { value: "nurse", label: "Nurse" },
-    { value: "pharmacist", label: "Pharmacist" },
-    { value: "physicalTherapist", label: "Physical Therapist" },
-    { value: "occupationalTherapist", label: "Occupational Therapist" },
-    { value: "speechTherapist", label: "Speech Therapist" },
-    { value: "respiratoryTherapist", label: "Respiratory Therapist" },
-    { value: "dietitian", label: "Dietitian" },
-    { value: "socialWorker", label: "Social Worker" },
-    { value: "caseManagement", label: "Case Management" },
-    { value: "other", label: "Other" },
+    { value: "Physician", label: "Physician" },
+    { value: "PhysicianAssistant", label: "Physician Assistant" },
+    { value: "NursePractitioner", label: "Nurse Practitioner" },
+    { value: "Dentist", label: "Dentist" },
+    { value: "Nurse", label: "Nurse" },
+    { value: "Pharmacist", label: "Pharmacist" },
+    { value: "PhysicalTherapist", label: "Physical Therapist" },
+    { value: "OccupationalTherapist", label: "Occupational Therapist" },
+    { value: "SpeechTherapist", label: "Speech Therapist" },
+    { value: "RespiratoryTherapist", label: "Respiratory Therapist" },
+    { value: "Dietitian", label: "Dietitian" },
+    { value: "SocialWorker", label: "Social Worker" },
+    { value: "CaseManagement", label: "Case Management" },
+    { value: "Other", label: "Other" },
   ];
 
 
@@ -31,11 +31,12 @@ export default function ProfessionSelect({close, setValue}){
 
 
     return (<div className="filter-component">
-    <button className="filter-back-button" onClick={close}>
-    <BackIcon fill="#757575" className="filter-icon"/> 
-         Filters
-
-    </button>
+    <div className="flex-container filter-back-button" onClick={close}>
+        <div><BackIcon fill="#757575" className="filter-icon" /></div>
+        <div style={{marginTop:".7rem"}}> Filters</div>
+        
+       
+      </div>
 
     <h3 className="component-title">Profession</h3>
     

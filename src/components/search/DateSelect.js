@@ -36,10 +36,12 @@ export default function DateSelect({ close, setValue }) {
 
   return (
     <div className="filter-component">
-      <button className="filter-back-button" onClick={close}>
-        <BackIcon className="filter-icon" fill="#757575" />
-        Filters
-      </button>
+      <div className="flex-container filter-back-button" onClick={close}>
+        <div><BackIcon fill="#757575" className="filter-icon" /></div>
+        <div style={{marginTop:".7rem"}}> Filters</div>
+        
+       
+      </div>
 
       <h3 className="component-title">Dates</h3>
 

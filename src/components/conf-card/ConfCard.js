@@ -4,6 +4,7 @@ import LocationIcon from "../icons/LocationIcon";
 import CreditsIcon from "../icons/CreditsIcon";
 import LikeInactiveIcon from "../icons/LikeInactiveIcon";
 import PropTypes from "prop-types";
+import { DateTime } from "luxon";
 
 import "./ConfCard.styles.scss";
 
@@ -13,11 +14,16 @@ function ConfCard({
   startDate,
   startTime,
   location,
-  creditType,
+  credits,
   currency,
   creditAmount,
-  price
+  price,
 }) {
+  const date = DateTime.fromISO(startDate)
+  let start = date.toLocaleString({...DateTime.DATE_MED_WITH_WEEKDAY, weekday: 'short' })
+
+
+
   return (
     <div className="conf-card">
       <div className="conf-img-container">
@@ -26,28 +32,40 @@ function ConfCard({
           alt="conference banner"
         />
       </div>
-      <p className="conf-title">
-        {confName}
-      </p>
+      <p className="conf-title">{confName}</p>
       <div>
         <DateIcon className="conf-card-icons" />
         <span className="conf-card-text caption-2-regular-gray3">
-          {startDate}
+          {start} - {startTime}
         </span>
       </div>
       <div className="conf-card-location">
         <LocationIcon className="conf-card-icons" />
-        <span className="conf-card-text caption-2-regular-gray3">{location}</span>
+        <span className="conf-card-text caption-2-regular-gray3">London</span>
       </div>
       <div>
         <CreditsIcon className="conf-card-icons" />
-        <span className="conf-card-text caption-2-regular-gray3">
-        AMA Cat 1
-        </span>
+        {/* {credits.map((item)=>{
+          console.log(item)
+
+          return(
+            <span className="conf-card-text caption-2-regular-gray3" key={item._id}>
+              
+
+            </span>
+          )
+        })} */}
+        <span className="conf-card-text caption-2-regular-gray3">AMA 10</span>
       </div>
-      <div className="conf-price-box">
-        <span className="caption-2-bold-cblack">{price} onwards</span>
-        <LikeInactiveIcon className="conf-likeicon" />
+      <div className="card-grid-container conf-price-box">
+        <div style={{ marginTop: ".5rem" }}>
+          <span className="caption-2-bold-cblack">
+            {currency} {price} onwards
+          </span>
+        </div>
+        <div>
+          <LikeInactiveIcon className="conf-likeicon" />
+        </div>
       </div>
     </div>
   );
@@ -57,8 +75,8 @@ ConfCard.propTypes = {
   src: PropTypes.string,
   confName: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
-  startTime: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
+  // startTime: PropTypes.string.isRequired,
+  // location: PropTypes.string.isRequired,
   creditType: PropTypes.string,
   currency: PropTypes.string,
   creditAmount: PropTypes.number,

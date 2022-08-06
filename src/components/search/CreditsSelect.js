@@ -4,20 +4,9 @@ import BackIcon from "../icons/BackIcon";
 import NextIcon from "../icons/NextIcon";
 
 const options = [
-  { value: "physician", label: "Physician" },
-  { value: "physicianAssistant", label: "Physician Assistant" },
-  { value: "nursePractitioner", label: "Nurse Practitioner" },
-  { value: "dentist", label: "Dentist" },
-  { value: "nurse", label: "Nurse" },
-  { value: "pharmacist", label: "Pharmacist" },
-  { value: "physicalTherapist", label: "Physical Therapist" },
-  { value: "occupationalTherapist", label: "Occupational Therapist" },
-  { value: "speechTherapist", label: "Speech Therapist" },
-  { value: "respiratoryTherapist", label: "Respiratory Therapist" },
-  { value: "dietitian", label: "Dietitian" },
-  { value: "socialWorker", label: "Social Worker" },
-  { value: "caseManagement", label: "Case Management" },
-  { value: "other", label: "Other" },
+  { value: "ama", label: "AMA" },
+  { value: "aecp", label: "AECP" },
+  
 ];
 
 export default function CreditsSelect({ close, setValue }) {
@@ -47,11 +36,13 @@ export default function CreditsSelect({ close, setValue }) {
   };
 
   return (
-    <div className="filter-component">
-      <button className="filter-back-button" onClick={close}>
-        <BackIcon fill="#757575" className="filter-icon" />
-        Filters
-      </button>
+    <div className="filter-component ">
+      <div className="flex-container filter-back-button" onClick={close}>
+        <div><BackIcon fill="#757575" className="filter-icon" /></div>
+        <div style={{marginTop:".7rem"}}> Filters</div>
+        
+       
+      </div>
 
       <h3 className="component-title">Credits</h3>
 

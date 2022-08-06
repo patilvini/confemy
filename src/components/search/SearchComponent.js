@@ -8,6 +8,8 @@ import "../../utility/utility.styles.scss";
 import DropdownIcon from "../icons/DropdownIcon";
 
 import NextIcon from "../icons/NextIcon";
+import BackIcon from "../icons/BackIcon";
+
 import SearchIcon from "../icons/SearchIcon";
 import DateSelect from "./DateSelect";
 import TabButton from "./TabButton";
@@ -16,7 +18,7 @@ import ProfessionSelect from "./ProfessionSelect";
 import CreditsSelect from "./CreditsSelect";
 import PriceSelect from "./PriceSelect";
 import MultiTabButton from "./MultiTabButton";
-import BackIcon from "../icons/BackIcon";
+
 import DisabledTab from "./DisabledTab";
 import SpecialitySelect from "./SpecialitySelect";
 import SearchBar from "./SearchBar";
@@ -40,6 +42,9 @@ export default function SearchComponent() {
   const [search, setSearch] = useState("")
 
   const [filters, setFilter] = useState([]);
+
+  const [page, setPage] = useState(1)
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -88,7 +93,26 @@ export default function SearchComponent() {
       console.log(err)
     }
 
+
   }
+
+  const pagination = async ()=>{
+
+    
+
+
+    try{
+
+      const r = await api.post("/conferences/search?page="+page+"&limit=10&&text="+search)
+      console.log(r)
+      setData(r.data.data.conferences)
+  
+      } catch (err){
+        console.log(err)
+      }
+    
+  }
+
 
   return (
     <>
@@ -346,7 +370,7 @@ export default function SearchComponent() {
                       label: "credits",
                       value: {
                         type: value.value.type.value,
-                        amount: value.value.amount,
+                        quantity: value.value.amount,
                       },
                     },
                   ]);
@@ -390,8 +414,9 @@ export default function SearchComponent() {
                     ...filters,
                     {
                       label: "price",
+                      currency: value.value.currency.value,
                       min: value.value.min,
-                      max: value.value.min,
+                      max: value.value.max,
                     },
                   ]);
                 }}
@@ -419,6 +444,7 @@ export default function SearchComponent() {
             <button onClick={submit} className="button button-secondary">Search</button>
           </div>
         </div>
+      
 
         <div className="flex-container">
           {data.map((item) => {
@@ -429,11 +455,11 @@ export default function SearchComponent() {
                 
                 confName={item.title}
                 startDate={item.startDate}
-                
+                currency={item.currency}
                 location={item.location}
                 price={item.basePrice}
-                
-                // creditAmount
+                startTime={item.startTime}
+                credits={item.credits}
                   
                   
                 />
@@ -441,6 +467,19 @@ export default function SearchComponent() {
             );
           })}
         </div>
+
+        {data.length > 0 && <div>
+          <button onClick={()=>{
+            if(page === 1) return
+            setPage(page-1)
+            pagination()
+          }} className="button button-secondary"><BackIcon className="icon-size" fill="#fff"/></button>
+          <span style={{fontSize:"2rem", margin:"2rem"}}>Page {page}</span>
+          <button onClick={()=>{
+            setPage(page+1)
+            pagination()
+          }} className="button button-secondary"><NextIcon className="icon-size" fill="#fff"/></button>
+        </div>}
       </div>
     </>
   );

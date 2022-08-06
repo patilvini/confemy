@@ -213,10 +213,12 @@ export default function PriceSelect({ close, setValue }) {
 
   return (
     <div className="filter-component">
-      <button onClick={close} className="filter-back-button">
-        <BackIcon fill="#757575" className="filter-icon" />
-        Filters
-      </button>
+      <div className="flex-container filter-back-button" onClick={close}>
+        <div><BackIcon fill="#757575" className="filter-icon" /></div>
+        <div style={{marginTop:".7rem"}}> Filters</div>
+        
+       
+      </div>
       <h3 className="component-title">Price</h3>
 
       <h4 className="component-label">Pick a Currency</h4>
