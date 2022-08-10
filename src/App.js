@@ -41,7 +41,8 @@ import MyOrganizationsPage from "./pages/organization-pages/MyOrganizationsPage"
 import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDetailsPage";
 
 // import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
-import SearchConferencePage from "./pages/search-conference-page/SearchConferene";
+import SearchConferencePage from "./pages/search-conference-page/SearchConference";
+import SearchConfSelectPage from "./pages/booking-page/SearchConfSelectPage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -65,6 +66,10 @@ const App = () => {
             <Route
                 path="search-conference"
                 element={<SearchConferencePage />}
+              ></Route>
+              <Route
+                path="search-conference/:userID"
+                element={<SearchConfSelectPage />}
               ></Route>
             <Route path="/message" element={<MessagePage />}></Route>
             <Route

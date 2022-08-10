@@ -39,7 +39,7 @@ export default function SearchComponent() {
   const [specialityValue, setSpecialityValue] = useState([]);
   const [creditsValue, setCreditsValue] = useState();
   const [priceValue, setPriceValue] = useState();
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState()
 
   const [filters, setFilter] = useState([]);
 
@@ -47,9 +47,10 @@ export default function SearchComponent() {
 
 
   useEffect(() => {
-    const loadData = async () => {
+    setPage(1)
+    const loadData = async () => {  
       try {
-        const r = await api.post("/conferences/search?page=1&limit=10");
+        const r = await api.post("/conferences/search?page="+page+"&limit=10");
         console.log(r);
         setData(r.data.data.conferences);
       } catch (err) {
@@ -62,10 +63,11 @@ export default function SearchComponent() {
 
   useEffect(() => {
     console.log(filters);
+    setPage(1)
 
     const call = async () => {
       try {
-        const r = await api.post("/conferences/search?page=1&limit=50", {
+        const r = await api.post("/conferences/search?page="+page+"&limit=10", {
           filters: filters,
         });
         console.log(r);
@@ -81,37 +83,49 @@ export default function SearchComponent() {
 
   
   const submit = async () =>{
-    console.log(search)
+   
+    setPage(1)
 
-    try{
+      try{
 
-    const r = await api.post("/conferences/search?page=1&limit=10&&text="+search)
-    console.log(r)
-    setData(r.data.data.conferences)
+        const r = await api.post("/conferences/search?page="+page+"&limit=10&&text="+search)
+        console.log(r)
+        setData(r.data.data.conferences)
+    
+        } catch (err){
+          console.log(err)
+        }
+    
 
-    } catch (err){
-      console.log(err)
+
+    
+
+  }
+
+  const pagination =  ()=>{
+
+    
+
+   
+
+       api.post("/conferences/search?page="+page+"&limit=10&&text="+search).then((r)=>{console.log(r)
+       setData(r.data.data.conferences)}).catch((err)=>console.log(err))
+        
+    
+        
+      
+    
+
+    
+
+    
+
     }
 
-
-  }
-
-  const pagination = async ()=>{
-
     
 
 
-    try{
-
-      const r = await api.post("/conferences/search?page="+page+"&limit=10&&text="+search)
-      console.log(r)
-      setData(r.data.data.conferences)
-  
-      } catch (err){
-        console.log(err)
-      }
     
-  }
 
 
   return (
@@ -452,7 +466,7 @@ export default function SearchComponent() {
             return (
               <div className="flex-item" key={item._id}>
                 <ConfCard
-                
+                link={item._id}
                 confName={item.title}
                 startDate={item.startDate}
                 currency={item.currency}
@@ -468,15 +482,21 @@ export default function SearchComponent() {
           })}
         </div>
 
-        {data.length > 0 && <div>
+        {true && <div>
           <button onClick={()=>{
-            if(page === 1) return
+            console.log(page)
+            if(page === 1){
+              pagination()
+              return
+
+            } 
             setPage(page-1)
             pagination()
           }} className="button button-secondary"><BackIcon className="icon-size" fill="#fff"/></button>
           <span style={{fontSize:"2rem", margin:"2rem"}}>Page {page}</span>
           <button onClick={()=>{
             setPage(page+1)
+            console.log(page)
             pagination()
           }} className="button button-secondary"><NextIcon className="icon-size" fill="#fff"/></button>
         </div>}
