@@ -1,0 +1,45 @@
+@import '../../utility/utility.styles.scss';
+
+body{
+    background-color: $background;
+}
+
+.step1-heading{
+    text-align: center;
+    color: $primary ;
+    margin:8.2rem 0 1.6rem 0;
+}
+
+.step1-tickets-grid{
+   
+    width: 70rem;
+    margin: 10.2rem 30.4rem;
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+
+.step1-grid-item{
+    h3{
+        color:$primary;
+        font-size: 2.4rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+
+    }
+
+    h4{
+        color:$gray-3;
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+
+    }
+    p{
+        font-size: 1.3rem;
+        
+    }
+
+    padding: 2rem;
+    
+
+}

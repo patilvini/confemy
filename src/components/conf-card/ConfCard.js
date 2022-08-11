@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { DateTime } from "luxon";
 
 import "./ConfCard.styles.scss";
+import { useNavigate } from "react-router-dom";
 
 function ConfCard({
   src,
@@ -18,14 +19,17 @@ function ConfCard({
   currency,
   creditAmount,
   price,
+  link
 }) {
+
+  const navigate = useNavigate()
   const date = DateTime.fromISO(startDate)
   let start = date.toLocaleString({...DateTime.DATE_MED_WITH_WEEKDAY, weekday: 'short' })
 
 
 
   return (
-    <div className="conf-card">
+    <div onClick={()=>navigate("/search-conference/"+link)} className="conf-card">
       <div className="conf-img-container">
         <img
           src="https://www.simplemost.com/wp-content/uploads/2016/08/beach-vacation-e1470663653924.jpeg"

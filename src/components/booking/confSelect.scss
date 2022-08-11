@@ -35,8 +35,8 @@
 
 
 .conference-card {
-    width: 28rem;
-    height: auto;
+    width: 408px;
+    height:auto;
     padding: 0 0 0.8rem;
     border-radius: 0.4rem;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
@@ -44,12 +44,18 @@
   }
 
 .conference-card-heading{
-    padding: 2rem;
+    padding: 2.4rem 2.4rem 1rem 2.4rem;
+}
+
+.conference-card-buttons{
+    background-color: white;
+    border:none
 }
 
 .conference-card-grid{
     display:grid;
     grid-template-columns: 15% 85%;
+    margin-top: 4rem;
 }
 
 .conference-card-grid-item{
@@ -73,9 +79,10 @@
 }
 
 .speaker-card{
-    width:40.8rem;
+    width:32.2rem;
+    height: 29rem;
 
-    height:53.8rem;
+    
     text-align: center;
 }
 
@@ -102,10 +109,20 @@
 }
 
 .venue-card-text{
-    font-size: 1.2rem;
+    font-size: 1.6rem;
 }
 
 .carousel img{
     width:100%
     
+}
+
+.venue-card-flex{
+    display: flex;
+    padding-top: 1rem;
+
+}
+
+.venue-flex-item{
+    padding-right: 1rem;
 }

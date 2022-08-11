@@ -39,18 +39,20 @@ export default function SearchComponent() {
   const [specialityValue, setSpecialityValue] = useState([]);
   const [creditsValue, setCreditsValue] = useState();
   const [priceValue, setPriceValue] = useState();
-  const [search, setSearch] = useState()
+  const [search, setSearch] = useState();
 
   const [filters, setFilter] = useState([]);
 
-  const [page, setPage] = useState(1)
-
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    setPage(1)
-    const loadData = async () => {  
+    setPage(1);
+
+    const loadData = async () => {
       try {
-        const r = await api.post("/conferences/search?page="+page+"&limit=10");
+        const r = await api.post(
+          "/conferences/search?page=" + page + "&limit=10"
+        );
         console.log(r);
         setData(r.data.data.conferences);
       } catch (err) {
@@ -63,13 +65,17 @@ export default function SearchComponent() {
 
   useEffect(() => {
     console.log(filters);
-    setPage(1)
+
+    setPage(1);
 
     const call = async () => {
       try {
-        const r = await api.post("/conferences/search?page="+page+"&limit=10", {
-          filters: filters,
-        });
+        const r = await api.post(
+          "/conferences/search?page=" + page + "&limit=10",
+          {
+            filters: filters,
+          }
+        );
         console.log(r);
         setData(r.data.data.conferences);
       } catch (err) {
@@ -80,53 +86,60 @@ export default function SearchComponent() {
     call();
   }, [filters]);
 
+  const submit = async () => {
+    setPage(1);
 
-  
-  const submit = async () =>{
-   
-    setPage(1)
+    console.log(search);
 
-      try{
-
-        const r = await api.post("/conferences/search?page="+page+"&limit=10&&text="+search)
-        console.log(r)
-        setData(r.data.data.conferences)
-    
-        } catch (err){
-          console.log(err)
-        }
-    
-
-
-    
-
-  }
-
-  const pagination =  ()=>{
-
-    
-
-   
-
-       api.post("/conferences/search?page="+page+"&limit=10&&text="+search).then((r)=>{console.log(r)
-       setData(r.data.data.conferences)}).catch((err)=>console.log(err))
-        
-    
-        
-      
-    
-
-    
-
-    
-
+    try {
+      const r = await api.post(
+        "/conferences/search?page=" + page + "&limit=10&&text=" + search
+      );
+      console.log(r);
+      setData(r.data.data.conferences);
+    } catch (err) {
+      console.log(err);
     }
+  };
 
-    
+  useEffect(() => {
+    let a = async () => {
+      if (search.length > 0) {
+        try {
+          const r = await api.post(
+            "/conferences/search?page=" + page + "&limit=10&&text=" + search
+          );
+          console.log(r);
+          setData(r.data.data.conferences);
+        } catch (err) {
+          console.log(err);
+        }
+      } else if (filters.length > 0) {
+        try {
+          const r = await api.post(
+            "/conferences/search?page=" + page + "&limit=10&&text=",
+            { filters }
+          );
+          console.log(r);
+          setData(r.data.data.conferences);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        try {
+          const r = await api.post(
+            "/conferences/search?page=" + page + "&limit=10&&text="
+          );
+          console.log(r);
+          setData(r.data.data.conferences);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
 
-
-    
-
+    a();
+  }, [page]);
 
   return (
     <>
@@ -167,7 +180,7 @@ export default function SearchComponent() {
                       return item;
                     }
                   });
-                 
+
                   setFilter(values);
                 }}
                 selected={dateValue}
@@ -232,9 +245,8 @@ export default function SearchComponent() {
                       return item;
                     }
                   });
-               
 
-                  setFilter(values)
+                  setFilter(values);
                   setProfessionValue();
                   setSpecialityValue();
                 }}
@@ -272,41 +284,30 @@ export default function SearchComponent() {
                     }
                   });
                   setSpecialityValue(values);
-                  
-                  let specialities = []
 
-                  for (let i in values){
-                    specialities.push(values[i].value)
+                  let specialities = [];
 
+                  for (let i in values) {
+                    specialities.push(values[i].value);
                   }
-                 
 
-                  if(specialities.length < 1){
-                    let filterState = filters.filter((item)=>{
-                      if(item.label !== "specialities"){
-                        return item
+                  if (specialities.length < 1) {
+                    let filterState = filters.filter((item) => {
+                      if (item.label !== "specialities") {
+                        return item;
                       }
-                    })
-                    setFilter(filterState)
+                    });
+                    setFilter(filterState);
                   } else {
-
-                    let filterState = filters.filter((item)=>{
-                      if(item.label === "specialities"){
-                        item.values = specialities
-                        
+                    let filterState = filters.filter((item) => {
+                      if (item.label === "specialities") {
+                        item.values = specialities;
                       }
 
-                      return item
-                    })
-                    setFilter(filterState)
-
+                      return item;
+                    });
+                    setFilter(filterState);
                   }
-
-                 
-
-
-
-                
                 }}
                 prerequisite={professionValue}
                 clear={() => {
@@ -332,10 +333,9 @@ export default function SearchComponent() {
               <SpecialitySelect
                 setValue={(value) => {
                   setSpecialityValue(value);
-                  
+
                   const values = [];
                   for (let i in value) {
-                 
                     values.push(value[i].value);
                   }
                   setFilter([
@@ -354,7 +354,7 @@ export default function SearchComponent() {
             {visibility && (
               <TabButton
                 clear={() => {
-                  setCreditsValue()
+                  setCreditsValue();
 
                   const values = filters.filter((item) => {
                     if (item.label !== "credits") {
@@ -363,7 +363,6 @@ export default function SearchComponent() {
                   });
 
                   setFilter(values);
-                
                 }}
                 selected={creditsValue}
                 name="Credits"
@@ -410,8 +409,6 @@ export default function SearchComponent() {
                   });
 
                   setFilter(values);
-
-
                 }}
                 name="Price"
                 open={() => {
@@ -448,58 +445,66 @@ export default function SearchComponent() {
         <BackIcon className="icon-size" />
         <div className="flex-container">
           <div className="flex-item">
-            <SearchBar value={search} onClear={()=>{
-              
-              setSearch("")
-              
-              }} setValue={(value)=>setSearch(value)}/>
+            <SearchBar
+              value={search}
+              onClear={() => {
+                setSearch("");
+              }}
+              setValue={(value) => setSearch(value)}
+            />
           </div>
           <div className="flex-item">
-            <button onClick={submit} className="button button-secondary">Search</button>
+            <button onClick={submit} className="button button-secondary">
+              Search
+            </button>
           </div>
         </div>
-      
 
         <div className="flex-container">
           {data.map((item) => {
-          
             return (
               <div className="flex-item" key={item._id}>
                 <ConfCard
-                link={item._id}
-                confName={item.title}
-                startDate={item.startDate}
-                currency={item.currency}
-                location={item.location}
-                price={item.basePrice}
-                startTime={item.startTime}
-                credits={item.credits}
-                  
-                  
+                  link={item._id}
+                  confName={item.title}
+                  startDate={item.startDate}
+                  currency={item.currency}
+                  location={item.location}
+                  price={item.basePrice}
+                  startTime={item.startTime}
+                  credits={item.credits}
                 />
               </div>
             );
           })}
         </div>
 
-        {true && <div>
-          <button onClick={()=>{
-            console.log(page)
-            if(page === 1){
-              pagination()
-              return
-
-            } 
-            setPage(page-1)
-            pagination()
-          }} className="button button-secondary"><BackIcon className="icon-size" fill="#fff"/></button>
-          <span style={{fontSize:"2rem", margin:"2rem"}}>Page {page}</span>
-          <button onClick={()=>{
-            setPage(page+1)
-            console.log(page)
-            pagination()
-          }} className="button button-secondary"><NextIcon className="icon-size" fill="#fff"/></button>
-        </div>}
+        {true && (
+          <div>
+            <button
+              onClick={() => {
+                if (page === 1) {
+                  return;
+                }
+                setPage(page - 1);
+              }}
+              className="button button-secondary"
+            >
+              <BackIcon className="icon-size" fill="#fff" />
+            </button>
+            <span style={{ fontSize: "2rem", margin: "2rem" }}>
+              Page {page}
+            </span>
+            <button
+              onClick={() => {
+                setPage(page + 1);
+              }}
+              className="button button-secondary"
+            >
+              <NextIcon className="icon-size" fill="#fff" />
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

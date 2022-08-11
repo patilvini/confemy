@@ -43,6 +43,7 @@ import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDeta
 // import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
 import SearchConferencePage from "./pages/search-conference-page/SearchConference";
 import SearchConfSelectPage from "./pages/booking-page/SearchConfSelectPage";
+import BookingStep1Page from "./pages/booking-page/BookingStep1Page";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -64,13 +65,18 @@ const App = () => {
               element={<VerifyEmail />}
             ></Route>
             <Route
-                path="search-conference"
-                element={<SearchConferencePage />}
-              ></Route>
-              <Route
-                path="search-conference/:userID"
-                element={<SearchConfSelectPage />}
-              ></Route>
+              path="search-conference"
+              element={<SearchConferencePage />}
+            ></Route>
+            <Route
+              path="search-conference/:confID"
+              element={<SearchConfSelectPage />}
+            ></Route>
+
+            <Route
+              path="booking-step1/:confID"
+              element={<BookingStep1Page />}
+            ></Route>
             <Route path="/message" element={<MessagePage />}></Route>
             <Route
               path="dashboard"
@@ -103,7 +109,7 @@ const App = () => {
                 // element={<OrganizerDashboardPage />}
                 element={<MyOrganizationsPage />}
               ></Route>
-              
+
               <Route
                 path="my-organizations/:organizationId"
                 element={<OrganizationDetailsPage />}

@@ -3,15 +3,47 @@ import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
 import PriceIcon from "../icons/PriceIcon";
 import ShareIcon from "../icons/ShareIcon";
-import LikeRedIcon from "../icons/LikeRedIcon"
+import LikeRedIcon from "../icons/LikeRedIcon";
+import LikeBlueIcon from "../icons/LikeBlueIcon";
 import { DateTime } from "luxon";
+import {useParams} from "react-router-dom";
+import { useSelector } from "react-redux";
+import api from "../../utility/api";
+import { useState } from "react";
 
 export default function BookingCard({ data }) {
-  const date = DateTime.fromISO(data?.startDate);
-  let startDate = date.toLocaleString({
+
+  // const [icon, setIcon] = useState(<LikeBlueIcon/>)
+  const date1 = DateTime.fromISO(data?.startDate);
+  let startDate = date1.toLocaleString({
     ...DateTime.DATE_MED_WITH_WEEKDAY,
     weekday: "short",
   });
+
+  const date2 = DateTime.fromISO(data?.endDate);
+  let endDate = date2.toLocaleString({
+    ...DateTime.DATE_MED_WITH_WEEKDAY,
+    weekday: "short",
+  });
+
+  const confID = useParams().confID
+  const userID = useSelector((state)=>state.auth.user._id)
+  
+
+  const like = async () => {
+
+    const likedConferenceDetails = {conferenceId : confID, userId: userID}
+    try{
+      const r = await api.post("/conferences/like", {likedConferenceDetails})
+    
+
+      console.log(r)
+    } catch (err){
+      console.log(err)
+    }
+  }
+
+
 
   
 
@@ -20,13 +52,16 @@ export default function BookingCard({ data }) {
       
 
       <div className="conference-card">
-        <h4 className="conference-card-heading">{data?.title}</h4>
+        <h4 className="conference-card-heading">
+          {data?.title}
+          </h4>
         <div style={{ marginLeft: "2rem", marginBottom: "2rem" }}>
           <p className="conference-card-text caption-2-regular-gray3">
             by Harward School of Medicine{" "}
           </p>
           <button
             style={{
+              marginTop:".5rem",
               padding: ".2rem 1rem",
               color: "#08415c",
               border: "2px solid #08415c",
@@ -39,14 +74,14 @@ export default function BookingCard({ data }) {
           </button>
         </div>
 
-        <div className="conference-card-grid">
+        <div  className="conference-card-grid">
           <div className="conference-card-grid-item">
             <DateIcon className="conf-card-icons" />
           </div>
 
           <div className="conference-card-grid-item">
             <p className="conference-card-text caption-2-regular-gray3">
-              {startDate}
+              {startDate}, {data?.startTime} - {endDate} {data?.endTime}
             </p>
           </div>
           <div className="conference-card-grid-item">
@@ -84,25 +119,37 @@ export default function BookingCard({ data }) {
             <PriceIcon className="conf-card-icons" />
           </div>
           <div className="conference-card-grid-item">
-            <p className="conference-card-text caption-2-regular-gray3">
+            <p style={{fontWeight:"bold"}} className="conference-card-text caption-2-regular-gray3">
               {data?.currency} {data?.basePrice} onwards
             </p>
           </div>
           <div
-            style={{ paddingTop: "6.5rem" }}
+            style={{ marginTop: "18rem", display:'flex' }}
             className="conference-card-grid-item"
           >
+            <div>
             <ShareIcon className="conf-card-icons" />
+
+            </div>
+            <div>
+              <button className="conference-card-buttons" onClick={like}><LikeBlueIcon  className="conf-card-icons" /></button>
+            
+
+            </div>
+            
+
+            
           </div>
           <div className="conference-card-grid-item">
-            <LikeRedIcon style={{marginTop:"1rem"}} className="conf-card-icons" />
+            
             <button
               style={{
                 fontSize: "1.2rem",
-                marginTop: "6rem",
-                marginLeft:'2rem',
+                marginTop: "16.5rem",
+                marginLeft:'4rem',
+                marginBottom:'1rem',
                 padding: "1rem",
-                width: "70%",
+                width: "80%",
               }}
               className="button button-green"
             >

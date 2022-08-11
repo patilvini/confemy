@@ -1,4 +1,6 @@
 import "./confSelect.scss";
+import './slider.scss';
+import { useParams } from "react-router-dom";
 import api from "../../utility/api";
 import BookingCard from "./BookingCard";
 import SpeakerCard from "./SpeakerCard";
@@ -7,8 +9,11 @@ import { DateTime } from "luxon";
 import Slider from "react-slick";
 import LocationIcon from "../icons/LocationIcon";
 
+
 export default function ConferenceSearchSelect() {
   const [data, setData] = useState();
+  const confID= useParams().confID
+  // console.log(confID)
 
   const settings = {
     dots: true,
@@ -21,7 +26,7 @@ export default function ConferenceSearchSelect() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const r = await api.get("/conferences/62f341e707066a6508d7adb6");
+        const r = await api.get("/conferences/"+confID);
         console.log(r.data.data.conferences);
         setData(r.data.data.conferences);
       } catch (err) {
@@ -35,17 +40,7 @@ export default function ConferenceSearchSelect() {
   return (
     <div className="conference-component">
       <div>
-        <link
-          rel="stylesheet"
-          type="text/css"
-     
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-        />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-        />
+       
       </div>
       <div className="conference-gird-container">
         <div className="conference-grid-item">
@@ -88,7 +83,14 @@ export default function ConferenceSearchSelect() {
             <div style={{paddingLeft:'2rem'}} >
             <h3 className="section-heading">{data?.venue.venueName}</h3>
            
-            <h4 className="venue-card-text"> <LocationIcon className="filter-icon" /> {data?.venue.city}</h4>
+            <h4 className="venue-card-text"> <LocationIcon fill="#c4c4c4" className="filter-icon" /> {data?.venue.city}</h4>
+            <div className="venue-card-flex" >
+              {data?.venue.ameneties.map((item, index)=>{
+                return(
+                  <div className="venue-flex-item" key={index}><h4 className="venue-card-text">{item.icon}{item.name}</h4></div>
+                )
+              })}
+            </div>
 
             </div>
             
