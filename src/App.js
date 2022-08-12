@@ -44,6 +44,7 @@ import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDeta
 import SearchConferencePage from "./pages/search-conference-page/SearchConference";
 import SearchConfSelectPage from "./pages/booking-page/SearchConfSelectPage";
 import BookingStep1Page from "./pages/booking-page/BookingStep1Page";
+import BookingStep2Page from "./pages/booking-page/BookingStep2Page";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -76,6 +77,10 @@ const App = () => {
             <Route
               path="booking-step1/:confID"
               element={<BookingStep1Page />}
+            ></Route>
+            <Route
+              path="booking-step2/:confID"
+              element={<BookingStep2Page />}
             ></Route>
             <Route path="/message" element={<MessagePage />}></Route>
             <Route

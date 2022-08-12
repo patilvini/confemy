@@ -12,8 +12,8 @@ body{
 
 .step1-tickets-grid{
    
-    width: 70rem;
-    margin: 10.2rem 30.4rem;
+    width: 80rem;
+    margin: .2rem 30.4rem 1rem 30.4rem ;
     display: grid;
     grid-template-columns: 70% 30%;
 }
@@ -42,4 +42,10 @@ body{
     padding: 2rem;
     
 
+}
+
+.tickets-page-divider{
+    margin: 1rem 30.4rem 1rem 30.4rem ;
+    
+   width: 80rem;
 }

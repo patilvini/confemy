@@ -3,17 +3,18 @@ import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
 import PriceIcon from "../icons/PriceIcon";
 import ShareIcon from "../icons/ShareIcon";
-import LikeRedIcon from "../icons/LikeRedIcon";
+
 import LikeBlueIcon from "../icons/LikeBlueIcon";
 import { DateTime } from "luxon";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { useSelector } from "react-redux";
 import api from "../../utility/api";
 import { useState } from "react";
 
 export default function BookingCard({ data }) {
-
-  // const [icon, setIcon] = useState(<LikeBlueIcon/>)
+  const navigate = useNavigate()
+  
+  const [icon, setIcon] = useState('#08415C')
   const date1 = DateTime.fromISO(data?.startDate);
   let startDate = date1.toLocaleString({
     ...DateTime.DATE_MED_WITH_WEEKDAY,
@@ -38,6 +39,7 @@ export default function BookingCard({ data }) {
     
 
       console.log(r)
+      setIcon('#D8000C')
     } catch (err){
       console.log(err)
     }
@@ -132,7 +134,7 @@ export default function BookingCard({ data }) {
 
             </div>
             <div>
-              <button className="conference-card-buttons" onClick={like}><LikeBlueIcon  className="conf-card-icons" /></button>
+              <button className="conference-card-buttons" onClick={like}><LikeBlueIcon fill={icon} className="conf-card-icons" /></button>
             
 
             </div>
@@ -143,6 +145,7 @@ export default function BookingCard({ data }) {
           <div className="conference-card-grid-item">
             
             <button
+              onClick={()=>{navigate("/booking-step1/"+data._id)}}
               style={{
                 fontSize: "1.2rem",
                 marginTop: "16.5rem",

@@ -51,10 +51,10 @@ export default function BookingStep1() {
         </p>
       </div>
 
-      <div>
+      <div style={{marginTop:"10rem"}}>
         {data?.tickets.map((item, index) => {
           return (
-            <div className="step1-tickets-grid" key={index}>
+            <div  className="step1-tickets-grid" key={index}>
               <div className="step1-grid-item">
                 <h3>{item.name}</h3>
                 <h4>{item.type}</h4>
@@ -65,12 +65,23 @@ export default function BookingStep1() {
                 promoters throughout the United States.</p>
               </div>
               <div style={{display:"flex"}} className="step1-grid-item">
-                <div style={{marginLeft:"1rem"}}><h4>{item.currency} x </h4></div>
+                <div style={{marginLeft:"1rem"}}><h4>{item.currency} {item.price} x </h4></div>
                 <div style={{marginLeft:"1rem"}}><Select options={options}/> </div>
               </div>
             </div>
           );
         })}
+        <hr className="tickets-page-divider"/>
+
+        <div style={{margin: '1rem 30.4rem 10rem 30.4rem '}} className="step1-tickets-grid">
+          <div className="step1-grid-item">
+
+          </div>
+          <div className="step1-grid-item">
+            <button className="button button-green">Buy</button>
+
+          </div>
+        </div>
       </div>
     </div>
   );

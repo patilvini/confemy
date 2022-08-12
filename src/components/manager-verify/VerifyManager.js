@@ -80,7 +80,7 @@ export default function VerifyManager() {
           >
             <Form>
               <NameForm />
-              <button className="button" type="submit">Submit</button>
+              <button className="button button-green" type="submit">Submit</button>
             </Form>
           </Formik>
         </div>
