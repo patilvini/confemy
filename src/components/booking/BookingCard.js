@@ -143,9 +143,10 @@ export default function BookingCard({ data }) {
             
           </div>
           <div className="conference-card-grid-item">
+           
             
             <button
-              onClick={()=>{navigate("/booking-step1/"+data._id)}}
+              onClick={()=>{navigate("/booking-step1/"+data?._id)}}
               style={{
                 fontSize: "1.2rem",
                 marginTop: "16.5rem",

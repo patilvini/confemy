@@ -15,7 +15,7 @@ body{
     width: 80rem;
     margin: .2rem 30.4rem 1rem 30.4rem ;
     display: grid;
-    grid-template-columns: 70% 30%;
+    grid-template-columns: 62% 38%;
 }
 
 .step1-grid-item{
@@ -47,5 +47,13 @@ body{
 .tickets-page-divider{
     margin: 1rem 30.4rem 1rem 30.4rem ;
     
-   width: 80rem;
+   width: 70rem;
+}
+
+.buy-button-grid{
+    width: 80rem;
+    
+    margin: 1rem 30.4rem 10rem 35.4rem ;
+    display: grid;
+    grid-template-columns:50% 50% ;
 }
