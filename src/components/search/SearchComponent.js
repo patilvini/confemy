@@ -104,7 +104,7 @@ export default function SearchComponent() {
 
   useEffect(() => {
     let a = async () => {
-      if (search.length > 0) {
+      if (search?.length > 0) {
         try {
           const r = await api.post(
             "/conferences/search?page=" + page + "&limit=10&&text=" + search

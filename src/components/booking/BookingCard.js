@@ -28,7 +28,7 @@ export default function BookingCard({ data }) {
   });
 
   const confID = useParams().confID
-  const userID = useSelector((state)=>state.auth.user._id)
+  const userID = useSelector((state)=>state.auth.user?._id)
   
 
   const like = async () => {

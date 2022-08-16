@@ -14,5 +14,73 @@
     
 }
 
+.flex-container-std{
+    display: flex;
+}
+
+.edit-button{
+    margin: 0 0 0 7.8rem;
+    padding: .9rem 3.4rem;
+    background-color:#fff ;
+    border-radius: 6px;
+    color:$primary;
+    font-weight: bold;
+    border: solid 
+}
+
+.edit-button:hover{
+
+    background-color:#f9fdff;
+ 
+}
+
+.edit-button:active {
+    background-color: $primary ;
+    color: white;
+}
+
+.table-grid-heading{
+    margin-top:3.1rem;
+    display: grid;
+    grid-template-columns:  60% auto auto auto;
+    background-color: $shade-1 ;
+}
+
+.table-grid-item{
+    padding: 1.33rem;
+}
+
+.table-heading{
+    font-family: Avenir;
+    font-size: 1.6rem;
+    font-weight:900;
+    color:$primary;
+    letter-spacing: 0.01px;
+
+}
 
 
+.table-grid{
+    margin-top:3.1rem;
+    display: grid;
+    grid-template-columns:  60% auto auto auto;
+
+}
+
+.table-item{
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: 0.2px;
+
+}
+
+.table-description{
+    font-size: 1.6rem;
+    font-weight: normal;
+}
+
+.divider{
+
+   margin: 2.3rem 0;  
+   width: 100%;
+}
