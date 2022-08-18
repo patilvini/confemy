@@ -1,15 +1,17 @@
 import DraftJsText from "./DraftJsText";
 import DraftTesting from "./DraftTesting";
+import EditorTest from "./EditorTest";
 
 
 export default function Preview(){
 
 
     
-    return (<>
+    return (<div className="editor-class">
     
     {/* <DraftJsText/> */}
-    <DraftTesting/>
+    {/* <DraftTesting/> */}
+    <EditorTest />
     
-    </>)
+    </div>)
 }

@@ -56,13 +56,13 @@ export default function AddSpeaker(props) {
         onSubmit={onSubmit}
         >
           <Form className="form-type-1">
-            <TextInput name="firstName" type="text" placeholder="First Name" />
-            <TextInput name="lastName" type="text" placeholder="Last Name"/>
-            <TextInput name="degree" type="text" placeholder="Degree"/>
-            <TextInput name="designation" type="text" placeholder="Designation"/>
+            <TextInput style={{marginTop:"1rem"}} name="firstName" type="text" placeholder="First Name" />
+            <TextInput style={{marginTop:"1rem"}} name="lastName" type="text" placeholder="Last Name"/>
+            <TextInput style={{marginTop:"1rem"}} name="degree" type="text" placeholder="Degree"/>
+            <TextInput style={{marginTop:"1rem"}} name="designation" type="text" placeholder="Designation"/>
 
-            <button type="submit">submit</button>
-            <button type="button" onClick={props.close}>cancel</button>
+            <button style={{marginTop:"2rem"}} className="button button-green" type="submit">submit</button>
+            <button style={{marginTop:"1rem"}} className="button button-primary" type="button" onClick={props.close}>cancel</button>
           </Form>
           
         </Formik>
