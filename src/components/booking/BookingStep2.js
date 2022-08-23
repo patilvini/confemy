@@ -1,4 +1,6 @@
-import { Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Modal from "../../pages/organizer-profile-page/Modal";
 import TextInput from "../formik/TextInput";
@@ -6,23 +8,116 @@ import NameForm from "../register/NameForm";
 import Signin from "../signin/Signin";
 import "./step2.scss";
 import DeleteIcon from "../icons/DeleteIcon";
+import { useSelector } from "react-redux";
+import api from "../../utility/api";
+import { DateTime } from "luxon";
+import TicketDetailsForm from "./TicketDetailsForm";
+import TextError from "../formik/TextError";
 
 const initialValues = {
-  name: "",
+  bookedBy: "",
+  bookingId: "",
+  guests:[]
 };
 
-const validationSchema = {};
+
+
+
+
+
 
 export default function BookingStep2() {
-  const onSubmit = (values, actions) => {
-    console.log(values);
+
+  
+  
+  const onSubmit = async () => {
+
+
+
+    
+    
+    const ticketDetails= { bookedBy:userID ,
+    bookingId:bookingID,
+     guests:guests
+    
+    }
+
+    console.log(ticketDetails);
+
+    try{
+      const r = await api.post('/conferences/bookings/step2', {ticketDetails})
+      console.log(r)
+    } catch(err){
+      console.log(err)
+    }
+
+
+    
+
   };
 
   const navigate = useNavigate();
-  const confID = useParams().confID;
+  const bookingID = useParams().bookingID;
+
+  const [data, setData] = useState()
+  const [tickets, setTickets] = useState()
+  const [guests, setGuests] = useState([])
+
+  const userID = useSelector((state) => state.auth.user?._id);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const r = await api.get("/conferences/bookings/" + bookingID);
+        console.log(r.data.data.bookingDetails);
+        setData(r.data.data.bookingDetails);
+        let tickets = r.data.data.bookingDetails.tickets
+        let q = 0
+        for (let i = 0; i<tickets.length; i++){
+          q = q+tickets[i].quantity
+
+
+
+
+        }
+      
+      
+        
+        for (let i=0; i<q;i++){
+          setTickets()
+          guests[i]={firstName:"", lastName: "", email:""}
+        }
+       
+
+  
+        
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  
+    getData();
+  }, []);
+
+  // const validationSchema = {
+  //   bookedBy: yup.string().required('required'),
+  //   bookingId: yup.string().required('required'),
+  //   guests: yup.array()
+  // };
+
+  // const formik = useFormik({
+  //   initialValues: initialValues,
+  //   // validationSchema: validationSchema,
+  //   onSubmit: onSubmit,
+  // });
+
+  // console.log(formik.values)
 
   return (
-    <div>
+    <div
+        className="form-type-1"
+    
+      >
       <div className="step2-wrapper">
         <div className="step2-section-heading">
           <h3>Confirm cart details and pay</h3>
@@ -50,22 +145,37 @@ export default function BookingStep2() {
           <div className="table-grid-item"> </div>
         </div>
 
-        <div className="table-grid">
+        {data?.tickets.map((item, index)=>{
+        
+
+const date = DateTime.fromISO(data.conference.startDate);
+
+let scheduleDate = date.toLocaleString({
+  ...DateTime.DATE_MED_WITH_WEEKDAY,
+  weekday: "short",
+});
+
+
+          return (
+            <div key={index} className="table-grid">
           <div className="table-grid-item">
-            <p className="table-item">Ticket Type 1</p>
-            <p className="table-description">April 30, 10 PM, GMT+4</p>
+            <p className="table-item">{item.ticketId.name}</p>
+            <p className="table-description">{scheduleDate}</p>
           </div>
 
           <div className="table-grid-item">
-            <p className="table-description">2</p>
+            <p className="table-description">{item.quantity}</p>
           </div>
           <div className="table-grid-item">
-            <p className="table-description">$20</p>
+            <p className="table-description">{item.ticketId.currency}{item.ticketId.price}</p>
           </div>
           <div className="table-grid-item">
             <DeleteIcon fill={"#08415c"} />
           </div>
         </div>
+          )
+
+        })}
 
         <hr className="divider" />
 
@@ -88,11 +198,11 @@ export default function BookingStep2() {
           <div className="table-grid-item"></div>
           <div className="table-grid-item">
             <div className="flex-container-std">
-              <div style={{ marginRight: " 10rem" }}>
+              <div style={{ marginRight: " 7rem" }}>
                 <p className="table-item"> Total</p>
               </div>
               <div>
-                <p className="table-item"> $20</p>
+                <p className="table-item">{data?.conference.currency}{data?.totalPrice}</p>
               </div>
             </div>
           </div>
@@ -109,51 +219,20 @@ export default function BookingStep2() {
         >
           Guest Details
         </h3>
-        <h4>Guest 1 Ticket Type 1</h4>
 
-        <div style={{ marginTop: "1.6rem" }} className="form-type-1 ">
-          <div className="flex-container-std">
-            <div
-              style={{ width: "50%", margin: "0 2rem 2rem 0rem" }}
-              className="material-textfield"
-            >
-              <input
-                id="title"
-                type="text"
-                name="title"
-                // value={formik.values.title}
-                // onChange={formik.handleChange}
-                placeholder=" "
-              />
-              <label>First Name*</label>
-            </div>
-            <div
-              style={{ width: "50%", margin: "0 0rem 2rem 0rem" }}
-              className="material-textfield"
-            >
-              <input
-                id="title"
-                type="text"
-                name="title"
-                // value={formik.values.title}
-                // onChange={formik.handleChange}
-                placeholder=" "
-              />
-              <label>Last Name*</label>
-            </div>
+       {guests.map((item, index)=>{
+
+        return( 
+          <div key={index}>
+          <TicketDetailsForm setValue={(value)=>guests[index] = value} i={data} title={"Guest "+ (index+1)}/>
+          {/* {formik.touched.specialities && Boolean(formik.errors.specialities) && (
+            <TextError>{formik.errors.specialities}</TextError>
+          )} */}
           </div>
-          <div className="material-textfield">
-            <input
-              id="title"
-              type="text"
-              name="title"
-              // value={formik.values.title}
-              // onChange={formik.handleChange}
-              placeholder=" "
-            />
-            <label>Email*</label>
-          </div>
-        </div>
+        )
+       })}
+
+        
 
         <hr className="divider" />
 
@@ -173,10 +252,10 @@ export default function BookingStep2() {
               className="material-textfield"
             >
               <input
-                id="title"
+                
                 type="text"
-                name="title"
-                // value={formik.values.title}
+                name="mobile"
+                // value={formik.values.mobile}
                 // onChange={formik.handleChange}
                 placeholder=" "
               />
@@ -186,7 +265,7 @@ export default function BookingStep2() {
               style={{ width: "50%", margin: "2.5rem 2rem" }}
               className="material-textfield"
             >
-              <input type="checkbox" style={{ marginLeft: "1rem" }} />
+              {/* <input name='whatsapp' value={formik.values.whatsapp} onChange={formik.handleChange} type="checkbox" style={{ marginLeft: "1rem" }} /> */}
 
               <span className="table-item" style={{ marginLeft: "1rem" }}>
                 Get your ticket on whatsapp
@@ -223,7 +302,7 @@ export default function BookingStep2() {
 
         <div className="flex-container-std">
           <div style={{margin:"4rem 2.5rem 4rem 0rem"}}>
-            <button className="button button-primary">Continue</button>
+            <button onClick={onSubmit} className="button button-primary">Continue</button>
 
           </div>
           <div>

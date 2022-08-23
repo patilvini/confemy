@@ -45,6 +45,7 @@ import SearchConferencePage from "./pages/search-conference-page/SearchConferenc
 import SearchConfSelectPage from "./pages/booking-page/SearchConfSelectPage";
 import BookingStep1Page from "./pages/booking-page/BookingStep1Page";
 import BookingStep2Page from "./pages/booking-page/BookingStep2Page";
+import UserProfilePage from "./pages/user-profile-page/UserProfilePage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -79,9 +80,15 @@ const App = () => {
               element={<BookingStep1Page />}
             ></Route>
             <Route
-              path="booking-step2/:confID"
+              path="booking-step2/:bookingID"
               element={<BookingStep2Page />}
             ></Route>
+            
+            <Route
+              path="user-profile"
+              element={<UserProfilePage/>}
+            ></Route>
+            
             <Route path="/message" element={<MessagePage />}></Route>
             <Route
               path="dashboard"
@@ -95,6 +102,8 @@ const App = () => {
                 path="create-conference"
                 element={<CreateConfLayoutPage />}
               >
+                
+                
                 <Route path="" element={<ConfBasicInfoPage />}></Route>
                 <Route path="details-1" element={<ConfDetailsPage1 />}></Route>
                 <Route path="details-2" element={<ConfDetailsPage2 />}></Route>
@@ -104,6 +113,7 @@ const App = () => {
                   path="preview-publish"
                   element={<PreviewPublishPage />}
                 ></Route>
+                
               </Route>
               <Route
                 path="create-organization"

@@ -59,3 +59,27 @@ body{
 }
 
 
+.cart{
+    border: solid 1px red;
+    text-align: center;
+    width: 60rem;
+    margin: 1rem;
+    padding: 2rem;
+    border-radius: 1rem;
+   
+}
+
+.cart-grid{
+    display: grid;
+    grid-template-columns: 60% 30% 10%;
+    
+    
+    
+   
+    
+}
+
+.card-item{
+    align-self: center;
+}
+

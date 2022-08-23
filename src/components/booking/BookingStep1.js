@@ -1,14 +1,16 @@
 import { DateTime } from "luxon";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import api from "../../utility/api";
 import "./step1.scss";
 import {useSelector} from 'react-redux'
+import BookingCart from "./BookingCart";
 
 export default function BookingStep1() {
   const [data, setData] = useState();
   const userID = useSelector((state)=> state.auth.user?._id)
+  const navigate = useNavigate()
   
   const confID = useParams().confID;
   const [tickets, setTickets] = useState([])
@@ -39,8 +41,9 @@ export default function BookingStep1() {
 
 
     try{
-      const r = await api.post('conferences/booking/step1', {ticketDetails} )
-      console.log(r)
+      const r = await api.post('conferences/bookings/step1', {ticketDetails} )
+      navigate('/booking-step2/'+ r.data.data.bookingDetails._id)
+
     } catch (err){
       console.log(err)
     }
@@ -53,7 +56,7 @@ export default function BookingStep1() {
     const getData = async () => {
       try {
         const r = await api.get("/conferences/" + confID);
-        console.log(r.data.data.conferences);
+        // console.log(r.data.data.conferences);
         setData(r.data.data.conferences);
 
         
@@ -113,7 +116,7 @@ export default function BookingStep1() {
                 tickets[index] = item.price * e.value
               
                 details[index] = {ticketId : item._id, quantity: e.value}
-                console.log(details)
+                // console.log(details)
                 let sum = 0
                 for (let i = 0; i < tickets.length; i++) {
                   sum += tickets[i];
@@ -140,6 +143,8 @@ export default function BookingStep1() {
           </div>
         </div>
       </div>
+
+      <BookingCart/>
     </div>
   );
 }
