@@ -17,7 +17,7 @@ export default function UserProfileNav (){
                 <button className='button-text'>Passes</button>
                 <button className='button-text'>Saved Conference</button>
                 <button className='button-text'>Credits</button>
-                <button className='button-text'>Account Settings</button>
+              
             </div>
 
 
