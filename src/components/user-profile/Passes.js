@@ -2,18 +2,12 @@ import { useState, useEffect } from "react";
 import SearchIcon from "../icons/SearchIcon";
 import CloseIcon from "../icons/CloseIcon";
 import GlobeSketch from "../icons/GlobeSketch";
-import DateIcon from "../icons/DateIcon";
-import CreditsIcon from "../icons/CreditsIcon";
-import LocationIcon from "../icons/LocationIcon";
-import ResendIcon from "../icons/ResendIcon";
-import ReceiptIcon from "../icons/ReceiptIcon";
-import Modal from "../modal/Modal"
-import RedirectIcon from "../icons/RedirectIcon";
+
 import { useNavigate } from "react-router";
 import api from "../../utility/api";
 import { useSelector } from "react-redux/es/exports";
 import Pass from "./Pass";
-import { DateTime } from "luxon";
+
 import TicketModal from "./TicketModal";
 
 export default function Passes() {
@@ -37,7 +31,7 @@ export default function Passes() {
     const getData = async()=> {
       try{
         const r = await api.get("/conferences/bookings/passes/users/"+ userID)
-        console.log(r.data.data)
+        // console.log(r.data.data)
         setData(r.data.data.bookingDetails)
         
 

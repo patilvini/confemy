@@ -1,6 +1,7 @@
-import UserProfile from "../../components/user-profile/UserProfile";
+
+import UserProfileNav from "../../components/user-profile/UserProfileNav";
 
 
 export default function UserProfilePage(){
-    return (<div><UserProfile/></div>)
+    return (<div><UserProfileNav/></div>)
 }

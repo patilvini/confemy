@@ -3,8 +3,7 @@ import CreditsIcon from "../icons/CreditsIcon";
 import LocationIcon from "../icons/LocationIcon";
 import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
-import { useNavigate } from "react-router";
-import { useState, useEffect } from "react";
+
 import { DateTime } from "luxon";
 
 
@@ -13,7 +12,6 @@ import { DateTime } from "luxon";
 export default function Pass ({onClick, data }){
 
 
-    // const [modalOpen , setModalOpen ] = useState(false)
 
     
 const date = DateTime.fromISO(data.conference.startDate);
