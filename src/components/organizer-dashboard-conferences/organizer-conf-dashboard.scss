@@ -1,0 +1,84 @@
+@import "../../utility/utility.styles.scss";
+
+
+.dash-wrapper {
+    margin: 9.9rem 0 3rem 12.2rem;
+    max-width: 119.6rem;
+    border-radius: .5rem;
+  
+  
+  }
+
+
+  .dash-table {
+    margin: 1rem 0 0 0;
+    font-family:Avenir-Roman;
+    display: grid;
+    grid-template-columns: 50% 15% 15% 20%;
+  
+  }
+
+  .dash-table:hover {
+    background-color: $shade-2;
+  
+  }
+  
+  .dash-table-heading {
+    margin: 3.2rem 0 0 0;
+    display: grid;
+    grid-template-columns: 50% 15% 15% 20%;
+    background-color: $shade-1;
+    border-radius: .4rem;
+    height:5.2rem
+  
+  }
+
+  
+
+  .dash-table-item{
+    // font-family: Avenir;
+    font-size: 2rem;
+    align-self: center;
+    // text-align: center;
+    font-weight: bold;
+    padding-left: 3.0rem;
+   
+  
+  }
+
+
+  .conference-card-dash {
+   
+    display: grid;
+    grid-template-columns: 20% 80%;
+ 
+  
+    img {
+      width: 100%;
+      border-radius: .1rem;
+      padding:1rem;
+   
+    }
+  
+  
+  }
+
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 10% 90%;
+    padding-top: 1rem;
+  }
+
+  
+
+  .ticket-item {
+
+    padding-left:1rem;
+
+   align-self:center ;
+  }
+  
+  .dash-conf-details{
+    padding: .5rem;
+  }

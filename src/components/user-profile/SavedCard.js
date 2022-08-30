@@ -3,15 +3,38 @@ import CreditsIcon from "../icons/CreditsIcon";
 import LocationIcon from "../icons/LocationIcon";
 import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
+import LikeBlueIcon from "../icons/LikeBlueIcon";
+import ShareIcon from "../icons/ShareIcon";
 import { DateTime } from "luxon";
+import api from "../../utility/api";
+import { useSelector } from "react-redux";
 
-export default function SavedCard({ data }) {
+export default function SavedCard({ data, unliked}) {
   const date = DateTime.fromISO(data.conference.startDate);
 
+
+  const userID = useSelector((state)=>state.auth.user?._id)
   let scheduleDate = date.toLocaleString({
     ...DateTime.DATE_MED_WITH_WEEKDAY,
     weekday: "short",
   });
+
+  const unLike = async (confID) => {
+  
+
+    unliked()
+    
+    
+    try{
+      const r = await api.delete("/conferences/like/"+userID, {data:{conferenceIds:[confID]}})
+    
+
+      console.log(r)
+   
+    } catch (err){
+      console.log(err)
+    }
+  }
 
   return (
     
@@ -50,7 +73,26 @@ export default function SavedCard({ data }) {
           </div>
         </div>
       </div>
-      <div>hello</div>
+      <div><div
+            style={{ marginTop: "2rem", display:'flex' }}
+            className="conference-card-grid-item"
+          >
+            <div>
+            <ShareIcon className="conf-card-icons" />
+
+            </div>
+            <div>
+              <button className="conference-card-buttons" onClick={()=>{
+                
+                unLike(data._id)
+                }} ><LikeBlueIcon fill={"#d8000c"} className="conf-card-icons" /></button>
+            
+
+            </div>
+            
+
+            
+          </div></div>
     </div>
     
 

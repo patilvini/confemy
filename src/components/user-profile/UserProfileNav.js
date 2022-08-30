@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import './profilepage.scss'
 import Passes from "./Passes"
 import SavedConfs from './SavedConfs'
+import Credits from './Credits'
 
 export default function UserProfileNav (){
     const user = useSelector((state)=>state.auth?.user)
@@ -24,7 +25,7 @@ export default function UserProfileNav (){
             <div className='buttons-profile'>
                 <button onClick={()=>setComponent(<Passes/>)} className='button-text'>Passes</button>
                 <button onClick={()=>setComponent(<SavedConfs/>)} className='button-text'>Saved Conference</button>
-                <button onClick={()=>setComponent(<div>hello</div>)} className='button-text'>Credits</button>
+                <button onClick={()=>setComponent(<Credits/>)} className='button-text'>Credits</button>
               
             </div>
 

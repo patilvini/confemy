@@ -2,165 +2,212 @@
 
 
 
-.profile-page-wrapper{
-    text-align: center;
-    background-color: white;
-    padding:9.6rem 0 0rem 0;
-    
-    
+.profile-page-wrapper {
+  text-align: center;
+  background-color: white;
+  padding: 9.6rem 0 0rem 0;
+
+
 
 }
 
-.passes-list{
-   text-align: center;
+.passes-list {
+  text-align: center;
 }
 
-.buttons-profile{
-    
-   button{
+.buttons-profile {
+
+  button {
     margin-right: 2rem;
     background-color: white;
     padding: 12.5rem 0 1rem 0;
     border: none;
     color: $gray-2;
     border-bottom: solid .5rem white;
-   }
+  }
 
-    
 
-}
-
-.buttons-profile{
-    
-   button:focus{
-    
-   color: $primary;
-   border-bottom: solid .5rem $primary;
-   }
-
-    
 
 }
 
+.buttons-profile {
 
-.search-bar{
+  button:focus {
+
+    color: $primary;
+    border-bottom: solid .5rem $primary;
+  }
+
+
+
+}
+
+
+.search-bar {
   margin-left: 30%;
-   margin-top: 3.75rem;
+  margin-top: 3.75rem;
 }
 
-.search-input{
-   height: 48px;
-   width: 558px;
-   padding-left: 2rem;
-   font-size: 2rem;
-   font-family: Avenir-Heavy;
- 
- }
+.search-input {
+  height: 48px;
+  width: 558px;
+  padding-left: 2rem;
+  font-size: 2rem;
+  font-family: Avenir-Heavy;
 
- .right-side-icon {
-   position: relative;
-   right: 4.4rem;
-   top: 1rem;
- }
+}
 
- .icon-plshld{
-   height: 30rem;
-   margin: 6rem 40%;
+.right-side-icon {
+  position: relative;
+  right: 4.4rem;
+  top: 1rem;
+}
+
+.icon-plshld {
+  height: 30rem;
+  margin: 6rem 40%;
 
 
- }
+}
 
-.icon-button{
+.icon-button {
   height: 1.5rem;
   align-self: center;
   margin: 0rem .5rem 0 0;
-  
+
 
 
 }
 
 
 
- .conf-card-passes {
-   background-color: #fff;
-   border-radius: 0.4rem;
-   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
-   height: auto;
-   
-   width: 55.8rem;
-   margin-left: 29%
- }
+.conf-card-passes {
+  background-color: #fff;
+  border-radius: 0.4rem;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  height: auto;
 
- .ticket-details{
-   padding: 2.5rem 2.5rem 0 2.5rem;
- }
+  width: 55.8rem;
+  margin-left: 29%
+}
 
- .ticket-grid-item{
-  
-   padding: 2rem;
- }
+.ticket-details {
+  padding: 2.5rem 2.5rem 0 2.5rem;
+}
 
- .ticket-details-grid{
-   display: grid;
-   grid-template-columns: 10% 90%;
-   padding-top: 2rem;
- }
+.ticket-grid-item {
 
- .ticket-details-text{
-   padding-top: .7rem;
- }
+  padding: 2rem;
+}
 
- .opposite-grid{
-   display: grid;
-   grid-template-columns: 50% 50%;
-   margin: 2rem 0 0  0rem;
- }
+.ticket-details-grid {
+  display: grid;
+  grid-template-columns: 10% 90%;
+  padding-top: 2rem;
+}
 
- .grid-item-right{
-   text-align: right;
-   margin-right: 1rem
- }
+.ticket-details-text {
+  padding-top: .7rem;
+}
 
- .grid-item-left{
-   text-align: left;
- }
+.opposite-grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  margin: 2rem 0 0 0rem;
+}
 
- .button-right{
-  
+.grid-item-right {
+  text-align: right;
+  margin-right: 1rem
+}
+
+.grid-item-left {
+  text-align: left;
+}
+
+.button-right {
+
   width: 99%;
   margin-left: 1%
- }
+}
 
- .button-left{
-  
+.button-left {
+
   width: 99%;
   margin-right: 1%
- }
+}
 
- .passes-modal{
+.passes-modal {
   max-height: 90%;
   width: 62.4rem;
   background-color: #ffffff;
   border-radius: .4rem;
- }
+}
 
- .saved-card{
+.saved-card {
   margin: 0rem 0 0 12.2rem;
   background-color: #fff;
   width: 102.3rem;
   // height: 21.1rem;
   display: grid;
-  grid-template-columns: 30% 50% 20%; 
+  grid-template-columns: 30% 50% 20%;
   border-radius: .5rem;
-  
-  img{
-    width : 28.2rem;
+
+  img {
+    width: 28.2rem;
     border-radius: 1rem;
     padding: 2.4rem
-
-
-
   }
 
 
- }
+}
+
+
+.credits-wrapper {
+  margin: 0rem 0 0 12.2rem;
+  max-width: 119.6rem;
+  border-radius: .5rem;
+
+
+}
+
+.circle-button {
+  border-radius: 50%;
+  padding: .5rem .5rem 0 .5rem;
+  border: none;
+  background-color: $shade-1;
+
+}
+
+.circle-label {
+  align-self: center;
+  margin: 0 0 0 2rem;
+}
+
+.credits-table {
+  margin: 1rem 0 0 0;
+  font-family:Avenir-Roman;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+
+}
+
+.credits-table-heading {
+  margin: 4.4rem 0 0 0;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  background-color: $shade-1;
+  border-radius: .4rem;
+
+}
+
+.credit-table-item{
+  // font-family: Avenir;
+  font-size: 2rem;
+  align-self: center;
+  text-align: center;
+  font-weight: bold;
+  padding: 1.2rem;
+ 
+
+}

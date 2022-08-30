@@ -12,6 +12,12 @@ import api from "../../utility/api";
 import { useState } from "react";
 
 export default function BookingCard({ data }) {
+
+
+  // console.log(data)
+
+  
+
   const navigate = useNavigate()
   
   const [icon, setIcon] = useState('#08415C')
@@ -44,6 +50,26 @@ export default function BookingCard({ data }) {
       console.log(err)
     }
   }
+
+
+  const unLike = async (confID) => {
+  
+
+    
+    
+    try{
+      const r = await api.delete("/conferences/like/"+userID, {data:{conferenceIds:[confID]}})
+    
+
+      console.log(r)
+      setIcon("#08415c")
+   
+    } catch (err){
+      console.log(err)
+    }
+  }
+
+  
 
 
 
