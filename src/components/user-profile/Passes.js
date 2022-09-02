@@ -9,15 +9,17 @@ import { useSelector } from "react-redux/es/exports";
 import Pass from "./Pass";
 
 import TicketModal from "./TicketModal";
+import SearchBar from "../search/SearchBar";
 
 export default function Passes() {
   const [showSearch, setShowSearch] = useState(true);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState("");
   const [modalOpen , setModalOpen ] = useState(false)
   const onDismiss = () => navigate("/user-profile");
   const userID = useSelector((state)=>state.auth.user?._id)
   const [data, setData] = useState()
   const [pass, setPass] = useState(0)
+  const [confs, setConfs] = useState()
 
 
 
@@ -66,45 +68,13 @@ export default function Passes() {
 
   const search = (
     <div style={{ position: "relative" }} className="search-bar">
-      <input
-        id="searchBar"
-        type="text"
-        className="search-input"
-        onChange={(e) => {
-          if (e.target.value.length > 0) {
-            setShowSearch(false);
-          }
+  
+     <SearchBar onClear={()=>setValue("")} setValue={(value)=>setValue(value)} value={value} data={data} setSearch={(value)=> console.log(value)}/>
 
-          if (e.target.value.length === 0) {
-            setShowSearch(true);
-          }
-
-          setValue(e.target.value);
-        }}
-      />
-      <i
-        className={
-          showSearch === "" || showSearch ? "left-input-icon" : "display-none"
-        }
-      >
-        <SearchIcon width="3rem" height="3rem" className="large-icon" />
-      </i>
-
-      <i
-        onClick={() => console.log("clear")}
-        className={
-          showSearch === "" || showSearch ? "display-none" : "right-side-icon"
-        }
-      >
-        <CloseIcon
-          width="3rem"
-          height="3rem"
-          fill="#757575"
-          className="large-icon"
-        />
-      </i>
     </div>
-  );
+
+    
+  )
 
   const passes = (
     <div>
@@ -144,3 +114,5 @@ export default function Passes() {
   
   </div>;
 }
+
+
