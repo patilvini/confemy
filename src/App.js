@@ -46,7 +46,8 @@ import SearchConfSelectPage from "./pages/booking-page/SearchConfSelectPage";
 import BookingStep1Page from "./pages/booking-page/BookingStep1Page";
 import BookingStep2Page from "./pages/booking-page/BookingStep2Page";
 import UserProfilePage from "./pages/user-profile-page/UserProfilePage";
-import OrganizerConfDashPage from "./pages/organizer-conf-dashboard-page/Organizer-conf-dash-page";
+import OrganizerConfDashPage from "./pages/organizer-conf-dashboard-page/OrganizerConfDashPage";
+import OrganizerConfPreviewPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewPage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -91,6 +92,8 @@ const App = () => {
             ></Route>
 
             <Route path="organizers-dashboard" element={<OrganizerConfDashPage/>}></Route>
+
+            <Route path="organizer-preview/:id" element={<OrganizerConfPreviewPage/>}></Route>
             
             <Route path="/message" element={<MessagePage />}></Route>
             <Route

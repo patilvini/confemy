@@ -82,3 +82,57 @@
   .dash-conf-details{
     padding: .5rem;
   }
+
+  .data-grid{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    margin: 3.8rem 0;
+
+
+  }
+  .data-container{
+    background-color: white;
+    border: solid 1px $shade-1;
+    height: 10.9rem;
+    width: 29.9rem;
+    text-align: center;
+    padding: 1.6rem;
+
+
+  }
+
+
+
+  .overview-table {
+    margin: 1rem 0 0 0;
+    font-family:Avenir-Roman;
+    display: grid;
+    grid-template-columns: 40% 20% 20% 20%;
+  
+  }
+  
+  .overview-table-heading {
+    margin: 4.4rem 0 0 0;
+    display: grid;
+    grid-template-columns: 40% 20% 20% 20%;
+    background-color: $shade-1;
+    border-radius: .4rem;
+  
+  }
+  
+  .overview-table-item{
+    // font-family: Avenir;
+    font-size: 2rem;
+    align-self: center;
+    text-align: center;
+    font-weight: bold;
+    padding: 1.2rem;
+   
+  
+  }
+
+  .overview-table:hover{
+   background-color: $shade-2;
+   
+  
+  }

@@ -3,10 +3,13 @@ import ConferenceSec from './ConferenceSec';
 import './organizer-conf-dashboard.scss';
 import {useSelector} from "react-redux";
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function OrganizerDash(){
     const userID = useSelector((state) => state.auth.user?._id);
     const [data, setData] = useState()
+
+    const navigate = useNavigate()
 
     const getSaved = async () => {
         try {
@@ -55,9 +58,12 @@ export default function OrganizerDash(){
   </div>
   
     {data?.map((item, index)=>{
+      console.log(item)
         return (
             <div key={index} className='dash-table'>
-            <div  className="dash-table-item">
+            <div
+             onClick={()=>navigate("/organizer-preview/"+ item._id)}  
+             className="dash-table-item">
                 
                 <ConferenceSec data={data[index]}/>
                 </div>
