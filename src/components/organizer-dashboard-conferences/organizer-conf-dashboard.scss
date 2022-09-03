@@ -136,3 +136,44 @@
    
   
   }
+
+
+  .request-table {
+    margin: 1rem 0 0 0;
+    font-family:Avenir-Roman;
+    display: grid;
+    grid-template-columns: 20% 30% 15% 15% 20%;
+  
+  }
+  
+  .request-table-heading {
+    margin: 4.4rem 0 0 0;
+    display: grid;
+    grid-template-columns: 20% 30% 15% 15% 20%;
+    background-color: $shade-1;
+    border-radius: .4rem;
+  
+  }
+  
+  .request-table-item{
+    // font-family: Avenir;
+    font-size: 2rem;
+    align-self: center;
+    margin-left:2rem ;
+    font-weight: bold;
+    padding: 1.2rem;
+
+    button{
+     padding: 1rem 2rem;
+     
+     
+    }
+   
+  
+  }
+
+  .request-table:hover{
+   background-color: $shade-2;
+   
+  
+  }

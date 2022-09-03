@@ -48,6 +48,9 @@ import BookingStep2Page from "./pages/booking-page/BookingStep2Page";
 import UserProfilePage from "./pages/user-profile-page/UserProfilePage";
 import OrganizerConfDashPage from "./pages/organizer-conf-dashboard-page/OrganizerConfDashPage";
 import OrganizerConfPreviewPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewPage";
+import CreditRequestsPage from "./pages/organizer-conf-dashboard-page/CreditRequestsPage";
+import RefundRequestsPage from "./pages/organizer-conf-dashboard-page/RefundRequestsPage";
+import EarningsPage from "./pages/organizer-conf-dashboard-page/EarningsPage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -89,6 +92,22 @@ const App = () => {
             <Route
               path="user-profile"
               element={<UserProfilePage/>}
+            ></Route>
+
+<Route
+              path="credit-requests"
+              element={<CreditRequestsPage/>}
+            ></Route>
+
+
+<Route
+              path="refund-requests"
+              element={<RefundRequestsPage/>}
+            ></Route>
+
+<Route
+              path="earnings"
+              element={<EarningsPage/>}
             ></Route>
 
             <Route path="organizers-dashboard" element={<OrganizerConfDashPage/>}></Route>

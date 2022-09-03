@@ -4,7 +4,7 @@ import DropdownIcon from "../icons/DropdownIcon";
 import EditIcon from "../icons/EditIcon.js";
 import api from "../../utility/api.js";
 import { useSelector } from "react-redux/es/exports.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ExternalCredModal from "./ExternalCredModal.js";
 
 export default function Credits() {
@@ -12,7 +12,31 @@ export default function Credits() {
 
 
   const [externalOpen , setExternalOpen ] = useState(false)
+  const [data, setData] = useState()
   const userID = useSelector((state)=>state.auth.user?._id)
+
+  useEffect(()=>{
+
+
+    const getData = async()=> {
+      try{
+        const r = await api.get("/attendees/credits/users/6312626250c48d34978ef6ad"
+        // + userID
+        )
+        console.log(r.data.data.conferenceCredits.conference)
+        setData(r.data.data.conferenceCredits)
+        
+
+      }
+      catch(err){
+        console.log(err)
+      }
+    }
+
+    
+      getData()
+    
+  },[userID])
   
 
   
