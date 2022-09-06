@@ -51,6 +51,7 @@ import OrganizerConfPreviewPage from "./pages/organizer-conf-dashboard-page/Orga
 import CreditRequestsPage from "./pages/organizer-conf-dashboard-page/CreditRequestsPage";
 import RefundRequestsPage from "./pages/organizer-conf-dashboard-page/RefundRequestsPage";
 import EarningsPage from "./pages/organizer-conf-dashboard-page/EarningsPage";
+import UserViewProfilePage from "./pages/org-profile-userView-page/UserViewProfilepage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -108,6 +109,12 @@ const App = () => {
 <Route
               path="earnings"
               element={<EarningsPage/>}
+            ></Route>
+
+
+<Route
+              path="user-view"
+              element={<UserViewProfilePage/>}
             ></Route>
 
             <Route path="organizers-dashboard" element={<OrganizerConfDashPage/>}></Route>
