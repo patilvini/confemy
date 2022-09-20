@@ -6,11 +6,7 @@ import api from "../../utility/api";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-const initialValues = {
-  creditType: "",
-  totalCredits: "",
-  endDate: "",
-};
+
 
 const validationSchema = yup.object({
   creditType: yup.string().required("Required"),
@@ -18,16 +14,24 @@ const validationSchema = yup.object({
   endDate: yup.string().required("Required"),
 });
 
-export default function SetGoalModal({ onDismiss }) {
-  const userID = useSelector((state) => state.auth.user?._id);
+export default function UpdateGoalModal({ onDismiss, creditData }) {
+  
   const [credits, setCredits] = useState();
   const [options, setOptions] = useState([]);
+
+ 
+
+
+  const initialValues = {
+    creditType: "",
+    totalCredits: creditData.goal,
+    endDate: creditData.endDate,
+  };
 
   useEffect(() => {
     const getCredits = async () => {
       try {
         const r = await api.get("/conferences/credits");
-        console.log(r.data.data)
         
 
         setCredits(r.data.data.credits);
@@ -42,6 +46,7 @@ export default function SetGoalModal({ onDismiss }) {
   }, []);
 
   credits?.forEach((item) => {
+   
     if (options.length !== credits.length) {
       options.push({ value: item._id, label: item.name });
     }
@@ -54,27 +59,20 @@ export default function SetGoalModal({ onDismiss }) {
       creditId: values.creditType,
       endDate: values.endDate,
       quantity: values.totalCredits,
-      userId: userID,
+     
     };
     console.log(creditDetails);
 
+    
+
     try {
-      const r = await api.post("/attendees/credits/creditGoals", {
+      const r = await api.patch("/attendees/credits/creditGoals/"+creditData.creditGoalId, {
         creditDetails,
       });
       console.log(r);
     } catch (err) {
       console.log(err);
     }
-
-    // try {
-    //   const r = await api.patch("/attendees/credits/creditGoals/"+userID, {
-    //     creditDetails,
-    //   });
-    //   console.log(r);
-    // } catch (err) {
-    //   console.log(err);
-    // }
   };
 
   const formik = useFormik({
@@ -86,7 +84,7 @@ export default function SetGoalModal({ onDismiss }) {
   return (
     <Modal onDismiss={onDismiss}>
       <div className="setGoal-modal">
-        <h2>Set Goal</h2>
+        <h2>Update Goal</h2>
         <p style={{ marginBottom: "2rem" }} className="caption-2-regular-gray3">
           Set goal credits to earn within a time-period.
         </p>
@@ -101,6 +99,7 @@ export default function SetGoalModal({ onDismiss }) {
               console.log(e);
               formik.setFieldValue("creditType", e.value);
             }}
+            value = {options.filter(option => option.label === creditData.creditName)}
             className=" form-element"
             options={options}
           />

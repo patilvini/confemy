@@ -2,6 +2,8 @@ import Modal from "../modal/Modal";
 import { useFormik } from "formik";
 import Select from "react-select";
 import * as yup from "yup";
+import { useEffect, useState } from "react";
+import api from "../../utility/api";
 
 
 
@@ -30,7 +32,27 @@ const validationSchema = yup.object({
 });
 
 export default function ExternalCredModal({ onDismiss }) {
-  const options = [{ name: "asd", value: "dasd" }];
+  const [credits, setCredits] = useState();
+  const [options, setOptions] = useState([]);
+
+  useEffect(() => {
+    const getCredits = async () => {
+      try {
+        const r = await api.get("/conferences/credits");
+        
+
+        setCredits(r.data.data.credits);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getCredits();
+
+   
+  }, []);
+
+  
 
   const onSubmit = async (values, actions) => {
     console.log("form values form onSubmit", values);
@@ -43,6 +65,13 @@ export default function ExternalCredModal({ onDismiss }) {
     initialValues,
     validationSchema,
     onSubmit,
+  });
+
+  credits?.forEach((item) => {
+   
+    if (options.length !== credits.length) {
+      options.push({ value: item._id, label: item.name });
+    }
   });
 
   return (

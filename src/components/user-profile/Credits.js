@@ -6,42 +6,38 @@ import api from "../../utility/api.js";
 import { useSelector } from "react-redux/es/exports.js";
 import { useEffect, useState } from "react";
 import ExternalCredModal from "./ExternalCredModal.js";
+import SetGoalModal from "./SetGoalModal.js";
+import UpdateGoalModal from "./UpdateGoalModal.js";
 
 export default function Credits() {
   let component;
 
+  const [externalOpen, setExternalOpen] = useState(false);
+  const [goalOpen, setGoalOpen] = useState(false);
+  const [data, setData] = useState();
+  const [creditData, setCredit] = useState();
+  const [updateGoal, setUpdateOpen]= useState(false)
+  const userID = useSelector((state) => state.auth.user?._id);
 
-  const [externalOpen , setExternalOpen ] = useState(false)
-  const [data, setData] = useState()
-  const userID = useSelector((state)=>state.auth.user?._id)
-
-  useEffect(()=>{
-
-
-    const getData = async()=> {
-      try{
-        const r = await api.get("/attendees/credits/users/6312626250c48d34978ef6ad"
-        // + userID
-        )
-        console.log(r.data.data.conferenceCredits.conference)
-        setData(r.data.data.conferenceCredits)
-        
-
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const r = await api.get(
+          "/attendees/credits/users/"+userID+"?getAllCreditTypes=true"
+        );
+        console.log(r.data.data.allCredits);
+        setData(r.data.data.allCredits);
+      } catch (err) {
+        console.log(err);
       }
-      catch(err){
-        console.log(err)
-      }
-    }
+    };
 
     
-      getData()
-    
-  },[userID])
-  
+
+    getData();
+  }, [userID]);
 
   
-
-  let a = [1, 2 ,2 ]
 
   const noCredits = (
     <div>
@@ -56,12 +52,28 @@ export default function Credits() {
           Add CME Credits
         </button>
         <button
+          onClick={() => setExternalOpen()}
           style={{ margin: "0rem 1rem 6rem 1rem" }}
           className="button button-primary"
         >
           Set Credit Goals
         </button>
       </div>
+{/* 
+      {externalOpen && (
+        <ExternalCredModal
+          onDismiss={() => {
+            setExternalOpen(false);
+          }}
+        />
+      )}
+      {goalOpen && (
+        <SetGoalModal
+          onDismiss={() => {
+            setGoalOpen(false);
+          }}
+        />
+      )} */}
     </div>
   );
 
@@ -73,10 +85,12 @@ export default function Credits() {
         <div style={{ width: "100%" }} className="opposite-grid">
           <div className="grid-item-left flex-container">
             <div style={{ alignSelf: "center" }}>
-              <button onClick={()=> {
-                console.log("dasndjn")
-                setExternalOpen(true)
-                }} className="circle-button">
+              <button
+                onClick={() => {
+                  setExternalOpen(true);
+                }}
+                className="circle-button"
+              >
                 <AddIcon />
               </button>
             </div>
@@ -88,7 +102,7 @@ export default function Credits() {
           </div>
           <div className="grid-item-right">
             <button className="button button-secondary">
-              Last 30 days <DropdownIcon className="icon-size" />{" "}
+              Last 30 days <DropdownIcon className="icon-size" />
             </button>
           </div>
         </div>
@@ -103,29 +117,74 @@ export default function Credits() {
 
           <div className="credit-table-item">To Goal</div>
         </div>
-        {a.map((item, index)=>{
+        {data?.map((item, index) => {
           return (
             <div key={index}>
               <div className="credits-table">
-          <div className="credit-table-item">AMA Category1</div>
-          <div className="credit-table-item">30</div>
+                <div className="credit-table-item">{item.creditName}</div>
+                <div className="credit-table-item">{item.approvedCreditQuantity}</div>
 
-          <div className="credit-table-item">20</div>
+                <div className="credit-table-item">{item.registeredCreditQuantity}</div>
 
-          <div className="credit-table-item">10</div>
+                <div className="credit-table-item">{item.pendingCreditQuantity}</div>
 
-          <div className="credit-table-item">20 <button style={{backgroundColor:"#fafbfc", border: "none"}} ><EditIcon /></button></div>
-      
-        </div> </div>
-          )
+                <div className="credit-table-item">
+                  {item.goal}
+
+
+                 
+                  {item.goal && <button
+                    onClick={() => {
+                      setCredit(item)
+                      setUpdateOpen(true)
+                    }}
+                    style={{ backgroundColor: "#fafbfc", border: "none" }}
+                  >
+                    <EditIcon />
+                  </button>}
+
+                  {!item.goal && <button
+                    onClick={() => setGoalOpen(true)}
+                    className="button button-green"
+                  >
+                    Set Goal
+                    
+                  </button>}
+                  
+                </div>
+              </div>{" "}
+            </div>
+          );
         })}
       </div>
 
-      {externalOpen && <ExternalCredModal  onDismiss={()=>{setExternalOpen(false)}} /> }
+      {externalOpen && (
+        <ExternalCredModal
+          onDismiss={() => {
+            setExternalOpen(false);
+          }}
+        />
+      )}
+      {goalOpen && (
+        <SetGoalModal
+          onDismiss={() => {
+            setGoalOpen(false);
+          }}
+        />
+      )}
+      {updateGoal && (
+        <UpdateGoalModal creditData={creditData}
+          onDismiss={() => {
+            setUpdateOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 
-  if (true) {
+  if (data?.length === 0) {
+    component = noCredits;
+  } else {
     component = credits;
   }
   return <div>{component}</div>;
