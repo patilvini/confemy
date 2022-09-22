@@ -1,10 +1,13 @@
 import { DateTime } from "luxon"
 import { useEffect, useState } from "react"
 import api from "../../utility/api"
+import UploadModal from "./UploadModal"
 
-export default function DashboardConfPreview ( ) {
+export default function DashConfPreviewFinished ( ) {
 
     const [data, setData] = useState()
+    const [modalOpen, setModalOpen] = useState(false)
+    const [attendee, setAttendee] = useState()
 
     useEffect(()=>{
         const getData = async()=> {
@@ -52,14 +55,14 @@ export default function DashboardConfPreview ( ) {
        
         <div className="grid-item-right">
             <button style={{marginRight:"1rem"}} className="button button-primary">Preview</button>
-            <button style={{marginRight:"1rem"}} className="button button-primary">Duplicate</button>
-            <button className="button button-green">Edit</button>
+            <button className="button button-primary">Duplicate</button>
+           
         </div>
 
 
 
         </div>
-        <div className="data-grid">
+        <div className="data-grid-3">
             <div className="data-container">
             <p className="caption-2-regular-gray3">Tickets Sold</p>
             <h2 style={{padding: "1rem"}}>{data?.totalTicketSold}/{data?.totalTicketQuantity}</h2>
@@ -77,11 +80,7 @@ export default function DashboardConfPreview ( ) {
             <h2 style={{padding: "1rem"}}>Live</h2>
 
             </div>
-            <div className="data-container">
-            <p className="caption-2-regular-gray3">Refund Requests</p>
-            <h2 style={{padding: "1.6rem"}}>2</h2>
-
-            </div>
+           
         </div>
         <h3>Sales by Ticket Type</h3>
 
@@ -124,7 +123,7 @@ export default function DashboardConfPreview ( ) {
 
   <div className="overview-table-item">Booked</div>
 
-  <div className="overview-table-item">Booking Status</div>
+  <div className="overview-table-item">Credits</div>
 
  
 </div>
@@ -156,12 +155,24 @@ let regDate = date2.toLocaleString({
 
   <div className="overview-table-item">{regDate}</div>
 
-  <div className="overview-table-item">{!item.refundRequest && <div>Booking Confirmed</div>}{item.refundRequest && <div style={{color:"red"}}>Refund Requested</div>}</div>
+  <div className="overview-table-item">{item.creditCertificateUploaded && <button onClick={()=>{
+    setModalOpen(true)
+    setAttendee(item._id)
+  }} className="button button-green">Upload Certificate</button>}{item.creditCertificateUploaded && <button className="button button-primary">View Certificate</button>}</div>
 
   
 </div> </div>
   )
 })}
+
+{modalOpen && (
+        <UploadModal
+        attendee = {attendee}
+          onDismiss={() => {
+            setModalOpen(false);
+          }}
+        />
+      )}
 
 
 <h3 style={{marginTop: "9.2rem"}}>Your Links</h3>

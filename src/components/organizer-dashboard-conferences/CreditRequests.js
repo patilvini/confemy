@@ -1,6 +1,36 @@
+import { useEffect, useState } from "react"
+import api from "../../utility/api"
+import UploadModal from "./UploadModal"
+
 export default function CreditRequests () {
 
-    const a = [0,0,0]
+  const [modalOpen, setModalOpen] = useState(false)
+    const [attendee, setAttendee] = useState()
+    const [data, setData] = useState()
+
+
+    useEffect(()=>{
+      const getData = async()=> {
+          try{
+            const r = await api.get("/organizers/conferences/6318cd9c106aaa5e009f7c80")
+            console.log(r.data.data.conferenceDetails)
+            setData(r.data.data.conferenceDetails)
+            
+    
+          }
+          catch(err){
+            console.log(err)
+          }
+        }
+    
+        
+          getData()
+        
+      },[]
+
+  )
+
+ 
     return <div className="dash-wrapper">
 
 <div className="opposite-grid">
@@ -29,17 +59,20 @@ export default function CreditRequests () {
     
   </div>
 
-  {a.map((item, index)=> {
+  {data?.attendees.map((item, index)=> {
     return (
 
         <div className="request-table" key={index}>
-    <div className="request-table-item">Mohamad Ali Khan</div>
-    <div className="request-table-item"><p className="caption-2-regular-gray3">Future of innovation in medicines after COVID-19</p></div>
+    <div className="request-table-item">{item.user.firstName} {item.user.lastName}</div>
+    <div className="request-table-item"><p className="caption-2-regular-gray3">{}</p></div>
 
     <div className="request-table-item"><p style={{fontSize:"2rem"}} className="caption-2-regular-gray3">AMA cat 1</p></div>
 
     <div className="request-table-item"><p className="caption-2-regular-gray3">3</p></div>
-    <div className="request-table-item"> <p className="caption-2-regular-gray3">Upload Certificate</p></div>
+    <div className="overview-table-item">{!item.creditCertificateUploaded && <button onClick={()=>{
+    setModalOpen(true)
+    setAttendee(item.user._id)
+  }} className="button button-green">Upload Certificate</button>}{item.creditCertificateUploaded && <button className="button button-primary">View Certificate</button>}</div>
 
     
   </div>
@@ -51,6 +84,14 @@ export default function CreditRequests () {
   
 
 
+{modalOpen && (
+        <UploadModal
+        attendee = {attendee}
+          onDismiss={() => {
+            setModalOpen(false);
+          }}
+        />
+      )}
   </div>
 
     </div>

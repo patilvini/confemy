@@ -90,11 +90,19 @@
 
 
   }
+
+  .data-grid-3{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin: 3.8rem 0;
+
+
+  }
   .data-container{
     background-color: white;
     border: solid 1px $shade-1;
     height: 10.9rem;
-    width: 29.9rem;
+    width: 100%;
     text-align: center;
     padding: 1.6rem;
 
