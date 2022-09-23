@@ -33,13 +33,14 @@ export default function UploadModal({ onDismiss , attendee}) {
     const { docs } = values;
 
 
-    const formData={
-      atteedeeDetails:{
-        uploadCertificate:true,       
-        docs
-      }
+    const atteendeeDetails={
+      atteendeeDetails:{
+        uploadCertificate:true,
+         data:[]
+        
     }
-    console.log(formData)
+  }
+    
 
     if (docs.length > 0) {
       const formDataObj = new FormData();
@@ -49,9 +50,9 @@ export default function UploadModal({ onDismiss , attendee}) {
         console.log("images upload response", imagesResponse);
         if (imagesResponse) {
          
-          formData.atteedeeDetails.data = imagesResponse.data.data;
-          console.log("formData", docs.length, formData);
-          const response = await api.patch("attendees/credits/users/6318cd9c106aaa5e009f7c80", formData);
+          atteendeeDetails.atteendeeDetails.data = imagesResponse.data.data;
+          console.log("formData", docs.length, atteendeeDetails);
+          const response = await api.patch("/attendees/credits/users/"+attendee, atteendeeDetails);
           console.log(response)
           if (response) {
             actions.resetForm({ values: initialValues });
@@ -63,9 +64,11 @@ export default function UploadModal({ onDismiss , attendee}) {
         actions.setFieldError("docs", err.response?.data.message);
       }
     } else {
+
+      console.log("else")
     
       try {
-        const response = await api.patch("attendees/credits/users/"+attendee, formData);
+        const response = await api.patch("attendees/credits/users/"+attendee, atteendeeDetails);
         if (response) {
           actions.resetForm({ values: initialValues });
           setFiles([]);

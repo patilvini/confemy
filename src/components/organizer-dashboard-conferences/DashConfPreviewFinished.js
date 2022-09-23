@@ -1,7 +1,9 @@
+import { saveAs } from "file-saver"
 import { DateTime } from "luxon"
 import { useEffect, useState } from "react"
 import api from "../../utility/api"
 import UploadModal from "./UploadModal"
+
 
 export default function DashConfPreviewFinished ( ) {
 
@@ -40,6 +42,23 @@ export default function DashConfPreviewFinished ( ) {
       weekday: "short",
     });
 
+
+    const downloadCertificate = async (id) => {
+
+      
+      try{
+        const r = await api.get("/attendees/credits/certificates/users/"+id)
+        console.log(r)
+        const pdfRaw = r.data
+        const file = new Blob([pdfRaw], {type: 'application/pdf'})
+        const fileURL = URL.createObjectURL(file)
+        window.open(fileURL)
+        
+      } catch (err) {
+        console.log(err)
+      }
+
+    }
     
 
 
@@ -155,10 +174,10 @@ let regDate = date2.toLocaleString({
 
   <div className="overview-table-item">{regDate}</div>
 
-  <div className="overview-table-item">{item.creditCertificateUploaded && <button onClick={()=>{
+  <div className="overview-table-item">{!item.creditCertificateUploaded && <button onClick={()=>{
     setModalOpen(true)
     setAttendee(item._id)
-  }} className="button button-green">Upload Certificate</button>}{item.creditCertificateUploaded && <button className="button button-primary">View Certificate</button>}</div>
+  }} className="button button-green">Upload Certificate</button>}{item.creditCertificateUploaded && <button onClick={()=>downloadCertificate(item._id)} className="button button-primary">View Certificate</button>}</div>
 
   
 </div> </div>

@@ -6,7 +6,7 @@ export default function RefundRequests () {
 <div className="opposite-grid">
             <h1>Refund Requests</h1>
             <div className="grid-item-right">
-            {/* <button className='button button-green'>Create Conference </button> */}
+            <button className='button button-green'>Search Bar</button>
 
             </div>
            

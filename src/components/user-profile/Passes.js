@@ -12,14 +12,14 @@ import TicketModal from "./TicketModal";
 import SearchBar from "../search/SearchBar";
 
 export default function Passes() {
-  const [showSearch, setShowSearch] = useState(true);
-  const [value, setValue] = useState("");
+  
+  const [searchValue, setSearchValue] = useState("");
   const [modalOpen , setModalOpen ] = useState(false)
   const onDismiss = () => navigate("/user-profile");
   const userID = useSelector((state)=>state.auth.user?._id)
   const [data, setData] = useState()
   const [pass, setPass] = useState(0)
-  const [confs, setConfs] = useState()
+  const [display, setDisplay] = useState()
 
 
 
@@ -48,6 +48,23 @@ export default function Passes() {
     
   },[userID])
 
+  useEffect(() =>{
+
+    console.log(searchValue)
+
+    if(data){
+   
+
+      data.filter((item)=>{
+        // item.conference.title
+      })
+    }
+
+
+
+
+  },[searchValue])
+
 
 
 
@@ -69,7 +86,7 @@ export default function Passes() {
   const search = (
     <div style={{ position: "relative" }} className="search-bar">
   
-     <SearchBar onClear={()=>setValue("")} setValue={(value)=>setValue(value)} value={value} data={data} setSearch={(value)=> console.log(value)}/>
+     <SearchBar onClear={()=>setSearchValue("")} setValue={(value)=>{setSearchValue(value)}} value={searchValue} data={data}/>
 
     </div>
 

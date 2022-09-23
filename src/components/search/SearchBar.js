@@ -5,28 +5,12 @@ import CloseIcon from "../icons/CloseIcon";
 
 
 
-export default function SearchBar({onClear, setValue, value, data, setSearch}){
+export default function SearchBar({onClear, setValue, value, data, }){
 
     const [showSearch , setShowSearch] = useState(true)
 
 
 
-   setSearch(data?.filter((v)=>{
-     const search  = value.split("")
-
-     let title = v.conference.title.split("")
-     title.length = search.length
-
-     if(search.join() === title.join()) {
-      
-      
-      return v
-     }
-
-    console.log(v)
-
-     
-    }))
 
     
 
