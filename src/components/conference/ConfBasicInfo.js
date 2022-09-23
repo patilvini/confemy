@@ -224,7 +224,7 @@ const validationSchema = yup.object().shape({
   mode: yup
     .array()
     .of(yup.string())
-    .min(1, "Choose a conference format")
+    .min(1, "Choose a conference location")
     .compact(),
   venueName: yup.string().when("mode", {
     is: (mode) => mode.includes("venue"),
@@ -246,10 +246,18 @@ const validationSchema = yup.object().shape({
     is: (mode) => mode.includes("venue"),
     then: yup.string().required("Required"),
   }),
-  // isFree: yup.boolean().when(["isFree", "isThereBasePrice"], {
-  //   is: (isFree, isThereBasePrice) => isFree == isThereBasePrice,
-  //   then: yup.bool().isTrue("Choose free or set a baseprice"),
-  // }),
+  currency: yup.string().when("isFree", {
+    is: false,
+    then: yup.string().required("Required"),
+  }),
+  basePrice: yup.number().when("isFree", {
+    is: false,
+    then: yup
+      .number()
+      .typeError("Enter a number")
+      .required("Required")
+      .positive("Enter amount more than 0"),
+  }),
 });
 
 export default function ConfBasicInfo() {
@@ -295,7 +303,7 @@ export default function ConfBasicInfo() {
         mode,
         host,
         venue: {
-          name: venueName,
+          venueName,
           state,
           country,
           city,
@@ -304,10 +312,6 @@ export default function ConfBasicInfo() {
         },
       },
     };
-
-    // if (organizationId) {
-    //   formData.organizationId = organizationId;
-    // }
 
     try {
       console.log(formData);
@@ -478,6 +482,7 @@ export default function ConfBasicInfo() {
                 formik.setFieldValue("organizationId", option?.value);
               }}
               isDisabled={formik.values.host !== "organization"}
+              placeholder="Select organization"
             />
             <div>
               {formik.touched.organizationId &&
@@ -571,6 +576,7 @@ export default function ConfBasicInfo() {
                 options={timezones}
                 label="timezone"
                 name="timezone"
+                placeholder="Select conference timezone"
                 handleChange={(option) => {
                   formik.setFieldValue("timezone", option?.value);
                 }}
@@ -764,7 +770,7 @@ export default function ConfBasicInfo() {
         </section>
         <section className="mb-72">
           <h2>Pricing</h2>
-          <div>
+          <div className="mb-24">
             <input
               type="checkbox"
               style={{ display: "none" }}
@@ -796,19 +802,12 @@ export default function ConfBasicInfo() {
                   ? "button-outlined-inactive"
                   : "button-outlined-active"
               }`}
-              onClick={(e) => {
+              onClick={() => {
                 formik.setFieldValue("isFree", !formik.values.isFree);
-                // formik.setFieldValue("basePrice", Number);
-                // formik.setFieldValue("currency", "");
               }}
             >
               Add Baseprice
             </button>
-          </div>
-          <div className="mb-24">
-            {/* {formik.touched.isFree && Boolean(formik.errors.isFree) && (
-              <TextError>{formik.errors.isFree}</TextError>
-            )} */}
           </div>
 
           <div className={`${formik.values.isFree ? "display-none" : ""}`}>
@@ -826,6 +825,7 @@ export default function ConfBasicInfo() {
                   handleChange={(option) => {
                     formik.setFieldValue("currency", option?.value);
                   }}
+                  placeholder="Select currency"
                 />
                 <div className="mb-24">
                   {formik.touched.currency &&
