@@ -444,7 +444,7 @@ export default function SearchComponent() {
       <div className="search-nav">
         <BackIcon className="icon-size" />
         <div className="flex-container">
-          {/* <div className="flex-item">
+          <div className="flex-item">
             <SearchBar
               value={search}
               onClear={() => {
@@ -452,7 +452,7 @@ export default function SearchComponent() {
               }}
               setValue={(value) => setSearch(value)}
             />
-          </div> */}
+          </div>
           <div className="flex-item">
             <button onClick={submit} className="button button-secondary">
               Search

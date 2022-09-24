@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import api from "../../utility/api"
+import SearchBar from "../search/SearchBar"
 import UploadModal from "./UploadModal"
 
 export default function CreditRequests () {
@@ -7,6 +8,9 @@ export default function CreditRequests () {
   const [modalOpen, setModalOpen] = useState(false)
     const [attendee, setAttendee] = useState()
     const [data, setData] = useState()
+    const [filtered, setFiltered] = useState([]);
+    const [searchValue, setSearchValue] = useState("");
+  
 
 
     useEffect(()=>{
@@ -36,7 +40,7 @@ export default function CreditRequests () {
 <div className="opposite-grid">
             <h1>Credits Requests</h1>
             <div className="grid-item-right">
-            {/* <button className='button button-green'>Create Conference </button> */}
+            <SearchBar onClear={()=>setSearchValue("")} setValue={(value)=>{setSearchValue(value)}} value={searchValue} data={data}/>
 
             </div>
            

@@ -20,6 +20,7 @@ export default function Passes() {
   const [data, setData] = useState()
   const [pass, setPass] = useState(0)
   const [display, setDisplay] = useState()
+  const [filtered, setFiltered] = useState([])
 
 
 
@@ -35,6 +36,7 @@ export default function Passes() {
         const r = await api.get("/conferences/bookings/passes/users/"+ userID)
         // console.log(r.data.data)
         setData(r.data.data.bookingDetails)
+        setFiltered(r.data.data.bookingDetails)
         
 
       }
@@ -53,12 +55,33 @@ export default function Passes() {
     console.log(searchValue)
 
     if(data){
+
+      
    
 
-      data.filter((item)=>{
-        // item.conference.title
+      const dataSet = data.filter((item)=>{
+        
+        const lower = item.conference.title.toLowerCase()
+
+        if(item.conference.title.toLowerCase().indexOf(searchValue.toLocaleLowerCase()) >= 0){
+          
+          return item
+        }
+
+       
+        
+        
+        
+
+        
       })
+
+      console.log(dataSet)
+      setFiltered(dataSet)
+
     }
+
+   
 
 
 
@@ -98,7 +121,7 @@ export default function Passes() {
     {search}
     <h3 style={{ margin: "2rem 0 2rem 29%" }}>Upcoming Conferences</h3>
     
-    {data?.map((item, index)=>{
+    {filtered?.map((item, index)=>{
       return(
         <div key={item._id}>
           <Pass data={data[index]}  onClick={()=>{
