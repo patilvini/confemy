@@ -32,15 +32,14 @@ export default function BookingCart() {
 
   const deleteConf = async (index, id) =>{
   
-  //  let bookingDetails = data.bookingDetails.filter((item)=> {
-  //   return item !== data.bookingDetails[index]
-
-  //  })
+  
 
    
    try{
     const r = await api.delete("/conferences/bookings/" + id)
     console.log(r)
+
+    getData()
    
 
    } catch (err){

@@ -45,20 +45,23 @@ export default function SearchComponent() {
 
   const [page, setPage] = useState(1);
 
+
+  const loadData = async () => {
+    try {
+      const r = await api.post(
+        "/conferences/search?page=" + page + "&limit=10"
+      );
+      console.log(r);
+      setData(r.data.data.conferences);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     setPage(1);
 
-    const loadData = async () => {
-      try {
-        const r = await api.post(
-          "/conferences/search?page=" + page + "&limit=10"
-        );
-        console.log(r);
-        setData(r.data.data.conferences);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+    
 
     loadData();
   }, []);
@@ -89,7 +92,7 @@ export default function SearchComponent() {
   const submit = async () => {
     setPage(1);
 
-    console.log(search);
+  
 
     try {
       const r = await api.post(
@@ -479,8 +482,8 @@ export default function SearchComponent() {
           })}
         </div>
 
-        {true && (
-          <div>
+        {data.length > 0  && (
+          <div style={{textAlign:"center", margin:"4rem"}}>
             <button
               onClick={() => {
                 if (page === 1) {
@@ -503,6 +506,20 @@ export default function SearchComponent() {
             >
               <NextIcon className="icon-size" fill="#fff" />
             </button>
+          </div>
+        )}
+
+
+{data.length === 0  && (
+          <div className="empty">
+            <h1>Nothing Here...</h1>
+            <button onClick={()=>{setPage(1)}} style={{margin:"2rem"}} className="button button-green">Back to search</button>
+
+            <button onClick={()=>{
+              setPage(1)
+              loadData()            
+            }} style={{margin:"2rem"}} className="button button-green">New Search</button>
+           
           </div>
         )}
       </div>

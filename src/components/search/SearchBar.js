@@ -20,7 +20,7 @@ export default function SearchBar({onClear, setValue, value, data, }){
 
     return(
         <>
-        <input
+        {/* <input
         id="searchBar"
         type="text"
         value={value}
@@ -55,10 +55,10 @@ export default function SearchBar({onClear, setValue, value, data, }){
           width="3rem"
           height="3rem"
           fill="#757575"
-          className="large-icon"
+          // className="large-icon"
         />
-      </i>
-        {/* <div className="position-relative">
+      </i> */}
+        <div className="position-relative">
             <input
               id="searchBar"
               type="text"
@@ -89,7 +89,7 @@ export default function SearchBar({onClear, setValue, value, data, }){
             <i onClick={onClear} className={showSearch==="" || showSearch ?  "display-none" : "right-input-icon"}>
               <CloseIcon width="3rem" height="3rem" fill="#757575" className="large-icon" />
             </i>
-          </div> */}
+          </div>
         </>
     )
 }

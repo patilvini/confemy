@@ -38,11 +38,17 @@ export default function BookingStep1() {
 
     }
 
+    ticketDetails.tickets = details.filter((item)=>{
+      if (item !== null) return item
+    })
+
+    // console.log("submit: " ,ticketDetails)
 
 
     try{
       const r = await api.post('conferences/bookings/step1', {ticketDetails} )
       navigate('/booking-step2/'+ r.data.data.bookingDetails._id)
+      console.log(r)
 
     } catch (err){
       console.log(err)
@@ -50,13 +56,14 @@ export default function BookingStep1() {
     
   }
   
+  
 
-
+  
   useEffect(() => {
     const getData = async () => {
       try {
         const r = await api.get("/conferences/" + confID);
-        // console.log(r.data.data.conferences);
+        console.log(r.data.data.conferences);
         setData(r.data.data.conferences);
 
         
@@ -103,13 +110,13 @@ export default function BookingStep1() {
               <div className="step1-grid-item">
                 <h3>{item.name}</h3>
                 <h4>{item.type}</h4>
-                {/* {item.info && <p>{item.info}</p>} */}
-                {/* <p>Optional donation to support the National Independent Venue
+                {item.info && <p>{item.info}</p>}
+                <p>Optional donation to support the National Independent Venue
                 Association, a non-profit organization whose mission is to
                 preserve and nurture the ecosystem of independent venues and
-                promoters throughout the United States.</p> */}
+                promoters throughout the United States.</p>
               </div>
-              <div style={{display:"flex"}} className="step1-grid-item">
+              {item.type === "PAID" && <div style={{display:"flex"}} className="step1-grid-item">
                 <div style={{marginLeft:"1rem"}}><h4>{item.currency} {item.price} x </h4></div>
                 <div style={{marginLeft:"1rem"}}><Select options={options} placeholder="Pick" 
                 onChange={(e)=>{
@@ -125,7 +132,24 @@ export default function BookingStep1() {
 
 
                 }} style={{height:"3rem", padding:".5rem", width: "30%"}} type="number"/> </div>
-              </div>
+              </div>}
+              {item.type === "FREE" && <div style={{display:"flex"}} className="step1-grid-item">
+                
+                <div style={{marginLeft:"8.5rem"}}><Select options={options} placeholder="Pick" 
+                onChange={(e)=>{
+                // tickets[index] = item.price * e.value
+              
+                details[index] = {ticketId : item._id, quantity: e.value}
+                // console.log(details)
+                // let sum = 0
+              //   for (let i = 0; i < tickets.length; i++) {
+              //     sum += tickets[i];
+              // }
+              // setTotal(sum)
+
+
+                }} style={{height:"3rem", padding:".5rem", width: "30%"}} type="number"/> </div>
+              </div>}
             </div>
           );
         })}
@@ -144,7 +168,7 @@ export default function BookingStep1() {
         </div>
       </div>
 
-      <BookingCart/>
+      {/* <BookingCart/> */}
     </div>
   );
 }
