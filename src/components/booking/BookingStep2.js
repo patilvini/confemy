@@ -17,51 +17,43 @@ import TextError from "../formik/TextError";
 const initialValues = {
   bookedBy: "",
   bookingId: "",
-  guests:[]
+  guests: [],
 };
 
-
-
-
-
-
-
 export default function BookingStep2() {
-
-  
-  
   const onSubmit = async () => {
-
+    const ticketDetails = {
+      bookedBy: userID,
+      bookingId: bookingID,
+      guests: guests,
+    };
 
 
     
-    
-    const ticketDetails= { bookedBy:userID ,
-    bookingId:bookingID,
-     guests:guests
-    
+    ticketDetails.guests = formData.flat()
+    console.log(ticketDetails.guests)
+
+
+    console.log("submit:", ticketDetails);
+
+    try {
+      const r = await api.post("/conferences/bookings/step2", {
+        ticketDetails,
+      });
+      console.log(r);
+    } catch (err) {
+      console.log(err);
     }
-
-    console.log(ticketDetails);
-
-    try{
-      const r = await api.post('/conferences/bookings/step2', {ticketDetails})
-      console.log(r)
-    } catch(err){
-      console.log(err)
-    }
-
-
-    
-
   };
 
   const navigate = useNavigate();
   const bookingID = useParams().bookingID;
 
-  const [data, setData] = useState()
-  const [tickets, setTickets] = useState()
-  const [guests, setGuests] = useState([])
+  const [data, setData] = useState();
+  const [tickets, setTickets] = useState();
+  const [guests, setGuests] = useState([]);
+  const [formData, setFromData] = useState([]);
+  let validationLen;
 
   const userID = useSelector((state) => state.auth.user?._id);
 
@@ -71,53 +63,39 @@ export default function BookingStep2() {
         const r = await api.get("/conferences/bookings/" + bookingID);
         console.log(r.data.data.bookingDetails);
         setData(r.data.data.bookingDetails);
-        let tickets = r.data.data.bookingDetails.tickets
-        let q = 0
-        for (let i = 0; i<tickets.length; i++){
-          q = q+tickets[i].quantity
+        let tickets = r.data.data.bookingDetails.tickets;
 
+        formData.length = tickets.length;
+        let quan = 0;
+        for (let i = 0; i < tickets.length; i++) {
+          quan = quan + tickets[i].quantity;
 
-
-
+          validationLen = quan;
         }
-      
-      
-        
-        for (let i=0; i<q;i++){
-          setTickets()
-          guests[i]={firstName:"", lastName: "", email:""}
-        }
-       
-
-  
-        
       } catch (err) {
         console.error(err);
       }
     };
-  
+
     getData();
   }, []);
 
-  // const validationSchema = {
-  //   bookedBy: yup.string().required('required'),
-  //   bookingId: yup.string().required('required'),
-  //   guests: yup.array()
-  // };
+  const validationSchema = {
+    bookedBy: yup.string().required("required"),
+    bookingId: yup.string().required("required"),
+    guests: yup.array().min(validationLen).required("required"),
+  };
 
-  // const formik = useFormik({
-  //   initialValues: initialValues,
-  //   // validationSchema: validationSchema,
-  //   onSubmit: onSubmit,
-  // });
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: validationSchema,
+    onSubmit: onSubmit,
+  });
 
-  // console.log(formik.values)
+  console.log("formik.values", formik.values);
 
   return (
-    <div
-        className="form-type-1"
-    
-      >
+    <div className="form-type-1">
       <div className="step2-wrapper">
         <div className="step2-section-heading">
           <h3>Confirm cart details and pay</h3>
@@ -145,36 +123,35 @@ export default function BookingStep2() {
           <div className="table-grid-item"> </div>
         </div>
 
-        {data?.tickets.map((item, index)=>{
-        
+        {data?.tickets.map((item, index) => {
+          const date = DateTime.fromISO(data.conference.startDate);
 
-const date = DateTime.fromISO(data.conference.startDate);
-
-let scheduleDate = date.toLocaleString({
-  ...DateTime.DATE_MED_WITH_WEEKDAY,
-  weekday: "short",
-});
-
+          let scheduleDate = date.toLocaleString({
+            ...DateTime.DATE_MED_WITH_WEEKDAY,
+            weekday: "short",
+          });
 
           return (
             <div key={index} className="table-grid">
-          <div className="table-grid-item">
-            <p className="table-item">{item.ticketId.name}</p>
-            <p className="table-description">{scheduleDate}</p>
-          </div>
+              <div className="table-grid-item">
+                <p className="table-item">{item.ticketId.name}</p>
+                <p className="table-description">{scheduleDate}</p>
+              </div>
 
-          <div className="table-grid-item">
-            <p className="table-description">{item.quantity}</p>
-          </div>
-          <div className="table-grid-item">
-            <p className="table-description">{item.ticketId.currency}{item.ticketId.price}</p>
-          </div>
-          <div className="table-grid-item">
-            <DeleteIcon fill={"#08415c"} />
-          </div>
-        </div>
-          )
-
+              <div className="table-grid-item">
+                <p className="table-description">{item.quantity}</p>
+              </div>
+              <div className="table-grid-item">
+                <p className="table-description">
+                  {item.ticketId.currency}
+                  {item.ticketId.price}
+                </p>
+              </div>
+              <div className="table-grid-item">
+                <DeleteIcon fill={"#08415c"} />
+              </div>
+            </div>
+          );
         })}
 
         <hr className="divider" />
@@ -202,7 +179,10 @@ let scheduleDate = date.toLocaleString({
                 <p className="table-item"> Total</p>
               </div>
               <div>
-                <p className="table-item">{data?.conference.currency}{data?.totalPrice}</p>
+                <p className="table-item">
+                  {data?.conference.currency}
+                  {data?.totalPrice}
+                </p>
               </div>
             </div>
           </div>
@@ -219,20 +199,18 @@ let scheduleDate = date.toLocaleString({
         >
           Guest Details
         </h3>
+        {}
 
-       {guests.map((item, index)=>{
-
-        return( 
-          <div key={index}>
-          <TicketDetailsForm setValue={(value)=>guests[index] = value} i={data} title={"Guest "+ (index+1)}/>
-          {/* {formik.touched.specialities && Boolean(formik.errors.specialities) && (
-            <TextError>{formik.errors.specialities}</TextError>
-          )} */}
-          </div>
-        )
-       })}
-
-        
+        {data?.tickets.map((item, index) => {
+          return (
+            <div key={index}>
+              <TicketDetailsForm
+                setValue={(value) => (formData[index] = value)}
+                ticket={item}
+              />
+            </div>
+          );
+        })}
 
         <hr className="divider" />
 
@@ -252,7 +230,6 @@ let scheduleDate = date.toLocaleString({
               className="material-textfield"
             >
               <input
-                
                 type="text"
                 name="mobile"
                 // value={formik.values.mobile}
@@ -299,15 +276,24 @@ let scheduleDate = date.toLocaleString({
           </div>
         </div>
 
-
         <div className="flex-container-std">
-          <div style={{margin:"4rem 2.5rem 4rem 0rem"}}>
-            <button onClick={onSubmit} className="button button-primary">Continue</button>
-
+          <div style={{ margin: "4rem 2.5rem 4rem 0rem" }}>
+            <button
+              onClick={() => {
+                onSubmit();
+              }}
+              className="button button-primary"
+            >
+              Continue
+            </button>
           </div>
           <div>
-            <button style={{margin:"4rem 2.5rem 10rem 0rem"}} className="button button-secondary ">Go back</button>
-
+            <button
+              style={{ margin: "4rem 2.5rem 10rem 0rem" }}
+              className="button button-secondary "
+            >
+              Go back
+            </button>
           </div>
         </div>
       </div>
