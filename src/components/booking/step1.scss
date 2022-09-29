@@ -60,20 +60,30 @@ body{
 
 
 .cart{
-    border: solid 1px red;
+
+    // z-index: 1;
     text-align: center;
-    width: 60rem;
-    margin: 1rem;
+    width: 40rem;
+    // margin: 1rem;
+    right: 0;
     padding: 2rem;
     border-radius: 1rem;
+    background-color: $colour-white;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
    
 }
 
 .cart-grid{
     display: grid;
-    grid-template-columns: 60% 30% 10%;
+    grid-template-columns: 40% 30% 30%; 
     
-    
+  
+
+    h3:hover{
+        color: $accent;
+        text-decoration: underline;
+
+    }
     
    
     
@@ -81,5 +91,7 @@ body{
 
 .card-item{
     align-self: center;
+    
+
 }
 

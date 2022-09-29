@@ -54,12 +54,12 @@ export default function BookingCart() {
       <h2> Cart {data?.count}</h2>
       <hr className="divider" />
       {data?.bookingDetails.map((item, index) => {
-        console.log(item)
+        
         return (
           <div key={index}>
             <div className="cart-grid" key={index}>
-              <h3 className="cart-item">{item.conference.title}</h3>
-              <p className="cart-item" style={{ fontSize: "1.5rem" }}>
+              <h3 onClick={()=>{navigate("/booking-step2/"+item._id)}} className="cart-item">{item.conference.title}</h3>
+              <p  className="cart-item" style={{ fontSize: "1.5rem" }}>
                 {item.conference.currency} {item.totalPrice}
               </p>
               <div className="cart-item">

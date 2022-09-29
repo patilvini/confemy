@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
-import { useFormik } from "formik";
+
 import * as yup from "yup";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Modal from "../../pages/organizer-profile-page/Modal";
-import TextInput from "../formik/TextInput";
-import NameForm from "../register/NameForm";
-import Signin from "../signin/Signin";
 import "./step2.scss";
 import DeleteIcon from "../icons/DeleteIcon";
 import { useSelector } from "react-redux";
 import api from "../../utility/api";
 import { DateTime } from "luxon";
 import TicketDetailsForm from "./TicketDetailsForm";
-import TextError from "../formik/TextError";
 
-const initialValues = {
-  bookedBy: "",
-  bookingId: "",
-  guests: [],
-};
+
+
 
 export default function BookingStep2() {
   const onSubmit = async () => {
@@ -28,22 +20,18 @@ export default function BookingStep2() {
       guests: guests,
     };
 
-
-    
-    ticketDetails.guests = formData.flat()
-    console.log(ticketDetails.guests)
-
+    ticketDetails.guests = formData.flat();
 
     console.log("submit:", ticketDetails);
 
-    try {
-      const r = await api.post("/conferences/bookings/step2", {
-        ticketDetails,
-      });
-      console.log(r);
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   const r = await api.post("/conferences/bookings/step2", {
+    //     ticketDetails,
+    //   });
+    //   console.log(r);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   const navigate = useNavigate();
@@ -80,19 +68,11 @@ export default function BookingStep2() {
     getData();
   }, []);
 
-  const validationSchema = {
-    bookedBy: yup.string().required("required"),
-    bookingId: yup.string().required("required"),
-    guests: yup.array().min(validationLen).required("required"),
-  };
+ 
 
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: validationSchema,
-    onSubmit: onSubmit,
-  });
+ 
 
-  console.log("formik.values", formik.values);
+
 
   return (
     <div className="form-type-1">
@@ -201,101 +181,105 @@ export default function BookingStep2() {
         </h3>
         {}
 
-        {data?.tickets.map((item, index) => {
-          return (
-            <div key={index}>
-              <TicketDetailsForm
-                setValue={(value) => (formData[index] = value)}
-                ticket={item}
-              />
+       
+          {data?.tickets.map((item, index) => {
+            return (
+              <div key={index}>
+                <TicketDetailsForm
+                  setValue={(value) => (formData[index] = value)}
+                  ticket={item}
+                  
+                />
+              </div>
+            );
+          })}
+
+          <hr className="divider" />
+
+          <h3
+            style={{
+              color: "#08415c",
+              marginTop: "9.75rem",
+              marginBottom: "4rem",
+            }}
+          >
+            Ticket Details
+          </h3>
+          <div className="form-type-1">
+            <div className="flex-container-std">
+              <div
+                style={{ width: "50%", margin: "0 0rem 2rem 0rem" }}
+                className="material-textfield"
+              >
+                <input
+                  type="text"
+                  name="mobile"
+                  // value={formik.values.mobile}
+                  // onChange={formik.handleChange}
+                  placeholder=" "
+                />
+                <label>Mobile</label>
+              </div>
+              <div
+                style={{ width: "50%", margin: "2.5rem 2rem" }}
+                className="material-textfield"
+              >
+                {/* <input name='whatsapp' value={formik.values.whatsapp} onChange={formik.handleChange} type="checkbox" style={{ marginLeft: "1rem" }} /> */}
+
+                <span className="table-item" style={{ marginLeft: "1rem" }}>
+                  Get your ticket on whatsapp
+                </span>
+              </div>
             </div>
-          );
-        })}
 
-        <hr className="divider" />
+            <div className="flex-container-std form-type-1">
+              <div
+                style={{ width: "50%", margin: "0 0rem 2rem 0rem" }}
+                className="material-textfield"
+              >
+                <input
+                  id="title"
+                  type="text"
+                  name="title"
+                  // value={formik.values.title}
+                  // onChange={formik.handleChange}
+                  placeholder=" "
+                />
+                <label>Email</label>
+              </div>
+              <div
+                style={{ width: "50%", margin: "2.5rem 2rem" }}
+                className="material-textfield"
+              >
+                <span className="table-item" style={{ marginLeft: "1rem" }}>
+                  Your e-tickets will be sent to this address
+                </span>
+              </div>
+            </div>
+          </div>
 
-        <h3
-          style={{
-            color: "#08415c",
-            marginTop: "9.75rem",
-            marginBottom: "4rem",
-          }}
-        >
-          Ticket Details
-        </h3>
-        <div className="form-type-1">
           <div className="flex-container-std">
-            <div
-              style={{ width: "50%", margin: "0 0rem 2rem 0rem" }}
-              className="material-textfield"
-            >
-              <input
-                type="text"
-                name="mobile"
-                // value={formik.values.mobile}
-                // onChange={formik.handleChange}
-                placeholder=" "
-              />
-              <label>Mobile</label>
+            <div style={{ margin: "4rem 2.5rem 4rem 0rem" }}>
+              <button
+               
+                onClick={() => {
+                  onSubmit();
+                }}
+                className="button button-primary"
+              >
+                Continue
+              </button>
             </div>
-            <div
-              style={{ width: "50%", margin: "2.5rem 2rem" }}
-              className="material-textfield"
-            >
-              {/* <input name='whatsapp' value={formik.values.whatsapp} onChange={formik.handleChange} type="checkbox" style={{ marginLeft: "1rem" }} /> */}
-
-              <span className="table-item" style={{ marginLeft: "1rem" }}>
-                Get your ticket on whatsapp
-              </span>
+            <div>
+              <button
+                style={{ margin: "4rem 2.5rem 10rem 0rem" }}
+                className="button button-secondary "
+              >
+                Go back
+              </button>
             </div>
           </div>
-
-          <div className="flex-container-std form-type-1">
-            <div
-              style={{ width: "50%", margin: "0 0rem 2rem 0rem" }}
-              className="material-textfield"
-            >
-              <input
-                id="title"
-                type="text"
-                name="title"
-                // value={formik.values.title}
-                // onChange={formik.handleChange}
-                placeholder=" "
-              />
-              <label>Email</label>
-            </div>
-            <div
-              style={{ width: "50%", margin: "2.5rem 2rem" }}
-              className="material-textfield"
-            >
-              <span className="table-item" style={{ marginLeft: "1rem" }}>
-                Your e-tickets will be sent to this address
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex-container-std">
-          <div style={{ margin: "4rem 2.5rem 4rem 0rem" }}>
-            <button
-              onClick={() => {
-                onSubmit();
-              }}
-              className="button button-primary"
-            >
-              Continue
-            </button>
-          </div>
-          <div>
-            <button
-              style={{ margin: "4rem 2.5rem 10rem 0rem" }}
-              className="button button-secondary "
-            >
-              Go back
-            </button>
-          </div>
-        </div>
+        
       </div>
     </div>
   );

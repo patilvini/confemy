@@ -3,7 +3,7 @@ import HostYourConfSketch from '../icons/HostYourConfSketch';
 import './hostYourConfs.styles.scss';
 function HostYourConfs(props) {
   return (
-    <section className=' grid-col-2 host-your-conference bg-white'>
+    <section className=' grid-col-2 host-your-conference '>
       <div style={{ margin: 'auto 0 auto 13.8rem' }} className='grid-1st-col'>
         <h1>
           Plan and Host your <br /> conference for FREE

@@ -205,6 +205,24 @@
 
 }
 
+
+.conferences-table-heading {
+  margin: 4.4rem 0 0 0;
+  display: grid;
+  grid-template-columns: 20% 40% 10% 15% 15%;
+  background-color: $shade-1;
+  border-radius: .4rem;
+
+}
+
+.conference-table {
+  margin: 1rem 0 0 0;
+  font-family:Avenir-Roman;
+  display: grid;
+  grid-template-columns: 20% 40% 10% 15% 15%;
+
+}
+
 .credit-table-item{
   // font-family: Avenir;
   font-size: 2rem;

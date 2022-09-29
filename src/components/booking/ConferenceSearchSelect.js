@@ -81,11 +81,11 @@ export default function ConferenceSearchSelect() {
 
             </div > 
             <div style={{paddingLeft:'2rem'}} >
-            <h3 className="section-heading">{data?.venue.venueName}</h3>
+            <h3 className="section-heading">{data?.venue?.venueName}</h3>
            
-            <h4 className="venue-card-text"> <LocationIcon fill="#c4c4c4" className="filter-icon" /> {data?.venue.city}</h4>
+            <h4 className="venue-card-text"> <LocationIcon fill="#c4c4c4" className="filter-icon" /> {data?.venue?.city}</h4>
             <div className="venue-card-flex" >
-              {data?.venue.ameneties.map((item, index)=>{
+              {data?.venue?.ameneties.map((item, index)=>{
                 return(
                   <div className="venue-flex-item" key={index}><h4 className="venue-card-text">{item.icon}{item.name}</h4></div>
                 )

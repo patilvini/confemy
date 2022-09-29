@@ -1,7 +1,25 @@
 import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
-export default function TicketDetailsForm({ setValue, ticket }) {
-  console.log(ticket)
+export default function TicketDetailsForm({ setValue, ticket, submit }) {
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+    },
+
+    validationSchema: {
+      firstName: yup.string().required("required"),
+      lastName: yup.string().required("required"),
+      email: yup.string().required("required"),
+    },
+
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
   const [data, setData] = useState([]);
 
@@ -16,10 +34,10 @@ export default function TicketDetailsForm({ setValue, ticket }) {
     };
   }
 
-  return (
-    <div className="form-type-1">
-     
+  console.log(formik.values);
 
+  return (
+    <form onSubmit={submit} className="form-type-1">
       {data?.map((item, index) => {
         return (
           <div key={index}>
@@ -37,10 +55,10 @@ export default function TicketDetailsForm({ setValue, ticket }) {
                   className="material-textfield"
                 >
                   <input
-                    onChange={(e) => {
-                      data[index].firstName = e.target.value;
-                      setValue(data);
-                    }}
+                    onChange={formik.handleChange}
+                    value={formik.values.firstName}
+                    id="firstName"
+                    name="firstName"
                     type="text"
                     placeholder=" "
                   />
@@ -51,11 +69,11 @@ export default function TicketDetailsForm({ setValue, ticket }) {
                   className="material-textfield"
                 >
                   <input
-                    onChange={(e) => {
-                      data[index].lastName = e.target.value;
-                      setValue(data);
-                    }}
-                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.lastName}
+                    id="lastName"
+         name="lastName"
+         type="text"
                     placeholder=" "
                   />
                   <label>Last Name*</label>
@@ -63,10 +81,10 @@ export default function TicketDetailsForm({ setValue, ticket }) {
               </div>
               <div className="material-textfield">
                 <input
-                  onChange={(e) => {
-                    data[index].email = e.target.value;
-                    // setValue(data)
-                  }}
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
+                  id="email"
+                  name="email"
                   type="email"
                   placeholder=" "
                 />
@@ -76,6 +94,6 @@ export default function TicketDetailsForm({ setValue, ticket }) {
           </div>
         );
       })}
-    </div>
+    </form>
   );
 }
