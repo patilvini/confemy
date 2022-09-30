@@ -8,21 +8,38 @@ import { useSelector } from "react-redux";
 import api from "../../utility/api";
 import { DateTime } from "luxon";
 import TicketDetailsForm from "./TicketDetailsForm";
+import { Form, Field, Formik } from "formik";
 
 
-
+const validationSchema = yup.object({
+  guests: yup.array().min(5)
+      .of(
+        yup.object().shape({
+          firstName: yup.string().required("Required"),
+          lastName: yup.string().required("Required"),
+          email: yup.string().email("Invalid email").required("Required"),
+        })
+      )
+      ,
+      //  whatsapp: yup.string().required('required'),
+      //  mobile:  yup.string().required('required'),
+      //  countryCode:  yup.string().required('required'),
+      //  email:  yup.string().required('required')
+});
 
 export default function BookingStep2() {
-  const onSubmit = async () => {
-    const ticketDetails = {
-      bookedBy: userID,
-      bookingId: bookingID,
-      guests: guests,
-    };
+  const navigate = useNavigate();
+  const bookingID = useParams().bookingID;
+  const [data, setData] = useState();
+  const [initialGuestValues, setInitialGuestValues] = useState([]);
+  const userID = useSelector((state) => state.auth.user?._id);
 
-    ticketDetails.guests = formData.flat();
-
-    console.log("submit:", ticketDetails);
+  const onSubmit = async (values) => {
+    // const ticketDetails = {
+    //   bookedBy: userID,
+    //   bookingId: bookingID,
+    //   guests: guests,
+    // };
 
     // try {
     //   const r = await api.post("/conferences/bookings/step2", {
@@ -32,34 +49,28 @@ export default function BookingStep2() {
     // } catch (err) {
     //   console.log(err);
     // }
+    console.log("onSubmit: ", values);
   };
-
-  const navigate = useNavigate();
-  const bookingID = useParams().bookingID;
-
-  const [data, setData] = useState();
-  const [tickets, setTickets] = useState();
-  const [guests, setGuests] = useState([]);
-  const [formData, setFromData] = useState([]);
-  let validationLen;
-
-  const userID = useSelector((state) => state.auth.user?._id);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const r = await api.get("/conferences/bookings/" + bookingID);
-        console.log(r.data.data.bookingDetails);
+        console.log();
         setData(r.data.data.bookingDetails);
-        let tickets = r.data.data.bookingDetails.tickets;
 
-        formData.length = tickets.length;
-        let quan = 0;
-        for (let i = 0; i < tickets.length; i++) {
-          quan = quan + tickets[i].quantity;
-
-          validationLen = quan;
+        let x = [];
+        for (let i = 0; i < r.data.data.bookingDetails.tickets.length; i++) {
+          for (
+            let j = 0;
+            j < r.data.data.bookingDetails.tickets[i].quantity;
+            j++
+          ) {
+            x.push(r.data.data.bookingDetails.tickets[i]._id);
+          }
         }
+
+        setInitialGuestValues(x);
       } catch (err) {
         console.error(err);
       }
@@ -68,11 +79,17 @@ export default function BookingStep2() {
     getData();
   }, []);
 
- 
-
- 
-
-
+  // const formik = useFormik({
+  //   initialValues: {
+  //     guests: [],
+  //     whatsapp: "",
+  //     mobile: "",
+  //     countryCode: "",
+  //     email: "",
+  //   },
+  //   validationSchema,
+  //   onSubmit,
+  // });
 
   return (
     <div className="form-type-1">
@@ -179,17 +196,19 @@ export default function BookingStep2() {
         >
           Guest Details
         </h3>
-        {}
 
-       
-          {data?.tickets.map((item, index) => {
+        <Formik initialValues={{ initialValues: {
+      guests: [],
+      whatsapp: "",
+      mobile: "",
+      countryCode: "",
+      email: "",
+    }}} onSubmit={onSubmit} >
+           {({ errors, touched, validateField, validateForm }) => (<Form>
+          {initialGuestValues?.map((item, index) => {
             return (
               <div key={index}>
-                <TicketDetailsForm
-                  setValue={(value) => (formData[index] = value)}
-                  ticket={item}
-                  
-                />
+                <TicketDetailsForm index={index} item={item} errors = {errors} touched={touched}  />
               </div>
             );
           })}
@@ -260,11 +279,11 @@ export default function BookingStep2() {
 
           <div className="flex-container-std">
             <div style={{ margin: "4rem 2.5rem 4rem 0rem" }}>
-              <button
-               
-                onClick={() => {
-                  onSubmit();
-                }}
+              <button type="submit"
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   onSubmit();
+                // }}
                 className="button button-primary"
               >
                 Continue
@@ -272,6 +291,8 @@ export default function BookingStep2() {
             </div>
             <div>
               <button
+             
+            
                 style={{ margin: "4rem 2.5rem 10rem 0rem" }}
                 className="button button-secondary "
               >
@@ -279,7 +300,10 @@ export default function BookingStep2() {
               </button>
             </div>
           </div>
-        
+
+          </Form>  )}
+          
+        </Formik>
       </div>
     </div>
   );
