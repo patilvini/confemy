@@ -4,37 +4,48 @@ import { useEffect, useState } from "react";
 import TextError from "../formik/TextError";
 
 export default function TicketDetailsForm({ index ,item, errors, touched}) {
-  console.log(errors.guests[index].firstName)
-  // console.log(touched)
-  console.log(index)
+
+  const [errorFirstName , setErrorFirstName] = useState([])
+  const [errorLastName , setErrorLastName] = useState([])
+  const [errorEmail, setErrorEmail] = useState([])
+ 
+
 
 
   function validateEmail(value) {
-    let error;
+
     if (!value) {
-      error = 'Required';
+      errorEmail[index] = 'Required'
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-      error = 'Invalid email address';
+     errorEmail[index] = 'Invalid email address'
+    } else {
+      errorEmail[index] = ''
     }
-    return error;
+    return errorEmail[index];
   }
 
 
   function validateFirstName(value) {
-    let error;
+    
     if (!value) {
-      console.log('err')
-      error = 'Required';
+   
+      errorFirstName[index] = 'Required'
+    } else {
+      errorFirstName[index] = ''
     } 
-    return error;
+    return errorFirstName[index];
   }
 
   function validateLastName(value) {
-    let error;
+    
     if (!value) {
-      error = 'Required';
+      errorLastName[index] = 'Required'
     } 
-    return error;
+    else {
+      errorLastName[index] = ''
+
+    }
+    return errorLastName[index];
   }
  
   
@@ -60,7 +71,7 @@ export default function TicketDetailsForm({ index ,item, errors, touched}) {
                 placeholder=" "
               />
               <label>First Name*</label>
-             <div>{errors?.guests[index].firstName}</div>
+             <div>{errors && <p>{errorFirstName[index]}</p>}</div>
 
               
             </div>
@@ -75,13 +86,13 @@ export default function TicketDetailsForm({ index ,item, errors, touched}) {
                 placeholder=" "
               />
               <label>Last Name*</label>
-              <div>{errors?.guests[index].lastName}</div>
+              <div>{errors && <p>{errorLastName[index]}</p>}</div>
 
             </div>
           </div>
           <div className="material-textfield">
             <Field
-              
+               
 
               name={`guests.${index}.email`}
               validate={validateEmail}
@@ -91,7 +102,7 @@ export default function TicketDetailsForm({ index ,item, errors, touched}) {
             <label>Email*</label>
             
           </div>
-          <div>{errors?.guests[index].email}</div>
+          <div>{errors && <p>{errorEmail[index]}</p>}</div>
 
         </div>
       </div>

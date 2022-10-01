@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import api from "../../utility/api";
 import SearchBar from "../search/SearchBar";
 import UploadModal from "./UploadModal";
+import Select from "react-select";
+
+
 
 export default function CreditRequests() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -10,7 +13,13 @@ export default function CreditRequests() {
   const [filtered, setFiltered] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
-
+  const options = [
+    { value: "Physician", label: "Physician" },
+    { value: "Nurse", label: "Nurse" },
+    { value: "Pharmacist", label: "Pharmacist" },
+    { value: "Example 1", label: "Example 1" },
+    { value: "Example 2", label: "Example 2" },
+  ];
   
   const downloadCertificate = async (id) => {
 
@@ -49,8 +58,9 @@ export default function CreditRequests() {
 
   return (
     <div className="dash-wrapper">
-      <div className="opposite-grid">
-        <h1>Credits Requests</h1>
+      <div className="flex-container">
+        <h1 style={{marginRight:"4rem"}}>Credits Requests</h1>
+        
         <div className="grid-item-right">
           <SearchBar
             onClear={() => setSearchValue("")}
@@ -61,6 +71,7 @@ export default function CreditRequests() {
             data={data}
           />
         </div>
+        <Select width='200px' options={options}/>
       </div>
 
       <div>
@@ -99,7 +110,7 @@ export default function CreditRequests() {
                 <p className="caption-2-regular-gray3">3</p>
               </div>
               <div className="overview-table-item">
-                {item.creditCertificateUploaded && (
+                {!item.creditCertificateUploaded && (
                   <button
                     onClick={() => {
                       setModalOpen(true);

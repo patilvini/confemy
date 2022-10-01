@@ -122,11 +122,18 @@
 
 .grid-item-right {
   text-align: right;
-  margin-right: 1rem
+  margin-left: 3rem;
+  margin-bottom: 3rem;
+  // width: 80%;
+  align-self: center;
 }
 
 .grid-item-left {
   text-align: left;
+  margin-right: 3rem;
+  margin-bottom: 3rem;
+  // width: 80%;
+  align-self: center;
 }
 
 .button-right {
@@ -220,6 +227,7 @@
   font-family:Avenir-Roman;
   display: grid;
   grid-template-columns: 20% 40% 10% 15% 15%;
+  
 
 }
 

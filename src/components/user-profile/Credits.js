@@ -36,10 +36,10 @@ export default function Credits() {
     const getConfs = async () => {
       try {
         const r = await api.get(
-          "/attendees/credits/users/" + userID
+          "/attendees/credits/users/6335919a144067690990372e"
         );
         console.log(r);
-        // setConfs(r.data.data.allCredits);
+        setConfs(r.data.data.allCredits);
       } catch (err) {
         console.log(err);
       }
@@ -173,7 +173,7 @@ export default function Credits() {
           );
         })}
 
-        <h3 style={{ marginTop: "5rem" }}>Conferences</h3>
+        <h3>Conferences</h3>
 
         <div className="conferences-table-heading">
           <div className="credit-table-item">Date</div>
@@ -185,7 +185,54 @@ export default function Credits() {
 
           <div className="credit-table-item">Status</div>
         </div>
+        {confs?.map((item, index) => {
+          return (
+            <div key={index}>
+              <div className="conference-table">
+                <div className="credit-table-item">{item.bookingDate}</div>
+                <div className="credit-table-item">
+                  {item.conference.title}
+                </div>
+
+                <div className="credit-table-item">
+                  {item.registeredCreditQuantity}
+                </div>
+
+                <div className="credit-table-item">
+                  {item.pendingCreditQuantity}
+                </div>
+
+                <div className="credit-table-item">
+                  {item.goal}
+
+                  {item.goal && (
+                    <button
+                      onClick={() => {
+                        setCredit(item);
+                        setUpdateOpen(true);
+                      }}
+                      style={{ backgroundColor: "#fafbfc", border: "none" }}
+                    >
+                      <EditIcon />
+                    </button>
+                  )}
+
+                  {!item.goal && (
+                    <button
+                      onClick={() => setGoalOpen(true)}
+                      className="button button-green"
+                    >
+                      Set Goal
+                    </button>
+                  )}
+                </div>
+              </div>{" "}
+            </div>
+          );
+        })}
       </div>
+
+      
 
       {externalOpen && (
         <ExternalCredModal

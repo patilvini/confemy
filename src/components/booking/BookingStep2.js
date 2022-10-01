@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import * as yup from "yup";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -10,46 +10,57 @@ import { DateTime } from "luxon";
 import TicketDetailsForm from "./TicketDetailsForm";
 import { Form, Field, Formik } from "formik";
 
-
-const validationSchema = yup.object({
-  guests: yup.array().min(5)
-      .of(
-        yup.object().shape({
-          firstName: yup.string().required("Required"),
-          lastName: yup.string().required("Required"),
-          email: yup.string().email("Invalid email").required("Required"),
-        })
-      )
-      ,
-      //  whatsapp: yup.string().required('required'),
-      //  mobile:  yup.string().required('required'),
-      //  countryCode:  yup.string().required('required'),
-      //  email:  yup.string().required('required')
-});
-
 export default function BookingStep2() {
   const navigate = useNavigate();
   const bookingID = useParams().bookingID;
   const [data, setData] = useState();
+  const [errorMail, setErrorMail] = useState("");
+  const [errorMobile, setErrorMobile] = useState("");
+  const [errorCode, setErrorCode] = useState("")
+  const ref = useRef(null);
+
   const [initialGuestValues, setInitialGuestValues] = useState([]);
   const userID = useSelector((state) => state.auth.user?._id);
 
-  const onSubmit = async (values) => {
-    // const ticketDetails = {
-    //   bookedBy: userID,
-    //   bookingId: bookingID,
-    //   guests: guests,
-    // };
+  const onSubmit =  async (values, actions) => {
+   
+    const ticketDetails = {
+      bookedBy: userID,
+      bookingId: bookingID,
+      guests: values.guests,
+      whatsapp: values.whatsapp, 
+      mobile: values.mobile,
+      countryCode: values.countryCode,
+      email: values.email
+    };
 
-    // try {
-    //   const r = await api.post("/conferences/bookings/step2", {
-    //     ticketDetails,
-    //   });
-    //   console.log(r);
-    // } catch (err) {
-    //   console.log(err);
-    // }
-    console.log("onSubmit: ", values);
+    if(!ticketDetails.mobile){
+      ticketDetails.mobile = ""
+    }
+    if(!ticketDetails.email){
+      ticketDetails.email = ""
+    }
+    if(!ticketDetails.countryCode){
+      ticketDetails.countryCode = ""
+    }
+
+   for (let i=0; i < initialGuestValues.length; i++){
+ 
+      ticketDetails.guests[i].ticketId = initialGuestValues[i]
+    }
+    
+    console.log("onsubmit: ", ticketDetails)
+
+    try {
+      const r = await api.post("/conferences/bookings/step2", {
+        ticketDetails,
+      });
+      console.log(r);
+    } catch (err) {
+      console.log(err);
+    }
+ 
+    
   };
 
   useEffect(() => {
@@ -90,6 +101,55 @@ export default function BookingStep2() {
   //   validationSchema,
   //   onSubmit,
   // });
+
+  function validatemail(value) {
+    if (!value) {
+      setErrorMail("Required");
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+      setErrorMail("Invalid email address");
+    } else {
+      setErrorMail(""); 
+    }
+    return errorMail;
+  }
+
+  const getVals = () => {
+    return ref.current.values
+}
+
+  function validatemobile(value) {
+
+    let whatsapp = getVals().whatsapp
+    
+    if (!whatsapp && !value) {
+      setErrorMobile("");
+    } else if(whatsapp && !value){
+      setErrorMobile("Required")
+
+    } else if (!/^([0|\+[0-9]{1,5})?([7-9][0-9]{9})$/i.test(value)) {
+      setErrorMobile("Invalid mobile number");
+    } else {
+      setErrorMobile("");
+    }
+    return errorMobile;
+  }
+
+  function validatecode(value) {
+
+    let whatsapp = getVals().whatsapp
+    
+    if (!whatsapp && !value) {
+      setErrorCode("");
+    } else if(whatsapp && !value){
+      setErrorCode("Required")
+
+    } else if (!/^(\+?\d{1,3}|\d{1,4})$/i.test(value)) {
+      setErrorCode("Invalid mobile number");
+    } else {
+      setErrorCode("");
+    }
+    return errorCode;
+  }
 
   return (
     <div className="form-type-1">
@@ -197,112 +257,132 @@ export default function BookingStep2() {
           Guest Details
         </h3>
 
-        <Formik initialValues={{ initialValues: {
-      guests: [],
-      whatsapp: "",
-      mobile: "",
-      countryCode: "",
-      email: "",
-    }}} onSubmit={onSubmit} >
-           {({ errors, touched, validateField, validateForm }) => (<Form>
-          {initialGuestValues?.map((item, index) => {
-            return (
-              <div key={index}>
-                <TicketDetailsForm index={index} item={item} errors = {errors} touched={touched}  />
+        <Formik
+          innerRef={ref}
+          initialValues={{
+            initialValues: {
+              guests: [],
+              whatsapp: "",
+              mobile: "",
+              countryCode: "",
+              email: "",
+            },
+          }}
+          onSubmit={onSubmit}
+        >
+          {({ errors, touched, validateField, validateForm }) => (
+            <Form>
+              {initialGuestValues?.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <TicketDetailsForm
+                      index={index}
+                      item={item}
+                      errors={errors}
+                      touched={touched}
+                    />
+                  </div>
+                );
+              })}
+
+              <hr className="divider" />
+
+              <h3
+                style={{
+                  color: "#08415c",
+                  marginTop: "9.75rem",
+                  marginBottom: "4rem",
+                }}
+              >
+                Ticket Details
+              </h3>
+              <div className="form-type-1">
+                <div className="flex-container-std">
+
+                <div
+                    style={{ width: "35%", margin: "0 0rem 2rem 0rem" }}
+                    className="material-textfield"
+                  >
+                    <Field
+                      name={"countryCode"}
+                      validate={validatecode}
+                      type="text"
+                      placeholder=" "
+                    />
+                    <label>Country Code</label>
+                    <div>{errors && <p>{errorCode}</p>}</div>
+                  </div>
+                  <div
+                    style={{ width: "50%", margin: "0 0rem 2rem 0rem" }}
+                    className="material-textfield"
+                  >
+                    <Field
+                      name={"mobile"}
+                      validate={validatemobile}
+                      type="text"
+                      placeholder=" "
+                    />
+                    <label>Mobile</label>
+                    <div>{errors && <p>{errorMobile}</p>}</div>
+                  </div>
+                  <div
+                    style={{ width: "50%", margin: "2.5rem 2rem" }}
+                    className="material-textfield"
+                  >
+                    <Field
+                      name="whatsapp"
+                      type="checkbox"
+                      style={{ marginLeft: "1rem" }}
+                    />
+
+                    <span className="table-item" style={{ marginLeft: "1rem" }}>
+                      Get your ticket on whatsapp
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex-container-std form-type-1">
+                  <div
+                    style={{ width: "50%", margin: "0 0rem 2rem 0rem" }}
+                    className="material-textfield"
+                  >
+                    <Field
+                      validate={validatemail}
+                      name={"email"}
+                      type="email"
+                      placeholder=" "
+                    />
+                    <label>Email</label>
+                    <div>{errors && <p>{errorMail}</p>}</div>
+                  </div>
+                  <div
+                    style={{ width: "50%", margin: "2.5rem 2rem" }}
+                    className="material-textfield"
+                  >
+                    <span className="table-item" style={{ marginLeft: "1rem" }}>
+                      Your e-tickets will be sent to this address
+                    </span>
+                  </div>
+                </div>
               </div>
-            );
-          })}
 
-          <hr className="divider" />
-
-          <h3
-            style={{
-              color: "#08415c",
-              marginTop: "9.75rem",
-              marginBottom: "4rem",
-            }}
-          >
-            Ticket Details
-          </h3>
-          <div className="form-type-1">
-            <div className="flex-container-std">
-              <div
-                style={{ width: "50%", margin: "0 0rem 2rem 0rem" }}
-                className="material-textfield"
-              >
-                <input
-                  type="text"
-                  name="mobile"
-                  // value={formik.values.mobile}
-                  // onChange={formik.handleChange}
-                  placeholder=" "
-                />
-                <label>Mobile</label>
+              <div className="flex-container-std">
+                <div style={{ margin: "4rem 2.5rem 4rem 0rem" }}>
+                  <button type="submit" className="button button-primary">
+                    Continue
+                  </button>
+                </div>
+                <div>
+                  <button
+                    style={{ margin: "4rem 2.5rem 10rem 0rem" }}
+                    className="button button-secondary "
+                  >
+                    Go back
+                  </button>
+                </div>
               </div>
-              <div
-                style={{ width: "50%", margin: "2.5rem 2rem" }}
-                className="material-textfield"
-              >
-                {/* <input name='whatsapp' value={formik.values.whatsapp} onChange={formik.handleChange} type="checkbox" style={{ marginLeft: "1rem" }} /> */}
-
-                <span className="table-item" style={{ marginLeft: "1rem" }}>
-                  Get your ticket on whatsapp
-                </span>
-              </div>
-            </div>
-
-            <div className="flex-container-std form-type-1">
-              <div
-                style={{ width: "50%", margin: "0 0rem 2rem 0rem" }}
-                className="material-textfield"
-              >
-                <input
-                  id="title"
-                  type="text"
-                  name="title"
-                  // value={formik.values.title}
-                  // onChange={formik.handleChange}
-                  placeholder=" "
-                />
-                <label>Email</label>
-              </div>
-              <div
-                style={{ width: "50%", margin: "2.5rem 2rem" }}
-                className="material-textfield"
-              >
-                <span className="table-item" style={{ marginLeft: "1rem" }}>
-                  Your e-tickets will be sent to this address
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-container-std">
-            <div style={{ margin: "4rem 2.5rem 4rem 0rem" }}>
-              <button type="submit"
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   onSubmit();
-                // }}
-                className="button button-primary"
-              >
-                Continue
-              </button>
-            </div>
-            <div>
-              <button
-             
-            
-                style={{ margin: "4rem 2.5rem 10rem 0rem" }}
-                className="button button-secondary "
-              >
-                Go back
-              </button>
-            </div>
-          </div>
-
-          </Form>  )}
-          
+            </Form>
+          )}
         </Formik>
       </div>
     </div>
