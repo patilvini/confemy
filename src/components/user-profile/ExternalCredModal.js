@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import api from "../../utility/api";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const initialValues = {
   confName: "",
@@ -30,7 +31,7 @@ export default function ExternalCredModal({ onDismiss }) {
   const [files, setFiles] = useState([]);
   const [options, setOptions] = useState([]);
   const navigate = useNavigate()
-
+  const userID = useSelector((state) => state.auth.user?._id);
   useEffect(() => {
     const getCredits = async () => {
       try {
@@ -61,7 +62,8 @@ export default function ExternalCredModal({ onDismiss }) {
         startDate,
         endDate,
         data:[],
-        docs
+        userId: userID
+        
       }
     }
     console.log(formData)

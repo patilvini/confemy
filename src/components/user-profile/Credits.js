@@ -19,6 +19,17 @@ export default function Credits() {
   const [updateGoal, setUpdateOpen] = useState(false);
   const userID = useSelector((state) => state.auth.user?._id);
   const [confs, setConfs] = useState();
+  const [externalCreds, setExternalCreds] = useState([]);
+
+  // console.log(userID)
+
+  const downloadCertificate = async (data) => {
+    try {
+      window.open(data.location);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -35,9 +46,7 @@ export default function Credits() {
 
     const getConfs = async () => {
       try {
-        const r = await api.get(
-          "/attendees/credits/users/6335919a144067690990372e"
-        );
+        const r = await api.get("/attendees/credits/users/" + userID);
         console.log(r);
         setConfs(r.data.data.allCredits);
       } catch (err) {
@@ -45,7 +54,18 @@ export default function Credits() {
       }
     };
 
-    getConfs()
+    const getExtCreds = async () => {
+      try {
+        const r = await api.get("/attendees/" + userID + "/credits/externals");
+        console.log(r);
+        setExternalCreds(r.data.data.externalCredits);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getExtCreds();
+    getConfs();
     getData();
   }, [userID, goalOpen, updateGoal]);
 
@@ -173,7 +193,7 @@ export default function Credits() {
           );
         })}
 
-        <h3>Conferences</h3>
+        <h3 style={{ margin: "7.7rem 0 0rem 0rem" }}>Conferences</h3>
 
         <div className="conferences-table-heading">
           <div className="credit-table-item">Date</div>
@@ -190,9 +210,7 @@ export default function Credits() {
             <div key={index}>
               <div className="conference-table">
                 <div className="credit-table-item">{item.bookingDate}</div>
-                <div className="credit-table-item">
-                  {item.conference.title}
-                </div>
+                <div className="credit-table-item">{item.conference.title}</div>
 
                 <div className="credit-table-item">
                   {item.registeredCreditQuantity}
@@ -203,26 +221,61 @@ export default function Credits() {
                 </div>
 
                 <div className="credit-table-item">
-                  {item.goal}
+                 
 
                   {item.goal && (
                     <button
                       onClick={() => {
-                        setCredit(item);
-                        setUpdateOpen(true);
+                        // setCredit(item);
+                        // setUpdateOpen(true);
                       }}
                       style={{ backgroundColor: "#fafbfc", border: "none" }}
                     >
-                      <EditIcon />
+                     Request Credit Cetificate
                     </button>
                   )}
 
-                  {!item.goal && (
+                  
+                    
+                  
+                </div>
+              </div>{" "}
+            </div>
+          );
+        })}
+
+        <h3 style={{ margin: "7.7rem 0 0rem 0rem" }}>External Credits</h3>
+
+        <div className="conferences-table-heading">
+          <div className="credit-table-item">Date</div>
+          <div className="credit-table-item">Conference</div>
+
+          <div className="credit-table-item">Credit Type</div>
+
+          <div className="credit-table-item">Total Credits</div>
+
+          <div className="credit-table-item">Status</div>
+        </div>
+
+        {externalCreds?.map((item, index) => {
+          // console.log(item)
+          return (
+            <div key={index}>
+              <div className="conference-table">
+                <div className="credit-table-item">{item.createdAt}</div>
+                <div className="credit-table-item">{item.conferenceTitle}</div>
+
+                <div className="credit-table-item">{item.credit.name}</div>
+
+                <div className="credit-table-item">{item.quantity}</div>
+
+                <div className="credit-table-item">
+                  {item.creditCertificateUploaded && (
                     <button
-                      onClick={() => setGoalOpen(true)}
-                      className="button button-green"
+                      onClick={() => downloadCertificate(item.certificate)}
+                      className="button button-primary"
                     >
-                      Set Goal
+                      View Certificate
                     </button>
                   )}
                 </div>
@@ -231,8 +284,6 @@ export default function Credits() {
           );
         })}
       </div>
-
-      
 
       {externalOpen && (
         <ExternalCredModal

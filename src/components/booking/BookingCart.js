@@ -52,7 +52,7 @@ export default function BookingCart() {
   return (
     <div className="cart">
       <h2> Cart {data?.count}</h2>
-      <hr className="divider" />
+      <hr  style={{marginTop:"2rem", marginBottom:"2rem", width:"100%"}}/>
       {data?.bookingDetails.map((item, index) => {
         
         return (
@@ -71,7 +71,7 @@ export default function BookingCart() {
             {item.tickets.map((innerItem, innerIndex) => {
               return (
                 <div
-                  style={{ width: "50rem", marginTop:'2rem' }}
+                  style={{ width: "100%", marginTop:'2rem' }}
                   className="cart-grid"
                   key={innerItem._id}
                 >
@@ -87,7 +87,7 @@ export default function BookingCart() {
                 </div>
               );
             })}
-            <hr className="divider" />
+            <hr  style={{marginTop:"2rem", marginBottom:"2rem", width:"100%"}}/>
           </div>
         );
       })}

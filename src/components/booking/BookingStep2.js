@@ -278,7 +278,7 @@ export default function BookingStep2() {
                     <TicketDetailsForm
                       index={index}
                       item={item}
-                      errors={errors}
+                      errors={errors.guests}
                       touched={touched}
                     />
                   </div>
@@ -294,7 +294,7 @@ export default function BookingStep2() {
                   marginBottom: "4rem",
                 }}
               >
-                Ticket Details
+                Ticket Details 
               </h3>
               <div className="form-type-1">
                 <div className="flex-container-std">

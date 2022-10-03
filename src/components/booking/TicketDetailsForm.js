@@ -10,7 +10,11 @@ export default function TicketDetailsForm({ index ,item, errors, touched}) {
   const [errorEmail, setErrorEmail] = useState([])
  
 
+console.log(errors)
 
+
+  
+ 
 
   function validateEmail(value) {
 
@@ -52,6 +56,7 @@ export default function TicketDetailsForm({ index ,item, errors, touched}) {
 
   return (
     
+    
     <div className="form-type-1">
       <div>
         <h4 style={{ marginBottom: "1rem" }}>
@@ -71,7 +76,8 @@ export default function TicketDetailsForm({ index ,item, errors, touched}) {
                 placeholder=" "
               />
               <label>First Name*</label>
-             <div>{errors && <p>{errorFirstName[index]}</p>}</div>
+             <div>{(errors && touched) &&  <p>{errorFirstName[index]}</p>}</div> 
+             
 
               
             </div>
