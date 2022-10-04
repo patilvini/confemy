@@ -44,12 +44,7 @@ export const sidemenuOptions = [
     path: "/dashboard/my-conferences",
     items: [],
   },
-  {
-    text: "Tickets",
-    // icon: <ODashboardIcon className="icon-size" />,
-    path: "/dashboard/tickets",
-    items: [],
-  },
+ 
 
   {
     text: "Organization",

@@ -1,19 +1,51 @@
 .buttons{
+    padding:1rem;
+    margin: 1rem;
     height: 100px;
     width: 100px;
     border-radius: 50%;
-    border: 1px solid;
-    background-color: rgb(230, 230, 231);
-    // color: white;
+    border: 1px;
+    background-color: rgb(182, 236, 169);
+    
 
 }
+
+.buttons:hover{
+    background-color: rgb(43, 141, 19);
+}
+
+
 
 .list{
     list-style-type: none;
    
 }
 
-.grid-contianer{
-    display: grid;
-    grid-template-columns: auto auto auto auto auto ;
+.flex-container{
+    display: flex;
+    flex-wrap: wrap;
+    // text-align: center;
 }
+
+.drag-box{
+    width: 600px;
+    height: 260px;
+    border-radius: 15px;
+    margin: 32px 0;
+    padding: 100px 150px;
+    background-color: #ecf0f2;
+    text-align: center;
+    font-family: Avenir-Roman;
+    font-size: 18px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.2px;
+    text-align: center;
+    color: lightgray;
+  }
+
+  .flex-item{
+    padding: 1.5rem
+  }

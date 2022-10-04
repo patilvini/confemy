@@ -19,7 +19,7 @@ export default function DraftTesting() {
   );
 
   useEffect(()=>{
-    api.get('/conferences/draft/62bc4df09ba8326f28fe64ce')
+    api.get('/conferences/draft/62dbd4d0dd1af18951d55415')
     .then((r)=>{
       console.log(r.data.data)
         setContent(r.data.data)
@@ -79,7 +79,7 @@ export default function DraftTesting() {
     console.log(text)
     let contents = text
   
-    console.log(convertedContent)
+   
     
     try{
        const res = await api.post('/conferences/draft', {contents})
@@ -114,13 +114,7 @@ export default function DraftTesting() {
             toolbarClassName="toolbarClassName"
             wrapperClassName="wrapperClassName"
             editorClassName="editorClassName"
-            // onChange={(e) => {
-              
-            //   setText(editorState.getCurrentContent())
-            //   let currentC = setText(convertToRaw(text))
-              
            
-            // }}
           />
         </div>
       </div>

@@ -27,10 +27,10 @@ export default function LiveStream(){
 
  
         
-        <div style={{padding:'100px'}}>
+        <div className="flex-container" style={{padding:'100px'}}>
             
         {tabs.map((item, index)=>{
-                return(<div className="grid-container" key={index}>
+                return(<div key={index}>
                     <button className="buttons" onClick={()=>{
                         if(activeTab===null || activeTab!==tabs[index]){
                             setActiveTab(tabs[index]);

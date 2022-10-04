@@ -40,7 +40,19 @@ import VerifyManagerPage from "./pages/verify-manager-page/VerifyManagerPage";
 import MyOrganizationsPage from "./pages/organization-pages/MyOrganizationsPage";
 import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDetailsPage";
 
-import MyOrganizationDetails from "./components/organization/OrganizationDetails";
+// import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
+import SearchConferencePage from "./pages/search-conference-page/SearchConference";
+import SearchConfSelectPage from "./pages/booking-page/SearchConfSelectPage";
+import BookingStep1Page from "./pages/booking-page/BookingStep1Page";
+import BookingStep2Page from "./pages/booking-page/BookingStep2Page";
+import UserProfilePage from "./pages/user-profile-page/UserProfilePage";
+import OrganizerConfDashPage from "./pages/organizer-conf-dashboard-page/OrganizerConfDashPage";
+import OrganizerConfPreviewPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewPage";
+import CreditRequestsPage from "./pages/organizer-conf-dashboard-page/CreditRequestsPage";
+import RefundRequestsPage from "./pages/organizer-conf-dashboard-page/RefundRequestsPage";
+import EarningsPage from "./pages/organizer-conf-dashboard-page/EarningsPage";
+import UserViewProfilePage from "./pages/org-profile-userView-page/UserViewProfilepage";
+import OrganizerConfPreviewFinishedPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewFinishedPage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -61,6 +73,42 @@ const App = () => {
               path="/verify-email/:secret"
               element={<VerifyEmail />}
             ></Route>
+            <Route
+              path="search-conference"
+              element={<SearchConferencePage />}
+            ></Route>
+            <Route
+              path="search-conference/:confID"
+              element={<SearchConfSelectPage />}
+            ></Route>
+
+            <Route
+              path="booking-step1/:confID"
+              element={<BookingStep1Page />}
+            ></Route>
+            <Route
+              path="booking-step2/:bookingID"
+              element={<BookingStep2Page />}
+            ></Route>
+
+            <Route path="user-profile" element={<UserProfilePage />}></Route>
+
+           
+
+            
+
+            
+            <Route path="user-view" element={<UserViewProfilePage />}></Route>
+
+          
+
+            
+
+<Route
+              path="organizer-preview/finished/:id"
+              element={<OrganizerConfPreviewFinishedPage/>}
+            ></Route>
+
             <Route path="/message" element={<MessagePage />}></Route>
             <Route
               path="dashboard"
@@ -89,14 +137,38 @@ const App = () => {
                 element={<CreateOrganizationPage />}
               ></Route>
               <Route
+              path="refunds"
+              element={<RefundRequestsPage />}
+            ></Route>
+             <Route path="earnings" element={<EarningsPage />}></Route>
+             <Route
+              path="credit-requests"
+              element={<CreditRequestsPage />}
+            ></Route>
+            <Route
+              path="my-conferences"
+              element={<OrganizerConfDashPage />}
+            ></Route>
+            <Route
+              path="my-conferences/live/:id"
+              element={<OrganizerConfPreviewPage />}
+            ></Route>
+            <Route
+              path="my-conferences/finished/:id"
+              element={<OrganizerConfPreviewFinishedPage/>}
+            ></Route>
+              <Route
                 path="my-organizations"
                 // element={<OrganizerDashboardPage />}
                 element={<MyOrganizationsPage />}
               ></Route>
+
               <Route
                 path="my-organizations/:organizationId"
                 element={<OrganizationDetailsPage />}
               ></Route>
+
+              
             </Route>
             <Route path="/verify/:token" element={<VerifyManagerPage />} />
 

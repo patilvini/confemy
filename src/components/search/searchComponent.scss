@@ -1,0 +1,193 @@
+@import "../../utility/utility.styles.scss";
+
+
+.sidenav {
+  height: 90%;
+  width: 337px;
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  background-color: #fafbfc;
+  overflow-x: hidden;
+  // padding-top: 10rem;
+  margin-top: 6.5rem;
+  border-right: solid lightgrey;
+}
+
+
+
+.search-nav {
+  margin-left: 360px;
+  /* Same as the width of the sidenav */
+
+  padding: 0px 2rem;
+}
+
+.title-grid {
+
+  border: none;
+  background-color: #fafbfc;
+  font-family: Avenir-Heavy;
+  margin-left:1.8rem;
+  width: 90%;
+  display: grid;
+  grid-template-columns: 60% 40%;
+
+}
+
+.title-grid-item {
+  margin: 1.1rem 0;
+  align-self: center;
+
+
+  // border-top:1rem;
+}
+
+.filter-component{
+  margin: 2.5rem;
+}
+
+
+
+.item-icon {
+  
+  margin-left: 50%;
+
+
+
+}
+
+.filter-icon {
+  width: 1.5rem;
+  
+}
+
+.delete-icon{
+  width:2rem;
+}
+
+.title {
+  margin: 4rem 2rem;
+  color: $primary;
+}
+
+.component-title {
+  color: $primary;
+  margin-left: 1.5rem;
+}
+
+.component-label {
+  color: $gray-2;
+  margin-top: 1rem;
+
+}
+
+.tab-button {
+  
+  color: $gray-2;
+  padding-left: 2.5rem;
+  margin-top: 0.3rem;
+  
+
+}
+
+.credits-button{
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+   
+}
+
+
+
+.tab-button:hover {
+  background-color: $shade-2;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+
+}
+
+.tab-button-selected {
+  border-left: solid $accent .5rem;
+  background-color: white;
+
+}
+
+.clear-all-button {
+  font-size: 1.5rem;
+  margin-left: 6.5rem;
+  // margin-top: 5.5rem;
+  color: #757575;
+  border: none;
+  background-color: #fafbfc;
+}
+
+.date-input {
+  width: 90%;
+  height: 5.5rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  font-family: Avenir-Heavy;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  border: none;
+  color: #757575;
+}
+
+.select-input {
+  width: 90%;
+  // height: 5.5rem;
+  margin: 1.5rem 0;
+  font-family: Avenir-Heavy;
+  font-size: 1.5rem;
+  border: none;
+  color: black;
+
+}
+
+
+.buttons-date {
+  margin-top: 2.5rem;
+  color: $gray-2;
+  font-size: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  width: 90%;
+  border: none
+}
+
+
+.buttons-date:hover {
+
+
+  background-color: $shade-2;
+
+
+
+
+
+}
+
+.filter-back-button {
+  color: $gray-2;
+ 
+  background-color: #fafbfc;
+  font-family: Avenir-Heavy;
+  font-size: 1.8rem;
+  
+
+}
+
+.search-input{
+  height: 48px;
+  width:40rem;
+  
+  padding-left: 2rem;
+  font-size: 2rem;
+  font-family: Avenir-Heavy;
+
+}
+
+.empty{
+  margin-top: 5rem;
+  text-align: center;
+  margin-bottom: 15rem;
+}

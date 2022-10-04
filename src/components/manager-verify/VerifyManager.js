@@ -71,7 +71,7 @@ export default function VerifyManager() {
 
   return (
     <div>
-      <div style={{ width: "80%" }}>
+      <div className="modal-form-wrapper">
         <div className="form-type-1">
           <Formik
             initialValues={initialValues}
@@ -80,7 +80,7 @@ export default function VerifyManager() {
           >
             <Form>
               <NameForm />
-              <button type="submit">Submit</button>
+              <button className="button button-green" type="submit">Submit</button>
             </Form>
           </Formik>
         </div>

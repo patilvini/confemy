@@ -1,0 +1,187 @@
+@import "../../utility/utility.styles.scss";
+
+
+.dash-wrapper {
+    // margin: 0rem 2rem 3rem 12.2rem;
+    max-width: 119.6rem;
+    border-radius: .5rem;
+  
+  
+  }
+
+
+  .dash-table {
+    margin: 1rem 0 0 0;
+    font-family:Avenir-Roman;
+    display: grid;
+    grid-template-columns: 50% 15% 15% 20%;
+  
+  }
+
+  .dash-table:hover {
+    background-color: $shade-2;
+  
+  }
+  
+  .dash-table-heading {
+    margin: 3.2rem 0 0 0;
+    display: grid;
+    grid-template-columns: 50% 15% 15% 20%;
+    background-color: $shade-1;
+    border-radius: .4rem;
+    height:5.2rem
+  
+  }
+
+  
+
+  .dash-table-item{
+    // font-family: Avenir;
+    font-size: 2rem;
+    align-self: center;
+    // text-align: center;
+    font-weight: bold;
+    padding-left: 3.0rem;
+   
+  
+  }
+
+
+  .conference-card-dash {
+   
+    display: grid;
+    grid-template-columns: 20% 80%;
+ 
+  
+    img {
+      width: 100%;
+      border-radius: .1rem;
+      padding:1rem;
+   
+    }
+  
+  
+  }
+
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 10% 90%;
+    padding-top: 1rem;
+  }
+
+  
+
+  .ticket-item {
+
+    padding-left:1rem;
+
+   align-self:center ;
+  }
+  
+  .dash-conf-details{
+    padding: .5rem;
+  }
+
+  .data-grid{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    margin: 3.8rem 0;
+
+
+  }
+
+  .data-grid-3{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin: 3.8rem 0;
+
+
+  }
+  .data-container{
+    background-color: white;
+    border: solid 1px $shade-1;
+    height: 10.9rem;
+    width: 100%;
+    text-align: center;
+    padding: 1.6rem;
+
+
+  }
+
+
+
+  .overview-table {
+    margin: 1rem 0 0 0;
+    font-family:Avenir-Roman;
+    display: grid;
+    grid-template-columns: 40% 20% 20% 20%;
+  
+  }
+  
+  .overview-table-heading {
+    margin: 4.4rem 0 0 0;
+    display: grid;
+    grid-template-columns: 40% 20% 20% 20%;
+    background-color: $shade-1;
+    border-radius: .4rem;
+  
+  }
+  
+  .overview-table-item{
+    // font-family: Avenir;
+    font-size: 2rem;
+    align-self: center;
+    text-align: center;
+    font-weight: bold;
+    padding: 1.2rem;
+   
+  
+  }
+
+  .overview-table:hover{
+   background-color: $shade-2;
+   
+  
+  }
+
+
+  .request-table {
+    margin: 1rem 0 0 0;
+    font-family:Avenir-Roman;
+    display: grid;
+    grid-template-columns: 20% 30% 15% 15% 20%;
+  
+  }
+  
+  .request-table-heading {
+    margin: 4.4rem 0 0 0;
+    display: grid;
+    grid-template-columns: 20% 30% 15% 15% 20%;
+    background-color: $shade-1;
+    border-radius: .4rem;
+  
+  }
+  
+  .request-table-item{
+    // font-family: Avenir;
+    font-size: 2rem;
+    align-self: center;
+    margin-left:2rem ;
+    font-weight: bold;
+    padding: 1.2rem;
+
+    button{
+     padding: 1rem 2rem;
+     
+     
+    }
+   
+  
+  }
+
+  .request-table:hover{
+   background-color: $shade-2;
+   
+  
+  }

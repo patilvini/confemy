@@ -6,6 +6,7 @@ import AuthDropdown from "../auth-dropdown/AuthDropdown";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./navbar.styles.scss";
+import ShoppingCart from "../auth-dropdown/ShoppingCart";
 
 export default function Navbar() {
   const auth = useSelector((state) => state.auth);
@@ -19,10 +20,12 @@ export default function Navbar() {
             <LogoDark className="logo" />
           </Link>
         </div>
-        <div className="search-box">
-          <SearchIcon height="1.4rem" width="1.4rem" />
-          <span className="explore-conferences">Explore Conferences</span>
-        </div>
+        <Link to="search-conference">
+          <div className="search-box">
+            <SearchIcon height="1.4rem" width="1.4rem" />
+            <span className="explore-conferences">Explore Conferences</span>
+          </div>
+        </Link>
       </div>
       <div className="navbar-second-container">
         <div>
@@ -35,6 +38,7 @@ export default function Navbar() {
         )} */}
         {isAuthenticated && user ? (
           <>
+            <ShoppingCart />
             <AuthDropdown />
           </>
         ) : (
