@@ -25,7 +25,7 @@ const authDropdownOptions = [
   {
     icon: <ODashboardIcon className="icon-size" />,
     name: "Organizer's Dashboard",
-    path: "/dashboard",
+    path: "/dashboard/my-conferences",
   },
   {
     icon: <ProfileIcon className="icon-size" />,
