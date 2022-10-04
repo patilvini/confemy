@@ -53,7 +53,7 @@ const App = () => {
           <Navbar />
           <Alert />
           <Routes>
-            <Route path="/test" element={<CreateConfLayoutPage />} />
+            <Route path="/test" element={<OCreateConference />} />
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>

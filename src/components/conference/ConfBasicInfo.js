@@ -8,11 +8,11 @@ import Select from "react-select";
 import TextError from "../formik/TextError";
 import DateView from "react-datepicker";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 
 import api from "../../utility/api";
 import "./createConference.styles.scss";
-import SingleSelect from "../reselect/SingleSelect";
+import SelectFormType1 from "../reselect/SelectFormType1";
 import PassesIcon from "../icons/PassesIcon";
 import DropdownIcon from "../icons/DropdownIcon";
 import { timezones } from "../reselect/timezonesUtil";
@@ -309,7 +309,7 @@ export default function ConfBasicInfo() {
               formik.values.host == "organization" ? "" : "display-none"
             }`}
           >
-            <SingleSelect
+            <SelectFormType1
               options={myOrganizations}
               name="organizationId"
               handleChange={(option) => {
@@ -353,6 +353,7 @@ export default function ConfBasicInfo() {
               <h4>Start time</h4>
               <DatePicker
                 id="startTime"
+                wrapperClassName="mydate-picker"
                 selected={formik.values.startTime}
                 onChange={(time) => formik.setFieldValue("startTime", time)}
                 showTimeSelect
@@ -406,7 +407,7 @@ export default function ConfBasicInfo() {
             </div>
             <div className="grid-1st-col">
               <h4>Timezone</h4>
-              <SingleSelect
+              <SelectFormType1
                 options={timezones}
                 label="timezone"
                 name="timezone"
@@ -648,7 +649,7 @@ export default function ConfBasicInfo() {
             <div className="grid-col-2">
               <div className="grid-1st-col">
                 <h4>Currency</h4>
-                <SingleSelect
+                <SelectFormType1
                   options={[
                     { label: "USD", value: "usd" },
                     { label: "INR", value: "inr" },

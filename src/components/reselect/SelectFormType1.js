@@ -1,7 +1,6 @@
 import Select, { components, PlaceholderProps } from "react-select";
 import PropTypes from "prop-types";
 import { timezones } from "./timezonesUtil.js";
-import { hover } from "@testing-library/user-event/dist/hover.js";
 
 const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";
@@ -14,7 +13,9 @@ const Placeholder = (props) => {
   return <components.Placeholder {...props} />;
 };
 
-export default function SingleSelect(props) {
+// SelectFormType1 is form customized according to our form-type-1 design
+
+export default function SelectFormType1(props) {
   const Checkbox = ({ children, ...props }) => (
     <label style={{ marginRight: "1em" }}>
       <input type="checkbox" {...props} />
@@ -29,17 +30,13 @@ export default function SingleSelect(props) {
       return {
         ...styles,
         backgroundColor: confemyWhite,
-        border: `2px solid ${shade1}`,
+        border: state.isFocused ? "1px solid #55a0fa" : `2px solid ${shade1}`,
         padding: "13px 0px 13px 16px",
         fontFamily: "Avenir-Roman",
         fontSize: 16,
 
         ":hover": {
           border: state.isFocused ? "1px solid #55a0fa" : `solid 3px ${shade4}`,
-        },
-
-        ":focus": {
-          border: "1px solid #55a0fa",
         },
       };
     },
@@ -90,15 +87,17 @@ export default function SingleSelect(props) {
         options={props.options}
         onChange={props.handleChange}
         styles={customStyles}
+        isMulti={props.isMulti}
       />
     </div>
   );
 }
 
-SingleSelect.propTypes = {
+SelectFormType1.propTypes = {
   options: PropTypes.array,
   name: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   isDisabled: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
+  isMulti: PropTypes.bool,
 };
