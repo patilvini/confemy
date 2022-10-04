@@ -10,8 +10,9 @@ export default function RefundRequests() {
     <div className="dash-wrapper">
       <div className="opposite-grid">
         <h1>Refund Requests</h1>
-        <div className="grid-item-right">
+        <div className="">
           <SearchBar
+          width={"2rem"}
             onClear={() => setSearchValue("")}
             setValue={(value) => {
               setSearchValue(value);

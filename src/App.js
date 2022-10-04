@@ -93,29 +93,16 @@ const App = () => {
 
             <Route path="user-profile" element={<UserProfilePage />}></Route>
 
-            <Route
-              path="credit-requests/:conferenceId"
-              element={<CreditRequestsPage />}
-            ></Route>
+           
 
-            <Route
-              path="refund-requests"
-              element={<RefundRequestsPage />}
-            ></Route>
+            
 
-            <Route path="earnings" element={<EarningsPage />}></Route>
-
+            
             <Route path="user-view" element={<UserViewProfilePage />}></Route>
 
-            <Route
-              path="organizers-dashboard"
-              element={<OrganizerConfDashPage />}
-            ></Route>
+          
 
-            <Route
-              path="organizer-preview/live/:id"
-              element={<OrganizerConfPreviewPage />}
-            ></Route>
+            
 
 <Route
               path="organizer-preview/finished/:id"
@@ -149,6 +136,27 @@ const App = () => {
                 path="create-organization"
                 element={<CreateOrganizationPage />}
               ></Route>
+              <Route
+              path="refunds"
+              element={<RefundRequestsPage />}
+            ></Route>
+             <Route path="earnings" element={<EarningsPage />}></Route>
+             <Route
+              path="credit-requests"
+              element={<CreditRequestsPage />}
+            ></Route>
+            <Route
+              path="my-conferences"
+              element={<OrganizerConfDashPage />}
+            ></Route>
+            <Route
+              path="my-conferences/live/:id"
+              element={<OrganizerConfPreviewPage />}
+            ></Route>
+            <Route
+              path="my-conferences/finished/:id"
+              element={<OrganizerConfPreviewFinishedPage/>}
+            ></Route>
               <Route
                 path="my-organizations"
                 // element={<OrganizerDashboardPage />}

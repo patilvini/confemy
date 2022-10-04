@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../search/SearchBar";
 import Select from "react-select";
+import { DateTime } from "luxon";
 
 export default function OrganizerDash() {
   const userID = useSelector((state) => state.auth.user?._id);
@@ -17,37 +18,38 @@ export default function OrganizerDash() {
   const navigate = useNavigate();
 
   const getSaved = async (args) => {
-    console.log(args)
+    console.log(args);
 
-    if (user.hasOrganization){
+    if (user.hasOrganization) {
       try {
-      const r = await api.get("/conferences/users/628ea4c65fc8c008249c6dc3?"+args+"&organizationId=62e728bdddc09c136b363680");
-      console.log(r.data.data.conferences);
-
-      setData(r.data.data.conferences);
-    } catch (err) {
-      console.log(err);
-    }
-
-    } else {
-      try {
-        const r = await api.get("/conferences/users/628ea4c65fc8c008249c6dc3?"+args);
+        const r = await api.get(
+          "/conferences/users/628ea4c65fc8c008249c6dc3?" +
+            args +
+            "&organizationId=62e728bdddc09c136b363680"
+        );
         console.log(r.data.data.conferences);
-  
+
         setData(r.data.data.conferences);
       } catch (err) {
         console.log(err);
       }
+    } else {
+      try {
+        const r = await api.get(
+          "/conferences/users/628ea4c65fc8c008249c6dc3?" + args
+        );
+        console.log(r.data.data.conferences);
 
+        setData(r.data.data.conferences);
+      } catch (err) {
+        console.log(err);
+      }
     }
-    
   };
 
   const sort = async (e) => {
-
-    getSaved("status="+e.value)
-
-  }
+    getSaved("status=" + e.value);
+  };
 
   useEffect(() => {
     getSaved();
@@ -58,8 +60,6 @@ export default function OrganizerDash() {
 
     if (data) {
       const dataSet = data.filter((item, index) => {
-     
-
         if (
           item.title.toLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1
         ) {
@@ -70,8 +70,8 @@ export default function OrganizerDash() {
       console.log("dataset:", dataSet);
       setFiltered(dataSet);
     }
-    if(searchValue.length === 0) {
-      setFiltered(data)
+    if (searchValue.length === 0) {
+      setFiltered(data);
     }
   }, [searchValue, data]);
 
@@ -80,7 +80,6 @@ export default function OrganizerDash() {
     { value: "live", label: "Live Conferences" },
     { value: "finished", label: "Finished Conferences" },
     { value: "drafts", label: "Drafts" },
-    
   ];
 
   return (
@@ -100,7 +99,7 @@ export default function OrganizerDash() {
             data={data}
           />
         </div>
-        <Select width="200px" onChange={(e)=>sort(e)} options={options} />
+        <Select width="200px" onChange={(e) => sort(e)} options={options} />
       </div>
 
       <div>
@@ -114,12 +113,19 @@ export default function OrganizerDash() {
         </div>
 
         {filtered?.map((item, index) => {
-          
-
           return (
             <div key={index} className="dash-table">
               <div
-                onClick={() => navigate("/organizer-preview/" + item._id)}
+                onClick={() => {
+                  console.log(DateTime.fromISO(item.endDate));
+                  console.log(DateTime.now());
+
+                  if (DateTime.fromISO(item.endDate) < DateTime.now()) {
+                    navigate("/dashboard/my-conferences/finished/" + item._id);
+                  } else {
+                    navigate("/dashboard/my-conferences/live/" + item._id);
+                  }
+                }}
                 className="dash-table-item"
               >
                 <ConferenceSec data={item} />

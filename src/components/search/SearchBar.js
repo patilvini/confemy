@@ -5,9 +5,11 @@ import CloseIcon from "../icons/CloseIcon";
 
 
 
-export default function SearchBar({onClear, setValue, value, data, }){
+export default function SearchBar({onClear, setValue, value, data, width }){
 
     const [showSearch , setShowSearch] = useState(true)
+    
+
 
 
 
@@ -63,6 +65,7 @@ export default function SearchBar({onClear, setValue, value, data, }){
               id="searchBar"
               type="text"
               value={value}
+              style={{width: {width}}}
         
               className="search-input"
               onChange={(e)=>{

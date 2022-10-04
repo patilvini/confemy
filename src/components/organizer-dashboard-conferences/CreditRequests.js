@@ -59,9 +59,9 @@ export default function CreditRequests() {
   return (
     <div className="dash-wrapper">
       <div className="flex-container">
-        <h1 style={{marginRight:"4rem"}}>Credits Requests</h1>
+        <h1 style={{marginRight:"1rem"}}>Credits Requests</h1>
         
-        <div className="grid-item-right">
+        <div>
           <SearchBar
             onClear={() => setSearchValue("")}
             setValue={(value) => {

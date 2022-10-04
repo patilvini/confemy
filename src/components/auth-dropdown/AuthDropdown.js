@@ -30,7 +30,7 @@ const authDropdownOptions = [
   {
     icon: <ProfileIcon className="icon-size" />,
     name: "Profile",
-    path: "#!",
+    path: "/user-profile",
   },
   {
     icon: <PassesIcon className="icon-size" />,
