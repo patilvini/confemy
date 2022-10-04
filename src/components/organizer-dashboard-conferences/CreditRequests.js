@@ -43,7 +43,7 @@ export default function CreditRequests() {
     const getData = async () => {
       try {
         const r = await api.get(
-          "organizers/conferences/credits/users/6305be9942434c682442a724?organizationId=62e728bdddc09c136b363680"
+          "organizers/conferences/credits/users/6305be9942434c682442a724"
         );
         console.log(r.data.data.allCredits);
         setData(r.data.data.allCredits)

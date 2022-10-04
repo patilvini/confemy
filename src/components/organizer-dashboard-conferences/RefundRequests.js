@@ -8,11 +8,11 @@ export default function RefundRequests() {
   const a = [0, 0, 0];
   return (
     <div className="dash-wrapper">
-      <div className="opposite-grid">
-        <h1>Refund Requests</h1>
-        <div className="">
+      <div className="flex-container">
+        <h1 style={{marginRight:"2rem"}}>Refund Requests</h1>
+        <div>
           <SearchBar
-          width={"2rem"}
+          
             onClear={() => setSearchValue("")}
             setValue={(value) => {
               setSearchValue(value);

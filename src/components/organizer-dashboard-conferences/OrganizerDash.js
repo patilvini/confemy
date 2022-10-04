@@ -89,7 +89,11 @@ export default function OrganizerDash() {
         <div className="grid-item-right">
           <button className="button button-green">Create Conference </button>
         </div>
-        <div>
+        
+      </div>
+
+      <div>
+      <div className="flex-container">
           <SearchBar
             onClear={() => setSearchValue("")}
             setValue={(value) => {
@@ -98,9 +102,17 @@ export default function OrganizerDash() {
             value={searchValue}
             data={data}
           />
+          <div style={{width:"40%", marginLeft:"5rem"}}>
+        <Select   onChange={(e) => sort(e)} options={options} />
+
         </div>
-        <Select width="200px" onChange={(e) => sort(e)} options={options} />
+        </div>
+        
+        
+
       </div>
+
+      
 
       <div>
         <div className="dash-table-heading">
