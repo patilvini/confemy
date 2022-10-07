@@ -178,12 +178,19 @@
 
 .search-input{
   height: 48px;
-  width:40rem;
+  width:100%;
+  align-self: center;
   
   padding-left: 2rem;
   font-size: 2rem;
   font-family: Avenir-Heavy;
 
+}
+
+.bar-position{
+  position: relative;
+  align-self: center;
+  margin-top: 2rem;
 }
 
 .empty{

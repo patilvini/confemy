@@ -23,7 +23,7 @@ export default function SearchBar({onClear, setValue, value }){
     return(
         <>
        
-        <div className="position-relative">
+        <div className="bar-position">
             <input
               id="searchBar"
               type="text"

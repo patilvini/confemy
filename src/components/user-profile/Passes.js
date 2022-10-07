@@ -107,7 +107,7 @@ export default function Passes() {
   );
 
   const search = (
-    <div style={{ position: "relative" }} className="search-bar">
+    <div  style={{ position: "relative", marginRight: '27%' }} className="search-bar">
   
      <SearchBar onClear={()=>setSearchValue("")} setValue={(value)=>{setSearchValue(value)}} value={searchValue} data={data}/>
 

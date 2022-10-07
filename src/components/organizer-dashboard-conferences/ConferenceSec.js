@@ -15,9 +15,9 @@ export default function ConferenceSec({data}){
     
     return (
         <div className="conference-card-dash">
-      <div style={{alignItems: 'center'}}>
-        <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNvbmZlcmVuY2V8ZW58MHx8MHx8&w=1000&q=80" />
-      </div>
+      
+        <img className="conf-image-dash"  alt="conference title" src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNvbmZlcmVuY2V8ZW58MHx8MHx8&w=1000&q=80" />
+  
       <div className="dash-conf-details">
         <h3 style={{ fontSize: "2rem" }}>{data.title}</h3>
         <div className="details-grid">
