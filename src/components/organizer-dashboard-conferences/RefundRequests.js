@@ -100,7 +100,7 @@ const options = [
 
         <div className="grid-item-right" style={{width:"89%", margin:"2rem 0rem 2rem 4rem", alignSelf:"center"}}>
 
-        <Select width='200px' options={options} styles={customStyles}/>
+        <Select placeholder="Sort" width='200px' options={options} styles={customStyles}/>
         </div>
         
       </div>

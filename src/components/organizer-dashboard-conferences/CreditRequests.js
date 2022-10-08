@@ -134,7 +134,7 @@ export default function CreditRequests() {
             alignSelf: "center",
           }}
         >
-          <Select  options={options} styles={customStyles} />
+          <Select placeholder={"Sort"}  options={options} styles={customStyles} />
         </div>
       </div>
 

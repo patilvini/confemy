@@ -53,6 +53,8 @@ import RefundRequestsPage from "./pages/organizer-conf-dashboard-page/RefundRequ
 import EarningsPage from "./pages/organizer-conf-dashboard-page/EarningsPage";
 import UserViewProfilePage from "./pages/org-profile-userView-page/UserViewProfilepage";
 import OrganizerConfPreviewFinishedPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewFinishedPage";
+import TrackCreditPage from "./pages/track-credit-page/TrackCreditPage";
+import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -92,6 +94,8 @@ const App = () => {
             ></Route>
 
             <Route path="user-profile" element={<UserProfilePage />}></Route>
+            <Route path="track-credits" element={<TrackCreditPage />}></Route>
+            <Route path="list-conferences" element={<ListConferencesPage />}></Route>
 
            
 

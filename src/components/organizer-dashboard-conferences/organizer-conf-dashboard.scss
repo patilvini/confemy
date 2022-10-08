@@ -39,7 +39,7 @@
   font-size: 2rem;
   align-self: center;
   text-align: center;
-  font-weight: bold;
+  // font-weight: bold;
  
 
 
@@ -79,13 +79,13 @@
 
 .ticket-item {
 
-  padding: 1rem 2.5rem;
+  padding: .3rem 0rem;
 
   align-self: center;
 }
 
 .dash-conf-details {
-  padding: .5rem;
+  padding: 1rem 0 0rem 1rem;
 }
 
 .data-grid {
@@ -185,6 +185,10 @@
   background-color: $shade-1;
   border-radius: .4rem;
 
+}
+
+.card-icons{
+  width: 1.5rem;
 }
 
 .request-table-item {

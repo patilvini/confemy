@@ -164,7 +164,7 @@ export default function OrganizerDash() {
         </div>
         <div className="grid-item-right" style={{width:"89%", margin:"2rem 0rem 2rem 4rem", alignSelf:"center"}}>
 
-        <Select width='200px'  onChange={(e) => sort(e)} options={options} styles={customStyles}/>
+        <Select placeholder={"Sort"} width='200px'  onChange={(e) => sort(e)} options={options} styles={customStyles}/>
         </div>
         
       </div>
@@ -190,11 +190,11 @@ export default function OrganizerDash() {
       <div>
         <div className="dash-table-heading">
           <div style={{marginLeft:"3rem", fontSize:"2rem", alignSelf:"center", fontWeight:"bold"}}>Conference</div>
-          <div className="dash-table-item">Sold</div>
+          <div style={{fontWeight:"bold"}} className="dash-table-item">Sold</div>
 
-          <div className="dash-table-item">Gross</div>
+          <div style={{fontWeight:"bold"}} className="dash-table-item">Gross</div>
 
-          <div className="dash-table-item">Status</div>
+          <div style={{fontWeight:"bold"}} className="dash-table-item">Status</div>
         </div>
 
         {filtered?.map((item, index) => {
@@ -211,7 +211,7 @@ export default function OrganizerDash() {
                     navigate("/dashboard/my-conferences/live/" + item._id);
                   }
                 }}
-                className="dash-table-item"
+                className=""
               >
                 <ConferenceSec data={item} />
               </div>
