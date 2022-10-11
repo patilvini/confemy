@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
@@ -18,6 +18,12 @@ export default function CreateConfLayoutPage() {
   const onSetupOrganizationClick = () => {
     navigate("/dashboard/create-organization");
   };
+
+  useEffect(() => {
+    return () => {
+      console.log("cleaned up");
+    };
+  }, []);
 
   if (!user?.hasOrganization && !skip) {
     return (
@@ -53,7 +59,7 @@ export default function CreateConfLayoutPage() {
   }
 
   return (
-    <div style={{ marginLeft: 32 }}>
+    <div className="ml-32">
       <ConfSteps />
       <div>
         <Outlet />

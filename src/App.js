@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 
@@ -19,6 +19,7 @@ import OrganizerDashboardPage from "./pages/organizer-dashboard-page/OrganizerDa
 import OrganizerProfilePage from "./pages/organizer-profile-page/OrganizerProfilePage";
 import CreateOrganizerProfilePage from "./pages/organizer-profile-page/CreateOrganizerProfilePage";
 import EditOrganizerProfilePage from "./pages/organizer-profile-page/EditOrganizerProfilePage";
+import CreateConfLandingPage from "./pages/create-conference-pages/CreateConfLandingPage";
 import ConfBasicInfoPage from "./pages/create-conference-pages/ConfBasicInfoPage";
 import ConfDetailsPage1 from "./pages/create-conference-pages/ConfDetailsPage1";
 import ConfDetailsPage2 from "./pages/create-conference-pages/ConfDetailsPage2";
@@ -53,6 +54,7 @@ import RefundRequestsPage from "./pages/organizer-conf-dashboard-page/RefundRequ
 import EarningsPage from "./pages/organizer-conf-dashboard-page/EarningsPage";
 import UserViewProfilePage from "./pages/org-profile-userView-page/UserViewProfilepage";
 import OrganizerConfPreviewFinishedPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewFinishedPage";
+import EditorContainer from "./components/conference/EditorContainer";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -65,7 +67,7 @@ const App = () => {
           <Navbar />
           <Alert />
           <Routes>
-            <Route path="/test" element={<OCreateConference />} />
+            <Route path="/test" element={<EditorContainer />} />
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>
@@ -93,20 +95,11 @@ const App = () => {
 
             <Route path="user-profile" element={<UserProfilePage />}></Route>
 
-           
-
-            
-
-            
             <Route path="user-view" element={<UserViewProfilePage />}></Route>
 
-          
-
-            
-
-<Route
+            <Route
               path="organizer-preview/finished/:id"
-              element={<OrganizerConfPreviewFinishedPage/>}
+              element={<OrganizerConfPreviewFinishedPage />}
             ></Route>
 
             <Route path="/message" element={<MessagePage />}></Route>
@@ -120,43 +113,43 @@ const App = () => {
             >
               <Route
                 path="create-conference"
-                element={<CreateConfLayoutPage />}
-              >
-                <Route path="" element={<ConfBasicInfoPage />}></Route>
-                <Route path="details-1" element={<ConfDetailsPage1 />}></Route>
-                <Route path="details-2" element={<ConfDetailsPage2 />}></Route>
-                <Route path="live-stream" element={<LiveStreamPage />}></Route>
-                <Route path="tickets" element={<TicketsPage />}></Route>
+                element={<CreateConfLandingPage />}
+              ></Route>
+
+              <Route path="create-conf" element={<CreateConfLayoutPage />}>
                 <Route
-                  path="preview-publish"
-                  element={<PreviewPublishPage />}
+                  path=""
+                  element={<Navigate to="step-1" replace />}
                 ></Route>
+                <Route path="step-1" element={<ConfBasicInfoPage />}></Route>
+                <Route path="step-2" element={<ConfDetailsPage1 />}></Route>
+                <Route path="step-3" element={<ConfDetailsPage2 />}></Route>
+                <Route path="step-4" element={<LiveStreamPage />}></Route>
+                <Route path="step-5" element={<TicketsPage />}></Route>
+                <Route path="step-6" element={<PreviewPublishPage />}></Route>
               </Route>
               <Route
                 path="create-organization"
                 element={<CreateOrganizationPage />}
               ></Route>
+              <Route path="refunds" element={<RefundRequestsPage />}></Route>
+              <Route path="earnings" element={<EarningsPage />}></Route>
               <Route
-              path="refunds"
-              element={<RefundRequestsPage />}
-            ></Route>
-             <Route path="earnings" element={<EarningsPage />}></Route>
-             <Route
-              path="credit-requests"
-              element={<CreditRequestsPage />}
-            ></Route>
-            <Route
-              path="my-conferences"
-              element={<OrganizerConfDashPage />}
-            ></Route>
-            <Route
-              path="my-conferences/live/:id"
-              element={<OrganizerConfPreviewPage />}
-            ></Route>
-            <Route
-              path="my-conferences/finished/:id"
-              element={<OrganizerConfPreviewFinishedPage/>}
-            ></Route>
+                path="credit-requests"
+                element={<CreditRequestsPage />}
+              ></Route>
+              <Route
+                path="my-conferences"
+                element={<OrganizerConfDashPage />}
+              ></Route>
+              <Route
+                path="my-conferences/live/:id"
+                element={<OrganizerConfPreviewPage />}
+              ></Route>
+              <Route
+                path="my-conferences/finished/:id"
+                element={<OrganizerConfPreviewFinishedPage />}
+              ></Route>
               <Route
                 path="my-organizations"
                 // element={<OrganizerDashboardPage />}
@@ -167,8 +160,6 @@ const App = () => {
                 path="my-organizations/:organizationId"
                 element={<OrganizationDetailsPage />}
               ></Route>
-
-              
             </Route>
             <Route path="/verify/:token" element={<VerifyManagerPage />} />
 

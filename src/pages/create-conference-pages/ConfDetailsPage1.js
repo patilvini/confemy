@@ -4,7 +4,6 @@ export default function ConfDetailsPage1() {
   return (
     <>
       <ConferenceDetails1 />
-      <ConfDetails1 />
     </>
   );
 }
