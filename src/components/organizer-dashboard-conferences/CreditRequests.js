@@ -75,11 +75,9 @@ export default function CreditRequests() {
   };
 
   const options = [
-    { value: "Physician", label: "Physician" },
-    { value: "Nurse", label: "Nurse" },
-    { value: "Pharmacist", label: "Pharmacist" },
-    { value: "Example 1", label: "Example 1" },
-    { value: "Example 2", label: "Example 2" },
+    { label: "All", value: "" },
+    { label: "Pending", value: "?creditStatus=pending" },
+    { label: "Approved", value: "?creditStatus=approved" },
   ];
 
   const downloadCertificate = async (id) => {
@@ -95,20 +93,28 @@ export default function CreditRequests() {
     }
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const r = await api.get(
-          "organizers/conferences/credits/users/6305be9942434c682442a724"
-        );
-        console.log(r.data.data.allCredits);
-        setData(r.data.data.allCredits);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  const getData = async (e) => {
+    console.log(e.value);
 
-    getData();
+    let url = "";
+    if (!e) {
+      url = "organizers/conferences/credits/users/6305be9942434c682442a724";
+    } else {
+      url =
+        "organizers/conferences/credits/users/6305be9942434c682442a724" +
+        e.value;
+    }
+    try {
+      const r = await api.get(url);
+      console.log(r.data.data.allCredits);
+      setData(r.data.data.allCredits);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getData({ label: "All", value: "" },);
   }, []);
 
   return (
@@ -134,7 +140,12 @@ export default function CreditRequests() {
             alignSelf: "center",
           }}
         >
-          <Select placeholder={"Sort"}  options={options} styles={customStyles} />
+          <Select
+            placeholder={"Sort"}
+            options={options}
+            onChange={(e) => getData(e)}
+            styles={customStyles}
+          />
         </div>
       </div>
 

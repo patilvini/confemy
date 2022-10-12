@@ -29,7 +29,7 @@ const responsive = {
   },
 };
 
-function RecentlyViewedConfs() {
+function TrendingConfs() {
   const [data, setData] = useState();
 
 
@@ -37,9 +37,15 @@ function RecentlyViewedConfs() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const r = await api.get("/homePage/recentlyviewed");
-        setData(r.data.data.viewedConferences)
-        
+        const r = await api.get("/homePage/trendings");
+       
+        console.log(r.data.data.trendingConferences)
+
+        const d = r.data.data.trendingConferences;
+
+        d.length = 10;
+
+        setData(d);
       } catch (err) {
         console.log(err);
       }
@@ -51,7 +57,7 @@ function RecentlyViewedConfs() {
   return (
     <section className="bg-background conf-display recently-viewed-confs">
       <div>
-        <h2>Recently Viewed</h2>
+        <h2>Trending Conferences</h2>
         <div className="recently-viewed-confs">
           <Carousel
             // swipeable={true}
@@ -94,4 +100,4 @@ function RecentlyViewedConfs() {
   );
 }
 
-export default RecentlyViewedConfs;
+export default TrendingConfs;

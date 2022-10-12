@@ -3,7 +3,7 @@ import CreditsIcon from "../icons/CreditsIcon";
 import LocationIcon from "../icons/LocationIcon";
 import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
-import LikeBlueIcon from "../icons/LikeBlueIcon";
+import LikeRedIcon from "../icons/LikeRedIcon";
 import ShareIcon from "../icons/ShareIcon";
 import { DateTime } from "luxon";
 import api from "../../utility/api";
@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 
 export default function SavedCard({ data, unliked}) {
   const date = DateTime.fromISO(data.conference.startDate);
+
+
 
 
   const userID = useSelector((state)=>state.auth.user?._id)
@@ -22,7 +24,7 @@ export default function SavedCard({ data, unliked}) {
   const unLike = async (confID) => {
   
 
-    unliked()
+    
     
     
     try{
@@ -30,6 +32,7 @@ export default function SavedCard({ data, unliked}) {
     
 
       console.log(r)
+      unliked()
    
     } catch (err){
       console.log(err)
@@ -84,8 +87,8 @@ export default function SavedCard({ data, unliked}) {
             <div>
               <button className="conference-card-buttons" onClick={()=>{
                 
-                unLike(data._id)
-                }} ><LikeBlueIcon fill={"#d8000c"} className="conf-card-icons" /></button>
+                unLike(data.conference._id)
+                }} ><LikeRedIcon className="conf-card-icons" /></button>
             
 
             </div>

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux/es/exports";
 import api from "../../utility/api";
 import GlobeSketch from "../icons/GlobeSketch";
 import SavedCard from "./SavedCard";
+import NoSavedConfs from "../SVG-assets/NoSavedConfs";
 
 export default function SavedConfs() {
   let component;
@@ -24,6 +25,8 @@ export default function SavedConfs() {
     }
   };
 
+  
+
   useEffect(() => {
     console.log(called)
   
@@ -34,8 +37,8 @@ export default function SavedConfs() {
   const navigate = useNavigate();
 
   const noSaved = (
-    <div>
-      <GlobeSketch className="icon-plshld" />
+    <div style={{textAlign: "center"}}>
+      <NoSavedConfs className="icon-plshld" />
       <div className="passes-list">
         <h2>You haven't saved any conference</h2>
         <button
@@ -56,10 +59,12 @@ export default function SavedConfs() {
         return (
           <div key={index}>
             <SavedCard
+            
               unliked={() => {
                
-                getSaved()
+                
                 setCalled(!called);
+                
               }}
               data={data[index]}
             />

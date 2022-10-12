@@ -227,13 +227,14 @@ export default function ExternalCredModal({ onDismiss }) {
 
           <div className="logo-upload-wrap">
             <div {...getRootProps({ className: "button button-secondary" })}>
+              Upload your certificate
               <input {...getInputProps()} />
               {/* <CameraIcon className="camera-icon" /> */}
             </div>
             <div className="logo-upload-textbox">
-              <span>Drag and drop your Document here or</span>
+              {/* <span>Drag and drop your Document here or</span>
               <span>Browse</span>
-              <span>to choose a file</span>
+              <span>to choose a file</span> */}
             </div>
           </div>
 
