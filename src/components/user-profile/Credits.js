@@ -8,6 +8,10 @@ import { useEffect, useState } from "react";
 import ExternalCredModal from "./ExternalCredModal.js";
 import SetGoalModal from "./SetGoalModal.js";
 import UpdateGoalModal from "./UpdateGoalModal.js";
+import { DateTime } from "luxon";
+import DocumentIcon from "../icons/DocumentIcon.js";
+import Select from "react-select";
+import ConfRow from "./ConfRow.js";
 
 export default function Credits() {
   let component;
@@ -20,6 +24,8 @@ export default function Credits() {
   const userID = useSelector((state) => state.auth.user?._id);
   const [confs, setConfs] = useState();
   const [externalCreds, setExternalCreds] = useState([]);
+  const [req, setReq] = useState(0)
+
 
   // console.log(userID)
 
@@ -30,6 +36,33 @@ export default function Credits() {
       console.log(err);
     }
   };
+
+  const requestCredit = async (item, credit) => {
+
+
+    
+
+    if (!credit) {
+      return 
+    }
+
+    const atteendeeDetails = {
+      creditRequest:true,
+      creditId: credit.value.creditId._id,
+      creditQuantity: credit.value.quantity
+
+    }
+
+    try{
+        const r = await api.patch("/attendees/credits/users/"+ item._id, {atteendeeDetails})
+        console.log(r)
+        setReq()
+
+    } catch (err){
+        console.log(err)
+    }
+
+}
 
   useEffect(() => {
     const getData = async () => {
@@ -67,7 +100,7 @@ export default function Credits() {
     getExtCreds();
     getConfs();
     getData();
-  }, [userID, goalOpen, updateGoal]);
+  }, [userID, goalOpen, updateGoal, req]);
 
   const noCredits = (
     <div>
@@ -109,7 +142,7 @@ export default function Credits() {
 
   const credits = (
     <div>
-      <h1 style={{ margin: "7.7rem 0 3rem 12.2rem" }}>Credits</h1>
+      <h1 style={{ margin: "5rem 0 3rem 12.2rem" }}>Credits</h1>
 
       <div className="credits-wrapper">
         <div style={{ width: "100%" }} className="opposite-grid">
@@ -141,23 +174,24 @@ export default function Credits() {
           <div className="credit-table-item">Credit Type</div>
           <div className="credit-table-item">Total Credits</div>
 
-          <div className="credit-table-item">Registered Credits</div>
+          <div className="credit-table-item">Earned Credits</div>
 
           <div className="credit-table-item">Pending Clearance</div>
 
           <div className="credit-table-item">To Goal</div>
         </div>
         {data?.map((item, index) => {
+          console.log(item)
           return (
             <div key={index}>
               <div className="credits-table">
                 <div className="credit-table-item">{item.creditName}</div>
                 <div className="credit-table-item">
-                  {item.approvedCreditQuantity}
+                  {item.totalCreditQuantity}
                 </div>
 
                 <div className="credit-table-item">
-                  {item.registeredCreditQuantity}
+                  {item.earnedCreditQuantity}
                 </div>
 
                 <div className="credit-table-item">
@@ -173,7 +207,11 @@ export default function Credits() {
                         setCredit(item);
                         setUpdateOpen(true);
                       }}
-                      style={{ backgroundColor: "#fafbfc", border: "none" }}
+                      style={{
+                        backgroundColor: "#fafbfc",
+                        border: "none",
+                        margin: "0 0 0 1rem",
+                      }}
                     >
                       <EditIcon />
                     </button>
@@ -193,7 +231,7 @@ export default function Credits() {
           );
         })}
 
-        <h3 style={{ margin: "7.7rem 0 0rem 0rem" }}>Conferences</h3>
+        <h3 style={{ margin: "5.5rem 0 0rem 0rem" }}>Conferences</h3>
 
         <div className="conferences-table-heading">
           <div className="credit-table-item">Date</div>
@@ -206,40 +244,30 @@ export default function Credits() {
           <div className="credit-table-item">Status</div>
         </div>
         {confs?.map((item, index) => {
+          // console.log(item);
+
+          let credits = [];
+
+          for (let i = 0; i < item.conference.credits.length; i++) {
+            credits[i] = {
+              label: item.conference.credits[i].creditType,
+              value: item.conference.credits[i],
+            };
+          }
+
+          let booking = DateTime.fromISO(
+            item.conference.startDate
+          ).toLocaleString({
+            ...DateTime.DATE_MED_WITH_WEEKDAY,
+            weekday: "short",
+          });
+
           return (
             <div key={index}>
-              <div className="conference-table">
-                <div className="credit-table-item">{item.bookingDate}</div>
-                <div className="credit-table-item">{item.conference.title}</div>
-
-                <div className="credit-table-item">
-                  {item.registeredCreditQuantity}
-                </div>
-
-                <div className="credit-table-item">
-                  {item.pendingCreditQuantity}
-                </div>
-
-                <div className="credit-table-item">
-                 
-
-                  {item.goal && (
-                    <button
-                      onClick={() => {
-                        // setCredit(item);
-                        // setUpdateOpen(true);
-                      }}
-                      style={{ backgroundColor: "#fafbfc", border: "none" }}
-                    >
-                     Request Credit Cetificate
-                    </button>
-                  )}
-
-                  
-                    
-                  
-                </div>
-              </div>{" "}
+              
+                <ConfRow item={item} booking={booking} credits={credits} requestCredit={requestCredit}/>
+                
+              
             </div>
           );
         })}
@@ -272,10 +300,19 @@ export default function Credits() {
                 <div className="credit-table-item">
                   {item.creditCertificateUploaded && (
                     <button
+                    style={{
+                      backgroundColor: "#fafbfc",
+                      border: "2px solid lightGrey",
+                      fontWeight: "bold",
+                      padding: ".5rem .5rem",
+                      borderRadius: "4px",
+                    }}
                       onClick={() => downloadCertificate(item.certificate)}
-                      className="button button-primary"
+                      className="credits-button"
                     >
-                      View Certificate
+                     
+                    <DocumentIcon /> View Certificate
+                  
                     </button>
                   )}
                 </div>

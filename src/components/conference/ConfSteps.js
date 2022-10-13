@@ -39,7 +39,7 @@ export default function ConfSteps() {
     },
     {
       label: "Preview",
-      path: "/dashboard/create-conference/step-6",
+      path: "/dashboard/create-conf/step-6",
       completed: newConference?.completedStep6,
     },
   ];

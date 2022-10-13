@@ -8,6 +8,14 @@ import SearchBar from "../search/SearchBar";
 import Select from "react-select";
 import { DateTime } from "luxon";
 
+
+const confemyWhite = "#ffffff";
+const confemyBlac = "#000000";
+const shade1 = "#ced9de";
+const shade2 = "#ecf0f2";
+const shade3 = "#fcfdfd";
+const shade4 = "#aabdc7";
+
 export default function OrganizerDash() {
   const userID = useSelector((state) => state.auth.user?._id);
   const user = useSelector((state) => state.auth.user);
@@ -82,6 +90,61 @@ export default function OrganizerDash() {
     { value: "drafts", label: "Drafts" },
   ];
 
+
+  const customStyles = {
+    control: (styles, state) => {
+      // console.log("styles from control", styles);
+      // console.log("control state", state);
+      return {
+        ...styles,
+        height: "4.8rem",
+        backgroundColor: confemyWhite,
+        border: `1px solid ${confemyBlac}`,
+        // padding: "13px 0px 13px 16px",
+        fontFamily: "Avenir-Roman",
+        fontSize: 16,
+  
+        ":hover": {
+          border: state.isFocused ? "1px solid #55a0fa" : `solid 3px ${shade4}`,
+        },
+  
+        ":focus": {
+          border: "1px solid #55a0fa",
+        },
+      };
+    },
+  
+    placeholder: (provided) => ({
+      ...provided,
+      // fontSize: "1em",
+      // color: confemyBlac,
+      // fontWeight: 400,
+    }),
+  
+    option: (provided, state) => {
+      return {
+        ...provided,
+        color: confemyBlac,
+        backgroundColor: state.isSelected ? shade2 : "#fff",
+        fontSize: 16,
+        fontFamily: "Avenir-Roman",
+        padding: 16,
+      };
+    },
+  
+    dropdownIndicator: (provided, state) => {
+      // console.log("DownChevron provided", provided);
+      // console.log("DownChevron state", state);
+      return {
+        ...provided,
+        color: shade1,
+        ":hover": {
+          color: shade4,
+        },
+      };
+    },
+  };
+
   return (
     <div className="dash-wrapper">
       <div className="opposite-grid">
@@ -89,12 +152,8 @@ export default function OrganizerDash() {
         <div className="grid-item-right">
           <button className="button button-green">Create Conference </button>
         </div>
-        
-      </div>
-
-      <div>
-      <div className="flex-container">
-          <SearchBar
+        <div>
+        <SearchBar
             onClear={() => setSearchValue("")}
             setValue={(value) => {
               setSearchValue(value);
@@ -102,26 +161,40 @@ export default function OrganizerDash() {
             value={searchValue}
             data={data}
           />
-          <div style={{width:"40%", marginLeft:"5rem"}}>
-        <Select   onChange={(e) => sort(e)} options={options} />
+        </div>
+        <div className="grid-item-right" style={{width:"89%", margin:"2rem 0rem 2rem 4rem", alignSelf:"center"}}>
 
+        <Select placeholder={"Sort"} width='200px'  onChange={(e) => sort(e)} options={options} styles={customStyles}/>
         </div>
-        </div>
+        
+      </div>
+
+      <div>
+      
+      
+        
+        
+
+        
+        
+     
+      
         
         
 
       </div>
 
-      
+     
+ 
 
       <div>
         <div className="dash-table-heading">
-          <div className="dash-table-item">Conference</div>
-          <div className="dash-table-item">Sold</div>
+          <div style={{marginLeft:"3rem", fontSize:"2rem", alignSelf:"center", fontWeight:"bold"}}>Conference</div>
+          <div style={{fontWeight:"bold"}} className="dash-table-item">Sold</div>
 
-          <div className="dash-table-item">Gross</div>
+          <div style={{fontWeight:"bold"}} className="dash-table-item">Gross</div>
 
-          <div className="dash-table-item">Status</div>
+          <div style={{fontWeight:"bold"}} className="dash-table-item">Status</div>
         </div>
 
         {filtered?.map((item, index) => {
@@ -138,7 +211,7 @@ export default function OrganizerDash() {
                     navigate("/dashboard/my-conferences/live/" + item._id);
                   }
                 }}
-                className="dash-table-item"
+                className=""
               >
                 <ConferenceSec data={item} />
               </div>

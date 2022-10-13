@@ -2,7 +2,7 @@
 
 .conf-card {
   width: 28rem;
-  height: 34.1rem;
+  height: 36.1rem;
   padding: 0 0 0.8rem;
   border-radius: 0.4rem;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
@@ -69,6 +69,8 @@
 
   display: grid;
   grid-template-columns: 70% 30%;
+  position:relative;
+  bottom: 0rem
 
 
 }

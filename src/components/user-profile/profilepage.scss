@@ -7,8 +7,6 @@
   background-color: white;
   padding: 9.6rem 0 0rem 0;
 
-
-
 }
 
 .passes-list {
@@ -26,8 +24,6 @@
     border-bottom: solid .5rem white;
   }
 
-
-
 }
 
 .buttons-profile {
@@ -37,8 +33,6 @@
     color: $primary;
     border-bottom: solid .5rem $primary;
   }
-
-
 
 }
 
@@ -69,8 +63,8 @@
 
 .icon-plshld {
   height: 30rem;
-  margin: 6rem 40%;
-
+  margin: 6rem  0;
+  
 
 }
 
@@ -78,8 +72,6 @@
   height: 1.5rem;
   align-self: center;
   margin: 0rem .5rem 0 0;
-
-
 
 }
 
@@ -170,7 +162,6 @@
     padding: 2.4rem
   }
 
-
 }
 
 
@@ -214,9 +205,9 @@
 
 
 .conferences-table-heading {
-  margin: 4.4rem 0 0 0;
+  margin: 2rem 0 0 0;
   display: grid;
-  grid-template-columns: 20% 40% 10% 15% 15%;
+  grid-template-columns: 20% 30% 20% 15% 15%;
   background-color: $shade-1;
   border-radius: .4rem;
 
@@ -226,20 +217,20 @@
   margin: 1rem 0 0 0;
   font-family:Avenir-Roman;
   display: grid;
-  grid-template-columns: 20% 40% 10% 15% 15%;
+  grid-template-columns: 20% 30% 20% 15% 15%;
   
 
 }
 
 .credit-table-item{
   // font-family: Avenir;
-  font-size: 2rem;
+  font-size: 1.5rem;
   align-self: center;
   text-align: center;
   font-weight: bold;
   padding: 1.2rem;
+  height: 5rem;
  
-
 }
 
 
@@ -251,9 +242,6 @@
   border-radius: 1rem;
   padding: 8rem 4.2rem 
 
- 
-
-  
 }
 
 .externalCredit-modal{
@@ -264,9 +252,6 @@
   border-radius: 1rem;
   padding: 8rem 4.2rem 
 
- 
-
-  
 }
 
 .form-element{

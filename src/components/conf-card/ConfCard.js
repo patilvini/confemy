@@ -26,6 +26,9 @@ function ConfCard({
   const date = DateTime.fromISO(startDate)
   let start = date.toLocaleString({...DateTime.DATE_MED_WITH_WEEKDAY, weekday: 'short' })
 
+  const time = DateTime.fromISO(startTime)
+  console.log(time.toFormat('h:mm a'))
+
 
 
   return (
@@ -40,7 +43,7 @@ function ConfCard({
       <div>
         <DateIcon className="conf-card-icons" />
         <span className="conf-card-text caption-2-regular-gray3">
-          {start} - {startTime}
+          {start} - {time.toFormat('h:mm a')}
         </span>
       </div>
       <div className="conf-card-location">

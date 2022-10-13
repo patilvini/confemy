@@ -1,5 +1,5 @@
 import "./confSelect.scss";
-import './slider.scss';
+import "./slider.scss";
 import { useParams } from "react-router-dom";
 import api from "../../utility/api";
 import BookingCard from "./BookingCard";
@@ -9,10 +9,10 @@ import { DateTime } from "luxon";
 import Slider from "react-slick";
 import LocationIcon from "../icons/LocationIcon";
 
-
 export default function ConferenceSearchSelect() {
   const [data, setData] = useState();
-  const confID= useParams().confID
+  const [action, setAction] = useState(false)
+  const confID = useParams().confID;
   // console.log(confID)
 
   const settings = {
@@ -23,25 +23,54 @@ export default function ConferenceSearchSelect() {
     slidesToScroll: 1,
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const r = await api.get("/conferences/"+confID);
-        console.log(r.data.data.conferences);
-        setData(r.data.data.conferences);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  const addRecentlyViewed = async () => {
+    try {
+      const r = await api.post("/homePage/recentlyviewed", {
+        recentlyViewedConferenceDetails: {
+          conferenceId: confID,
+        },
+      });
+      console.log(r.data.data);
+      
+    } catch (err) {
+      // console.error(err);
+    }
+  };
 
+  const getData = async () => {
+    try {
+      const r = await api.get("/conferences/" + confID);
+      console.log(r.data.data.conferences);
+      setData(r.data.data.conferences);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
     getData();
-  }, []);
+
+    addRecentlyViewed();
+
+    // if (!localStorage.recentlyViewed) {
+    //   let ids = [];
+    //   ids[0] = confID;
+    //   localStorage.setItem("recentlyViewed", JSON.stringify(ids));
+    // } else {
+    //   const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed"));
+
+    //   if (recentlyViewed.includes(confID)) return;
+    //   else {
+    //     recentlyViewed.push(confID);
+
+    //     localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed))
+    //   }
+    // }
+  }, [action]);
 
   return (
     <div className="conference-component">
-      <div>
-       
-      </div>
+      <div></div>
       <div className="conference-gird-container">
         <div className="conference-grid-item">
           <img
@@ -77,23 +106,28 @@ export default function ConferenceSearchSelect() {
                 </div>
               </Slider>
             </div>
-            <div>
+            <div></div>
+            <div style={{ paddingLeft: "2rem" }}>
+              <h3 className="section-heading">{data?.venue?.venueName}</h3>
 
-            </div > 
-            <div style={{paddingLeft:'2rem'}} >
-            <h3 className="section-heading">{data?.venue?.venueName}</h3>
-           
-            <h4 className="venue-card-text"> <LocationIcon fill="#c4c4c4" className="filter-icon" /> {data?.venue?.city}</h4>
-            <div className="venue-card-flex" >
-              {data?.venue?.ameneties.map((item, index)=>{
-                return(
-                  <div className="venue-flex-item" key={index}><h4 className="venue-card-text">{item.icon}{item.name}</h4></div>
-                )
-              })}
+              <h4 className="venue-card-text">
+                {" "}
+                <LocationIcon fill="#c4c4c4" className="filter-icon" />{" "}
+                {data?.venue?.city}
+              </h4>
+              <div className="venue-card-flex">
+                {data?.venue?.ameneties.map((item, index) => {
+                  return (
+                    <div className="venue-flex-item" key={index}>
+                      <h4 className="venue-card-text">
+                        {item.icon}
+                        {item.name}
+                      </h4>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-
-            </div>
-            
           </div>
 
           <h3 className="section-heading">Course Outline</h3>
@@ -159,7 +193,7 @@ export default function ConferenceSearchSelect() {
           </div>
         </div>
         <div className="conference-grid-item">
-          <BookingCard data={data} />
+          <BookingCard data={data} reload={()=>setAction(!action)}/>
         </div>
       </div>
     </div>
