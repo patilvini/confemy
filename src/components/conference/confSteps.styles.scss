@@ -38,6 +38,12 @@
   white-space: nowrap;
 }
 
+.completed-conf-step {
+  @include avenir-heavy-18;
+  color: $accent;
+  white-space: nowrap;
+}
+
 .steps-line {
   margin-left: 4px;
   display: inline-block;

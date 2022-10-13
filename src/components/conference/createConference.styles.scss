@@ -52,3 +52,46 @@
     grid-gap: 8px;
   }
 }
+
+// .react-datepicker-wrapper,
+// .react-datepicker__input-container,
+// .react-datepicker__input-container input {
+//   display: block;
+//   width: 100%;
+// }
+
+.react-datepicker {
+  font-size: 12px;
+}
+
+// styles for details page 1
+
+.tags-display {
+  display: flex;
+  flex-wrap: wrap;
+
+  li {
+    display: flex;
+    align-items: center;
+    list-style: none;
+
+    font-family: Avenir-Heavy;
+    font-size: 16px;
+    font-weight: 900;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: 0.01px;
+    color: $gray-3;
+
+    padding: 14px 12px;
+    margin-right: 16px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    background-color: $shade-2;
+
+    svg {
+      margin-left: 8px;
+    }
+  }
+}
