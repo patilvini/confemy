@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.f2fe506b.css",
-    "main.js": "/static/js/main.83396ece.js",
+    "main.css": "/static/css/main.713328bd.css",
+    "main.js": "/static/js/main.aeaeb2e5.js",
     "static/js/787.7814be23.chunk.js": "/static/js/787.7814be23.chunk.js",
     "static/media/Avenir.ttc": "/static/media/Avenir.bd849aa48220dc5266c4.ttc",
     "static/media/Avenir-Roman.ttf": "/static/media/Avenir-Roman.69c167230fe72fa92d10.ttf",
@@ -10,13 +10,16 @@
     "static/media/Avenir-Medium.ttf": "/static/media/Avenir-Medium.043601295d2b1aa36564.ttf",
     "static/media/2021 Twitter logo - blue.png": "/static/media/2021 Twitter logo - blue.f963dcac51d5020e10f3.png",
     "static/media/googlelogo.png": "/static/media/googlelogo.39c52b1bcccb20569aa4.png",
+    "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
+    "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.f2fe506b.css.map": "/static/css/main.f2fe506b.css.map",
-    "main.83396ece.js.map": "/static/js/main.83396ece.js.map",
+    "main.713328bd.css.map": "/static/css/main.713328bd.css.map",
+    "main.aeaeb2e5.js.map": "/static/js/main.aeaeb2e5.js.map",
     "787.7814be23.chunk.js.map": "/static/js/787.7814be23.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f2fe506b.css",
-    "static/js/main.83396ece.js"
+    "static/css/main.713328bd.css",
+    "static/js/main.aeaeb2e5.js"
   ]
 }
