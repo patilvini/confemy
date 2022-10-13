@@ -9,45 +9,38 @@ import RadioCompletedIcon from "../icons/RadioCompletedIcon";
 export default function ConfSteps() {
   const navigate = useNavigate();
   const location = useLocation();
-  const newConference = useSelector((state) => state.conference.newConference);
-  const {
-    completedStep1,
-    completedStep2,
-    completedStep3,
-    completedStep4,
-    completedStep5,
-    completedStep6,
-  } = newConference;
+  const newConference = useSelector((state) => state.conference?.newConference);
+
   const steps = [
     {
       label: "Basic Info",
       path: "/dashboard/create-conf/step-1",
-      completed: completedStep1,
+      completed: newConference?.completedStep1,
     },
     {
       label: "Details 1",
       path: "/dashboard/create-conf/step-2",
-      completed: completedStep2,
+      completed: newConference?.completedStep2,
     },
     {
       label: "Details 2",
       path: "/dashboard/create-conf/step-3",
-      completed: completedStep3,
+      completed: newConference?.completedStep3,
     },
     {
       label: "Live Stream",
       path: "/dashboard/create-conf/step-4",
-      completed: completedStep4,
+      completed: newConference?.completedStep4,
     },
     {
       label: "Tickets",
       path: "/dashboard/create-conf/step-5",
-      completed: completedStep5,
+      completed: newConference?.completedStep5,
     },
     {
       label: "Preview",
       path: "/dashboard/create-conference/step-6",
-      completed: completedStep6,
+      completed: newConference?.completedStep6,
     },
   ];
 

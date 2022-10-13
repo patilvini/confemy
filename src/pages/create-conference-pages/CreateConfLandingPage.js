@@ -1,4 +1,3 @@
-import { replace } from "formik";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateConfLandingPage() {
@@ -25,9 +24,11 @@ export default function CreateConfLandingPage() {
       </div>
       <button
         onClick={() => navigate("/dashboard/create-conf/step-1")}
+        // onClick={() => navigate("/dashboard/test")}
         className="button button-primary"
       >
         Proceed to create new conference
+        {/* Test */}
       </button>
       <div className="mt-32">
         <h2>Incomplete Conferences</h2>

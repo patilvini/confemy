@@ -1,12 +1,11 @@
 import Select, { components, PlaceholderProps } from "react-select";
 import PropTypes from "prop-types";
-import { timezones } from "./timezonesUtil.js";
 
 const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";
 const shade1 = "#ced9de";
 const shade2 = "#ecf0f2";
-const shade3 = "#fcfdfd";
+// const shade3 = "#fcfdfd";
 const shade4 = "#aabdc7";
 
 const Placeholder = (props) => {
@@ -25,8 +24,6 @@ export default function SelectFormType1(props) {
 
   const customStyles = {
     control: (styles, state) => {
-      // console.log("styles from control", styles);
-      // console.log("control state", state);
       return {
         ...styles,
         backgroundColor: confemyWhite,
@@ -60,8 +57,6 @@ export default function SelectFormType1(props) {
     },
 
     dropdownIndicator: (provided, state) => {
-      // console.log("DownChevron provided", provided);
-      // console.log("DownChevron state", state);
       return {
         ...provided,
         color: shade1,
@@ -72,19 +67,23 @@ export default function SelectFormType1(props) {
     },
   };
 
+  //   key prop if given to Select, it renders a new component in dom after its value cahnges.
+  //  Setting key equal to default value. renders a new component when default value changes
+
   return (
     <div>
       <Select
+        key={props.defaultValue}
+        options={props.options}
         className="basic-single"
         classNamePrefix="select"
         components={{ Placeholder }}
         placeholder={props.placeholder}
-        // defaultValue={props?.options[0]}
+        defaultValue={props.defaultValue}
         isClearable
         isSearchable
         isDisabled={props.isDisabled}
         name={props.name}
-        options={props.options}
         onChange={props.handleChange}
         styles={customStyles}
         isMulti={props.isMulti}
@@ -100,4 +99,5 @@ SelectFormType1.propTypes = {
   isDisabled: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
   isMulti: PropTypes.bool,
+  // defaultValue: PropTypes.object,
 };
