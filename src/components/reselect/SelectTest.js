@@ -49,7 +49,7 @@ export default function SelectTest() {
   };
 
   function getSelectedOrganization(value) {
-    return myOrganizations.find((option) => option.value === value);
+    return myOrganizations?.find((option) => option.value === value);
   }
 
   useEffect(() => {
