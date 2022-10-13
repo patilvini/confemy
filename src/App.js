@@ -57,6 +57,7 @@ import OrganizerConfPreviewFinishedPage from "./pages/organizer-conf-dashboard-p
 import TrackCreditPage from "./pages/track-credit-page/TrackCreditPage";
 import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
 import EditorContainer from "./components/conference/EditorContainer";
+import SelectTest from "./components/reselect/SelectTest";
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -69,7 +70,6 @@ const App = () => {
           <Navbar />
           <Alert />
           <Routes>
-            <Route path="/test" element={<EditorContainer />} />
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>
@@ -115,6 +115,7 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
+              <Route path="test" element={<SelectTest />} />
               <Route
                 path="create-conference"
                 element={<CreateConfLandingPage />}

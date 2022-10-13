@@ -80,7 +80,7 @@ export default function ConferenceDetails1() {
         console.log(err);
       }
     } else {
-      console.log("First complete Step-1");
+      console.log("You need to complete step-1 first");
     }
   }
   const formik = useFormik({

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+import moment from "moment";
+
 import TextError from "../formik/TextError";
 import DateView from "react-datepicker";
 import DatePicker from "react-datepicker";
@@ -15,9 +17,11 @@ import api from "../../utility/api";
 
 import SelectFormType1 from "../reselect/SelectFormType1";
 
-import { timezones } from "../reselect/timezonesUtil";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
+import { timezones, getOption, currencylist } from "../../utility/commonUtil";
 import "./createConference.styles.scss";
+import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
+
 const initialValues = {
   title: "",
   host: "",
@@ -96,12 +100,23 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ConfBasicInfo() {
-  const user = useSelector((state) => state.auth.user);
-  const [myOrganizations, setMyOrganizations] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [formData, setFormData] = useState({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = useSelector((state) => state.auth.user);
+  const conference = useSelector((state) => state.conference);
+  const { newConference } = conference;
+  const organizationsListForSelect = useSelector(
+    (state) => state.myOrganizations.organizationsListForSelect
+  );
+  const formattedStartDate = moment(newConference?.startDate).format(
+    "MM/DD/YYYY"
+  );
+
+  const setDate = 12 / 12 / 2022;
 
   async function onSubmit(values, actions) {
     const {
@@ -151,79 +166,56 @@ export default function ConfBasicInfo() {
       },
     };
 
+    console.log("formData", formData);
     try {
-      console.log(formData);
       const response = await api.post("conferences/step1", formData);
       if (response) {
-        console.log(response);
+        console.log("submit step1 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         navigate("/dashboard/create-conf/step-2");
       }
     } catch (err) {
+      console.log(err);
       // if (err) actions.setFieldError("emailOtp", err.response?.data.message);
     }
   }
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues: {
+      title: newConference?.title || "",
+      host: newConference?.host || "",
+      organizationId: "",
+      // startDate: new Date(),
+      startDate: null,
+      startTime: null,
+      endDate: null,
+      endTime: null,
+      timezone: "",
+
+      mode: newConference?.mode || [],
+      venueName: newConference?.venueName || "",
+      street1: newConference?.street1 || "",
+      street2: newConference?.street2 || "",
+      state: newConference?.state || "",
+      country: newConference?.country || "",
+      city: newConference?.city || "",
+
+      isFree: newConference?.isFree || false,
+      currency: "",
+      basePrice: newConference?.basePrice || Number,
+    },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
+    enableReinitialize: true,
   });
 
-  // console.log("formik object", formik);
-
-  // handle input change event
-  // const handleInputChange = (newValue) => {
-  //   const inputValue = newValue.replace(/\W/g, "");
-  //   setInputValue(newValue);
-  //   return inputValue;
-  // };
-
-  // // handle selection
-  // const handleChange = (option) => {
-  //   setSelectedValue(option);
-  // };
-
-  // const loadOrgnizations = (inputValue, callback) => {
-  //   const url = `organizations/users/${user._id}`;
-  //   api
-  //     .get(url)
-  //     .then((res) => {
-  //       console.log(res);
-  //       return res.data.data.organization;
-  //     })
-  //     .then((data) => {
-  //       let tempArray = [];
-  //       data.forEach((element) => {
-  //         tempArray.push({
-  //           label: `${element.organization.name}`,
-  //           value: element.organization._id,
-  //         });
-  //       });
-  //       function filterOrganization(inputValue) {
-  //         return tempArray.filter((i) =>
-  //           i.label.toLowerCase().includes(inputValue.toLowerCase())
-  //         );
-  //       }
-  //       // call back is what shows options in select dropdown
-  //       callback(filterOrganization(inputValue));
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-
   const loadMyOrgnizations = async (id) => {
-    const url = `organizations/users/${id}`;
-    let tempArray = [];
+    const url = `organizations/users/${id}?orgForConference=true`;
     try {
       const response = await api.get(url);
-      console.log("organization res", response);
       if (response) {
-        response.data.data.organization.forEach((element) => {
-          tempArray.push({
-            label: `${element.organization.name}`,
-            value: element.organization._id,
-          });
-        });
-        setMyOrganizations(tempArray);
+        dispatch(
+          loadMyOrganizationsSelectListAction(response.data?.data?.organization)
+        );
       }
     } catch (err) {
       console.log(err);
@@ -233,6 +225,14 @@ export default function ConfBasicInfo() {
   useEffect(() => {
     loadMyOrgnizations(user._id);
   }, [user._id]);
+
+  // useEffect(() => {
+  //   const conferenceData = { ...initialValues };
+  //   for (const key in newConference) {
+  //     if (key in conferenceData) conferenceData[key] = newConference[key];
+  //   }
+  //   setFormData(conferenceData);
+  // }, []);
 
   return (
     <>
@@ -316,13 +316,18 @@ export default function ConfBasicInfo() {
               }`}
             >
               <SelectFormType1
-                options={myOrganizations}
+                options={organizationsListForSelect}
+                label="organizationId"
                 name="organizationId"
+                placeholder="Select organization"
                 handleChange={(option) => {
                   formik.setFieldValue("organizationId", option?.value);
                 }}
                 isDisabled={formik.values.host !== "organization"}
-                placeholder="Select organization"
+                defaultValue={getOption(
+                  organizationsListForSelect,
+                  newConference?.hostedBy?.organization
+                )}
               />
               <div>
                 {formik.touched.organizationId &&
@@ -421,6 +426,7 @@ export default function ConfBasicInfo() {
                   handleChange={(option) => {
                     formik.setFieldValue("timezone", option?.value);
                   }}
+                  // defaultValue={getOption(timezones, newConference?.timezone)}
                 />
                 <div className="mb-24">
                   {formik.touched.timezone &&
@@ -663,17 +669,17 @@ export default function ConfBasicInfo() {
                 <div className="grid-1st-col">
                   <h4>Currency</h4>
                   <SelectFormType1
-                    options={[
-                      { label: "USD", value: "usd" },
-                      { label: "INR", value: "inr" },
-                      { label: "Pound", value: "pound" },
-                    ]}
+                    options={currencylist}
                     label="currency"
                     name="currency"
                     handleChange={(option) => {
                       formik.setFieldValue("currency", option?.value);
                     }}
                     placeholder="Select currency"
+                    defaultValue={getOption(
+                      currencylist,
+                      newConference?.currency
+                    )}
                   />
                   <div className="mb-24">
                     {formik.touched.currency &&
