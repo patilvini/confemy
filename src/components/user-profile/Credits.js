@@ -181,7 +181,7 @@ export default function Credits() {
           <div className="credit-table-item">To Goal</div>
         </div>
         {data?.map((item, index) => {
-          // console.log(item)
+          console.log(item)
           return (
             <div key={index}>
               <div className="credits-table">
@@ -244,13 +244,13 @@ export default function Credits() {
           <div className="credit-table-item">Status</div>
         </div>
         {confs?.map((item, index) => {
-          console.log(item);
+          // console.log(item);
 
           let credits = [];
 
           for (let i = 0; i < item.conference.credits.length; i++) {
             credits[i] = {
-              label: item.conference.credits[i].creditId.name,
+              label: item.conference.credits[i].creditType,
               value: item.conference.credits[i],
             };
           }

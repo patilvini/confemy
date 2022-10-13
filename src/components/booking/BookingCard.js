@@ -29,6 +29,14 @@ export default function BookingCard({ data, reload }) {
     weekday: "short",
   });
 
+  const startTime = DateTime.fromISO(data?.startTime)
+
+  console.log(startTime.toLocaleString(DateTime.DATETIME_MED))
+
+  const endTime =  DateTime.fromISO(data?.endTime)
+
+  console.log(startTime.toFormat('h:mm a'))
+
   const date2 = DateTime.fromISO(data?.endDate);
   let endDate = date2.toLocaleString({
     ...DateTime.DATE_MED_WITH_WEEKDAY,
@@ -104,7 +112,7 @@ export default function BookingCard({ data, reload }) {
 
           <div className="conference-card-grid-item">
             <p className="conference-card-text caption-2-regular-gray3">
-              {startDate}, {data?.startTime} - {endDate} {data?.endTime}
+              {startDate}, {startTime.toFormat('h:mm a')} - {endDate} {endTime.toFormat('h:mm a')}
             </p>
           </div>
           <div className="conference-card-grid-item">

@@ -42,9 +42,10 @@ function OnlineConfs() {
         const r = await api.get("/conferences?mode=onlineConf");
         // setData(r.data.data.conferences);
 
+        console.log(r)
         const d = r.data.data.conferences
 
-        d.length = 8
+        // d.length = 8
 
         setData(d)
 
