@@ -58,6 +58,8 @@ import TrackCreditPage from "./pages/track-credit-page/TrackCreditPage";
 import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
 import EditorContainer from "./components/conference/EditorContainer";
 import SelectTest from "./components/reselect/SelectTest";
+import RegisterForm from "./components/reselect/RegisterForm";
+
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUserAction());
@@ -97,7 +99,10 @@ const App = () => {
 
             <Route path="user-profile" element={<UserProfilePage />}></Route>
             <Route path="track-credits" element={<TrackCreditPage />}></Route>
-            <Route path="list-conferences" element={<ListConferencesPage />}></Route>
+            <Route
+              path="list-conferences"
+              element={<ListConferencesPage />}
+            ></Route>
 
             <Route path="user-view" element={<UserViewProfilePage />}></Route>
 
@@ -116,6 +121,7 @@ const App = () => {
               }
             >
               <Route path="test" element={<SelectTest />} />
+              <Route path="test2" element={<RegisterForm />} />
               <Route
                 path="create-conference"
                 element={<CreateConfLandingPage />}

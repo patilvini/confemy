@@ -100,8 +100,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ConfBasicInfo() {
-  const [inputValue, setInputValue] = useState("");
-  const [formData, setFormData] = useState({});
+  // const [formData, setFormData] = useState({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -112,11 +111,6 @@ export default function ConfBasicInfo() {
   const organizationsListForSelect = useSelector(
     (state) => state.myOrganizations.organizationsListForSelect
   );
-  const formattedStartDate = moment(newConference?.startDate).format(
-    "MM/DD/YYYY"
-  );
-
-  const setDate = 12 / 12 / 2022;
 
   async function onSubmit(values, actions) {
     const {
@@ -183,24 +177,23 @@ export default function ConfBasicInfo() {
     initialValues: {
       title: newConference?.title || "",
       host: newConference?.host || "",
-      organizationId: "",
-      // startDate: new Date(),
+      organizationId: newConference?.hostedBy?.organization || "",
       startDate: null,
       startTime: null,
       endDate: null,
       endTime: null,
-      timezone: "",
+      timezone: newConference?.timezone || "",
 
       mode: newConference?.mode || [],
-      venueName: newConference?.venueName || "",
-      street1: newConference?.street1 || "",
-      street2: newConference?.street2 || "",
-      state: newConference?.state || "",
-      country: newConference?.country || "",
-      city: newConference?.city || "",
+      venueName: newConference?.venue?.venueName || "",
+      street1: newConference?.venue?.street1 || "",
+      street2: newConference?.venue?.street2 || "",
+      state: newConference?.venue?.state || "",
+      country: newConference?.venue?.country || "",
+      city: newConference?.venue?.city || "",
 
       isFree: newConference?.isFree || false,
-      currency: "",
+      currency: newConference?.currency || "",
       basePrice: newConference?.basePrice || Number,
     },
     validationSchema: validationSchema,
@@ -315,7 +308,7 @@ export default function ConfBasicInfo() {
                 formik.values.host == "organization" ? "" : "display-none"
               }`}
             >
-              <SelectFormType1
+              {/* <SelectFormType1
                 options={organizationsListForSelect}
                 label="organizationId"
                 name="organizationId"
@@ -328,7 +321,20 @@ export default function ConfBasicInfo() {
                   organizationsListForSelect,
                   newConference?.hostedBy?.organization
                 )}
+              /> */}
+
+              <SelectFormType1
+                label="organizationId"
+                options={organizationsListForSelect}
+                name="organizationId"
+                onChange={(value) =>
+                  formik.setFieldValue("organizationId", value?.value)
+                }
+                placeholder="Select organization"
+                value={formik.values.organizationId}
+                isDisabled={formik.values.host !== "organization"}
               />
+
               <div>
                 {formik.touched.organizationId &&
                   Boolean(formik.errors.organizationId) && (
@@ -418,7 +424,7 @@ export default function ConfBasicInfo() {
               </div>
               <div className="grid-1st-col">
                 <h4>Timezone</h4>
-                <SelectFormType1
+                {/* <SelectFormType1
                   options={timezones}
                   label="timezone"
                   name="timezone"
@@ -427,6 +433,16 @@ export default function ConfBasicInfo() {
                     formik.setFieldValue("timezone", option?.value);
                   }}
                   // defaultValue={getOption(timezones, newConference?.timezone)}
+                /> */}
+                <SelectFormType1
+                  label="timezone"
+                  options={timezones}
+                  name="timezone"
+                  onChange={(value) =>
+                    formik.setFieldValue("timezone", value?.value)
+                  }
+                  placeholder="Select conference timezone"
+                  value={formik.values.timezone}
                 />
                 <div className="mb-24">
                   {formik.touched.timezone &&
@@ -668,7 +684,7 @@ export default function ConfBasicInfo() {
               <div className="grid-col-2">
                 <div className="grid-1st-col">
                   <h4>Currency</h4>
-                  <SelectFormType1
+                  {/* <SelectFormType1
                     options={currencylist}
                     label="currency"
                     name="currency"
@@ -680,6 +696,16 @@ export default function ConfBasicInfo() {
                       currencylist,
                       newConference?.currency
                     )}
+                  /> */}
+                  <SelectFormType1
+                    label="currency"
+                    options={currencylist}
+                    name="currency"
+                    onChange={(value) =>
+                      formik.setFieldValue("currency", value?.value)
+                    }
+                    placeholder="Select currency"
+                    value={formik.values.currency}
                   />
                   <div className="mb-24">
                     {formik.touched.currency &&

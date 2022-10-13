@@ -15,6 +15,12 @@ const Placeholder = (props) => {
 // SelectFormType1 is form customized according to our form-type-1 design
 
 export default function SelectFormType1(props) {
+  // function to set up Select Value. If options array not given, it sets empty value
+
+  const getValue = (options, value) => {
+    return options ? options?.find((option) => option.value === value) : "";
+  };
+
   const Checkbox = ({ children, ...props }) => (
     <label style={{ marginRight: "1em" }}>
       <input type="checkbox" {...props} />
@@ -73,18 +79,24 @@ export default function SelectFormType1(props) {
   return (
     <div>
       <Select
-        key={props.defaultValue}
+        // key={props.defaultValue}
+        value={getValue(props.options, props.value)}
+        onChange={(value) => {
+          props.onChange(value);
+        }}
         options={props.options}
         className="basic-single"
         classNamePrefix="select"
         components={{ Placeholder }}
         placeholder={props.placeholder}
-        defaultValue={props.defaultValue}
+        // defaultValue={props.defaultValue}
+
         isClearable
         isSearchable
         isDisabled={props.isDisabled}
         name={props.name}
-        onChange={props.handleChange}
+        // onChange={props.handleChange}
+
         styles={customStyles}
         isMulti={props.isMulti}
       />

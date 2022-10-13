@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,6 @@ import { loadMyOrganizationsAction } from "../../redux/organization/myOrganizati
 import api from "../../utility/api";
 
 const validationSchema = yup.object({
-  //   host: yup.string().required("Required"),
   organizationId: yup.string().required("Required"),
 });
 export default function SelectTest() {
@@ -19,10 +18,11 @@ export default function SelectTest() {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
+  const [myOrganizations, setMyOrganizations] = useState([]);
   const organization = useSelector((state) => state.organization.organization);
-  const myOrganizations = useSelector(
-    (state) => state.myOrganizations.organizations
-  );
+  // const myOrganizations = useSelector(
+  //   (state) => state.myOrganizations.organizations
+  // );
   const onSubmit = (values, actions) => {
     console.log(values);
     dispatch(loadOrganizationAction(values.organizationId));
@@ -30,7 +30,7 @@ export default function SelectTest() {
   };
   const formik = useFormik({
     initialValues: {
-      organizationId: "",
+      organizationId: organization || "",
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -42,20 +42,18 @@ export default function SelectTest() {
       const response = await api.get(url);
       if (response) {
         dispatch(loadMyOrganizationsAction(response.data?.data?.organization));
+        setMyOrganizations(response.data?.data?.organization);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  function getSelectedOrganization(value) {
-    return myOrganizations?.find((option) => option.value === value);
-  }
-
   useEffect(() => {
     loadMyOrgnizations(user._id);
   }, [user._id]);
 
+  console.log("organization", organization);
   return (
     <div className="conf-form-wrap">
       <form
@@ -67,12 +65,11 @@ export default function SelectTest() {
         <SelectFormType1
           options={myOrganizations}
           name="organizationId"
-          handleChange={(option) => {
-            formik.setFieldValue("organizationId", option?.value);
-          }}
-          //   isDisabled={formik.values.host !== "organization"}
+          onChange={(value) =>
+            formik.setFieldValue("organizationId", value?.value)
+          }
           placeholder="Select organization"
-          defaultValue={getSelectedOrganization(organization)}
+          value={formik.values.organizationId}
         />
         <div className="mt-20">
           <button type="submit" className="button button-primary">
