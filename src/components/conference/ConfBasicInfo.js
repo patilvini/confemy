@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
@@ -19,30 +18,6 @@ import { createConferenceAction } from "../../redux/conference/conferenceAction"
 import { timezones, currencylist } from "../../utility/commonUtil";
 import "./createConference.styles.scss";
 import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
-
-const initialValues = {
-  title: "",
-  host: "",
-  organizationId: "",
-
-  startDate: null,
-  startTime: null,
-  endDate: null,
-  endTime: null,
-  timezone: "",
-
-  mode: [],
-  venueName: "",
-  street1: "",
-  street2: "",
-  state: "",
-  country: "",
-  city: "",
-
-  isFree: false,
-  currency: "",
-  basePrice: 1,
-};
 
 const validationSchema = yup.object().shape({
   title: yup.string().required("Required"),
@@ -87,14 +62,17 @@ const validationSchema = yup.object().shape({
     is: false,
     then: yup.string().required("Required"),
   }),
-  basePrice: yup.number("Give a valid base number").when("isFree", {
-    is: false,
-    then: yup
-      .number("Give a valid number")
-      .typeError("Enter a number")
-      .required("Required")
-      .positive("Enter amount more than 0"),
-  }),
+  basePrice: yup
+    .number("Give a valid number")
+    .nullable()
+    .when("isFree", {
+      is: false,
+      then: yup
+        .number("Give a valid number")
+        .typeError("Enter a number")
+        .required("Required")
+        .positive("Enter amount more than 0"),
+    }),
 });
 
 export default function ConfBasicInfo() {
@@ -135,6 +113,7 @@ export default function ConfBasicInfo() {
     const formData = {
       conferenceDetails: {
         title,
+        conferenceId: newConference?._id,
         organizationId,
         userId: user._id,
         isFree,
@@ -208,7 +187,7 @@ export default function ConfBasicInfo() {
 
       isFree: newConference?.isFree || false,
       currency: newConference?.currency || "",
-      basePrice: newConference?.basePrice || 1,
+      basePrice: newConference?.basePrice || Number,
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -241,7 +220,8 @@ export default function ConfBasicInfo() {
   //   setFormData(conferenceData);
   // }, []);
 
-  console.log("formik", formik);
+  // console.log("formik", formik);
+
   return (
     <>
       <main className="conf-form-wrap">
@@ -250,7 +230,7 @@ export default function ConfBasicInfo() {
           onSubmit={formik.handleSubmit}
           autoComplete="off"
         >
-          <section className="mb-72">
+          <div className="mb-72">
             <h2>Basic Info</h2>
             <h4>Title</h4>
             <div className="material-textfield">
@@ -342,7 +322,7 @@ export default function ConfBasicInfo() {
                   )}
               </div>
             </div>
-          </section>
+          </div>
           <section className="conf-schedule mb-72">
             <h2>Conference Schedule</h2>
 
@@ -640,7 +620,7 @@ export default function ConfBasicInfo() {
                 value="isFree"
                 checked={formik.values.isFree}
                 onChange={(e) => {
-                  formik.setFieldValue("basePrice", Number);
+                  formik.setFieldValue("basePrice", 0);
                   formik.setFieldValue("currency", "");
                   formik.handleChange(e);
                 }}
