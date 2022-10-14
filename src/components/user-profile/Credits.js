@@ -48,7 +48,7 @@ export default function Credits() {
 
     const atteendeeDetails = {
       creditRequest:true,
-      creditId: credit.value.creditId._id,
+      creditId: credit.value._id,
       creditQuantity: credit.value.quantity
 
     }
