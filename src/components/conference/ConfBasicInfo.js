@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-import moment from "moment";
-
 import TextError from "../formik/TextError";
 import DateView from "react-datepicker";
 import DatePicker from "react-datepicker";
@@ -18,7 +16,7 @@ import api from "../../utility/api";
 import SelectFormType1 from "../reselect/SelectFormType1";
 
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
-import { timezones, getOption, currencylist } from "../../utility/commonUtil";
+import { timezones, currencylist } from "../../utility/commonUtil";
 import "./createConference.styles.scss";
 import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
 
@@ -43,7 +41,7 @@ const initialValues = {
 
   isFree: false,
   currency: "",
-  basePrice: Number,
+  basePrice: 1,
 };
 
 const validationSchema = yup.object().shape({
@@ -89,10 +87,10 @@ const validationSchema = yup.object().shape({
     is: false,
     then: yup.string().required("Required"),
   }),
-  basePrice: yup.number().when("isFree", {
+  basePrice: yup.number("Give a valid base number").when("isFree", {
     is: false,
     then: yup
-      .number()
+      .number("Give a valid number")
       .typeError("Enter a number")
       .required("Required")
       .positive("Enter amount more than 0"),
@@ -173,15 +171,31 @@ export default function ConfBasicInfo() {
       // if (err) actions.setFieldError("emailOtp", err.response?.data.message);
     }
   }
+
+  function getJsDateObj(str) {
+    let jsDateObj;
+    if (str) {
+      jsDateObj = new Date(str);
+    } else {
+      jsDateObj = null;
+    }
+    return jsDateObj;
+  }
+
+  const jsStartDateObj = getJsDateObj(newConference?.startDate);
+  const jsEndDateObj = getJsDateObj(newConference?.startDate);
+  const jsStartTimeObj = getJsDateObj(newConference?.startTime);
+  const jsEndTimeObj = getJsDateObj(newConference?.endTime);
+
   const formik = useFormik({
     initialValues: {
       title: newConference?.title || "",
       host: newConference?.host || "",
       organizationId: newConference?.hostedBy?.organization || "",
-      startDate: null,
-      startTime: null,
-      endDate: null,
-      endTime: null,
+      startDate: jsStartDateObj || null,
+      startTime: jsStartTimeObj || null,
+      endDate: jsEndDateObj || null,
+      endTime: jsEndTimeObj || null,
       timezone: newConference?.timezone || "",
 
       mode: newConference?.mode || [],
@@ -194,7 +208,7 @@ export default function ConfBasicInfo() {
 
       isFree: newConference?.isFree || false,
       currency: newConference?.currency || "",
-      basePrice: newConference?.basePrice || Number,
+      basePrice: newConference?.basePrice || 1,
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -227,6 +241,7 @@ export default function ConfBasicInfo() {
   //   setFormData(conferenceData);
   // }, []);
 
+  console.log("formik", formik);
   return (
     <>
       <main className="conf-form-wrap">
@@ -308,21 +323,6 @@ export default function ConfBasicInfo() {
                 formik.values.host == "organization" ? "" : "display-none"
               }`}
             >
-              {/* <SelectFormType1
-                options={organizationsListForSelect}
-                label="organizationId"
-                name="organizationId"
-                placeholder="Select organization"
-                handleChange={(option) => {
-                  formik.setFieldValue("organizationId", option?.value);
-                }}
-                isDisabled={formik.values.host !== "organization"}
-                defaultValue={getOption(
-                  organizationsListForSelect,
-                  newConference?.hostedBy?.organization
-                )}
-              /> */}
-
               <SelectFormType1
                 label="organizationId"
                 options={organizationsListForSelect}
@@ -424,16 +424,7 @@ export default function ConfBasicInfo() {
               </div>
               <div className="grid-1st-col">
                 <h4>Timezone</h4>
-                {/* <SelectFormType1
-                  options={timezones}
-                  label="timezone"
-                  name="timezone"
-                  placeholder="Select conference timezone"
-                  handleChange={(option) => {
-                    formik.setFieldValue("timezone", option?.value);
-                  }}
-                  // defaultValue={getOption(timezones, newConference?.timezone)}
-                /> */}
+
                 <SelectFormType1
                   label="timezone"
                   options={timezones}
@@ -473,7 +464,7 @@ export default function ConfBasicInfo() {
                       : "button-outlined-inactive"
                   }`}
                 >
-                  Venue
+                  Pick Venue
                 </div>
               </label>
 
@@ -507,11 +498,11 @@ export default function ConfBasicInfo() {
 
             <div>
               <div
-              // className={`${
-              //   formik.values.mode.includes("venue")
-              //     ? "slow-height"
-              //     : "display-none"
-              // }`}
+                className={`${
+                  formik.values.mode.includes("venue")
+                    ? "slow-height"
+                    : "display-none"
+                }`}
               >
                 <h4>Venue Details</h4>
                 <div className="grid-col-2">
@@ -684,19 +675,7 @@ export default function ConfBasicInfo() {
               <div className="grid-col-2">
                 <div className="grid-1st-col">
                   <h4>Currency</h4>
-                  {/* <SelectFormType1
-                    options={currencylist}
-                    label="currency"
-                    name="currency"
-                    handleChange={(option) => {
-                      formik.setFieldValue("currency", option?.value);
-                    }}
-                    placeholder="Select currency"
-                    defaultValue={getOption(
-                      currencylist,
-                      newConference?.currency
-                    )}
-                  /> */}
+
                   <SelectFormType1
                     label="currency"
                     options={currencylist}

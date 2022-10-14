@@ -107,9 +107,9 @@ export default function SelectFormType1(props) {
 SelectFormType1.propTypes = {
   options: PropTypes.array,
   name: PropTypes.string.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   isDisabled: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
   isMulti: PropTypes.bool,
-  // defaultValue: PropTypes.object,
+  value: PropTypes.string,
 };
