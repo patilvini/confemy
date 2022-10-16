@@ -45,11 +45,11 @@ const validationSchema = yup.object().shape({
     .min(1, "Add Tags to imrprove searchability")
     .compact(),
 
-  credits: yup
-    .array()
-    .when("isAccredited", {
-      is: true,
-      then: yup.array().of(
+  credits: yup.array().when("isAccredited", {
+    is: true,
+    then: yup
+      .array()
+      .of(
         yup.object().shape({
           value: yup.string().required("Required"),
           quantity: yup
@@ -58,22 +58,25 @@ const validationSchema = yup.object().shape({
             .positive("Enter amount more than 0")
             .typeError("Enter a number"),
         })
-      ),
-    })
-    .min(1, "Add Credit Type and Amount")
-    .compact(),
-  creditAmount: yup
-    .number()
-    .nullable(true)
-    // .transform((v) => (v === "" ? null : v))
-    .when("creditType", {
-      is: (v) => v !== "",
-      then: yup
-        .number("Give a valid number")
-        .typeError("Enter Amount")
-        .required("Required")
-        .positive("Enter amount more than 0"),
-    }),
+      )
+      .min(1, "Add Credit Type and Amount")
+      .compact(),
+  }),
+
+  // creditAmount: yup
+  //   .number()
+  //   .nullable(true)
+  //   .when("creditType", {
+  //     is: (v) => {
+  //       let value = v && v?.length > 0;
+  //       return value;
+  //     },
+  //     then: yup
+  //       .number("Give a valid number")
+  //       .typeError("Enter Amount")
+  //       .required("Required")
+  //       .positive("Enter amount more than 0"),
+  //   }),
 });
 export default function ConferenceDetails1() {
   const [creditOptions, setcreditOptions] = useState([]);
@@ -139,10 +142,10 @@ export default function ConferenceDetails1() {
     initialValues: {
       professions: newConference?.professions || [],
       specialities: newConference?.specialities || [],
-      tTag: "",
+      tag: "",
       tags: newConference?.tags || [],
       isAccredited: newConference?.isAccredited || false,
-      creditAmount: newConference?.creditAmount || 0,
+      creditAmount: newConference?.creditAmount || 1,
       creditType: "",
       credits: newConference?.conferenceCredits || [],
       isRefundable: newConference?.refundPolicy || false,
@@ -173,22 +176,33 @@ export default function ConferenceDetails1() {
   const addCredit = () => {
     let creditLabel;
     let creditObj;
+    let match = false;
     if (formik.values.creditType) {
       creditLabel = creditOptions?.find(
         (e) => e.value === formik.values.creditType
       ).label;
     }
-    if (formik.values.creditType && formik.values.creditAmount > 0) {
+    if (formik.values.credits?.find((e) => e.label === creditLabel)) {
+      match = true;
+    }
+    if (!match && formik.values.creditType && formik.values.creditAmount > 0) {
       creditObj = {
         value: formik.values.creditType,
         quantity: formik.values.creditAmount,
         label: creditLabel,
       };
       formik.setFieldValue("credits", [...formik.values.credits, creditObj]);
-      formik.setFieldValue("creditAmount", 0);
+      // formik.setFieldValue("creditAmount", 0);
     }
   };
-
+  //  add tags button
+  const addTags = () => {
+    const match = formik.values.tags.includes(formik.values.tag);
+    if ((formik.values.tag?.length > 0) & !match) {
+      formik.setFieldValue("tags", [...formik.values.tags, formik.values.tag]);
+      formik.setFieldValue("tag", "");
+    }
+  };
   useEffect(() => {
     getCreditTypes();
     let blocks;
@@ -277,26 +291,20 @@ export default function ConferenceDetails1() {
           <div style={{ display: "flex" }}>
             <div style={{ flexGrow: 1 }} className="material-textfield">
               <input
-                id="tTag"
+                id="tag"
                 type="text"
-                name="tTag"
+                name="tag"
                 // value={tag}
-                value={formik.values.tTag}
+                value={formik.values.tag}
                 // onChange={onTagChange}
                 onChange={formik.handleChange}
                 placeholder=" "
               />
-              <label>Tags</label>
+              <label>Tag</label>
             </div>
             <div>
               <button
-                onClick={() => {
-                  formik.setFieldValue("tags", [
-                    ...formik.values.tags,
-                    formik.values.tTag,
-                  ]);
-                  formik.setFieldValue("tTag", "");
-                }}
+                onClick={() => addTags()}
                 type="button"
                 className="button button-primary ml-16"
               >
@@ -324,7 +332,11 @@ export default function ConferenceDetails1() {
               onChange={formik.handleChange}
             />
           </div>
-
+          <div className="mb-24">
+            {formik.touched.credits && Boolean(formik.errors.credits) && (
+              <TextError>{formik.errors.credits}</TextError>
+            )}
+          </div>
           <ul className="tags-display">
             {formik.values.credits.map((credit) => {
               return (
@@ -345,7 +357,18 @@ export default function ConferenceDetails1() {
             })}
           </ul>
 
-          <div style={{ display: "flex" }}>
+          <div
+            className={`${
+              formik.values.isAccredited ? "flex" : "display-none"
+            }`}
+          >
+            {/* <div
+              className={`${
+                formik.values.isAccredited ? null : "display-none"
+              }`}
+            >
+              Disappear
+            </div> */}
             <div style={{ flexGrow: 1 }}>
               <div className="grid-col-2">
                 <div className="grid-1st-col">
@@ -355,15 +378,14 @@ export default function ConferenceDetails1() {
                     name="creditType"
                     value={formik.values.creditType}
                     onChange={(value) => {
-                      console.log("credity type onChange", value);
                       formik.setFieldValue("creditType", value?.value);
                     }}
                     placeholder="Select Credit Type"
                   />
                   <div className="mb-24">
-                    {formik.touched.credits &&
-                      Boolean(formik.errors.credits) && (
-                        <TextError>{formik.errors.credits}</TextError>
+                    {formik.touched.creditType &&
+                      Boolean(formik.errors.creditType) && (
+                        <TextError>{formik.errors.creditType}</TextError>
                       )}
                   </div>
                 </div>
@@ -372,6 +394,7 @@ export default function ConferenceDetails1() {
                     <input
                       id="creditAmount"
                       type="number"
+                      min={1}
                       name="creditAmount"
                       value={formik.values.creditAmount}
                       onChange={formik.handleChange}
@@ -413,7 +436,9 @@ export default function ConferenceDetails1() {
               onChange={formik.handleChange}
             />
           </div>
-          <div>
+          <div
+            className={`${formik.values.isRefundable ? "" : "display-none"}`}
+          >
             <Editor
               editorState={editorState}
               onEditorStateChange={onEditorStateChange}
