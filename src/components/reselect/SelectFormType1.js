@@ -17,8 +17,12 @@ const Placeholder = (props) => {
 export default function SelectFormType1(props) {
   // function to set up Select Value. If options array not given, it sets empty value
 
-  const getValue = (options, value) => {
-    return options ? options?.find((option) => option.value === value) : "";
+  const getValue = (options, value, isMulti) => {
+    if (isMulti) {
+      return value;
+    } else {
+      return options ? options?.find((option) => option.value === value) : "";
+    }
   };
 
   const Checkbox = ({ children, ...props }) => (
@@ -76,11 +80,13 @@ export default function SelectFormType1(props) {
   //   key prop if given to Select, it renders a new component in dom after its value cahnges.
   //  Setting key equal to default value. renders a new component when default value changes
 
+  // console.log("get Value", getValue(props.options, props.value, props.isMulti));
+  // console.log(props.isMulti);
   return (
     <div>
       <Select
-        // key={props.defaultValue}
-        value={getValue(props.options, props.value)}
+        // key={getValue(props.options, props.value)}
+        value={getValue(props.options, props.value, props.isMulti)}
         onChange={(value) => {
           props.onChange(value);
         }}
@@ -106,10 +112,10 @@ export default function SelectFormType1(props) {
 
 SelectFormType1.propTypes = {
   options: PropTypes.array,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   isDisabled: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
   isMulti: PropTypes.bool,
-  value: PropTypes.string,
+  // value: PropTypes.string,
 };

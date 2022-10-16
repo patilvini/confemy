@@ -3,12 +3,38 @@ import {
   CONFERENCE_ERROR,
   GET_CONFERENCE,
   CREATE_CONFERENCE,
+  REMOVE_NEWCONF_STATE,
+  LOAD_INCOMPLETE_CONFS,
+  LOAD_INCOMPLETE_CONF,
 } from "./conferenceTypes";
 
 // Creat a conference
 export const createConferenceAction = (data) => (dispatch) => {
   dispatch({
     type: CREATE_CONFERENCE,
+    payload: data,
+  });
+};
+
+// remove new conference redux state
+export const removeConferenceStateAction = () => (dispatch) => {
+  dispatch({
+    type: REMOVE_NEWCONF_STATE,
+  });
+};
+
+//  load one incomplete conference
+export const loadOneIncopleteConfAction = (data) => (dispatch) => {
+  dispatch({
+    type: LOAD_INCOMPLETE_CONF,
+    payload: data,
+  });
+};
+//  load all incomplete conferences
+
+export const loadIncopleteConfsAction = (data) => (dispatch) => {
+  dispatch({
+    type: LOAD_INCOMPLETE_CONFS,
     payload: data,
   });
 };

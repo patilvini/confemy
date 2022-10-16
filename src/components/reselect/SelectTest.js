@@ -88,13 +88,13 @@ export default function SelectTest() {
         autoComplete="off"
       >
         <SelectFormType1
-          options={myOrganizations}
           name="organizationId"
+          options={myOrganizations}
+          value={formik.values.organizationId}
           onChange={(value) =>
             formik.setFieldValue("organizationId", value?.value)
           }
           placeholder="Select organization"
-          value={formik.values.organizationId}
         />
         <DatePicker
           selected={formik.values.startDate}
