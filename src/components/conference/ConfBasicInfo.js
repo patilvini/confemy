@@ -18,6 +18,7 @@ import { createConferenceAction } from "../../redux/conference/conferenceAction"
 import { timezones, currencylist } from "../../utility/commonUtil";
 import "./createConference.styles.scss";
 import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
+import { alertAction } from "../../redux/alert/alertAction";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required("Required"),
@@ -62,9 +63,11 @@ const validationSchema = yup.object().shape({
     is: false,
     then: yup.string().required("Required"),
   }),
+  isFree: yup.boolean(),
   basePrice: yup
-    .number("Give a valid number")
-    .nullable()
+    .number()
+    .nullable(true)
+    .transform((v) => (v === "" ? null : v))
     .when("isFree", {
       is: false,
       then: yup
@@ -146,8 +149,7 @@ export default function ConfBasicInfo() {
         navigate("/dashboard/create-conf/step-2");
       }
     } catch (err) {
-      console.log(err);
-      // if (err) actions.setFieldError("emailOtp", err.response?.data.message);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   }
 
@@ -186,8 +188,8 @@ export default function ConfBasicInfo() {
       city: newConference?.venue?.city || "",
 
       isFree: newConference?.isFree || false,
-      currency: newConference?.currency || "",
-      basePrice: newConference?.basePrice || Number,
+      currency: newConference?.currency || "INR",
+      basePrice: newConference?.basePrice || 1,
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -220,7 +222,8 @@ export default function ConfBasicInfo() {
   //   setFormData(conferenceData);
   // }, []);
 
-  // console.log("formik", formik);
+  console.log("formik", formik);
+  console.log(formik.errors.currency);
 
   return (
     <>
@@ -231,7 +234,7 @@ export default function ConfBasicInfo() {
           autoComplete="off"
         >
           <div className="mb-72">
-            <h2>Basic Info</h2>
+            <h2>Basic Information</h2>
             <h4>Title</h4>
             <div className="material-textfield">
               <input
@@ -323,7 +326,7 @@ export default function ConfBasicInfo() {
               </div>
             </div>
           </div>
-          <section className="conf-schedule mb-72">
+          <div className="conf-schedule mb-72">
             <h2>Conference Schedule</h2>
 
             <div className="grid-col-2">
@@ -423,8 +426,9 @@ export default function ConfBasicInfo() {
                 </div>
               </div>
             </div>
-          </section>
-          <section className="mb-72">
+          </div>
+
+          <div className="mb-72">
             <h2>Location</h2>
             <div>
               <input
@@ -608,8 +612,9 @@ export default function ConfBasicInfo() {
                 </div>
               </div>
             </div>
-          </section>
-          <section className="mb-72">
+          </div>
+          {/* section changed */}
+          <div className="mb-72">
             <h2>Pricing</h2>
             <div className="mb-24">
               <input
@@ -620,8 +625,8 @@ export default function ConfBasicInfo() {
                 value="isFree"
                 checked={formik.values.isFree}
                 onChange={(e) => {
-                  formik.setFieldValue("basePrice", 0);
-                  formik.setFieldValue("currency", "");
+                  // formik.setFieldValue("basePrice", 0);
+                  // formik.setFieldValue("currency", "");
                   formik.handleChange(e);
                 }}
               />
@@ -636,8 +641,7 @@ export default function ConfBasicInfo() {
                   Free
                 </div>
               </label>
-              <button
-                type="button"
+              <div
                 className={`mr-20 ${
                   formik.values.isFree
                     ? "button-outlined-inactive"
@@ -648,24 +652,25 @@ export default function ConfBasicInfo() {
                 }}
               >
                 Add Baseprice
-              </button>
+              </div>
             </div>
 
             <div className={`${formik.values.isFree ? "display-none" : ""}`}>
               <div className="grid-col-2">
                 <div className="grid-1st-col">
                   <h4>Currency</h4>
-
-                  <SelectFormType1
-                    label="currency"
-                    options={currencylist}
-                    name="currency"
-                    onChange={(value) =>
-                      formik.setFieldValue("currency", value?.value)
-                    }
-                    placeholder="Select currency"
-                    value={formik.values.currency}
-                  />
+                  <div>
+                    <SelectFormType1
+                      label="currency"
+                      options={currencylist}
+                      name="currency"
+                      onChange={(value) =>
+                        formik.setFieldValue("currency", value?.value)
+                      }
+                      placeholder="Select currency"
+                      value={formik.values.currency}
+                    />
+                  </div>
                   <div className="mb-24">
                     {formik.touched.currency &&
                       Boolean(formik.errors.currency) && (
@@ -695,7 +700,7 @@ export default function ConfBasicInfo() {
                 </div>
               </div>
             </div>
-          </section>
+          </div>
           <section className="mb-72">
             <button type="button" className="button button-green mr-8">
               Cancel

@@ -1,6 +1,9 @@
 @import "../../utility/utility.styles.scss";
 // Alerts
 .alert {
+  position: fixed;
+  // z index is one less than navbar
+  z-index: 98;
   width: 100%;
   padding: 0.8rem;
   opacity: 0.8;
@@ -17,6 +20,6 @@
     background-color: $accent;
   }
   &.alert-danger {
-    background-color: rgb(152, 255, 61);
+    background-color: #ffce32;
   }
 }

@@ -3,6 +3,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+
 import * as yup from "yup";
 
 import SelectFormType1 from "../reselect/SelectFormType1";
@@ -15,30 +19,66 @@ import Switch from "./Switch";
 import RichTextEditor from "../rich-text-editor/RichTextEditor";
 
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
+import { alertAction } from "../../redux/alert/alertAction";
 
-import "./createConference.styles.scss";
 import api from "../../utility/api";
 
-const initialValues = {
-  professions: [],
-  specialities: [],
-  tTag: "",
-  tags: [],
-  isAccredited: false,
-  creditAmount: Number,
-  creditType: "",
-  credits: [],
-  isRefundable: false,
-  refundDescription: {},
-};
+import "./createConference.styles.scss";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import "../rich-text-editor/richTextEditor.styles.scss";
 
-const validationSchema = {};
+const validationSchema = yup.object().shape({
+  professions: yup
+    .array()
+    .of(yup.object())
+    .min(1, "Choose professions")
+    .compact(),
+  specialities: yup
+    .array()
+    .of(yup.object())
+    .min(1, "Choose specialitities")
+    .compact(),
 
+  tags: yup
+    .array()
+    .of(yup.string())
+    .min(1, "Add Tags to imrprove searchability")
+    .compact(),
+
+  credits: yup
+    .array()
+    .when("isAccredited", {
+      is: true,
+      then: yup.array().of(
+        yup.object().shape({
+          value: yup.string().required("Required"),
+          quantity: yup
+            .number()
+            .required()
+            .positive("Enter amount more than 0")
+            .typeError("Enter a number"),
+        })
+      ),
+    })
+    .min(1, "Add Credit Type and Amount")
+    .compact(),
+  creditAmount: yup
+    .number()
+    .nullable(true)
+    // .transform((v) => (v === "" ? null : v))
+    .when("creditType", {
+      is: (v) => v !== "",
+      then: yup
+        .number("Give a valid number")
+        .typeError("Enter Amount")
+        .required("Required")
+        .positive("Enter amount more than 0"),
+    }),
+});
 export default function ConferenceDetails1() {
-  // const [tag, setTag] = useState("");
-  // const [tagsArray, setTagsArray] = useState(["Love it"]);
-  // const [tagsArray, setTagsArray] = useState(["Love it"]);
   const [creditOptions, setcreditOptions] = useState([]);
+
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,6 +96,17 @@ export default function ConferenceDetails1() {
         credits,
         refundDescription,
       } = values;
+
+      let professionsV = [];
+      let specialitiesV = [];
+
+      professions?.forEach((i) => {
+        professionsV.push(i.value);
+      });
+
+      specialities?.forEach((i) => {
+        specialitiesV.push(i.value);
+      });
       const formData = {
         conferenceDetails: {
           conferenceId: newConference?._id,
@@ -72,34 +123,40 @@ export default function ConferenceDetails1() {
       try {
         const response = await api.post("conferences/step2", formData);
         if (response) {
-          console.log(response);
+          console.log("step 2", response);
           dispatch(createConferenceAction(response.data.data.conference));
-          navigate("/dashboard/create-conference/step-3");
+          navigate("/dashboard/create-conf/step-3");
         }
       } catch (err) {
-        console.log(err);
+        dispatch(alertAction(err.response.data.message, "danger"));
       }
     } else {
       console.log("You need to complete step-1 first");
+      dispatch(alertAction("Complete step-1 first", "danger"));
     }
   }
   const formik = useFormik({
-    initialValues: initialValues,
-    // validationSchema: validationSchema,
+    initialValues: {
+      professions: newConference?.professions || [],
+      specialities: newConference?.specialities || [],
+      tTag: "",
+      tags: newConference?.tags || [],
+      isAccredited: newConference?.isAccredited || false,
+      creditAmount: newConference?.creditAmount || 0,
+      creditType: "",
+      credits: newConference?.conferenceCredits || [],
+      isRefundable: newConference?.refundPolicy || false,
+      refundDescription: {},
+    },
+    validationSchema: validationSchema,
     onSubmit: onSubmit,
   });
 
-  // const onTagChange = (event) => {
-  //   setTag(event.target.value);
-  // };
-
-  // const handleEditorChange = (state) => {
-  //   setEditorState(state);
-  //   formik.setFieldValue(
-  //     "refundPolicy",
-  //     convertToRaw(editorState.getCurrentContent())
-  //   );
-  // };
+  const onEditorStateChange = (state) => {
+    const forFormik = convertToRaw(editorState.getCurrentContent());
+    formik.setFieldValue("refundDescription", forFormik);
+    setEditorState(state);
+  };
 
   async function getCreditTypes() {
     try {
@@ -112,9 +169,39 @@ export default function ConferenceDetails1() {
     }
   }
 
+  // add credit button onClick Call
+  const addCredit = () => {
+    let creditLabel;
+    let creditObj;
+    if (formik.values.creditType) {
+      creditLabel = creditOptions?.find(
+        (e) => e.value === formik.values.creditType
+      ).label;
+    }
+    if (formik.values.creditType && formik.values.creditAmount > 0) {
+      creditObj = {
+        value: formik.values.creditType,
+        quantity: formik.values.creditAmount,
+        label: creditLabel,
+      };
+      formik.setFieldValue("credits", [...formik.values.credits, creditObj]);
+      formik.setFieldValue("creditAmount", 0);
+    }
+  };
+
   useEffect(() => {
     getCreditTypes();
+    let blocks;
+    if (newConference.refundDescription) {
+      blocks = convertFromRaw(newConference.refundDescription);
+      // setEditorState(EditorState.createWithContent(blocks));
+      setEditorState(
+        EditorState.push(editorState, blocks, "update-contentState")
+      );
+    }
   }, []);
+
+  console.log("formik", formik);
 
   return (
     <main className="conf-form-wrap">
@@ -123,22 +210,30 @@ export default function ConferenceDetails1() {
         onSubmit={formik.handleSubmit}
         autoComplete="off"
       >
-        <section className="mb-72">
+        <div className="mb-72">
           <h2>Details 1</h2>
           <h4>Professions</h4>
           <SelectFormType1
             options={professions}
             label="professions"
-            name="professions"
-            placeholder="Choose Professions"
-            handleChange={(options) => {
-              formik.setFieldValue(
-                "professions",
-                options.map((option) => option.value)
-              );
+            value={formik.values.professions}
+            onChange={(value) => {
+              return formik.setFieldValue("professions", value);
             }}
+            placeholder="Choose Professions"
             isMulti={true}
           />
+          {/* <Select
+            isMulti
+            label="professions"
+            // name="profession"
+            options={professions}
+            onChange={(value) => {
+              console.log("value from onchange handler", value);
+              formik.setFieldValue("professions", value);
+            }}
+            value={formik.values.professions}
+          /> */}
           <div className="mb-24">
             {formik.touched.professions &&
               Boolean(formik.errors.professions) && (
@@ -151,12 +246,8 @@ export default function ConferenceDetails1() {
             label="specialities"
             name="specialities"
             placeholder="Choose specialities"
-            handleChange={(options) => {
-              formik.setFieldValue(
-                "specialities",
-                options.map((option) => option.value)
-              );
-            }}
+            value={formik.values.specialities}
+            onChange={(value) => formik.setFieldValue("specialities", value)}
             isMulti={true}
           />
           <div className="mb-24">
@@ -172,10 +263,9 @@ export default function ConferenceDetails1() {
                 {tg}
                 <i
                   onClick={(e) => {
-                    // setTagsArray((prev) => prev.filter((e) => e != tg));
                     formik.setFieldValue(
                       "tags",
-                      formik.values.tags.filter((e) => e != tg)
+                      formik.values.tags.filter((e) => e !== tg)
                     );
                   }}
                 >
@@ -201,9 +291,6 @@ export default function ConferenceDetails1() {
             <div>
               <button
                 onClick={() => {
-                  // setTagsArray([...tagsArray, tag]);
-                  // formik.setFieldValue("tags", tagsArray);
-                  // setTag("");
                   formik.setFieldValue("tags", [
                     ...formik.values.tags,
                     formik.values.tTag,
@@ -218,16 +305,16 @@ export default function ConferenceDetails1() {
             </div>
           </div>
           <div className="mb-24">
-            {formik.touched.tTag && Boolean(formik.errors.tTag) && (
-              <TextError>{formik.errors.tTag}</TextError>
+            {formik.touched.tags && Boolean(formik.errors.tags) && (
+              <TextError>{formik.errors.tags}</TextError>
             )}
           </div>
-        </section>
-        <section className="mb-72">
+        </div>
+        <div className="mb-72">
           <h2>Credits</h2>
           <div className="flex-vc mb-24">
             <p className="caption-1-regular-gray3 mr-16">
-              Is this conference accredited?
+              Do you give credits for attending conference?
             </p>
             <Switch
               id="isAccredited"
@@ -239,22 +326,23 @@ export default function ConferenceDetails1() {
           </div>
 
           <ul className="tags-display">
-            {formik.values.credits.map((credit) => (
-              <li key={credit.creditId}>
-                {credit.label} - {credit.quantity}
-                <i
-                  onClick={(e) => {
-                    // setTagsArray((prev) => prev.filter((e) => e != tg));
-                    formik.setFieldValue(
-                      "credits",
-                      formik.values.credits.filter((e) => e != credit)
-                    );
-                  }}
-                >
-                  <CancelIcon className="xs-icon" />
-                </i>
-              </li>
-            ))}
+            {formik.values.credits.map((credit) => {
+              return (
+                <li key={credit?.value}>
+                  {credit?.label} - {credit?.quantity}
+                  <i
+                    onClick={(e) => {
+                      formik.setFieldValue(
+                        "credits",
+                        formik.values.credits.filter((e) => e !== credit)
+                      );
+                    }}
+                  >
+                    <CancelIcon className="xs-icon" />
+                  </i>
+                </li>
+              );
+            })}
           </ul>
 
           <div style={{ display: "flex" }}>
@@ -265,15 +353,17 @@ export default function ConferenceDetails1() {
                     options={creditOptions}
                     label="Credit Type"
                     name="creditType"
-                    handleChange={(option) => {
-                      formik.setFieldValue("creditType", option);
+                    value={formik.values.creditType}
+                    onChange={(value) => {
+                      console.log("credity type onChange", value);
+                      formik.setFieldValue("creditType", value?.value);
                     }}
                     placeholder="Select Credit Type"
                   />
                   <div className="mb-24">
-                    {formik.touched.creditType &&
-                      Boolean(formik.errors.creditType) && (
-                        <TextError>{formik.errors.creditType}</TextError>
+                    {formik.touched.credits &&
+                      Boolean(formik.errors.credits) && (
+                        <TextError>{formik.errors.credits}</TextError>
                       )}
                   </div>
                 </div>
@@ -298,30 +388,18 @@ export default function ConferenceDetails1() {
                 </div>
               </div>
             </div>
-
             <div>
               <button
                 type="button"
                 className="button button-primary ml-16"
-                onClick={() => {
-                  formik.setFieldValue("credits", [
-                    ...formik.values.credits,
-                    {
-                      label: formik.values.creditType?.label,
-                      creditId: formik.values.creditType?.value,
-                      quantity: formik.values.creditAmount,
-                    },
-                  ]);
-                  formik.setFieldValue("creditType", "");
-                  formik.setFieldValue("creditAmount", Number);
-                }}
+                onClick={() => addCredit()}
               >
                 Add Credit
               </button>
             </div>
           </div>
-        </section>
-        <section className="mb-72">
+        </div>
+        <div className="mb-72">
           <h2>Refund Policy</h2>
           <div className="flex-vc mb-24">
             <p className="caption-1-regular-gray3 mr-16">
@@ -336,21 +414,23 @@ export default function ConferenceDetails1() {
             />
           </div>
           <div>
-            <RichTextEditor
-              setFieldValue={(val) =>
-                formik.setFieldValue("refundDescription", val)
-              }
+            <Editor
+              editorState={editorState}
+              onEditorStateChange={onEditorStateChange}
+              wrapperClassName="wrapper-class"
+              editorClassName="editr-class"
+              toolbarClassName="toolbar-class"
             />
           </div>
-        </section>
-        <section className="mb-72">
+        </div>
+        <div className="mb-72">
           <button type="button" className="button button-green mr-8">
             Cancel
           </button>
           <button type="submit" className="button button-primary">
             Next
           </button>
-        </section>
+        </div>
       </form>
     </main>
   );
