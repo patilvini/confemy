@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import ConfSteps from "../../components/conference/ConfSteps";
 import Modal from "../../components/modal/Modal";
+import { removeConferenceStateAction } from "../../redux/conference/conferenceAction";
 
 export default function CreateConfLayoutPage() {
   const [skip, setskip] = useState(false);
 
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onDismiss = () => {
     setskip(true);
@@ -21,7 +23,8 @@ export default function CreateConfLayoutPage() {
 
   useEffect(() => {
     return () => {
-      console.log("cleaned up");
+      dispatch(removeConferenceStateAction());
+      console.log("Removed new conference from redux");
     };
   }, []);
 
