@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 export default function ConfRow ({item, booking, credits, requestCredit}) {
 
+  console.log(credits)
     
 
     const [credit, setCredit] = useState()
@@ -40,6 +41,7 @@ export default function ConfRow ({item, booking, credits, requestCredit}) {
                   {!item.creditRequest && !item.creditCertificateUploaded && (
                     <Select
                       onChange={(e) => {
+                        console.log(e)
                         setCredit(e);
                       }}
                       options={credits}

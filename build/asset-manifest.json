@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.fe276166.css",
-    "main.js": "/static/js/main.efac143c.js",
+    "main.css": "/static/css/main.c804997c.css",
+    "main.js": "/static/js/main.d4f43fc3.js",
     "static/js/787.7814be23.chunk.js": "/static/js/787.7814be23.chunk.js",
     "static/media/Avenir.ttc": "/static/media/Avenir.bd849aa48220dc5266c4.ttc",
     "static/media/Avenir-Roman.ttf": "/static/media/Avenir-Roman.69c167230fe72fa92d10.ttf",
@@ -14,12 +14,12 @@
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
-    "main.fe276166.css.map": "/static/css/main.fe276166.css.map",
-    "main.efac143c.js.map": "/static/js/main.efac143c.js.map",
+    "main.c804997c.css.map": "/static/css/main.c804997c.css.map",
+    "main.d4f43fc3.js.map": "/static/js/main.d4f43fc3.js.map",
     "787.7814be23.chunk.js.map": "/static/js/787.7814be23.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fe276166.css",
-    "static/js/main.efac143c.js"
+    "static/css/main.c804997c.css",
+    "static/js/main.d4f43fc3.js"
   ]
 }

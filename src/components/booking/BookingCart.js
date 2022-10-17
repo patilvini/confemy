@@ -15,7 +15,7 @@ export default function BookingCart() {
     try {
       const r = await api.get("/conferences/bookings/users/" + userID);
       setData(r.data.data);
-      console.log(r.data.data);
+      // console.log(r.data.data);
      
     } catch (err) {
       console.log(err);
