@@ -49,7 +49,7 @@ export default function SearchComponent() {
   const loadData = async () => {
     try {
       const r = await api.post(
-        "/conferences/search?page=" + page + "&limit=10"
+        "homePage/conferences/text=page=" + page + "&limit=10"
       );
       console.log(r);
       setData(r.data.data.conferences);
@@ -74,7 +74,7 @@ export default function SearchComponent() {
     const call = async () => {
       try {
         const r = await api.post(
-          "/conferences/search?page=" + page + "&limit=10",
+          "homePage/conferences/search?page=" + page + "&limit=10",
           {
             filters: filters,
           }
@@ -96,7 +96,7 @@ export default function SearchComponent() {
 
     try {
       const r = await api.post(
-        "/conferences/search?page=" + page + "&limit=10&&text=" + search
+        "homePage/conferences/search?page=" + page + "&limit=10&text=" + search
       );
       console.log(r);
       setData(r.data.data.conferences);
@@ -110,7 +110,7 @@ export default function SearchComponent() {
       if (search?.length > 0) {
         try {
           const r = await api.post(
-            "/conferences/search?page=" + page + "&limit=10&&text=" + search
+            "homePage/conferences/search?page=" + page + "&limit=10&text=" + search
           );
           console.log(r);
           setData(r.data.data.conferences);
@@ -120,7 +120,7 @@ export default function SearchComponent() {
       } else if (filters.length > 0) {
         try {
           const r = await api.post(
-            "/conferences/search?page=" + page + "&limit=10&&text=",
+            "homePage/conferences/search?page=" + page + "&limit=10&text=",
             { filters }
           );
           console.log(r);
@@ -131,7 +131,7 @@ export default function SearchComponent() {
       } else {
         try {
           const r = await api.post(
-            "/conferences/search?page=" + page + "&limit=10&&text="
+            "homePage/conferences/search?page=" + page + "&limit=10&text="
           );
           console.log(r);
           setData(r.data.data.conferences);
@@ -446,8 +446,8 @@ export default function SearchComponent() {
 
       <div className="search-nav">
         <BackIcon className="icon-size" />
-        <div className="flex-container">
-          <div className="flex-item">
+        <div className="opposite-grid">
+          <div className="search-grid-item">
             <SearchBar
               value={search}
               onClear={() => {
@@ -456,8 +456,8 @@ export default function SearchComponent() {
               setValue={(value) => setSearch(value)}
             />
           </div>
-          <div className="flex-item">
-            <button onClick={submit} className="button button-secondary">
+          <div className="search-grid-item">
+            <button style={{margin:"1.6rem 2rem"}} onClick={submit} className="button button-secondary">
               Search
             </button>
           </div>

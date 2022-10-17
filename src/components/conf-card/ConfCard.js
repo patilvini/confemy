@@ -27,7 +27,7 @@ function ConfCard({
   let start = date.toLocaleString({...DateTime.DATE_MED_WITH_WEEKDAY, weekday: 'short' })
 
   const time = DateTime.fromISO(startTime)
-  console.log(time.toFormat('h:mm a'))
+  // console.log(time.toFormat('h:mm a'))
 
 
 

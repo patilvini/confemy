@@ -35,3 +35,23 @@
     display: grid;
     grid-template-columns: 20% 80%
 }
+
+.preview-wrapper{
+
+  
+  background-color:white;
+  width:90%;
+  margin-left: 5%;
+  margin-top: 1%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.08)
+  
+
+}
+
+
+.preview-modal-grid{
+  display: grid;
+  grid-template-columns: 50% 50%;
+  margin: 2% 0 0 7%
+
+}

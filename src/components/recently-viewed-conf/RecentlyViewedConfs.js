@@ -37,7 +37,8 @@ function RecentlyViewedConfs() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const r = await api.get("/homePage/recentlyviewed");
+        const r = await api.get("/homePage/recentlyviewed?page=1&limit=5");
+        // console.log(r)
         setData(r.data.data.viewedConferences)
         
       } catch (err) {
@@ -69,6 +70,7 @@ function RecentlyViewedConfs() {
           >
             {data ? (
               data.map((item, index) => {
+                console.log(item.conference)
                 return (
                   <div key={index}>
                     <ConfCard

@@ -8,33 +8,41 @@ import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
 import Slider from "react-slick";
 import LocationIcon from "../icons/LocationIcon";
+import Carousel from "react-multi-carousel";
 
 export default function ConferenceSearchSelect() {
   const [data, setData] = useState();
   const [action, setAction] = useState(false)
   const confID = useParams().confID;
+
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 300},
+      items: 1,
+      slidesToSlide: 1, // optional, default to 1.
+    },
+    
+  };
   // console.log(confID)
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+  
 
   const addRecentlyViewed = async () => {
-    try {
-      const r = await api.post("/homePage/recentlyviewed", {
-        recentlyViewedConferenceDetails: {
-          conferenceId: confID,
-        },
-      });
-      console.log(r.data.data);
+
+    console.log(data)
+    // try {
+    //   const r = await api.post("/homePage/recentlyviewed", {
+    //     recentlyViewedConferenceDetails: {
+    //       conferenceId: confID,
+    //     },
+
+
+    //   });
+    //   console.log(r.data.data);
       
-    } catch (err) {
-      // console.error(err);
-    }
+    // } catch (err) {
+    //   // console.error(err);
+    // }
   };
 
   const getData = async () => {
@@ -90,22 +98,33 @@ export default function ConferenceSearchSelect() {
           </p>
           <h3 className="section-heading">Venue and Amenities</h3>
           <div className="venueCard ">
-            <div className="carousel">
-              <Slider {...settings}>
-                <div>
-                  <img src="https://www.incimages.com/uploaded_files/image/1920x1080/getty_486734270_86526.jpg" />
+          <Carousel
+            // swipeable={true}
+            // draggable={true}
+            showDots={true}
+            responsive={responsive}
+            infinite={true}
+            autoPlaySpeed={1000}
+            keyBoardControl={true}
+            transitionDuration={500}
+            containerClass="carousel-container"
+            // removeArrowOnDeviceType={["tablet", "mobile"]}
+            dotListClass="custom-dot-list-style"
+            itemClass="carousel-item-padding-40-px"
+          >
+             <div>
+                  <img width="100%" src="https://www.incimages.com/uploaded_files/image/1920x1080/getty_486734270_86526.jpg" />
                 </div>
                 <div>
-                  <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y29uZmVyZW5jZXxlbnwwfHwwfHw%3D&w=1000&q=80" />
+                  <img width="100%" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y29uZmVyZW5jZXxlbnwwfHwwfHw%3D&w=1000&q=80" />
                 </div>
                 <div>
-                  <img src="https://media.istockphoto.com/photos/audience-listens-to-the-lecturer-at-the-conference-picture-id974238866?k=20&m=974238866&s=612x612&w=0&h=DUBZOmGYNntkcIlfY8xFJYcVYFzO5HxnL9YaoqbV3xc=" />
+                  <img width="100%" src="https://media.istockphoto.com/photos/audience-listens-to-the-lecturer-at-the-conference-picture-id974238866?k=20&m=974238866&s=612x612&w=0&h=DUBZOmGYNntkcIlfY8xFJYcVYFzO5HxnL9YaoqbV3xc=" />
                 </div>
                 <div>
-                  <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNvbmZlcmVuY2V8ZW58MHx8MHx8&w=1000&q=80" />
+                  <img width="100%" src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNvbmZlcmVuY2V8ZW58MHx8MHx8&w=1000&q=80" />
                 </div>
-              </Slider>
-            </div>
+          </Carousel>
             <div></div>
             <div style={{ paddingLeft: "2rem" }}>
               <h3 className="section-heading">{data?.venue?.venueName}</h3>
