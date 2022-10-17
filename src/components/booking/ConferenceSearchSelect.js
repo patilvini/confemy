@@ -50,6 +50,13 @@ export default function ConferenceSearchSelect() {
       const r = await api.get("/conferences/" + confID);
       console.log(r.data.data.conferences);
       setData(r.data.data.conferences);
+
+      if(r.data.data.conferences.completedAllMandatorySteps){
+        addRecentlyViewed();
+
+      }
+
+      
     } catch (err) {
       console.error(err);
     }
@@ -58,22 +65,7 @@ export default function ConferenceSearchSelect() {
   useEffect(() => {
     getData();
 
-    addRecentlyViewed();
-
-    // if (!localStorage.recentlyViewed) {
-    //   let ids = [];
-    //   ids[0] = confID;
-    //   localStorage.setItem("recentlyViewed", JSON.stringify(ids));
-    // } else {
-    //   const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed"));
-
-    //   if (recentlyViewed.includes(confID)) return;
-    //   else {
-    //     recentlyViewed.push(confID);
-
-    //     localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed))
-    //   }
-    // }
+  
   }, [action]);
 
   return (
