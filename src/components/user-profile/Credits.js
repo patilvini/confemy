@@ -48,7 +48,7 @@ export default function Credits() {
 
     const atteendeeDetails = {
       creditRequest:true,
-      creditId: credit.value._id,
+      creditId: credit.value.creditId._id,
       creditQuantity: credit.value.quantity
 
     }
@@ -244,13 +244,14 @@ export default function Credits() {
           <div className="credit-table-item">Status</div>
         </div>
         {confs?.map((item, index) => {
-          // console.log(item);
+          console.log(item);
 
           let credits = [];
 
           for (let i = 0; i < item.conference.credits.length; i++) {
+
             credits[i] = {
-              label: item.conference.credits[i].creditType,
+              label: item.conference.credits[i].creditId?.name,
               value: item.conference.credits[i],
             };
           }
