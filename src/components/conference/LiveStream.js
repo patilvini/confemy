@@ -8,6 +8,17 @@ import GoogleMeetIcon from "../icons/GoogleMeetIcon";
 import VimeoIcon from "../icons/VimeoIcon";
 import YoutubeIcon from "../icons/YoutubeIcon";
 import FacebookIcon from "../icons/FacebookIcon";
+import AddFileIcon from "../icons/AddFileIcon";
+import AddImageIcon from "../icons/AddImageIcon";
+import AddLinkIcon from "../icons/AddLinkIcon";
+import AddVideoIcon from "../icons/AddVideoIcon";
+import AddTextIcon from "../icons/AddTextIcon";
+import AddDocument from "./AddDocument";
+import AddText from "./AddText";
+import AddImage from "./AddImage";
+import AddVideo from "./AddVideo";
+import AddLink from "./AddLink";
+import { object } from "yup";
 
 export default function LiveStream() {
   const [activeTab, setActiveTab] = useState(null);
@@ -22,12 +33,34 @@ export default function LiveStream() {
     { name: "Facebook", icon: <FacebookIcon /> },
   ];
 
+  const recs = ["Files", "Text", "Image", "Video", "Link"];
+
   const resources = [
-    { name: "Files", icon: <ZoomLogo /> },
-    { name: "Text", icon: <GoogleMeetIcon /> },
-    { name: "Image", icon: <VimeoIcon /> },
-    { name: "Video", icon: <YoutubeIcon /> },
-    { name: "Link", icon: <FacebookIcon /> },
+    {
+      name: "Files",
+      icon: <AddFileIcon />,
+      component: <AddDocument active={activeRec} source={recs[0]} />,
+    },
+    {
+      name: "Text",
+      icon: <AddTextIcon />,
+      component: <AddText active={activeRec} source={recs[1]} />,
+    },
+    {
+      name: "Image",
+      icon: <AddImageIcon />,
+      component: <AddImage active={activeRec} source={recs[2]} />,
+    },
+    {
+      name: "Video",
+      icon: <AddVideoIcon />,
+      component: <AddVideo active={activeRec} source={recs[3]} />,
+    },
+    {
+      name: "Link",
+      icon: <AddLinkIcon />,
+      component: <AddLink active={activeRec} source={recs[4]} />,
+    },
   ];
 
   return (
@@ -72,6 +105,13 @@ export default function LiveStream() {
         );
       })}
 
+      <h1>Resources</h1>
+      <p style={{lineHeight:"2rem"}} className="caption-2-regular-gray3">
+        Share any important details with your attendees before they join the
+        event. These resources will be shared with the attendees only after they
+        book for the conference.
+      </p>
+
       <div className="flex-container">
         {resources.map((item, index) => {
           return (
@@ -79,13 +119,13 @@ export default function LiveStream() {
               <button
                 className="buttons-livestream"
                 onClick={() => {
-                  if (activeTab === null) {
+                  if (activeRec === null) {
                     setActiveRec(item.name);
                   }
-                  if (activeTab === item.name) {
+                  if (activeRec === item.name) {
                     setActiveRec(null);
                   }
-                  if (activeTab !== item.name) {
+                  if (activeRec !== item.name) {
                     setActiveRec(item.name);
                   }
                 }}
@@ -96,6 +136,10 @@ export default function LiveStream() {
           );
         })}
       </div>
+
+      {resources.map((item, index) => {
+        return <div key={index}>{item.component}</div>;
+      })}
     </div>
   );
 }

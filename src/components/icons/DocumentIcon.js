@@ -1,4 +1,4 @@
-function DocumentIcon({ className }) {
+export default function DocumentIcon({ className }) {
 
   
     return (
@@ -16,4 +16,3 @@ function DocumentIcon({ className }) {
     );
   }
   
-  export default DocumentIcon;

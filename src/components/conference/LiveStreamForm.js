@@ -9,7 +9,7 @@ import api from "../../utility/api";
 // import RichTextEditor from "./RichTextEditor";
 import { thumb, thumbInner, img } from "./conferenceDragdropUtils";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import "../rich-text-editor/richTextEditor.styles.scss";
+
 
 const initialValues = {
   link: "",
@@ -154,148 +154,13 @@ export default function LiveStreamForm({source, active}) {
           )}
           </div>
 
-          {/* <div>
-            <label>
-              <h4>Image</h4>
-            </label>
-            <Dropzone
-              multiple={false}
-              onDrop={(acceptedFiles) => {
-                let filetype = acceptedFiles[0].type.split("/");
+          
 
-                if (filetype[0] === "image") {
-                  setImg(
-                    acceptedFiles.map((file) =>
-                      Object.assign(file, {
-                        preview: URL.createObjectURL(file),
-                      })
-                    )
-                  );
+          
 
-                  formik.setFieldValue("image", acceptedFiles);
-                }
-              }}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <section>
-                  <div className="logo-upload-wrap">
-                    <div {...getRootProps({ className: "logo-dropzone" })}>
-                      <input {...getInputProps()} />
+          
 
-                      {imgThumb}
-                    </div>
-                    <div className="logo-upload-textbox">
-                      <span>Drag and drop your Photo here or</span>
-                      <span>Browse</span>
-                      <span>to choose a file</span>
-                    </div>
-                  </div>
-                </section>
-              )}
-            </Dropzone>
-          </div>
-
-          <div>
-            <label>
-              <h4>Text</h4>
-            </label>
-
-            {/* <RichTextEditor
-              onChange={(e) => {
-                formik.setFieldValue("text", e.blocks);
-              }}
-            />
-          </div> */}
-
-          {/* <div>
-            <label>
-              <h4>Video</h4>
-            </label>
-            <Dropzone
-              multiple={false}
-              onDrop={(acceptedFiles) => {
-                let filetype = acceptedFiles[0].type.split("/");
-
-                if (filetype[0] === "video") {
-                  setVid(
-                    acceptedFiles.map((file) =>
-                      Object.assign(file, {
-                        preview: URL.createObjectURL(file),
-                      })
-                    )
-                  );
-
-                  formik.setFieldValue("video", acceptedFiles);
-                }
-              }}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <section>
-                  <div>
-                    <div {...getRootProps({ className: "drag-box" })}>
-                      <input {...getInputProps()} />
-                      <span>Drag and drop your Video here or</span>
-                      <span>Browse</span>
-                      <span>to choose a file</span>
-                    </div>
-                  </div>
-                  {vidThumb}
-                </section>
-              )}
-            </Dropzone>
-          </div> */}
-
-          {/* <div>
-            <label>
-              <h4>Link</h4>
-            </label>
-            <input
-              type="text"
-              placeholder="Link Title"
-              onChange={(e) => {
-                formik.setFieldValue("linkTitle", e.target.value);
-              }}
-            />
-            <input
-              type="text"
-              placeholder="Paste Link here"
-              onChange={(e) => {
-                formik.setFieldValue("link2", e.target.value);
-              }}
-            />
-            <Dropzone
-              multiple={false}
-              onDrop={(acceptedFiles) => {
-                let filetype = acceptedFiles[0].type.split("/");
-
-                if (filetype[0] === "application") {
-                  setFile(
-                    acceptedFiles.map((file) =>
-                      Object.assign(file, {
-                        preview: URL.createObjectURL(file),
-                      })
-                    )
-                  );
-
-                  formik.setFieldValue("file", acceptedFiles);
-                }
-              }}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <section>
-                  <div>
-                    <div {...getRootProps({ className: "drag-box" })}>
-                      <input {...getInputProps()} />
-                      <span>Drag and drop your Video here or</span>
-                      <span> Browse</span>
-                      <span> to choose a file</span>
-                    </div>
-                  </div>
-              
-                </section>
-              )}
-            </Dropzone>
-          </div> */}
+          
 
           <button
           style={{marginTop:"5rem"}}
