@@ -75,20 +75,41 @@ const App = () => {
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>
-            <Route path="/verify-email/:secret" element={<VerifyEmail />}></Route>
-            <Route path="search-conference" element={<SearchConferencePage />}></Route>
-            <Route path="search-conference/:confID" element={<SearchConfSelectPage />}></Route>
+            <Route
+              path="/verify-email/:secret"
+              element={<VerifyEmail />}
+            ></Route>
+            <Route
+              path="search-conference"
+              element={<SearchConferencePage />}
+            ></Route>
+            <Route
+              path="search-conference/:confID"
+              element={<SearchConfSelectPage />}
+            ></Route>
 
-            <Route path="booking-step1/:confID" element={<BookingStep1Page />}></Route>
-            <Route path="booking-step2/:bookingID" element={<BookingStep2Page />}></Route>
+            <Route
+              path="booking-step1/:confID"
+              element={<BookingStep1Page />}
+            ></Route>
+            <Route
+              path="booking-step2/:bookingID"
+              element={<BookingStep2Page />}
+            ></Route>
 
             <Route path="user-profile" element={<UserProfilePage />}></Route>
             <Route path="track-credits" element={<TrackCreditPage />}></Route>
-            <Route path="list-conferences" element={<ListConferencesPage />}></Route>
+            <Route
+              path="list-conferences"
+              element={<ListConferencesPage />}
+            ></Route>
 
             <Route path="user-view" element={<UserViewProfilePage />}></Route>
 
-            <Route path="organizer-preview/finished/:id" element={<OrganizerConfPreviewFinishedPage />}></Route>
+            <Route
+              path="organizer-preview/finished/:id"
+              element={<OrganizerConfPreviewFinishedPage />}
+            ></Route>
 
             <Route path="/message" element={<MessagePage />}></Route>
             <Route
@@ -99,12 +120,18 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
-              <Route path="test" element={<SelectTest />} />
+              <Route path="test" element={<OCreateConference />} />
               <Route path="test2" element={<RegisterForm />} />
-              <Route path="create-conference" element={<CreateConfLandingPage />}></Route>
+              <Route
+                path="create-conference"
+                element={<CreateConfLandingPage />}
+              ></Route>
 
               <Route path="create-conf" element={<CreateConfLayoutPage />}>
-                <Route path="" element={<Navigate to="step-1" replace />}></Route>
+                <Route
+                  path=""
+                  element={<Navigate to="step-1" replace />}
+                ></Route>
                 <Route path="step-1" element={<ConfBasicInfoPage />}></Route>
                 <Route path="step-2" element={<ConfDetailsPage1 />}></Route>
                 <Route path="step-3" element={<ConfDetailsPage2 />}></Route>
@@ -112,20 +139,38 @@ const App = () => {
                 <Route path="step-5" element={<TicketsPage />}></Route>
                 <Route path="step-6" element={<PreviewPublishPage />}></Route>
               </Route>
-              <Route path="create-organization" element={<CreateOrganizationPage />}></Route>
+              <Route
+                path="create-organization"
+                element={<CreateOrganizationPage />}
+              ></Route>
               <Route path="refunds" element={<RefundRequestsPage />}></Route>
               <Route path="earnings" element={<EarningsPage />}></Route>
-              <Route path="credit-requests" element={<CreditRequestsPage />}></Route>
-              <Route path="my-conferences" element={<OrganizerConfDashPage />}></Route>
-              <Route path="my-conferences/live/:id" element={<OrganizerConfPreviewPage />}></Route>
-              <Route path="my-conferences/finished/:id" element={<OrganizerConfPreviewFinishedPage />}></Route>
+              <Route
+                path="credit-requests"
+                element={<CreditRequestsPage />}
+              ></Route>
+              <Route
+                path="my-conferences"
+                element={<OrganizerConfDashPage />}
+              ></Route>
+              <Route
+                path="my-conferences/live/:id"
+                element={<OrganizerConfPreviewPage />}
+              ></Route>
+              <Route
+                path="my-conferences/finished/:id"
+                element={<OrganizerConfPreviewFinishedPage />}
+              ></Route>
               <Route
                 path="my-organizations"
                 // element={<OrganizerDashboardPage />}
                 element={<MyOrganizationsPage />}
               ></Route>
 
-              <Route path="my-organizations/:organizationId" element={<OrganizationDetailsPage />}></Route>
+              <Route
+                path="my-organizations/:organizationId"
+                element={<OrganizationDetailsPage />}
+              ></Route>
             </Route>
             <Route path="/verify/:token" element={<VerifyManagerPage />} />
 

@@ -5,7 +5,7 @@ import TextError from "../formik/TextError";
 import * as yup from "yup";
 
 import api from "../../utility/api";
-import RichTextEditor from "./RichTextEditor";
+// import RichTextEditor from "./RichTextEditor";
 import { thumb, thumbInner, img } from "./conferenceDragdropUtils";
 
 const initialValues = {
@@ -119,12 +119,12 @@ export default function LiveStreamForm(props) {
             />
           </div>
           <div style={{ paddingTop: "10px" }}>
-            <RichTextEditor
+            {/* <RichTextEditor
               placeholder="Add meeting instructions (optional)"
               onChange={(e) => {
                 formik.setFieldValue("instructions", e.blocks);
               }}
-            />
+            /> */}
             {/* {touched.description && Boolean(errors.description) && (
             <TextError>{errors.description}</TextError>
           )} */}
@@ -176,11 +176,11 @@ export default function LiveStreamForm(props) {
               <h4>Text</h4>
             </label>
 
-            <RichTextEditor
+            {/* <RichTextEditor
               onChange={(e) => {
                 formik.setFieldValue("text", e.blocks);
               }}
-            />
+            /> */}
           </div>
 
           <div>

@@ -4,20 +4,20 @@ import Select from "react-select";
 import { thumb, thumbInner, img } from "./conferenceDragdropUtils";
 import Dropzone, { useDropzone } from "react-dropzone";
 import TextError from "../formik/TextError";
-import moment from "moment";
-import { createReactEditorJS } from "react-editor-js";
-import { EDITOR_JS_TOOLS } from "./constants";
+// import moment from "moment";
+// import { createReactEditorJS } from "react-editor-js";
+// import { EDITOR_JS_TOOLS } from "./constants";
 
 import * as yup from "yup";
 
 import "./conferDetails2.scss";
 import api from "../../utility/api";
-import RichTextEditor from "./RichTextEditor";
+// import RichTextEditor from "./RichTextEditor";
 import { useSelector } from "react-redux";
 import Modal from "../modal/Modal";
 import TextInput from "../formik/TextInput";
 import AddSpeaker from "./AddSpeaker";
-import EditorTest from "./EditorTest";
+// import EditorTest from "./EditorTest";
 
 const initialValues = {
   bannerImage: [],
@@ -58,7 +58,7 @@ export default function ConfDetails2() {
     endTime: "",
     description: "",
   });
-  const EditorJS = createReactEditorJS();
+  // const EditorJS = createReactEditorJS();
 
   function onClose() {
     setVisibitly(false);
@@ -67,7 +67,6 @@ export default function ConfDetails2() {
     setVisibitly(true);
   }
 
-  
   const toggle = (i) => {
     if (clicked === i) {
       return setClicked(null);
@@ -78,15 +77,15 @@ export default function ConfDetails2() {
 
   const createDays = (startDate, endDate) => {
     var dateArray = [];
-    var currentDate = moment(startDate);
-    var stopDate = moment(endDate);
-    while (currentDate <= stopDate) {
-      dateArray.push({
-        date: moment(currentDate).format("YYYY, MMM, DD"),
-        day: moment(currentDate).format("dddd"),
-      });
-      currentDate = moment(currentDate).add(1, "days");
-    }
+    // var currentDate = moment(startDate);
+    // var stopDate = moment(endDate);
+    // while (currentDate <= stopDate) {
+    //   dateArray.push({
+    //     date: moment(currentDate).format("YYYY, MMM, DD"),
+    //     day: moment(currentDate).format("dddd"),
+    //   });
+    //   currentDate = moment(currentDate).add(1, "days");
+    // }
 
     return dateArray;
   };
@@ -134,7 +133,6 @@ export default function ConfDetails2() {
     getSpeaker();
     getConference();
   }, []);
-
 
   const onSubmit = async (values, actions) => {
     // console.log("form values form onSubmit", values);
@@ -230,15 +228,13 @@ export default function ConfDetails2() {
     <>
       <div className="conf-form-wrap">
         <form autoComplete="off" onSubmit={handleSubmit}>
-          <div>
-            
-          </div>
+          <div></div>
           <h2 className="mb-32">Banner Image</h2>
           <section>
             <div className="logo-upload-wrap">
               <div {...getRootProps({ className: "logo-dropzone" })}>
                 <input {...getInputProps()} />
-                
+
                 {thumbs}
               </div>
               <div className="logo-upload-textbox">
@@ -254,7 +250,7 @@ export default function ConfDetails2() {
               <h4>Description</h4>
             </label>
             <div>
-              <div style={{ padding: "2px", minHeight: "400px" }}>
+              {/* <div style={{ padding: "2px", minHeight: "400px" }}>
                 <RichTextEditor
                   onChange={(e) => {
                     formik.setFieldValue("description", e.blocks);
@@ -263,7 +259,7 @@ export default function ConfDetails2() {
                 {touched.description && Boolean(errors.description) && (
                   <TextError>{errors.description}</TextError>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           <div>
@@ -307,12 +303,12 @@ export default function ConfDetails2() {
             <label>
               <h4>Course Outline</h4>
             </label>
-            <RichTextEditor
+            {/* <RichTextEditor
               onChange={(e) => {
                 console.log(e);
                 formik.setFieldValue("courseOutline", e.blocks);
               }}
-            />
+            /> */}
             {touched.courseOutline && Boolean(errors.courseOutline) && (
               <TextError>{errors.courseOutline}</TextError>
             )}
@@ -322,7 +318,7 @@ export default function ConfDetails2() {
             <label>
               <h4>Conference Schedule</h4>
             </label>
-            <EditorJS 
+            {/* <EditorJS 
             onChange={(e)=>console.log(e.blocks)}
             tools={EDITOR_JS_TOOLS}
             data={{
@@ -428,9 +424,8 @@ export default function ConfDetails2() {
                 },
               ],
               version: "2.12.4",
-            }}
+            }} */}
             />
-
             {/* {days.map((item, index) => {
               return (
                 <div key={index}>
