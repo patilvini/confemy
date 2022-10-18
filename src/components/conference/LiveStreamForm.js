@@ -3,41 +3,54 @@ import { useFormik, validateYupSchema } from "formik";
 import Dropzone from "react-dropzone";
 import TextError from "../formik/TextError";
 import * as yup from "yup";
-
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 import api from "../../utility/api";
 import RichTextEditor from "./RichTextEditor";
 import { thumb, thumbInner, img } from "./conferenceDragdropUtils";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import "../rich-text-editor/richTextEditor.styles.scss";
 
 const initialValues = {
   link: "",
-  instructions: [],
-  image: [],
-  text: [],
-  video: [],
-  linkTitle: "",
-  link2: "",
-  document: [],
+  instructions: {},
+  // image: [],
+  // text: [],
+  // video: [],
+  // linkTitle: "",
+  // link2: "",
+  // document: [],
 };
 
 const validationSchema = yup.object({
   link: yup.string().required("Please enter a URL to your session"),
-  instructions: yup.array(),
-  image: yup.array().min(1).required("Please enter your cover Image"),
-  text: yup.array(),
-  video: yup.array(),
-  linkTitle: yup.string(),
-  link2: yup.string(),
-  document: yup.array(),
+  instructions: yup.object(),
+  // image: yup.array().min(1).required("Please enter your cover Image"),
+  // text: yup.array(),
+  // video: yup.array(),
+  // linkTitle: yup.string(),
+  // link2: yup.string(),
+  // document: yup.array(),
 });
 
-export default function LiveStreamForm({source, style}) {
-  const [image, setImg] = useState([]);
-  const [vid, setVid] = useState([]);
-  const [fileD, setFile] = useState([]);
+export default function LiveStreamForm({source, active}) {
 
-  console.log(source?.name)
+  // console.log(active)
+  // const [image, setImg] = useState([]);
+  // const [vid, setVid] = useState([]);
+  // const [fileD, setFile] = useState([]);
+
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  
   const onSubmit = (values, actions) => {
-    console.log("form on submit", values);
+    console.log("form on submit", formik.values);
+  };
+
+  const onEditorStateChange = (state) => {
+    const forFormik = convertToRaw(editorState.getCurrentContent());
+    formik.setFieldValue("instructions", forFormik);
+    setEditorState(state);
   };
 
   const formik = useFormik({
@@ -55,39 +68,39 @@ export default function LiveStreamForm({source, style}) {
     handleChange,
   } = formik;
 
-  const imgThumb = image.map((file) => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img
-          src={file.preview}
-          alt="logo"
-          style={img}
-          // Revoke data uri after image is loaded
-          onLoad={() => {
-            URL.revokeObjectURL(file.preview);
-          }}
-        />
-      </div>
-    </div>
-  ));
+  // const imgThumb = image.map((file) => (
+  //   <div style={thumb} key={file.name}>
+  //     <div style={thumbInner}>
+  //       <img
+  //         src={file.preview}
+  //         alt="logo"
+  //         style={img}
+  //         // Revoke data uri after image is loaded
+  //         onLoad={() => {
+  //           URL.revokeObjectURL(file.preview);
+  //         }}
+  //       />
+  //     </div>
+  //   </div>
+  // ));
 
-  const vidThumb = vid.map((file) => (
-    <div key={file.name}>
-      <div>
-        <video width="500" height="300" controls>
-          <source src={file.preview} />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      <button
-        onClick={() => {
-          setVid([]);
-        }}
-      >
-        Remove
-      </button>
-    </div>
-  ));
+  // const vidThumb = vid.map((file) => (
+  //   <div key={file.name}>
+  //     <div>
+  //       <video width="500" height="300" controls>
+  //         <source src={file.preview} />
+  //         Your browser does not support the video tag.
+  //       </video>
+  //     </div>
+  //     <button
+  //       onClick={() => {
+  //         setVid([]);
+  //       }}
+  //     >
+  //       Remove
+  //     </button>
+  //   </div>
+  // ));
 
   // const fileThumb = fileD.map((file) => (
   //   <div key={file.name}>
@@ -102,40 +115,46 @@ export default function LiveStreamForm({source, style}) {
   //   </div>
   // ));
 
-  console.log(values);
+  // console.log(values);
 
   return (
-    <div style={style}>
+    <div>
+      {active === source && <div>
       <div className="conf-form-wrap">
         <form className="form-type-1" autoComplete="off" onSubmit={handleSubmit}>
-          <h2>{source?.name}</h2>
+          <h2>{source}</h2>
 
           <div>
           <div className="material-textfield">
               <input
-                id="title"
+                id="link"
                 type="text"
-                name="title"
-                value={formik.values.title}
+                name="link"
+                value={formik.values.link} 
                 onChange={formik.handleChange}
                 placeholder=" "
               />
-              <label>Conference title*</label>
+              <label>Add your {source} link here*</label>
             </div>
+            {touched.link && Boolean(errors.link) && (
+            <TextError>{errors.link}</TextError>
+          )}
           </div>
-          <div style={{ paddingTop: "10px" }}>
-            <RichTextEditor
-              placeholder="Add meeting instructions (optional)"
-              onChange={(e) => {
-                formik.setFieldValue("instructions", e.blocks);
-              }}
+          <div style={{ marginTop: "2rem" }}>
+          <Editor
+              editorState={editorState}
+              onEditorStateChange={onEditorStateChange}
+              wrapperClassName="wrapper-class"
+              editorClassName="editr-class"
+              toolbarClassName="toolbar-class"
+              placeholder="Add any instruction you have for the attendees"
             />
-            {/* {touched.description && Boolean(errors.description) && (
-            <TextError>{errors.description}</TextError>
-          )} */}
+            {touched.instructions && Boolean(errors.instructions) && (
+            <TextError>{errors.instructions}</TextError>
+          )}
           </div>
 
-          <div>
+          {/* <div>
             <label>
               <h4>Image</h4>
             </label>
@@ -186,9 +205,9 @@ export default function LiveStreamForm({source, style}) {
                 formik.setFieldValue("text", e.blocks);
               }}
             />
-          </div>
+          </div> */}
 
-          <div>
+          {/* <div>
             <label>
               <h4>Video</h4>
             </label>
@@ -224,9 +243,9 @@ export default function LiveStreamForm({source, style}) {
                 </section>
               )}
             </Dropzone>
-          </div>
+          </div> */}
 
-          <div>
+          {/* <div>
             <label>
               <h4>Link</h4>
             </label>
@@ -272,13 +291,14 @@ export default function LiveStreamForm({source, style}) {
                       <span> to choose a file</span>
                     </div>
                   </div>
-                  {/* {fileThumb} */}
+              
                 </section>
               )}
             </Dropzone>
-          </div>
+          </div> */}
 
           <button
+          style={{marginTop:"5rem"}}
             onClick={onSubmit}
             className="button button-primary"
             type="submit"
@@ -287,6 +307,9 @@ export default function LiveStreamForm({source, style}) {
           </button>
         </form>
       </div>
+    </div>}
+
     </div>
+    
   );
 }
