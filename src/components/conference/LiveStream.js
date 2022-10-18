@@ -66,7 +66,7 @@ export default function LiveStream() {
   return (
     <div>
       <h1>Add Live video streaming</h1>
-      <p className="caption-2-regular-gray3">
+      <p style={{marginTop:"1.6rem"}} className="caption-2-regular-gray3">
         Add Livestream to your online conference
       </p>
 
@@ -106,7 +106,7 @@ export default function LiveStream() {
       })}
 
       <h1>Resources</h1>
-      <p style={{lineHeight:"2rem"}} className="caption-2-regular-gray3">
+      <p style={{lineHeight:"2rem", width:"88%", marginTop:"1.6rem"}} className="caption-2-regular-gray3">
         Share any important details with your attendees before they join the
         event. These resources will be shared with the attendees only after they
         book for the conference.

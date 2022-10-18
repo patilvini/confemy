@@ -2,25 +2,13 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 const initialValues = {
-  link: "",
-  instructions: {},
-  // image: [],
-  // text: [],
-  // video: [],
-  // linkTitle: "",
-  // link2: "",
-  // document: [],
+
+  documents: [],
 };
 
 const validationSchema = yup.object({
-  link: yup.string().required("Please enter a URL to your session"),
-  instructions: yup.object(),
-  // image: yup.array().min(1).required("Please enter your cover Image"),
-  // text: yup.array(),
-  // video: yup.array(),
-  // linkTitle: yup.string(),
-  // link2: yup.string(),
-  // document: yup.array(),
+
+  document: yup.array(),
 });
 
 export default function AddDocument({ source, active }) {

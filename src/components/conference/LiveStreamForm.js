@@ -44,7 +44,17 @@ export default function LiveStreamForm({source, active}) {
 
   
   const onSubmit = (values, actions) => {
-    console.log("form on submit", formik.values);
+    console.log("form on submit", values);
+
+    const platformDetails = {
+      conferenceId: "634b88b1b8274401566f2cee",
+      meetingUrl:  values.link,
+      instructions: values.instructions,
+      platformName: source
+
+    }
+
+    console.log(platformDetails)
   };
 
   const onEditorStateChange = (state) => {
@@ -163,8 +173,8 @@ export default function LiveStreamForm({source, active}) {
           
 
           <button
-          style={{marginTop:"5rem"}}
-            onClick={onSubmit}
+          style={{margin:"5rem 0"}}
+            onClick={handleSubmit}
             className="button button-primary"
             type="submit"
           >
