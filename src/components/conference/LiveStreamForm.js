@@ -30,11 +30,12 @@ const validationSchema = yup.object({
   document: yup.array(),
 });
 
-export default function LiveStreamForm(props) {
+export default function LiveStreamForm({source, style}) {
   const [image, setImg] = useState([]);
   const [vid, setVid] = useState([]);
   const [fileD, setFile] = useState([]);
 
+  console.log(source?.name)
   const onSubmit = (values, actions) => {
     console.log("form on submit", values);
   };
@@ -104,19 +105,23 @@ export default function LiveStreamForm(props) {
   console.log(values);
 
   return (
-    <div style={props.style}>
-      <div>
-        <form autoComplete="off" onSubmit={handleSubmit}>
-          <h2>{props.source}</h2>
+    <div style={style}>
+      <div className="conf-form-wrap">
+        <form className="form-type-1" autoComplete="off" onSubmit={handleSubmit}>
+          <h2>{source?.name}</h2>
 
           <div>
-            <input
-              type="text"
-              placeholder="enter URL"
-              onChange={(e) => {
-                formik.setFieldValue("link", e.target.value);
-              }}
-            />
+          <div className="material-textfield">
+              <input
+                id="title"
+                type="text"
+                name="title"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                placeholder=" "
+              />
+              <label>Conference title*</label>
+            </div>
           </div>
           <div style={{ paddingTop: "10px" }}>
             <RichTextEditor
