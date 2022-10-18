@@ -120,7 +120,7 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
-              <Route path="test" element={<SelectTest />} />
+              <Route path="test" element={<OCreateConference />} />
               <Route path="test2" element={<RegisterForm />} />
               <Route
                 path="create-conference"

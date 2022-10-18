@@ -12,12 +12,11 @@ import * as yup from "yup";
 
 import "./conferDetails2.scss";
 import api from "../../utility/api";
-import RichTextEditor from "./RichTextEditor";
+// import RichTextEditor from "./RichTextEditor";
 import { useSelector } from "react-redux";
 import Modal from "../modal/Modal";
 import TextInput from "../formik/TextInput";
 import AddSpeaker from "./AddSpeaker";
-
 
 const initialValues = {
   bannerImage: [],
@@ -67,7 +66,6 @@ export default function ConfDetails2() {
     setVisibitly(true);
   }
 
-  
   const toggle = (i) => {
     if (clicked === i) {
       return setClicked(null);
@@ -107,7 +105,6 @@ export default function ConfDetails2() {
     getSpeaker();
     
   }, []);
-
 
   const onSubmit = async (values, actions) => {
     // console.log("form values form onSubmit", values);
@@ -203,15 +200,13 @@ export default function ConfDetails2() {
     <>
       <div className="conf-form-wrap">
         <form autoComplete="off" onSubmit={handleSubmit}>
-          <div>
-            
-          </div>
+          <div></div>
           <h2 className="mb-32">Banner Image</h2>
           <section>
             <div className="logo-upload-wrap">
               <div {...getRootProps({ className: "logo-dropzone" })}>
                 <input {...getInputProps()} />
-                
+
                 {thumbs}
               </div>
               <div className="logo-upload-textbox">
@@ -227,7 +222,7 @@ export default function ConfDetails2() {
               <h4>Description</h4>
             </label>
             <div>
-              <div style={{ padding: "2px", minHeight: "400px" }}>
+              {/* <div style={{ padding: "2px", minHeight: "400px" }}>
                 <RichTextEditor
                   onChange={(e) => {
                     formik.setFieldValue("description", e.blocks);
@@ -236,7 +231,7 @@ export default function ConfDetails2() {
                 {touched.description && Boolean(errors.description) && (
                   <TextError>{errors.description}</TextError>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           <div>
@@ -280,12 +275,12 @@ export default function ConfDetails2() {
             <label>
               <h4>Course Outline</h4>
             </label>
-            <RichTextEditor
+            {/* <RichTextEditor
               onChange={(e) => {
                 console.log(e);
                 formik.setFieldValue("courseOutline", e.blocks);
               }}
-            />
+            /> */}
             {touched.courseOutline && Boolean(errors.courseOutline) && (
               <TextError>{errors.courseOutline}</TextError>
             )}

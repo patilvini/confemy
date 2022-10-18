@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import api from "../../utility/api";
-import RichTextEditor from "./RichTextEditor";
+// import RichTextEditor from "./RichTextEditor";
 import { thumb, thumbInner, img } from "./conferenceDragdropUtils";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "../rich-text-editor/richTextEditor.styles.scss";
@@ -200,7 +200,7 @@ export default function LiveStreamForm({source, active}) {
               <h4>Text</h4>
             </label>
 
-            <RichTextEditor
+            {/* <RichTextEditor
               onChange={(e) => {
                 formik.setFieldValue("text", e.blocks);
               }}

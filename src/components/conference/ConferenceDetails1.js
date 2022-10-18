@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 
-import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
+// import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+// import { Editor } from "react-draft-wysiwyg";
 
 import * as yup from "yup";
 
@@ -14,9 +14,9 @@ import TextError from "../formik/TextError";
 
 import { professions, subspecialties } from "../../utility/commonUtil";
 
+import TextEditor from "../text-editor/TextEditor";
 import CancelIcon from "../icons/CancelIcon";
 import Switch from "./Switch";
-import RichTextEditor from "../rich-text-editor/RichTextEditor";
 
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import { alertAction } from "../../redux/alert/alertAction";
@@ -25,7 +25,7 @@ import api from "../../utility/api";
 
 import "./createConference.styles.scss";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import "../rich-text-editor/richTextEditor.styles.scss";
+import "../text-editor/textEditor.styles.scss";
 
 const validationSchema = yup.object().shape({
   professions: yup
@@ -81,7 +81,7 @@ const validationSchema = yup.object().shape({
 export default function ConferenceDetails1() {
   const [creditOptions, setcreditOptions] = useState([]);
 
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  // const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -89,7 +89,6 @@ export default function ConferenceDetails1() {
 
   async function onSubmit(values, actions) {
     if (newConference?.completedStep > 0) {
-      console.log("detials1 values", values);
       const {
         professions,
         specialities,
@@ -134,7 +133,6 @@ export default function ConferenceDetails1() {
         dispatch(alertAction(err.response.data.message, "danger"));
       }
     } else {
-      console.log("You need to complete step-1 first");
       dispatch(alertAction("Complete step-1 first", "danger"));
     }
   }
@@ -155,12 +153,14 @@ export default function ConferenceDetails1() {
     onSubmit: onSubmit,
   });
 
-  const onEditorStateChange = (state) => {
-    const forFormik = convertToRaw(editorState.getCurrentContent());
-    formik.setFieldValue("refundDescription", forFormik);
-    setEditorState(state);
-  };
+  // to capture changes in texteditor
+  // const onEditorStateChange = (state) => {
+  //   const forFormik = convertToRaw(editorState.getCurrentContent());
+  //   formik.setFieldValue("refundDescription", forFormik);
+  //   setEditorState(state);
+  // };
 
+  // load credit types from backend
   async function getCreditTypes() {
     try {
       const response = await api.get("conferences/credits");
@@ -195,7 +195,8 @@ export default function ConferenceDetails1() {
       // formik.setFieldValue("creditAmount", 0);
     }
   };
-  //  add tags button
+
+  //  add tags button onClick
   const addTags = () => {
     const match = formik.values.tags.includes(formik.values.tag);
     if ((formik.values.tag?.length > 0) & !match) {
@@ -203,16 +204,27 @@ export default function ConferenceDetails1() {
       formik.setFieldValue("tag", "");
     }
   };
+
+  // function to set formik field vlue for text editor
+
+  function formikSetFieldValue(fieldValue) {
+    formik.setFieldValue("refundDescription", fieldValue);
+  }
+
   useEffect(() => {
     getCreditTypes();
-    let blocks;
-    if (newConference.refundDescription) {
-      blocks = convertFromRaw(newConference.refundDescription);
-      // setEditorState(EditorState.createWithContent(blocks));
-      setEditorState(
-        EditorState.push(editorState, blocks, "update-contentState")
-      );
-    }
+    // let blocks;
+    // if (
+    //   newConference.refundDescription &&
+    //   Object.keys(newConference.refundDescription).length > 0
+    // ) {
+    //   console.log("refund Description", newConference.refundDescription);
+    //   blocks = convertFromRaw(newConference.refundDescription);
+    //   // setEditorState(EditorState.createWithContent(blocks));
+    //   setEditorState(
+    //     EditorState.push(editorState, blocks, "update-contentState")
+    //   );
+    // }
   }, []);
 
   console.log("formik", formik);
@@ -436,7 +448,7 @@ export default function ConferenceDetails1() {
               onChange={formik.handleChange}
             />
           </div>
-          <div
+          {/* <div
             className={`${formik.values.isRefundable ? "" : "display-none"}`}
           >
             <Editor
@@ -445,6 +457,15 @@ export default function ConferenceDetails1() {
               wrapperClassName="wrapper-class"
               editorClassName="editr-class"
               toolbarClassName="toolbar-class"
+            />
+          </div> */}
+
+          <div
+            className={`${formik.values.isRefundable ? "" : "display-none"}`}
+          >
+            <TextEditor
+              formikSetFieldValue={formikSetFieldValue}
+              apiRawContent={newConference?.refundDescription}
             />
           </div>
         </div>
