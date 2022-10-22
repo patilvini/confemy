@@ -19,18 +19,28 @@ import AddImage from "./AddImage";
 import AddVideo from "./AddVideo";
 import AddLink from "./AddLink";
 import { object } from "yup";
+import { useSelector } from "react-redux";
 
 export default function LiveStream() {
   const [activeTab, setActiveTab] = useState(null);
 
   const [activeRec, setActiveRec] = useState(null);
+  const conference = useSelector((state) => state.conference.newConference);
+  const links = [conference?.zoom, conference?.googleMeet, conference?.vimeo, conference?.youtube, conference?.facebook]
+  const resourceTabs = [conference?.resourceDocuments, conference?.resourceText, conference?.resourceImages, conference?.resourceVideos, conference?.resourceLinks]
+
+  const buttonClasses = [
+    "livestream-button",
+    "livestream-active",
+    "livestream-done",
+  ];
 
   const tabs = [
-    { name: "Zoom", icon: <ZoomLogo /> },
-    { name: "Google Meet", icon: <GoogleMeetIcon /> },
-    { name: "Vimeo", icon: <VimeoIcon /> },
-    { name: "Youtube Live", icon: <YoutubeIcon /> },
-    { name: "Facebook", icon: <FacebookIcon /> },
+    { name: "Zoom", icon: <ZoomLogo />, platform: "zoom", class:{}},
+    { name: "Google Meet", icon: <GoogleMeetIcon />, platform: "googleMeet", class:{}},
+    { name: "Vimeo", icon: <VimeoIcon />, platform: "vimeo", },
+    { name: "Youtube Live", icon: <YoutubeIcon />, platform: "youtube", class:{}},
+    { name: "Facebook", icon: <FacebookIcon />, platform: "facebook", class:{}},
   ];
 
   const recs = ["Files", "Text", "Image", "Video", "Link"];
@@ -66,7 +76,7 @@ export default function LiveStream() {
   return (
     <div>
       <h1>Add Live video streaming</h1>
-      <p style={{marginTop:"1.6rem"}} className="caption-2-regular-gray3">
+      <p style={{ marginTop: "1.6rem" }} className="caption-2-regular-gray3">
         Add Livestream to your online conference
       </p>
 
@@ -75,7 +85,7 @@ export default function LiveStream() {
           return (
             <div key={index}>
               <button
-                className="buttons-livestream"
+                className={activeTab === item.name ? "livestream-active" : (links[index] ? "livestream-done" : "livestream-button")}
                 onClick={() => {
                   if (activeTab === null) {
                     setActiveTab(item.name);
@@ -99,14 +109,21 @@ export default function LiveStream() {
         return (
           <div key={index}>
             <div>
-              <LiveStreamForm active={activeTab} source={item.name} />
+              <LiveStreamForm
+                active={activeTab}
+                source={item.name}
+                platform={item.platform}
+              />
             </div>
           </div>
         );
       })}
 
       <h1>Resources</h1>
-      <p style={{lineHeight:"2rem", width:"88%", marginTop:"1.6rem"}} className="caption-2-regular-gray3">
+      <p
+        style={{ lineHeight: "2rem", width: "88%", marginTop: "1.6rem" }}
+        className="caption-2-regular-gray3"
+      >
         Share any important details with your attendees before they join the
         event. These resources will be shared with the attendees only after they
         book for the conference.
@@ -117,7 +134,7 @@ export default function LiveStream() {
           return (
             <div key={index}>
               <button
-                className="buttons-livestream"
+                className={activeRec === item.name ? "livestream-active" :  (resourceTabs[index] ? "livestream-done" : "livestream-button")}
                 onClick={() => {
                   if (activeRec === null) {
                     setActiveRec(item.name);

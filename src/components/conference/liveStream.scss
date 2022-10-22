@@ -1,18 +1,42 @@
-.buttons-livestream{
-    // padding:0rem;
-    margin:  5rem  6.8rem  8rem  0rem;
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
-    border: 1px;
-    background-color: #ecf0f2;
-    
+@import "../../utility/utility.styles.scss";
+
+@mixin livestream-button{
+  margin:  5rem  6.8rem  8rem  0rem;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: $shade-2;
+  border: none
+
+ 
+}
+
+.livestream-button{
+   @include livestream-button;
+
+   &:hover{
+
+    background-color: #d1d3d4;
+  }
 
 }
 
-.buttons-livestream:hover{
-    background-color: #ecf4f4;
+
+
+.livestream-active{
+  @include livestream-button;
+  border: 2px solid $primary;
 }
+
+.livestream-done{
+  @include livestream-button;
+  border: 2px solid $accent;
+}
+
+
+
+
+
 
 
 
@@ -48,4 +72,151 @@
 
   .flex-item{
     padding: 1.5rem
+  }
+
+
+  .dzu-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-end;
+    width: 100%;
+    min-height: 15rem;
+    background-color: $shade-2;
+    // overflow: scroll;
+    margin: 5rem auto;
+    position: relative;
+    box-sizing: border-box;
+    transition: all .15s linear;
+    // border: 2px solid #d9d9d9;
+    border-radius: 4px;
+  }
+  
+  .dzu-dropzoneActive {
+    background-color: $shade-2;
+    border-color: $primary;
+  }
+  
+  .dzu-dropzoneDisabled {
+    opacity: 0.5;
+  }
+  
+  .dzu-dropzoneDisabled *:hover {
+    cursor: unset;
+  }
+  
+  .dzu-input {
+    display: none;
+  }
+  
+  .dzu-inputLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-family: avenir;
+    font-size: 25px;
+    font-weight: 600;
+    color: $primary;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+  }
+  
+  .dzu-inputLabelWithFiles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    padding: 10px 18px;
+    min-height: 32px;
+    background-color: $primary;
+    color: white;
+    border: none;
+    font-family: avenir;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-left: 3%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+  }
+  
+  .dzu-previewContainer {
+    padding: 40px 3%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    min-height: 60px;
+    z-index: 1;
+    border-bottom: 1px solid #b4b4b4;
+    box-sizing: border-box;
+  }
+  
+  .dzu-previewStatusContainer {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dzu-previewFileName {
+    font-family: avenir;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333333;
+    
+    
+  }
+  
+  .dzu-previewImage {
+    width: auto;
+    max-height: 120px;
+  
+    border-radius: 4px;
+  }
+  
+  .dzu-previewButton {
+    background-size: 14px 14px;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    opacity: 0.9;
+    margin: 0 0 2px 10px;
+  }
+  
+  .dzu-submitButtonContainer {
+    margin: 24px 0 24px 0;
+    z-index: 1;
+  }
+  
+  .dzu-submitButton {
+    margin: 0 2rem;
+  
+    padding: 10px 20px;
+    min-height: 32px;
+    background-color: $accent;
+    border: none;
+    border-radius: 4px;
+    font-family: avenir;
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFF;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+  }
+  
+  .dzu-submitButton:disabled {
+    background-color: #E6E6E6;
+    color: #333333;
+    cursor: unset;
   }

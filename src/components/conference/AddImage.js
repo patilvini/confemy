@@ -1,75 +1,153 @@
 import { useFormik } from "formik";
+import { useState } from "react";
+import { useDropzone } from "react-dropzone";
+import Dropzone from "react-dropzone-uploader";
+import Carousel from "react-multi-carousel";
+import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
+import { createConferenceAction } from "../../redux/conference/conferenceAction";
+import api from "../../utility/api";
+// import "react-dropzone-uploader/dist/styles.css";
 
-const initialValues = {
-    link: "",
-    instructions: {},
-    // image: [],
-    // text: [],
-    // video: [],
-    // linkTitle: "",
-    // link2: "",
-    // document: [],
+export default function AddImage({ source, active }) {
+  const dispatch = useDispatch();
+  const conference = useSelector((state) => state.conference.newConference);
+  console.log(conference);
+  const conferenceId = useSelector(
+    (state) => state.conference.newConference._id
+  );
+  
+
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 300 },
+      items: 1,
+      slidesToSlide: 1, // optional, default to 1.
+    },
   };
 
-  const validationSchema = yup.object({
-    link: yup.string().required("Please enter a URL to your session"),
-    instructions: yup.object(),
-    // image: yup.array().min(1).required("Please enter your cover Image"),
-    // text: yup.array(),
-    // video: yup.array(),
-    // linkTitle: yup.string(),
-    // link2: yup.string(),
-    // document: yup.array(),
-  });
+  const deleteRec = async (key) => {
+    console.log(key)
+    try {
+      const r = await api.delete(
+        "/conferences/"+conferenceId+"/deleteFiles?fileDeleteType=resourceImages",
+        {data:{
+          fileDeleteDetails: {
+            Key: key,
+          },
+        }}
+      );
 
+      console.log(r);
+      dispatch(createConferenceAction(r.data.data.conference));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-export default function AddImage ({source, active}){
+  const handleChangeStatus = ({ meta, file }, status) => {
+    console.log(status, meta, file);
+  };
 
-    const onSubmit = (values, actions) => {
-        console.log("form on submit", formik.values);
-      };
-    const formik = useFormik({
-        initialValues,
-        validationSchema,
-        onSubmit,
-      });
-      const {
-        errors,
-        touched,
-        values,
-        isSubmitting,
-        handleSubmit,
-        getFieldProps,
-        handleChange,
-      } = formik;
+  const handleSubmit = async (files, allFiles) => {
+    console.log(
+      "form on submit",
+      files.map((f) => f.meta)
+    );
+    const reader = new FileReader();
 
-      
+    reader.readAsDataURL(files[0].file);
 
+    const resourceImages = {
+      resourceImages: {
+        data: [],
+        conferenceId: "634b88b1b8274401566f2cee",
+      },
+    };
 
-    return(
+    console.log(files);
+
+    if (files.length > 0) {
+      const formDataObj = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formDataObj.append("file", files[i].file);
+      }
+      try {
+        const imagesResponse = await api.post("fileUploads", formDataObj);
+        console.log("images upload response", imagesResponse);
+        if (imagesResponse) {
+          resourceImages.resourceImages.data = imagesResponse.data.data;
+          console.log("formData", files.length, resourceImages);
+          const response = await api.post(
+            "/conferences/step4/resources?resourceStatus=images",
+            {
+              resourceImages: {
+                data: resourceImages.resourceImages.data,
+              },
+              conferenceId: conferenceId,
+            }
+          );
+          console.log(response);
+          if (response) {
+            dispatch(createConferenceAction(response.data.data.conference));
+            allFiles.forEach((f) => f.remove());
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  return (
+    <div>
+      {active === source && (
         <div>
-           {source === active && <div>
+          {conference?.resourceImages?.length > 0 && (
+            <div>
+              <h1>Added Images</h1>
+              <div className="mb-40 mt-40" style={{ width: "60rem" }}>
+                {conference.resourceImages.map((item, index) => {
+                  console.log(item)
+                  return (
+                    <div className="opposite-grid" key={index}>
+                      <img
+                        width="100%"
+                        src={item.Location}
+                        alt={"carousel-images"}
+                      />
 
-            <form
-          className="form-type-1"
-          autoComplete="off"
-          onSubmit={handleSubmit}
-        >
+                      <div style={{alignSelf:"center"}}>
+                        <button 
+                       
+                          className="button button-red ml-40"
+                          onClick={() => deleteRec(item.Key)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
-<button type="submit" className="button button-primary">Submit</button>
-        
+          <h1>Add Images</h1>
 
-            
-
-       
-            <label>
-              <h4>Image</h4>
-            </label>
-
-            </form>
-         
-          </div>}
+          <div>
+            <Dropzone
+              inputContent={"Upload images"}
+              inputWithFilesContent={"Add more"}
+              submitButtonContent={"Submit"}
+              onChangeStatus={handleChangeStatus}
+              onSubmit={handleSubmit}
+              styles={{ dropzone: { width: "100%" } }}
+              accept="image/*"
+            />
+          </div>
         </div>
-    )
+      )}
+    </div>
+  );
 }
