@@ -95,3 +95,59 @@
     }
   }
 }
+
+.details2-venue-wrap {
+  margin-bottom: 200px;
+}
+
+.details2-venue {
+  padding: 24px;
+  background-color: $colour-white;
+  margin-bottom: 32px;
+}
+
+.details2-image-dropzone {
+  width: 100%;
+  height: 356px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  // margin: 24px 222px 24px 79.5px;
+  // padding: 139px 331px 141px 334px;
+  border-radius: 8px;
+  background-color: $shade-2;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.details2-camera-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  padding: 11px 11px 11px 9px;
+  border-radius: 50%;
+  background-color: $colour-white;
+}
+
+.details2-camera-icon {
+  width: 32px;
+  height: 28px;
+  // width: 24px;
+  // height: 21px;
+}
+
+.add-speaker-button {
+  width: 388px;
+  height: 290px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ecf0f2;
+  display: "flex";
+  cursor: pointer;
+}

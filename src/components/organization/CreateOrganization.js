@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -77,7 +77,7 @@ export default function CreateOrganization() {
       formDataObj.append("file", logos[0]);
       try {
         const imagesResponse = await api.post("fileUploads", formDataObj);
-        console.log("images upload response", imagesResponse);
+        // console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           formData.organization.logo = imagesResponse.data.data;
           console.log("formData", logos.length, formData);
@@ -154,7 +154,7 @@ export default function CreateOrganization() {
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, []);
+  }, [files]);
 
   return (
     <div className="create-org-wrap">

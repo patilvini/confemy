@@ -11,9 +11,9 @@ export default function TextEditor(props) {
 
   // to capture changes in texteditor
   const onEditorStateChange = (state) => {
-    const forFormik = convertToRaw(editorState.getCurrentContent());
-    // props.formik.setFieldValue(props.fieldValue, forFormik);
-    props.formikSetFieldValue(forFormik);
+    const fieldValue = convertToRaw(editorState.getCurrentContent());
+    // props.formik.setFieldValue(props.fieldValue, fieldValue);
+    props.setFormikFieldValue(props.fieldName, fieldValue);
     setEditorState(state);
   };
 
@@ -27,14 +27,14 @@ export default function TextEditor(props) {
         EditorState.push(editorState, blocks, "update-contentState")
       );
     }
-  }, [props.apiRawContent]);
+  }, [props.apiRawContent, editorState]);
 
   return (
     <>
       <Editor
         editorState={editorState}
         onEditorStateChange={onEditorStateChange}
-        wrapperClassName="wrapper-class"
+        // wrapperClassName="wrapper-class"
         editorClassName="editr-class"
         toolbarClassName="toolbar-class"
       />
@@ -43,5 +43,7 @@ export default function TextEditor(props) {
 }
 
 TextEditor.propTypes = {
-  // setFieldValue: PropTypes.func.isRequired,
+  setFormikFieldValue: PropTypes.func.isRequired,
+  fieldName: PropTypes.string.isRequired,
+  apiRawContent: PropTypes.object,
 };

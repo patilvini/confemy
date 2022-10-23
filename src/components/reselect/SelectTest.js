@@ -94,6 +94,7 @@ export default function SelectTest() {
             formik.setFieldValue("organizationId", value?.value)
           }
           placeholder="Select organization"
+          noOptionsMessage={() => "Create New"}
         />
         <DatePicker
           selected={formik.values.startDate}

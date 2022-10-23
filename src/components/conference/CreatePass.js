@@ -90,7 +90,7 @@ export default function CreatePass() {
     try {
       const r = await api.post("/conferences/step5", { ticketDetails });
       console.log(r);
-      setVisibitly(false)
+      setVisibitly(false);
     } catch (err) {
       console.log(err);
     }
@@ -113,7 +113,7 @@ export default function CreatePass() {
           </thead>
 
           <tbody>
-            {tickets.map((item) => {
+            {tickets?.map((item) => {
               return (
                 <tr key={item._id}>
                   <td>{item.name}</td>

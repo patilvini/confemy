@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import CameraIcon from "../icons/CameraIcon";
 import { useDropzone } from "react-dropzone";
-import { thumb, thumbInner, img, loadOrganization } from "./organizationUtil";
+import { thumb, thumbInner, img } from "./organizationUtil";
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
 
 import "./createOrganization.styles.scss";

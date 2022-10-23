@@ -131,11 +131,11 @@ export default function ConfBasicInfo() {
         host,
         venue: {
           venueName,
-          state,
-          country,
-          city,
           street1,
           street2,
+          city,
+          state,
+          country,
         },
       },
     };
@@ -222,8 +222,7 @@ export default function ConfBasicInfo() {
   //   setFormData(conferenceData);
   // }, []);
 
-  console.log("formik", formik);
-  console.log(formik.errors.currency);
+  console.log("timezone", formik.values.timezone);
 
   return (
     <>
@@ -706,7 +705,7 @@ export default function ConfBasicInfo() {
               Cancel
             </button>
             <button type="submit" className="button button-primary">
-              Next
+              Save and Continue
             </button>
           </section>
         </form>

@@ -109,7 +109,7 @@ export default function SocialMedia({
               type="button"
               className="social-delete-button"
             >
-              <CloseIcon className="icon-size" />
+              <CloseIcon fill="#000" className="icon-size" />
             </button>
           ) : (
             <button
