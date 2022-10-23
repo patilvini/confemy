@@ -58,6 +58,19 @@
       border-color: #063449;
     }
   }
+
+  &.button-red {
+    background: $warning;
+    border-color: $warning;
+    &:hover {
+      background: $warning;
+      border-color: $warning;
+    }
+    &:active {
+      background-color: $warning;
+      border-color: $warning;
+    }
+  }
 }
 
 .button-text {

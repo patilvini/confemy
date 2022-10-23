@@ -6,7 +6,7 @@ import BookingCard from "./BookingCard";
 import SpeakerCard from "./SpeakerCard";
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import Slider from "react-slick";
+
 import LocationIcon from "../icons/LocationIcon";
 import Carousel from "react-multi-carousel";
 
