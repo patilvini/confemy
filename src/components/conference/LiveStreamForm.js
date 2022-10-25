@@ -2,7 +2,7 @@ import { useFormik, validateYupSchema } from "formik";
 
 import TextError from "../formik/TextError";
 import * as yup from "yup";
-
+import { alertAction } from "../../redux/alert/alertAction";
 import api from "../../utility/api";
 
 
@@ -72,14 +72,16 @@ export default function LiveStreamForm({ source, active, platform }) {
 
     try {
       const r = await api.post("/conferences/step4", { platformDetails });
-      console.log("added platform info", r);
-
+      // console.log("added platform info", r);
+      
       dispatch(createConferenceAction(r.data.data.conference));
+
+     
     } catch (err) {
-      console.error(err);
+      dispatch(alertAction(err.response.data.message, "danger"))
     }
 
-    // console.log(platformDetails)
+   
   };
 
   function formikSetFieldValue(fieldValue) {
@@ -103,7 +105,7 @@ export default function LiveStreamForm({ source, active, platform }) {
 
 
 
-  console.log(formik.values)
+  
   return (
     <div>
       {active === source && (
