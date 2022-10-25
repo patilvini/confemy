@@ -85,7 +85,7 @@ export default function LiveStream() {
           return (
             <div key={index}>
               <button
-                className={activeTab === item.name ? "livestream-active" : (links[index] ? "livestream-done" : "livestream-button")}
+                className={activeTab === item.name ? "livestream-active" : (links[index]?.meetingUrl ? "livestream-done" : "livestream-button")}
                 onClick={() => {
                   if (activeTab === null) {
                     setActiveTab(item.name);
@@ -134,7 +134,7 @@ export default function LiveStream() {
           return (
             <div key={index}>
               <button
-                className={activeRec === item.name ? "livestream-active" :  (resourceTabs[index] ? "livestream-done" : "livestream-button")}
+                className={activeRec === item.name ? "livestream-active" :  (resourceTabs[index]?.length> 0 || resourceTabs[index]?.blocks?.length>0 || resourceTabs[index][0]?.title.length > 0  ? "livestream-done" : "livestream-button")}
                 onClick={() => {
                   if (activeRec === null) {
                     setActiveRec(item.name);

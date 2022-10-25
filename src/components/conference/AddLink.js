@@ -1,13 +1,19 @@
-import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
+import { Formik, Form, Field, FieldArray, getIn } from "formik";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
+import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
 import TextError from "../formik/TextError";
 
 const validationSchema = yup.object({
-  links: yup.array(),
+  links: yup.array().of(
+    yup.object().shape({
+      title: yup.string().required("Please Add the title"),
+      url: yup.string().required("Please Add the URL"),
+    })
+  ),
 });
 
 export default function AddLink({ source, active }) {
@@ -17,10 +23,10 @@ export default function AddLink({ source, active }) {
     (state) => state.conference.newConference._id
   );
   const conference = useSelector((state) => state.conference.newConference);
-  // console.log(conference.resourceLinks)
+  // console.log(conference);
 
   let initialValues = {
-    links: conference?.resourceLinks || [{ title: "", url: "" }],
+    links: conference?.resourceLinks.length > 0 ? conference?.resourceLinks : [{ title: "", url: "" }],
   };
 
   const onDelete = async () => {
@@ -29,7 +35,7 @@ export default function AddLink({ source, active }) {
         "/conferences/step4/resources?resourceStatus=links",
         {
           resourceLinks: {
-            links: [{ title: "", url: "" }],
+            links: [],
           },
           conferenceId: conferenceId,
         }
@@ -38,12 +44,12 @@ export default function AddLink({ source, active }) {
       console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
     } catch (err) {
-      console.error(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
   const onSubmit = async (values, actions) => {
-    console.log("form on submit", values);
+    // console.log("form on submit", values);
 
     const resourceLinks = {
       links: values.links,
@@ -104,9 +110,22 @@ export default function AddLink({ source, active }) {
                             />
                             <label>Enter title here</label>
                           </div>
-                          {/* {arrayHelpers.touched.link && Boolean(arrayHelpers.errors.link) && (
-            <TextError>{arrayHelpers.errors.link}</TextError>
-          )} */}
+                          <div style={{ color: "red", fontSize:"1.2rem" }}>
+                            <Field
+                              name={`links[${index}.title]`}
+                              render={({ form }) => {
+                                const error = getIn(
+                                  form.errors,
+                                  `links[${index}.title]`
+                                );
+                                const touch = getIn(
+                                  form.touched,
+                                  `links[${index}.title]`
+                                );
+                                return touch && error ? error : null;
+                              }}
+                            />
+                          </div>
                         </div>
                         <div>
                           <div className="material-textfield">
@@ -118,9 +137,22 @@ export default function AddLink({ source, active }) {
                             />
                             <label>Enter url here</label>
                           </div>
-                          {/* {arrayHelpers.touched.link && Boolean(arrayHelpers.errors.link) && (
-            <TextError>{arrayHelpers.errors.link}</TextError>
-          )} */}
+                          <div style={{ color: "red", fontSize:"1.2rem" }}>
+                            <Field
+                              name={`links[${index}.url]`}
+                              render={({ form }) => {
+                                const error = getIn(
+                                  form.errors,
+                                  `links[${index}.url]`
+                                );
+                                const touch = getIn(
+                                  form.touched,
+                                  `links[${index}.url]`
+                                );
+                                return touch && error ? error : null;
+                              }}
+                            />
+                          </div>
                         </div>
 
                         <div
@@ -132,7 +164,11 @@ export default function AddLink({ source, active }) {
                             className="button button-red "
                             type="button"
                             onClick={() => {
+<<<<<<< HEAD
                               // console.log(arrayHelpers.form.values.links.length)
+=======
+                              // console.log(arrayHelpers);
+>>>>>>> pranit
 
                               if (arrayHelpers.form.values.links.length > 1) {
                                 arrayHelpers.remove(index);
@@ -146,7 +182,11 @@ export default function AddLink({ source, active }) {
                             className="button button-green "
                             type="button"
                             onClick={() => {
+<<<<<<< HEAD
                               console.log(arrayHelpers.form.values);
+=======
+                              // console.log(arrayHelpers.form.values);
+>>>>>>> pranit
                               arrayHelpers.push({ title: "", url: "" });
                             }}
                           >

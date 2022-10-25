@@ -5,138 +5,11 @@ import Dropzone from "react-dropzone-uploader";
 import Carousel from "react-multi-carousel";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
+import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
 
 export default function AddDocument({ source, active }) {
-  // const [files, setFiles] = useState([]);
-  // const conferenceId = useSelector(
-  //   (state) => state.conference.newConference._id
-  // );
-
-  // const onSubmit = async (values, actions) => {
-  //   console.log("form on submit", values);
-
-  //   const { documents } = values;
-
-  //   const resourceDocs = {
-
-  //       data: [],
-
-  //     conferenceId: conferenceId,
-  //   };
-
-  //   if (documents.length > 0) {
-  //     const formDataObj = new FormData();
-
-  //     for (let i = 0; i < documents.length; i++) {
-  //       formDataObj.append("file", documents[i]);
-  //     }
-
-  //     try {
-  //       const imagesResponse = await api.post("fileUploads", formDataObj);
-  //       console.log("images upload response", imagesResponse);
-  //       if (imagesResponse) {
-  //         resourceDocs.data = imagesResponse.data.data;
-  //         console.log("formData", documents.length, resourceDocs);
-  //         const response = await api.post(
-  //           "/conferences/step4/resources?resourceStatus=documents",
-  //           {
-  //             resourceDocs: {data: resourceDocs.data},
-  //             conferenceId
-  //           }
-  //         );
-  //         console.log(response);
-  //         if (response) {
-  //           actions.resetForm({ values: initialValues });
-  //           setFiles([]);
-  //           // navigate("/dashboard/my-organizations");
-  //         }
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //       actions.setFieldError("documents", err.response?.data.message);
-  //     }
-  //   } else {
-  //     console.log("else");
-
-  //     try {
-  //       const response = await api.post(
-  //         "/conferences/step4/resources?resourceStatus=documents",
-  //         {
-  //           resourceDocs: {
-  //             data: resourceDocs.data,
-  //           },
-  //           conferenceId: conferenceId,
-  //         }
-  //       );
-  //       console.log(response);
-  //       if (response) {
-  //         actions.resetForm({ values: initialValues });
-  //         setFiles([]);
-  //         // navigate("/dashboard/my-organizations");
-  //       }
-  //     } catch (err) {
-  //       if (err) {
-  //         actions.setFieldError("documents", err.response?.data.message);
-  //       }
-  //     }
-  //   }
-  // };
-
-  // const { getRootProps, getInputProps } = useDropzone({
-  //   accept: {
-  //     "image/*": [".docx", ".pdf"],
-  //   },
-  //   maxFiles: 4,
-  //   onDrop: (acceptedFiles) => {
-  //     formik.setFieldValue("documents", values.documents.concat(acceptedFiles));
-  //   },
-  // });
-
-  // const formik = useFormik({
-  //   initialValues,
-  //   validationSchema,
-  //   onSubmit,
-  // });
-  // const {
-  //   errors,
-  //   touched,
-  //   values,
-  //   isSubmitting,
-  //   handleSubmit,
-  //   getFieldProps,
-  //   handleChange,
-  // } = formik;
-
-  // return (
-  //   <div>
-  //     {active === source && (
-  //       <form
-  //         className="form-type-1"
-  //         autoComplete="off"
-  //         onSubmit={handleSubmit}
-  //       >
-  //         <h1>Add Documents</h1>
-  //         <div className="logo-upload-wrap">
-  //           <div {...getRootProps({ className: "file-dropzone" })}>
-  //             <input {...getInputProps()} />
-  //           </div>
-  //           <div className="logo-upload-textbox">
-  //             <span>Drag and drop your Document here or</span>
-  //             <span>Browse</span>
-  //             <span>to choose a file</span>
-  //           </div>
-  //         </div>
-
-  //         <button type="submit" className="button button-primary">
-  //           Submit
-  //         </button>
-  //       </form>
-  //     )}
-  //   </div>
-  // );
-
   const dispatch = useDispatch();
   const conference = useSelector((state) => state.conference.newConference);
   // console.log(conference);
@@ -153,7 +26,7 @@ export default function AddDocument({ source, active }) {
   };
 
   const handleChangeStatus = ({ meta, file }, status) => {
-    console.log(status, meta, file);
+    // console.log(status, meta, file);
   };
 
   const deleteRec = async (key) => {
@@ -179,13 +52,13 @@ export default function AddDocument({ source, active }) {
   };
 
   const handleSubmit = async (files, allFiles) => {
-    console.log(
-      "form on submit",
-      files.map((f) => f.meta)
-    );
-    const reader = new FileReader();
+    // console.log(
+    //   "form on submit",
+    //   files.map((f) => f.meta)
+    // );
+    // const reader = new FileReader();
 
-    reader.readAsDataURL(files[0].file);
+    // reader.readAsDataURL(files[0].file);
 
     const resourceDocuments = {
       resourceDocuments: {
@@ -194,8 +67,6 @@ export default function AddDocument({ source, active }) {
       },
     };
 
-    console.log(files);
-
     if (files.length > 0) {
       const formDataObj = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -203,10 +74,18 @@ export default function AddDocument({ source, active }) {
       }
       try {
         const imagesResponse = await api.post("fileUploads", formDataObj);
-        console.log("images upload response", imagesResponse);
+        // console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceDocuments.resourceDocuments.data = imagesResponse.data.data;
-          console.log("formData", files.length, resourceDocuments);
+          if (conference?.resourceImages.length > 0) {
+            for (let i = 0; i < conference?.resourceDocuments.length; i++) {
+              resourceDocuments.resourceDocuments.data.push(
+                conference?.resourceDocuments[i]
+              );
+            }
+          }
+
+          // console.log("formData", files.length, resourceDocuments);
           const response = await api.post(
             "/conferences/step4/resources?resourceStatus=documents",
             {
@@ -217,14 +96,14 @@ export default function AddDocument({ source, active }) {
             }
           );
 
-          console.log(response);
+          // console.log(response);
           if (response) {
             dispatch(createConferenceAction(response.data.data.conference));
             allFiles.forEach((f) => f.remove());
           }
         }
       } catch (err) {
-        console.log(err);
+        dispatch(alertAction(err.response.data.message, "danger"));
       }
     }
   };

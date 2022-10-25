@@ -5,6 +5,7 @@ import Dropzone from "react-dropzone-uploader";
 import Carousel from "react-multi-carousel";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
+import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
 // import "react-dropzone-uploader/dist/styles.css";
@@ -12,7 +13,7 @@ import api from "../../utility/api";
 export default function AddVideo({ source, active }) {
   const dispatch = useDispatch();
   const conference = useSelector((state) => state.conference.newConference);
-  // console.log(conference);
+  // console.log(conference)
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
   );
@@ -26,7 +27,7 @@ export default function AddVideo({ source, active }) {
   };
 
   const handleChangeStatus = ({ meta, file }, status) => {
-    console.log(status, meta, file);
+    // console.log(status, meta, file);
   };
 
   const deleteRec = async (key) => {
@@ -45,7 +46,7 @@ export default function AddVideo({ source, active }) {
         }
       );
 
-      console.log(r);
+      // console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
     } catch (err) {
       console.error(err);
@@ -53,15 +54,22 @@ export default function AddVideo({ source, active }) {
   };
 
   const handleSubmit = async (files, allFiles) => {
+<<<<<<< HEAD
     console.log(
       "form on submit",
       files.map((f) => f.meta)
     );
     const reader = new FileReader();
+=======
+   
+    // console.log("form on submit", files.map((f) => f.meta));
+    // const reader = new FileReader();
+>>>>>>> pranit
 
-    reader.readAsDataURL(files[0].file);
+    // reader.readAsDataURL(files[0].file);
 
     const resourceVideos = {
+<<<<<<< HEAD
       resourceVideos: {
         data: [],
         conferenceId: "634b88b1b8274401566f2cee",
@@ -100,6 +108,55 @@ export default function AddVideo({ source, active }) {
         console.log(err);
       }
     }
+=======
+          resourceVideos: {
+            data: [],
+            conferenceId:"634b88b1b8274401566f2cee"
+          },
+        };
+
+        // console.log(files)
+
+      
+
+
+        if (files.length > 0) {
+              const formDataObj = new FormData();
+              for (let i=0; i<files.length; i++){
+                formDataObj.append("file", files[i].file);
+              }
+              try {
+                const imagesResponse = await api.post("fileUploads", formDataObj);
+                // console.log("images upload response", imagesResponse);
+                if (imagesResponse) {
+                  resourceVideos.resourceVideos.data = imagesResponse.data.data;
+                  if(conference?.resourceImages.length > 0){
+                    for( let i= 0; i < conference?.resourceVideos.length; i++){
+                      resourceVideos.resourceVideos.data.push(conference?.resourceVideos[i])
+                    }
+                  }
+                  // console.log("formData", files.length, resourceVideos);
+                  const response = await api.post("/conferences/step4/resources?resourceStatus=videos", {
+                    resourceVideos  : {
+                        data: resourceVideos.resourceVideos.data
+        
+                    },
+                    conferenceId: conferenceId
+                } );
+                  // console.log(response);
+                  if (response) {
+                    dispatch(createConferenceAction(response.data.data.conference));
+                  allFiles.forEach(f => f.remove());
+          
+                  }
+                }
+              } catch (err) {
+                dispatch(alertAction(err.response.data.message, "danger"))
+              }
+            } 
+
+    
+>>>>>>> pranit
   };
 
   return (

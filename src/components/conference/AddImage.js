@@ -5,6 +5,7 @@ import Dropzone from "react-dropzone-uploader";
 import Carousel from "react-multi-carousel";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
+import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
 // import "react-dropzone-uploader/dist/styles.css";
@@ -17,13 +18,7 @@ export default function AddImage({ source, active }) {
     (state) => state.conference.newConference._id
   );
 
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 300 },
-      items: 1,
-      slidesToSlide: 1, // optional, default to 1.
-    },
-  };
+  // console.log(conference?.resourceImages)
 
   const deleteRec = async (key) => {
     console.log(key);
@@ -41,25 +36,25 @@ export default function AddImage({ source, active }) {
         }
       );
 
-      console.log(r);
+      // console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
     } catch (err) {
-      console.error(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
   const handleChangeStatus = ({ meta, file }, status) => {
-    console.log(status, meta, file);
+    // console.log(status, meta, file);
   };
 
   const handleSubmit = async (files, allFiles) => {
-    console.log(
-      "form on submit",
-      files.map((f) => f.meta)
-    );
-    const reader = new FileReader();
+    // console.log(
+    //   "form on submit",
+    //   files.map((f) => f.meta)
+    // );
+    // const reader = new FileReader();
 
-    reader.readAsDataURL(files[0].file);
+    // reader.readAsDataURL(files[0].file);
 
     const resourceImages = {
       resourceImages: {
@@ -68,7 +63,7 @@ export default function AddImage({ source, active }) {
       },
     };
 
-    console.log(files);
+    // console.log(files);
 
     if (files.length > 0) {
       const formDataObj = new FormData();
@@ -80,7 +75,14 @@ export default function AddImage({ source, active }) {
         console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceImages.resourceImages.data = imagesResponse.data.data;
-          console.log("formData", files.length, resourceImages);
+          if (conference?.resourceImages.length > 0) {
+            for (let i = 0; i < conference?.resourceImages.length; i++) {
+              resourceImages.resourceImages.data.push(
+                conference?.resourceImages[i]
+              );
+            }
+          }
+          // console.log("formData", files.length, resourceImages);
           const response = await api.post(
             "/conferences/step4/resources?resourceStatus=images",
             {
@@ -90,14 +92,14 @@ export default function AddImage({ source, active }) {
               conferenceId: conferenceId,
             }
           );
-          console.log(response);
+          // console.log(response);
           if (response) {
             dispatch(createConferenceAction(response.data.data.conference));
             allFiles.forEach((f) => f.remove());
           }
         }
       } catch (err) {
-        console.log(err);
+        dispatch(alertAction(err.response.data.message, "danger"));
       }
     }
   };
@@ -111,7 +113,7 @@ export default function AddImage({ source, active }) {
               <h1>Added Images</h1>
               <div className="mb-40 mt-40" style={{ width: "60rem" }}>
                 {conference.resourceImages.map((item, index) => {
-                  console.log(item);
+                  // console.log(item)
                   return (
                     <div className="opposite-grid" key={index}>
                       <img

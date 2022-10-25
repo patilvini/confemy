@@ -2,7 +2,7 @@ import { useFormik, validateYupSchema } from "formik";
 
 import TextError from "../formik/TextError";
 import * as yup from "yup";
-
+import { alertAction } from "../../redux/alert/alertAction";
 import api from "../../utility/api";
 
 
@@ -13,11 +13,13 @@ import TextEditor from "../text-editor/TextEditor";
 
 const validationSchema = yup.object({
   link: yup.string().required("Please enter a URL to your session"),
-  instructions: yup.object(),
+  instructions: yup.object()
   
 });
 
 export default function LiveStreamForm({ source, active, platform }) {
+
+  
 
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
@@ -31,6 +33,8 @@ export default function LiveStreamForm({ source, active, platform }) {
     instructions: conference[platform]?.instructions || {},
   };
 
+  
+
   const onDelete = async () => {
 
     const platformDetails = {
@@ -41,16 +45,20 @@ export default function LiveStreamForm({ source, active, platform }) {
     };
 
       try {
-        const r = await api.post("/conferences/step4", {platformDetails});
+        const r = await api.patch("/conferences/"+conferenceId+"?deleteType="+ platform);
         console.log("added platform info", r);
   
+
         dispatch(createConferenceAction(r.data.data.conference));
+        formik.setFieldValue("link", "")
+        formik.setFieldValue("instructions", {})
       } catch (err) {
         console.error(err);
       }
 
     
   }
+ 
 
   const onSubmit = async (values, actions) => {
     console.log("form on submit", values);
@@ -64,18 +72,20 @@ export default function LiveStreamForm({ source, active, platform }) {
 
     try {
       const r = await api.post("/conferences/step4", { platformDetails });
-      console.log("added platform info", r);
-
+      // console.log("added platform info", r);
+      
       dispatch(createConferenceAction(r.data.data.conference));
+
+     
     } catch (err) {
-      console.error(err);
+      dispatch(alertAction(err.response.data.message, "danger"))
     }
 
-    // console.log(platformDetails)
+   
   };
 
   function formikSetFieldValue(fieldValue) {
-    formik.setFieldValue("instruction", fieldValue);
+    formik.setFieldValue("instructions", fieldValue);
   }
 
   const formik = useFormik({
@@ -95,6 +105,7 @@ export default function LiveStreamForm({ source, active, platform }) {
 
 
 
+  
   return (
     <div>
       {active === source && (
