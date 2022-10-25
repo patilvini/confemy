@@ -180,9 +180,9 @@ export default function AddDocument({ source, active }) {
       "form on submit",
       files.map((f) => f.meta)
     );
-    const reader = new FileReader();
+    // const reader = new FileReader();
 
-    reader.readAsDataURL(files[0].file);
+    // reader.readAsDataURL(files[0].file);
 
     const resourceDocuments = {
       resourceDocuments: {
@@ -203,6 +203,12 @@ export default function AddDocument({ source, active }) {
         console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceDocuments.resourceDocuments.data = imagesResponse.data.data;
+          if(conference?.resourceImages.length > 0){
+            for( let i= 0; i < conference?.resourceDocuments.length; i++){
+              resourceDocuments.resourceDocuments.data.push(conference?.resourceDocuments[i])
+            }
+          }
+
           console.log("formData", files.length, resourceDocuments);
           const response = await api.post(
             "/conferences/step4/resources?resourceStatus=documents",

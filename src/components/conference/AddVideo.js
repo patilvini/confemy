@@ -81,6 +81,11 @@ export default function AddVideo({ source, active }) {
                 console.log("images upload response", imagesResponse);
                 if (imagesResponse) {
                   resourceVideos.resourceVideos.data = imagesResponse.data.data;
+                  if(conference?.resourceImages.length > 0){
+                    for( let i= 0; i < conference?.resourceVideos.length; i++){
+                      resourceVideos.resourceVideos.data.push(conference?.resourceVideos[i])
+                    }
+                  }
                   console.log("formData", files.length, resourceVideos);
                   const response = await api.post("/conferences/step4/resources?resourceStatus=videos", {
                     resourceVideos  : {

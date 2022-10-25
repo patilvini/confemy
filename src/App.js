@@ -59,6 +59,7 @@ import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
 import EditorContainer from "./components/conference/EditorContainer";
 import SelectTest from "./components/reselect/SelectTest";
 import RegisterForm from "./components/reselect/RegisterForm";
+import PNavbar from "./components/navbar/PNavbar";
 
 const App = () => {
   useEffect(() => {
@@ -69,7 +70,7 @@ const App = () => {
     <PersistGate persistor={persistor}>
       <Fragment>
         <BrowserRouter>
-          <Navbar />
+          <PNavbar />
           <Alert />
           <Routes>
             <Route path="/" element={<HomePage />}></Route>

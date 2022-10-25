@@ -18,13 +18,7 @@ export default function AddImage({ source, active }) {
   );
   
 
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 300 },
-      items: 1,
-      slidesToSlide: 1, // optional, default to 1.
-    },
-  };
+  console.log(conference?.resourceImages)
 
   const deleteRec = async (key) => {
     console.log(key)
@@ -50,13 +44,14 @@ export default function AddImage({ source, active }) {
   };
 
   const handleSubmit = async (files, allFiles) => {
+    console.log()
     console.log(
       "form on submit",
       files.map((f) => f.meta)
     );
-    const reader = new FileReader();
+    // const reader = new FileReader();
 
-    reader.readAsDataURL(files[0].file);
+    // reader.readAsDataURL(files[0].file);
 
     const resourceImages = {
       resourceImages: {
@@ -77,6 +72,11 @@ export default function AddImage({ source, active }) {
         console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceImages.resourceImages.data = imagesResponse.data.data;
+          if(conference?.resourceImages.length > 0){
+            for( let i= 0; i < conference?.resourceImages.length; i++){
+              resourceImages.resourceImages.data.push(conference?.resourceImages[i])
+            }
+          }
           console.log("formData", files.length, resourceImages);
           const response = await api.post(
             "/conferences/step4/resources?resourceStatus=images",

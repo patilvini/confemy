@@ -94,9 +94,9 @@ export default function AuthDropdown() {
   };
 
   return (
-    <div style={{ height: "100%" }} ref={ref}>
+    <div ref={ref}>
       <div
-        className="user-name-wrapper"
+        className="user-name-wrapper mr-20"
         onClick={onDropdownClick}
         // onMouseEnter={() => setOpenAuthDropdown(true)}
         // onMouseLeave={() => setOpenAuthDropdown(false)}
