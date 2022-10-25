@@ -139,7 +139,7 @@ export default function AddDocument({ source, active }) {
 
   const dispatch = useDispatch();
   const conference = useSelector((state) => state.conference.newConference);
-  console.log(conference);
+  // console.log(conference);
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
   );
@@ -157,15 +157,18 @@ export default function AddDocument({ source, active }) {
   };
 
   const deleteRec = async (key) => {
- 
     try {
       const r = await api.delete(
-        "/conferences/"+conferenceId+"/deleteFiles?fileDeleteType=resourceDocuments",
-        {data:{
-          fileDeleteDetails: {
-            Key: key,
+        "/conferences/" +
+          conferenceId +
+          "/deleteFiles?fileDeleteType=resourceDocuments",
+        {
+          data: {
+            fileDeleteDetails: {
+              Key: key,
+            },
           },
-        }}
+        }
       );
 
       console.log(r);
@@ -208,13 +211,12 @@ export default function AddDocument({ source, active }) {
             "/conferences/step4/resources?resourceStatus=documents",
             {
               resourceDocs: {
-                data: resourceDocuments.resourceDocuments.data ,
+                data: resourceDocuments.resourceDocuments.data,
               },
               conferenceId: conferenceId,
             }
           );
 
-          
           console.log(response);
           if (response) {
             dispatch(createConferenceAction(response.data.data.conference));
@@ -239,10 +241,11 @@ export default function AddDocument({ source, active }) {
                 {conference.resourceDocuments.map((item, index) => {
                   return (
                     <div className="opposite-grid" key={index}>
-                      <a href={item.Location}><h3>Document {index + 1}</h3></a>
-                      <div style={{alignSelf:"center"}}>
-                        <button 
-                       
+                      <a href={item.Location}>
+                        <h3>Document {index + 1}</h3>
+                      </a>
+                      <div style={{ alignSelf: "center" }}>
+                        <button
                           className="button button-red ml-40"
                           onClick={() => deleteRec(item.Key)}
                         >

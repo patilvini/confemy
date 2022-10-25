@@ -112,6 +112,9 @@ export default function CreateConfLanding() {
                 <td
                   onClick={() => getOneIncompleteConf(conf._id)}
                   className="body-bold"
+                  style={{
+                    cursor: "pointer",
+                  }}
                 >
                   {conf.title}
                 </td>

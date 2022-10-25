@@ -26,12 +26,13 @@
   height: 140px;
   border-radius: 50%;
   background-color: $background;
+  object-fit: contain;
   overflow: hidden;
   &:hover {
     cursor: pointer;
   }
 }
-.speaker-profile-size {
+.speaker-profilesketch-size {
   width: 80px;
   height: 80px;
 }

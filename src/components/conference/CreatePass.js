@@ -1,5 +1,7 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import Select from "react-select";
 import * as yup from "yup";
 import api from "../../utility/api";
@@ -11,6 +13,9 @@ import TextInput from "../formik/TextInput";
 import RadioButtons from "../formik/RadioButtons";
 import TextError from "../formik/TextError";
 import "./createPass.scss";
+
+import { createConferenceAction } from "../../redux/conference/conferenceAction";
+import { alertAction } from "../../redux/alert/alertAction";
 
 const validationSchema = yup.object({
   passName: yup.string().required("Required"),
@@ -42,20 +47,8 @@ const currencies = [
 
 export default function CreatePass() {
   const [tickets, setTickets] = useState([]);
-
-  useEffect(() => {
-    const call = async () => {
-      try {
-        const r = await api.get("conferences/62e0f66f9f2a6559fceca71a");
-        setTickets(r.data.data.conferences.tickets);
-        console.log(r.data.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    call();
-  }, []);
+  const newConference = useSelector((state) => state.conference.newConference);
+  const dispatch = useDispatch();
 
   const [disabled, setdisabled] = useState(false);
 
@@ -82,17 +75,17 @@ export default function CreatePass() {
       quantity: values.quantity,
       price: values.price,
       saleStartDate: values.saleStartDate,
-      conferenceId: "62e0f66f9f2a6559fceca71a",
+      conferenceId: newConference?._id,
     };
 
     console.log(ticketDetails);
 
     try {
-      const r = await api.post("/conferences/step5", { ticketDetails });
-      console.log(r);
+      const response = await api.post("/conferences/step5", { ticketDetails });
+      dispatch(createConferenceAction(response.data.data.conference));
       setVisibitly(false);
     } catch (err) {
-      console.log(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   }
 
@@ -113,7 +106,7 @@ export default function CreatePass() {
           </thead>
 
           <tbody>
-            {tickets?.map((item) => {
+            {newConference?.tickets?.map((item) => {
               return (
                 <tr key={item._id}>
                   <td>{item.name}</td>

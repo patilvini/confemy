@@ -6,13 +6,10 @@ import api from "../../utility/api";
 import TextEditor from "../text-editor/TextEditor";
 
 const initialValues = {
-  
-  text: {}
-  
+  text: {},
 };
 
 const validationSchema = yup.object({
-  
   text: yup.object().required("required"),
   // image: yup.array().min(1).required("Please enter your cover Image"),
   // text: yup.array(),
@@ -22,65 +19,62 @@ const validationSchema = yup.object({
   // document: yup.array(),
 });
 
-
-
 export default function AddText({ source, active }) {
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
   );
-  const dispatch = useDispatch()
-  const conference = useSelector((state) => state.conference.newConference)
-  console.log(conference)
+  const dispatch = useDispatch();
+  const conference = useSelector((state) => state.conference.newConference);
+  // console.log(conference)
 
   const onDelete = async () => {
-    try{
-      const r = await api.post("/conferences/step4/resources?resourceStatus=text", {
-        resourceRichText :{
-            text: {}
-        }
-            
-        ,
-        conferenceId: conferenceId
-        })
+    try {
+      const r = await api.post(
+        "/conferences/step4/resources?resourceStatus=text",
+        {
+          resourceRichText: {
+            text: {},
+          },
 
-    console.log("redux change")
-    // formik.resetForm({ values: initialValues });
-    dispatch(createConferenceAction(r.data.data.conference));
-     
- 
+          conferenceId: conferenceId,
+        }
+      );
+
+      console.log("redux change");
+      // formik.resetForm({ values: initialValues });
+      dispatch(createConferenceAction(r.data.data.conference));
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
- 
+  };
+
   const onSubmit = async (values, actions) => {
     console.log("form on submit", formik.values);
 
     const resourceRichText = {
       text: values.text,
-      conferenceId:conferenceId
-    }
+      conferenceId: conferenceId,
+    };
 
-    console.log(resourceRichText)
+    console.log(resourceRichText);
 
-    try{
-      const r = await api.post("/conferences/step4/resources?resourceStatus=text", {
-        resourceRichText :{
-            text: resourceRichText.text
+    try {
+      const r = await api.post(
+        "/conferences/step4/resources?resourceStatus=text",
+        {
+          resourceRichText: {
+            text: resourceRichText.text,
+          },
+
+          conferenceId: conferenceId,
         }
-            
-        ,
-        conferenceId: conferenceId
-        })
-        console.log("text saving" , r)
+      );
+      console.log("text saving", r);
 
-        dispatch(createConferenceAction(r.data.data.conference));
-    } catch (err){
-      console.err(err)
+      dispatch(createConferenceAction(r.data.data.conference));
+    } catch (err) {
+      console.err(err);
     }
-
-    
-
   };
 
   const formik = useFormik({
@@ -112,19 +106,32 @@ export default function AddText({ source, active }) {
             autoComplete="off"
             onSubmit={handleSubmit}
           >
-             <div className="opposite-grid">
-            <h1>Add Text</h1>
-            <div style={{width:"50%"}}> <button type="button" onClick={()=>onDelete()} className="button button-red mb-40">Delete</button></div>
-           
-          </div>
+            <div className="opposite-grid">
+              <h1>Add Text</h1>
+              <div style={{ width: "50%" }}>
+                {" "}
+                <button
+                  type="button"
+                  onClick={() => onDelete()}
+                  className="button button-red mb-40"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
 
             <TextEditor
               formikSetFieldValue={formikSetFieldValue}
               apiRawContent={conference?.resourceText}
             />
 
-
-            <button style={{margin:"2rem 0"}} type="submit" className="button button-primary">Submit</button>
+            <button
+              style={{ margin: "2rem 0" }}
+              type="submit"
+              className="button button-primary"
+            >
+              Submit
+            </button>
           </form>
         </div>
       )}

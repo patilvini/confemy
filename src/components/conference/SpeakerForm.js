@@ -41,7 +41,7 @@ export default function SpeakerForm(props) {
           designation: values.designation,
           createdBy: newConference?.host,
           userId: user._id,
-          organizationId: newConference?.hostedBy.organizationId,
+          organizationId: newConference?.hostedBy.organization,
         },
       };
 
@@ -129,6 +129,7 @@ export default function SpeakerForm(props) {
                 alt="Speaker Picture"
                 fieldName="images"
                 setFormikFieldValue={setFormikFieldValue}
+                maxFiles={1}
               />
             </div>
             <div className="grid-1st-col">

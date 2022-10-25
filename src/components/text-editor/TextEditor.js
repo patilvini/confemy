@@ -27,7 +27,7 @@ export default function TextEditor(props) {
         EditorState.push(editorState, blocks, "update-contentState")
       );
     }
-  }, [props.apiRawContent, editorState]);
+  }, [props.apiRawContent]);
 
   return (
     <>

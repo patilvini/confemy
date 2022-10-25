@@ -1,25 +1,41 @@
 @import "../../utility/utility.styles.scss";
 // Alerts
-.alert {
-  position: fixed;
-  // z index is one less than navbar
-  z-index: 98;
+
+.alert-container {
+  position: sticky;
+  // z index is one more than navbar
+  z-index: 100;
+  // Putting it just below navbar which is 64px in height.
+  top: 64px;
   width: 100%;
-  padding: 0.8rem;
+  max-width: $containerWidth;
+  // align alert container in the center like navbar
+  margin: 0 auto;
+}
+.alert {
+  // width is 40% of the alert container
+  width: 40%;
+  //  align it on the right side
+  margin-left: auto;
+
+  padding: 0.8rem 2rem;
   opacity: 0.8;
-  background: $background;
-  color: #333;
-  text-align: center;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+
   &.alert-primary {
-    background-color: $shade-1;
+    background-color: $primary;
   }
   &.alert-dark {
-    background-color: $primary;
+    // background-color: $shade-1;
+    background-color: #ffce32;
   }
   &.alert-success {
     background-color: $accent;
   }
   &.alert-danger {
-    background-color: #ffce32;
+    background-color: $warning;
   }
 }

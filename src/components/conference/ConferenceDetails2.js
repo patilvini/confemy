@@ -7,10 +7,6 @@ import { useDropzone } from "react-dropzone";
 import CameraIcon from "../icons/CameraIcon";
 import { thumb, thumbInner, img } from "../organization/organizationUtil";
 
-// react-dropzone-uploader
-import "react-dropzone-uploader/dist/styles.css";
-import Dropzone from "react-dropzone-uploader";
-
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
@@ -28,6 +24,9 @@ import Speakercard from "../speaker/Speakercard";
 import SelectFormType1 from "../reselect/SelectFormType1";
 import TextEditor from "../text-editor/TextEditor";
 
+import ImageUploader from "../image-uploader/ImageUploader";
+import MultiImageUploader from "../image-uploader/MultiImageUploader";
+
 import AddGreenIcon from "../icons/AddGreenIcon";
 import "./createConference.styles.scss";
 
@@ -38,6 +37,7 @@ export default function ConferenceDetails2() {
   const [files, setFiles] = useState([]);
   const [amenities, setAmenities] = useState([]);
   const [speakerList, setSpeakerList] = useState([]);
+  const [venueImages, setVenueImages] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,92 +45,135 @@ export default function ConferenceDetails2() {
   const user = useSelector((state) => state.auth.user);
   const newConference = useSelector((state) => state.conference.newConference);
 
-  async function onSubmit(values, actions) {
-    let step1CompletedCheck = true;
-    // newConference?.completedStep > 0
-    if (newConference?.completedStep > 0) {
-      const formData = {
-        conferenceDetails: {
-          speakers: values.speakers,
-          conferenceId: newConference?._id,
-          image: values.image,
-          description: values.description,
-          schedules: values.schedules,
-          courseOutline: values.courseOutline,
-          venue: {
-            images: [],
-            ameneties: values.amenities,
-          },
-        },
-      };
+  const initialValues = {
+    conferenceId: newConference?._id,
+    image: [],
+    description: {},
+    speaker: "",
+    speakers: [],
+    schedules: {},
+    courseOutline: {},
+    amenities: [],
+    venueImages: [],
+  };
 
-      console.log("formData", formData);
+  async function onSubmit(values, actions) {
+    if (!newConference?.completedStep1) {
+      dispatch(alertAction("Complete step-1 first", "danger"));
+      return;
+    }
+    const formData = {
+      conferenceDetails: {
+        speakers: values.speakers,
+        conferenceId: newConference?._id,
+        image: [],
+        description: values.description,
+        schedules: values.schedules,
+        courseOutline: values.courseOutline,
+        venue: {
+          images: [],
+          amenities: values.amenities,
+        },
+      },
+    };
+    //  Submit banner image and add image url to formData object
+    if (values.image.length > 0) {
+      const imageDataObj = new FormData();
+      imageDataObj.append("file", values.image[0]);
       try {
-        const response = await api.post("conferences/step3", formData);
-        if (response) {
-          console.log("step 2", response);
-          dispatch(createConferenceAction(response.data.data.conference));
-          navigate("/dashboard/create-conf/step-4");
+        const imagesResponse = await api.post("fileUploads", imageDataObj);
+        if (imagesResponse) {
+          formData.conferenceDetails.image = imagesResponse.data.data;
         }
       } catch (err) {
         dispatch(alertAction(err.response.data.message, "danger"));
       }
-    } else {
-      dispatch(alertAction("Complete step-1 first", "danger"));
+    }
+
+    //  Submit venue images and add image urls to formData object
+    if (values.venueImages.length > 0) {
+      const venueImagesObj = new FormData();
+      for (let i = 0; i < values.venueImages.length; i++) {
+        venueImagesObj.append("file", values.venueImages[i]);
+      }
+      try {
+        const imagesResponse = await api.post("fileUploads", venueImagesObj);
+        if (imagesResponse) {
+          formData.conferenceDetails.venue.images = imagesResponse.data.data;
+        }
+      } catch (err) {
+        dispatch(alertAction(err.response.data.message, "danger"));
+      }
+    }
+
+    console.log("details 2 formData", formData);
+
+    try {
+      const response = await api.post("conferences/step3", formData);
+      if (response) {
+        console.log("Details 2 response", response);
+        dispatch(createConferenceAction(response.data.data.conference));
+        // actions.resetForm({ values: initialValues });
+        setFiles([]);
+        setVenueImages([]);
+        navigate("/dashboard/create-conf/step-4");
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   }
 
   const formik = useFormik({
     initialValues: {
       conferenceId: newConference?._id,
-      image: [],
-      description: {},
+      image: newConference?.image || [],
+      description: newConference?.description || {},
       speaker: "",
-      speakers: newConference?.speakers || [],
-      schedules: {},
-      courseOutline: {},
-      amenities: [],
-      venueImages: [],
-      venue: {},
+      speakers: newConference?.conferenceSpeakers || [],
+      schedules: newConference?.schedules || {},
+      courseOutline: newConference?.courseOutline || {},
+      amenities: newConference?.venue?.conferenceAmenities || [],
+      venueImages: newConference?.venue?.images || [],
     },
     // validationSchema: validationSchema,
     onSubmit: onSubmit,
     enableReinitialize: true,
   });
 
-  //    images set up
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: {
-      "image/*": [".jpeg", ".png"],
-    },
-    maxFiles: 1,
-    onDrop: (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
-      );
-      formik.setFieldValue("image", acceptedFiles);
-    },
-  });
+  // //    images set up
+  // const { getRootProps, getInputProps } = useDropzone({
+  //   accept: {
+  //     "image/*": [".jpeg", ".png"],
+  //   },
+  //   maxFiles: 1,
+  //   onDrop: (acceptedFiles) => {
+  //     setFiles(
+  //       acceptedFiles.map((file) =>
+  //         Object.assign(file, {
+  //           preview: URL.createObjectURL(file),
+  //         })
+  //       )
+  //     );
+  //     formik.setFieldValue("image", acceptedFiles);
+  //   },
+  // });
 
-  const thumbs = files.map((file) => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img
-          src={file.preview}
-          alt="banner"
-          style={img}
-          // Revoke data uri after image is loaded
-          onLoad={() => {
-            URL.revokeObjectURL(file.preview);
-          }}
-        />
-      </div>
-    </div>
-  ));
+  // const thumbs = files.map((file) => (
+  //   <div style={thumb} key={file.name}>
+  //     <div style={thumbInner}>
+  //       <img
+  //         src={file.preview}
+  //         alt="banner"
+  //         style={img}
+  //         // Revoke data uri after image is loaded
+  //         onLoad={() => {
+  //           URL.revokeObjectURL(file.preview);
+  //         }}
+  //       />
+  //     </div>
+  //   </div>
+  // ));
+
   //  on calcelling the image upload
   const onCancel = () => {
     setFiles([]);
@@ -170,10 +213,23 @@ export default function ConferenceDetails2() {
     formik.setFieldValue(fieldName, fieldValue);
   }
 
-  // set formik field spears value
+  // set formik field speakers value
 
   function setFormikSpeakers(newSpeaker) {
     formik.setFieldValue("speakers", [...formik.values.speakers, newSpeaker]);
+  }
+
+  //  set formik Venue Images
+  function setFormikImagesFieldValue(newImages) {
+    formik.setFieldValue("venueImages", [
+      ...formik.values.venueImages,
+      ...newImages,
+    ]);
+  }
+  //  remove formikVenue Images
+  function removeFormikImage(file) {
+    const newImages = formik.values.venueImages.filter((e) => e !== file);
+    formik.setFieldValue("venueImages", [...newImages]);
   }
 
   // Modal open and close
@@ -194,38 +250,21 @@ export default function ConferenceDetails2() {
     setShowSpeakerForm(false);
   }
 
-  // react-dropzone-uploader
-  // specify upload params and url for your files
-  const getUploadParams = ({ meta }) => {
-    return { url: "https://dev.confemy.com/api/fileUploads" };
-  };
-
-  // called every time a file's `status` changes
-  const handleChangeStatus = ({ meta, file }, status) => {
-    console.log(status, meta, file);
-  };
-
-  // receives array of files that are done uploading when submit button is clicked
-  const handleSubmit = (files, allFiles) => {
-    console.log(files.map((f) => f.meta));
-    allFiles.forEach((f) => f.remove());
-  };
-
   useEffect(() => {
     loadAmenities();
     let confHostId;
     if (newConference?.host == "organization") {
-      confHostId = newConference?.hostedBy.organizationId;
+      confHostId = newConference?.hostedBy.organization;
     } else {
       confHostId = user?._id;
     }
     loadSpeakers(newConference?.host, confHostId);
 
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+    return () => files?.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [open, files]);
 
-  console.log("Details2 formik", formik);
+  // console.log("Details2 formik", formik);
 
   return (
     <main className="conf-form-wrap">
@@ -236,7 +275,16 @@ export default function ConferenceDetails2() {
       >
         <div className="mb-72">
           <h2>Banner image</h2>
-          <div className="logo-upload-wrap">
+          <ImageUploader
+            files={files}
+            setFiles={setFiles}
+            apiImage={newConference?.image}
+            alt="conference banner"
+            fieldName="image"
+            setFormikFieldValue={setFormikFieldValue}
+            maxFiles={1}
+          />
+          {/* <div className="logo-upload-wrap">
             <div {...getRootProps({ className: "logo-dropzone" })}>
               <input {...getInputProps()} />
               <CameraIcon className="camera-icon" />
@@ -247,7 +295,7 @@ export default function ConferenceDetails2() {
               <span>Browse</span>
               <span>to choose a file</span>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="mb-72">
@@ -261,7 +309,7 @@ export default function ConferenceDetails2() {
             <TextEditor
               setFormikFieldValue={setFormikFieldValue}
               fieldName="description"
-              apiRawContent={newConference?.refundDescription}
+              apiRawContent={newConference?.description}
             />
           </div>
         </div>
@@ -275,6 +323,7 @@ export default function ConferenceDetails2() {
                   name={speaker?.label}
                   degree={speaker?.degree}
                   designation={speaker?.designation}
+                  image={speaker.image}
                 />
               </div>
             ))}
@@ -376,8 +425,9 @@ export default function ConferenceDetails2() {
               </p>
               <p>{newConference?.venue?.country}, 4110348 </p>
             </div>
-            <div className="mb-32">
-              <div className="details2-image-dropzone">
+            <div className="mb-48">
+              <h4>Add Venue images</h4>
+              {/* <div className="details2-image-dropzone">
                 <div className="details2-camera-wrap mb-12">
                   <CameraIcon className="details2-camera-icon" />
                 </div>
@@ -386,10 +436,16 @@ export default function ConferenceDetails2() {
                   <br />
                   or click to browse and select.
                 </div>
-              </div>
+              </div> */}
+
+              <MultiImageUploader
+                setFormikImagesFieldValue={setFormikImagesFieldValue}
+                removeFormikImage={removeFormikImage}
+                apiImages={newConference?.venue.images}
+              />
             </div>
             <div className="mb-80">
-              <h4>Add Amenities</h4>
+              <h4>Add Venue Amenities</h4>
               <SelectFormType1
                 options={amenities}
                 label="amenities"
@@ -403,12 +459,7 @@ export default function ConferenceDetails2() {
             </div>
           </div>
         )}
-        <Dropzone
-          getUploadParams={getUploadParams}
-          onChangeStatus={handleChangeStatus}
-          onSubmit={handleSubmit}
-          accept="image/*,audio/*,video/*"
-        />
+
         <div className="mb-72">
           <button type="button" className="button button-green mr-8">
             Cancel

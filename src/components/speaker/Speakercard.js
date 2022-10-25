@@ -6,7 +6,18 @@ export default function Speakercard({ name, designation, degree, image }) {
     <div className="speakercard">
       <div className="speaker-image-container">
         <div className="speaker-image-wrap">
-          <ProfileSketch className="speaker-profile-size" fill="#c4c4c4" />
+          {image && image?.length > 0 ? (
+            <img
+              alt="profile picture"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              src={image[0].Location}
+            />
+          ) : (
+            <ProfileSketch
+              className="speaker-profilesketch-size"
+              fill="#c4c4c4"
+            />
+          )}
         </div>
       </div>
       <div className="speaker-name-container">

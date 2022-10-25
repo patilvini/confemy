@@ -222,8 +222,6 @@ export default function ConfBasicInfo() {
   //   setFormData(conferenceData);
   // }, []);
 
-  console.log("timezone", formik.values.timezone);
-
   return (
     <>
       <main className="conf-form-wrap">

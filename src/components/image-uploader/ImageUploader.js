@@ -65,35 +65,11 @@ export default function ImageUploader({
     setShowButtons(false);
   };
 
-  //   const onSaveImage = async () => {
-  //     const formDataObj = new FormData();
-  //     formDataObj.append("file", files[0]);
-  //     try {
-  //       const imagesResponse = await api.post("fileUploads", formDataObj);
-  //       if (imagesResponse) {
-  //         const data = {
-  //           organization: {
-  //             logo: imagesResponse.data.data,
-  //             user: user._id,
-  //           },
-  //         };
-  //         const url = `organizations/${organizationId}`;
-  //         const response = await api.patch(url, data);
-  //         if (response) {
-  //           setShowButtons(false);
-  //           //   dispatch(loadOrganizationAction(response.data.data.organization));
-  //         }
-  //       }
-  //     } catch (err) {
-  //       console.log("logo error", err.response?.data.message);
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     setFiles(apiImage);
-  //     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-  //     return () => files?.forEach((file) => URL.revokeObjectURL(file.Location));
-  //   }, [apiImage]);
+  useEffect(() => {
+    setFiles(apiImage);
+    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+    return () => files?.forEach((file) => URL.revokeObjectURL(file.Location));
+  }, []);
 
   return (
     <>

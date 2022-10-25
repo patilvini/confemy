@@ -12,11 +12,10 @@ import api from "../../utility/api";
 export default function AddImage({ source, active }) {
   const dispatch = useDispatch();
   const conference = useSelector((state) => state.conference.newConference);
-  console.log(conference);
+  // console.log(conference);
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
   );
-  
 
   const responsive = {
     desktop: {
@@ -27,15 +26,19 @@ export default function AddImage({ source, active }) {
   };
 
   const deleteRec = async (key) => {
-    console.log(key)
+    console.log(key);
     try {
       const r = await api.delete(
-        "/conferences/"+conferenceId+"/deleteFiles?fileDeleteType=resourceImages",
-        {data:{
-          fileDeleteDetails: {
-            Key: key,
+        "/conferences/" +
+          conferenceId +
+          "/deleteFiles?fileDeleteType=resourceImages",
+        {
+          data: {
+            fileDeleteDetails: {
+              Key: key,
+            },
           },
-        }}
+        }
       );
 
       console.log(r);
@@ -108,7 +111,7 @@ export default function AddImage({ source, active }) {
               <h1>Added Images</h1>
               <div className="mb-40 mt-40" style={{ width: "60rem" }}>
                 {conference.resourceImages.map((item, index) => {
-                  console.log(item)
+                  console.log(item);
                   return (
                     <div className="opposite-grid" key={index}>
                       <img
@@ -117,9 +120,8 @@ export default function AddImage({ source, active }) {
                         alt={"carousel-images"}
                       />
 
-                      <div style={{alignSelf:"center"}}>
-                        <button 
-                       
+                      <div style={{ alignSelf: "center" }}>
+                        <button
                           className="button button-red ml-40"
                           onClick={() => deleteRec(item.Key)}
                         >
