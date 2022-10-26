@@ -26,8 +26,20 @@ export default function LiveStream() {
 
   const [activeRec, setActiveRec] = useState(null);
   const conference = useSelector((state) => state.conference.newConference);
-  const links = [conference?.zoom, conference?.googleMeet, conference?.vimeo, conference?.youtube, conference?.facebook]
-  const resourceTabs = [conference?.resourceDocuments, conference?.resourceText, conference?.resourceImages, conference?.resourceVideos, conference?.resourceLinks]
+  const links = [
+    conference?.zoom,
+    conference?.googleMeet,
+    conference?.vimeo,
+    conference?.youtube,
+    conference?.facebook,
+  ];
+  const resourceTabs = [
+    conference?.resourceDocuments,
+    conference?.resourceText,
+    conference?.resourceImages,
+    conference?.resourceVideos,
+    conference?.resourceLinks,
+  ];
 
   const buttonClasses = [
     "livestream-button",
@@ -36,11 +48,26 @@ export default function LiveStream() {
   ];
 
   const tabs = [
-    { name: "Zoom", icon: <ZoomLogo />, platform: "zoom", class:{}},
-    { name: "Google Meet", icon: <GoogleMeetIcon />, platform: "googleMeet", class:{}},
-    { name: "Vimeo", icon: <VimeoIcon />, platform: "vimeo", },
-    { name: "Youtube Live", icon: <YoutubeIcon />, platform: "youtube", class:{}},
-    { name: "Facebook", icon: <FacebookIcon />, platform: "facebook", class:{}},
+    { name: "Zoom", icon: <ZoomLogo />, platform: "zoom", class: {} },
+    {
+      name: "Google Meet",
+      icon: <GoogleMeetIcon />,
+      platform: "googleMeet",
+      class: {},
+    },
+    { name: "Vimeo", icon: <VimeoIcon />, platform: "vimeo" },
+    {
+      name: "Youtube Live",
+      icon: <YoutubeIcon />,
+      platform: "youtube",
+      class: {},
+    },
+    {
+      name: "Facebook",
+      icon: <FacebookIcon />,
+      platform: "facebook",
+      class: {},
+    },
   ];
 
   const recs = ["Files", "Text", "Image", "Video", "Link"];
@@ -85,7 +112,13 @@ export default function LiveStream() {
           return (
             <div key={index}>
               <button
-                className={activeTab === item.name ? "livestream-active" : (links[index]?.meetingUrl ? "livestream-done" : "livestream-button")}
+                className={
+                  activeTab === item.name
+                    ? "livestream-active"
+                    : links[index]?.meetingUrl
+                    ? "livestream-done"
+                    : "livestream-button"
+                }
                 onClick={() => {
                   if (activeTab === null) {
                     setActiveTab(item.name);
@@ -130,11 +163,19 @@ export default function LiveStream() {
       </p>
 
       <div className="flex-container">
-        {resources.map((item, index) => {
+        {resources?.map((item, index) => {
           return (
             <div key={index}>
               <button
-                className={activeRec === item.name ? "livestream-active" :  (resourceTabs[index]?.length> 0 || resourceTabs[index]?.blocks?.length>0 || resourceTabs[index][0]?.title.length > 0  ? "livestream-done" : "livestream-button")}
+                className={
+                  activeRec === item.name
+                    ? "livestream-active"
+                    : resourceTabs[index]?.length > 0 ||
+                      resourceTabs[index]?.blocks?.length > 0 ||
+                      resourceTabs[index][0]?.title.length > 0
+                    ? "livestream-done"
+                    : "livestream-button"
+                }
                 onClick={() => {
                   if (activeRec === null) {
                     setActiveRec(item.name);

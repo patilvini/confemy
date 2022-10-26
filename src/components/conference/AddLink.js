@@ -27,7 +27,7 @@ export default function AddLink({ source, active }) {
 
   let initialValues = {
     links:
-      conference?.resourceLinks.length > 0
+      conference?.resourceLinks?.length > 0
         ? conference?.resourceLinks
         : [{ title: "", url: "" }],
   };
