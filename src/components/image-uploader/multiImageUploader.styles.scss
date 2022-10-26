@@ -1,0 +1,28 @@
+@import "../../utility/utility.styles.scss";
+
+.multiimage-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.multiimage-row {
+  display: flex;
+  margin-bottom: 8px;
+  background-color: $shade-2;
+  padding: 16px;
+}
+
+.multiimage-wrap {
+  height: auto;
+  width: 720px;
+  //   border: 1px solid $shade-4;
+  //   padding: 4px;
+  overflow: hidden;
+}
+
+.multiimage-delete-button {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

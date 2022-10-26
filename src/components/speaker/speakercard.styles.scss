@@ -1,0 +1,68 @@
+@import "../../utility/utility.styles.scss";
+
+.speakercard {
+  width: 388px;
+  height: 290px;
+  border: 1px solid $shade-1;
+  border-radius: 4px;
+  background-color: $colour-white;
+  overflow: hidden;
+  padding: 0 60px 16px;
+}
+.speaker-image-container {
+  height: 172px;
+  width: 100%;
+  min-height: 172px;
+  display: flex;
+  align-items: center;
+}
+
+.speaker-image-wrap {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background-color: $background;
+  object-fit: contain;
+  overflow: hidden;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.speaker-profilesketch-size {
+  width: 80px;
+  height: 80px;
+}
+
+.speaker-name-container {
+  height: 100px;
+  width: 100%;
+  text-align: center;
+  word-wrap: inherit;
+  overflow: scroll;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:hover {
+    cursor: all-scroll;
+  }
+}
+
+.speaker-name {
+  font-family: Avenir;
+  font-size: 20px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.2px;
+}

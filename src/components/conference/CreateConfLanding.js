@@ -38,7 +38,7 @@ export default function CreateConfLanding() {
 
   //   Get all incomplete conferences
   const getAllIncompleteConfs = async (userId) => {
-    const url = `conferences/users/${userId}?status=draft&getAllOrganizationConferences=true`;
+    const url = `conferences/users/${userId}?status=drafts&getAllOrganizationConferences=true`;
 
     try {
       const response = await api.get(url);
@@ -59,14 +59,15 @@ export default function CreateConfLanding() {
 
     try {
       const response = await api.delete(url);
-      if (response) console.log("delete response", response);
-      // dispatch(loadIncopleteConfsAction(response?.data.data.conferences));
-      dispatch(alertAction(response.data.message, "success"));
-      getAllIncompleteConfs(user._id);
+      if (response) {
+        console.log("delete response", response);
+        dispatch(loadIncopleteConfsAction(response?.data.data.conferences));
+        dispatch(alertAction(response.data.message, "success"));
+        // getAllIncompleteConfs(user._id);
+      }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
-    console.log("Delete Clicked", url);
   };
   useEffect(() => {
     getAllIncompleteConfs(user._id);
@@ -111,6 +112,9 @@ export default function CreateConfLanding() {
                 <td
                   onClick={() => getOneIncompleteConf(conf._id)}
                   className="body-bold"
+                  style={{
+                    cursor: "pointer",
+                  }}
                 >
                   {conf.title}
                 </td>

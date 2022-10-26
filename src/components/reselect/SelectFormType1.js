@@ -5,7 +5,7 @@ const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";
 const shade1 = "#ced9de";
 const shade2 = "#ecf0f2";
-// const shade3 = "#fcfdfd";
+const shade3 = "#fcfdfd";
 const shade4 = "#aabdc7";
 
 const Placeholder = (props) => {
@@ -75,6 +75,15 @@ export default function SelectFormType1(props) {
         },
       };
     },
+
+    noOptionsMessage: (provided, state) => {
+      return {
+        ...provided,
+        backgroundColor: shade3,
+        color: confemyBlac,
+        fontSize: 16,
+      };
+    },
   };
 
   //   key prop if given to Select, it renders a new component in dom after its value cahnges.
@@ -82,6 +91,8 @@ export default function SelectFormType1(props) {
 
   // console.log("get Value", getValue(props.options, props.value, props.isMulti));
   // console.log(props.isMulti);
+  // console.log("get value:", getValue(props.value));
+
   return (
     <div>
       <Select
@@ -102,7 +113,7 @@ export default function SelectFormType1(props) {
         isDisabled={props.isDisabled}
         name={props.name}
         // onChange={props.handleChange}
-
+        noOptionsMessage={() => "No option found"}
         styles={customStyles}
         isMulti={props.isMulti}
       />

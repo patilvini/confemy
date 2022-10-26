@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-
 import DatePicker from "react-datepicker";
 
 import SelectFormType1 from "./SelectFormType1";
@@ -95,6 +94,7 @@ export default function SelectTest() {
             formik.setFieldValue("organizationId", value?.value)
           }
           placeholder="Select organization"
+          noOptionsMessage={() => "Create New"}
         />
         <DatePicker
           selected={formik.values.startDate}

@@ -33,15 +33,16 @@ const [openCart, setOpenCart] = useState(false);
   
 
   return (
-    <div style={{ height: "100%" }} ref={ref}>
+    <div  ref={ref}>
       <div
-        className="user-name-wrapper"
+        className="user-name-wrapper mr-20"
         onClick={onDropdownClick}
         // onMouseEnter={() => setOpenCart(true)}
         // onMouseLeave={() => setOpenCart(false)}
       >
         <span className="signin">Cart</span>
-        <DropdownIcon className="icon-size" />
+        <div><DropdownIcon  className="icon-size" /></div>
+        
       </div>
       <div
         className={openCart ? "" : "display-none"}

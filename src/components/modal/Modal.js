@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 
 function Modal(props) {
   return ReactDOM.createPortal(
@@ -12,3 +13,7 @@ function Modal(props) {
 }
 
 export default Modal;
+
+Modal.propTypes = {
+  onDismiss: PropTypes.func,
+};
