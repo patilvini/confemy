@@ -26,7 +26,10 @@ export default function AddLink({ source, active }) {
   // console.log(conference);
 
   let initialValues = {
-    links: conference?.resourceLinks.length > 0 ? conference?.resourceLinks : [{ title: "", url: "" }],
+    links:
+      conference?.resourceLinks.length > 0
+        ? conference?.resourceLinks
+        : [{ title: "", url: "" }],
   };
 
   const onDelete = async () => {
@@ -110,7 +113,7 @@ export default function AddLink({ source, active }) {
                             />
                             <label>Enter title here</label>
                           </div>
-                          <div style={{ color: "red", fontSize:"1.2rem" }}>
+                          <div style={{ color: "red", fontSize: "1.2rem" }}>
                             <Field
                               name={`links[${index}.title]`}
                               render={({ form }) => {
@@ -137,7 +140,7 @@ export default function AddLink({ source, active }) {
                             />
                             <label>Enter url here</label>
                           </div>
-                          <div style={{ color: "red", fontSize:"1.2rem" }}>
+                          <div style={{ color: "red", fontSize: "1.2rem" }}>
                             <Field
                               name={`links[${index}.url]`}
                               render={({ form }) => {
@@ -164,11 +167,7 @@ export default function AddLink({ source, active }) {
                             className="button button-red "
                             type="button"
                             onClick={() => {
-<<<<<<< HEAD
-                              // console.log(arrayHelpers.form.values.links.length)
-=======
                               // console.log(arrayHelpers);
->>>>>>> pranit
 
                               if (arrayHelpers.form.values.links.length > 1) {
                                 arrayHelpers.remove(index);
@@ -182,11 +181,7 @@ export default function AddLink({ source, active }) {
                             className="button button-green "
                             type="button"
                             onClick={() => {
-<<<<<<< HEAD
-                              console.log(arrayHelpers.form.values);
-=======
                               // console.log(arrayHelpers.form.values);
->>>>>>> pranit
                               arrayHelpers.push({ title: "", url: "" });
                             }}
                           >

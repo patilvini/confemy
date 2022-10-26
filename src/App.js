@@ -62,7 +62,7 @@ import CreatableSelectTest from "./components/reselect/CreatableSlectTest";
 import ImageUploader from "./components/image-uploader/ImageUploader";
 
 import SearchSpeaker from "./components/conference/SearchSpeaker";
-import RegisterForm from "./components/reselect/RegisterForm";
+
 import PNavbar from "./components/navbar/PNavbar";
 
 const App = () => {
