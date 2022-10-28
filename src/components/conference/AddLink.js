@@ -71,6 +71,7 @@ export default function AddLink({ source, active }) {
       );
       console.log("added links", r);
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Links Saved", "success"));
     } catch (err) {
       console.err(err);
     }

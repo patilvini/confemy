@@ -41,6 +41,7 @@ export default function AddText({ source, active }) {
       // console.log("redux change")
       // formik.resetForm({ values: initialValues });
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Text deleted successfully", "success"));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -70,6 +71,7 @@ export default function AddText({ source, active }) {
       // console.log("text saving" , r)
 
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Text saved", "success"));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }

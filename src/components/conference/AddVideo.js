@@ -48,6 +48,7 @@ export default function AddVideo({ source, active }) {
 
       // console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Video deleted successfully", "success"));
     } catch (err) {
       console.error(err);
     }
@@ -98,6 +99,7 @@ export default function AddVideo({ source, active }) {
           // console.log(response);
           if (response) {
             dispatch(createConferenceAction(response.data.data.conference));
+            dispatch(alertAction("Videos saved", "success"));
             allFiles.forEach((f) => f.remove());
           }
         }
