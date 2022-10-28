@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
+import DeleteIcon from "../icons/DeleteIcon";
 
 export default function AddDocument({ source, active }) {
   const dispatch = useDispatch();
@@ -129,10 +130,10 @@ export default function AddDocument({ source, active }) {
                       </a>
                       <div style={{ alignSelf: "center" }}>
                         <button
-                          className="button button-red ml-40"
+                          className="delete-button-icon"
                           onClick={() => deleteRec(item.Key)}
                         >
-                          Delete
+                          <DeleteIcon/>
                         </button>
                       </div>
                     </div>

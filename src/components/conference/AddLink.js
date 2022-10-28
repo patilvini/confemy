@@ -6,6 +6,9 @@ import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
 import TextError from "../formik/TextError";
+import DeleteIcon from "../icons/DeleteIcon";
+
+// formik context
 
 const validationSchema = yup.object({
   links: yup.array().of(
@@ -84,10 +87,10 @@ export default function AddLink({ source, active }) {
           <div className="opposite-grid">
             <h1>Add Links</h1>
             <div style={{ width: "50%" }}>
-              {" "}
-              <button onClick={() => onDelete()} className="button button-red">
-                Delete All
-              </button>
+              { conference?.resourceLinks?.[0]?.title?.length>0 &&
+              <button onClick={() => onDelete()} className="delete-button-icon">
+                <DeleteIcon/>
+              </button>}
             </div>
           </div>
 
@@ -163,7 +166,9 @@ export default function AddLink({ source, active }) {
                           style={{ margin: "2rem 0" }}
                           className="flex-container"
                         >
-                          <button
+                         {
+                
+                         <button
                             style={{ margin: "0rem 2rem 2rem 0" }}
                             className="button button-red "
                             type="button"
@@ -176,7 +181,7 @@ export default function AddLink({ source, active }) {
                             }}
                           >
                             -
-                          </button>
+                          </button>}
                           <button
                             style={{ margin: "0rem 2rem 2rem 0" }}
                             className="button button-green "

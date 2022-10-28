@@ -13,6 +13,8 @@ import TextInput from "../formik/TextInput";
 import RadioButtons from "../formik/RadioButtons";
 import TextError from "../formik/TextError";
 import "./createPass.scss";
+import RadioFilled from "../icons/RadioFilled";
+import RadioIcon from "../icons/RadioIcon";
 
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import { alertAction } from "../../redux/alert/alertAction";
@@ -29,15 +31,7 @@ const validationSchema = yup.object({
 //   // currency: yup.string().required("Required"),
 // });
 
-const initialValues = {
-  type: "",
-  passName: "",
-  passInfo: "",
-  quantity: "",
-  currency: "",
-  price: "",
-  saleStartDate: "",
-};
+
 
 const currencies = [
   { value: "USD", label: "USD" },
@@ -51,6 +45,16 @@ export default function CreatePass() {
   const dispatch = useDispatch();
 
   const [disabled, setdisabled] = useState(false);
+
+  const initialValues = {
+    type: "FREE",
+    passName: "",
+    passInfo: "",
+    quantity: "",
+    currency: "",
+    price: "",
+    saleStartDate: "",
+  };
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -134,73 +138,112 @@ export default function CreatePass() {
           <div className="register-modal white-modal">
             <div className="modal-form-wrapper">
               <form onSubmit={formik.handleSubmit} className="form-type-1">
-                <div className="flex-container">
-                  <div className="flex-item">
-                    <button
-                      type="button"
-                      id="free"
-                      name="type"
-                      value="FREE"
-                      className="button button-primary"
-                      onClick={() => {
-                        formik.setFieldValue("type", "FREE");
-                        formik.setFieldValue("currency", "none");
-                        formik.setFieldValue("price", 0);
+                <div style={{width:"50%"}} className="opposite-grid">
+                  <div className="flex-container">
+                    {
+                      <button
+                      className="radio-button-icons preview-grid-item "
+                      
+                        onClick={() => {
+                          formik.setFieldValue("type", "FREE");
+                          formik.setFieldValue("currency", "none");
+                          formik.setFieldValue("price", 0);
+                          setdisabled(true);
+                        }}
+                      >
+                        {formik.values.type === "FREE" ? (
+                          <RadioFilled className="icon-size" />
+                        ) : (
+                          <RadioIcon  className="icon-size"/>
+                        )}
+                      </button>
+                    }
 
-                        setdisabled(true);
-                      }}
-                    >
-                      Free
-                    </button>
+                    <div onClick={() => {
+                          formik.setFieldValue("type", "FREE");
+                          formik.setFieldValue("currency", "none");
+                          formik.setFieldValue("price", 0);
+                          setdisabled(true);
+                        }} className="preview-grid-item">
+                      <h3>Free</h3>
+                    </div>
                   </div>
-                  <div className="flex-item">
-                    <button
-                      type="button"
-                      id="paid"
-                      name="type"
-                      className="button button-green"
-                      value="PAID"
-                      onClick={() => {
-                        formik.setFieldValue("type", "PAID");
-                        setdisabled(false);
-                      }}
-                    >
-                      Paid
-                    </button>
+
+                  <div className="flex-container">
+                    {
+                      <button
+                      className="radio-button-icons preview-grid-item"
+                        onClick={() => {
+                          formik.setFieldValue("type", "PAID");
+                          setdisabled(false);
+                        }}
+                      >
+                        {formik.values.type === "PAID" ? (
+                          <RadioFilled className="icon-size" />
+                        ) : (
+                          <RadioIcon className="icon-size" />
+                        )}
+                      </button>
+                    }
+
+                    <div onClick={() => {
+                          formik.setFieldValue("type", "PAID");
+                          setdisabled(false);
+                        }} className=" preview-grid-item">
+                      <h3>Paid</h3>
+                    </div>
                   </div>
                 </div>
 
-                <div className="input-container">
-                  <input
-                    onChange={formik.handleChange}
-                    name="passName"
-                    type="text"
-                    placeholder="Pass Name"
-                  />
+                <div className="input-container mt-20">
+                  <div className="material-textfield">
+                    <input
+                      id="passName"
+                      type="text"
+                      name="passName"
+                      value={formik.values.passName}
+                      onChange={formik.handleChange}
+                      placeholder=" "
+                    />
+                    <label>Pass Name*</label>
+                  </div>
+
                   {formik.touched.passName &&
                     Boolean(formik.errors.passName) && (
                       <TextError>{formik.errors.passName}</TextError>
                     )}
                 </div>
                 <div className="input-container">
-                  <input
-                    onChange={formik.handleChange}
-                    name="passInfo"
-                    type="text"
-                    placeholder="Pass Info"
-                  />
+                  <div className="material-textfield">
+                    <input
+                      id="passInfo"
+                      type="text"
+                      name="passInfo"
+                      value={formik.values.passInfo}
+                      onChange={formik.handleChange}
+                      placeholder=" "
+                    />
+                    <label>Pass Info</label>
+                  </div>
+
                   {formik.touched.passInfo &&
                     Boolean(formik.errors.passInfo) && (
                       <TextError>{formik.errors.passInfo}</TextError>
                     )}
                 </div>
                 <div className="input-container">
-                  <input
-                    onChange={formik.handleChange}
-                    name="quantity"
-                    type="text"
-                    placeholder="Available Quantity"
-                  />
+                  <div className="material-textfield">
+                    <input
+                      id="quantity"
+                      type="number"
+                      name="quantity"
+                      value={formik.values.quantity}
+                      onChange={formik.handleChange}
+                      placeholder=" "
+                    />
+                    <label>Available Quantity</label>
+                  </div>
+
                   {formik.touched.quantity &&
                     Boolean(formik.errors.quantity) && (
                       <TextError>{formik.errors.quantity}</TextError>
@@ -225,13 +268,18 @@ export default function CreatePass() {
                 </div>
 
                 <div className="input-container">
-                  <input
-                    onChange={formik.handleChange}
-                    name="price"
-                    type="number"
-                    placeholder="Price"
-                    disabled={disabled}
-                  />
+                  <div className="material-textfield">
+                    <input
+                      id="price"
+                      type="number"
+                      name="price"
+                      value={formik.values.price}
+                      onChange={formik.handleChange}
+                      placeholder=" "
+                    />
+                    <label>Price*</label>
+                  </div>
+
                   {formik.touched.price && Boolean(formik.errors.price) && (
                     <TextError>{formik.errors.price}</TextError>
                   )}
@@ -249,7 +297,7 @@ export default function CreatePass() {
                 </div>
 
                 <div className="flex-container">
-                  <div className="flex-item">
+                  <div className="mr-20">
                     <button
                       className="button button-secondary"
                       type="button"
@@ -258,7 +306,7 @@ export default function CreatePass() {
                       Cancel
                     </button>
                   </div>
-                  <div className="flex-item">
+                  <div className="">
                     <button className="button button-primary" type="submit">
                       Submit
                     </button>
