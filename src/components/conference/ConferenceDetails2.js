@@ -62,18 +62,20 @@ export default function ConferenceDetails2() {
       conferenceDetails: {
         speakers: values.speakers,
         conferenceId: newConference?._id,
-        banner: [],
+        banner: values.banner,
+        deletedBanner: values.deletedBanner,
         description: values.description,
         schedules: values.schedules,
         courseOutline: values.courseOutline,
         venue: {
-          images: [],
+          images: values.venueImages,
           amenities: values.amenities,
+          deletedVenueImages: values.deletedVenueImages,
         },
       },
     };
     //  Submit banner image and add image url to formData object
-    if (values.banner?.length > 0) {
+    if (values.banner?.length > 0 && !values.banner[0].Key) {
       const imageDataObj = new FormData();
       imageDataObj.append("file", values.banner[0]);
       try {
@@ -89,16 +91,27 @@ export default function ConferenceDetails2() {
     //  Submit venue images and add image urls to formData object
     if (values.venueImages.length > 0) {
       const venueImagesObj = new FormData();
+      let imagesForS3 = [];
       for (let i = 0; i < values.venueImages.length; i++) {
-        venueImagesObj.append("file", values.venueImages[i]);
-      }
-      try {
-        const imagesResponse = await api.post("fileUploads", venueImagesObj);
-        if (imagesResponse) {
-          formData.conferenceDetails.venue.images = imagesResponse.data.data;
+        if (!values.venueImages[i].Key) {
+          imagesForS3.push(values.venueImages[i]);
         }
-      } catch (err) {
-        dispatch(alertAction(err.response.data.message, "danger"));
+      }
+      if (imagesForS3.length > 0) {
+        imagesForS3.map((img) => venueImagesObj.append("file", img));
+        try {
+          const imagesResponse = await api.post("fileUploads", venueImagesObj);
+          if (imagesResponse) {
+            const filtredVenueImages =
+              formData.conferenceDetails.venue.images.filter((img) => img.Key);
+            formData.conferenceDetails.venue.images = [
+              ...filtredVenueImages,
+              ...imagesResponse.data.data,
+            ];
+          }
+        } catch (err) {
+          dispatch(alertAction(err.response.data.message, "danger"));
+        }
       }
     }
 
@@ -110,7 +123,7 @@ export default function ConferenceDetails2() {
         console.log("Details 2 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         // actions.resetForm({ values: initialValues });
-        navigate("/dashboard/create-conf/step-4");
+        // navigate("/dashboard/create-conf/step-4");
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -258,7 +271,7 @@ export default function ConferenceDetails2() {
           <h2>Banner image</h2>
           {formik.values?.banner?.length > 0 ? (
             formik.values.banner?.map((image) => (
-              <div key={image._id} className="confbanner-container">
+              <div key={image.Location} className="confbanner-container">
                 <div className="confbanner-wrap">
                   <img
                     className="confbanner"
