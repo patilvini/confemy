@@ -130,11 +130,11 @@ export default function LiveStream() {
       </p>
 
       <div className="flex-container">
-        {resources.map((item, index) => {
+        {resources?.map((item, index) => {
           return (
             <div key={index}>
               <button
-                className={activeRec === item.name ? "livestream-active" :  (resourceTabs[index]?.length> 0 || resourceTabs[index]?.blocks?.length>0 || resourceTabs[index][0]?.title.length > 0  ? "livestream-done" : "livestream-button")}
+                className={activeRec === item.name ? "livestream-active" :  (resourceTabs[index]?.length> 0 || resourceTabs[index]?.blocks?.length>0 || resourceTabs[index]?.[0]?.title.length > 0  ? "livestream-done" : "livestream-button")}
                 onClick={() => {
                   if (activeRec === null) {
                     setActiveRec(item.name);

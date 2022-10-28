@@ -26,7 +26,7 @@ export default function AddLink({ source, active }) {
   // console.log(conference);
 
   let initialValues = {
-    links: conference?.resourceLinks.length > 0 ? conference?.resourceLinks : [{ title: "", url: "" }],
+    links: conference?.resourceLinks?.length > 0 ? conference?.resourceLinks : [{ title: "", url: "" }],
   };
 
   const onDelete = async () => {
