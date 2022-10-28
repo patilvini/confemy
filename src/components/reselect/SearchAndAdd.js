@@ -129,7 +129,7 @@ export default function SearchAndAdd(props) {
                 className="button button-primary"
                 onClick={() => props.showForm(true)}
               >
-                <AddIcon className="small-icon mr-8" fill="#fff" /> New spearker
+                <AddIcon className="icon-sm mr-8" fill="#fff" /> New spearker
               </button>
             </div>
           );

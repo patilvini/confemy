@@ -72,7 +72,7 @@ export default function MyOrganizations() {
                   <h4>{item.organization.name}</h4>
                 </td>
                 <td>
-                  <NextIcon className="large-icon" />
+                  <NextIcon className="icon-lg" />
                 </td>
               </tr>
             ))}

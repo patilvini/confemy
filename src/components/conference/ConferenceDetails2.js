@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
+import Fragment from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-// react-dropzone
-import { useDropzone } from "react-dropzone";
-import CameraIcon from "../icons/CameraIcon";
-import { thumb, thumbInner, img } from "../organization/organizationUtil";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -17,27 +13,27 @@ import { alertAction } from "../../redux/alert/alertAction";
 import api from "../../utility/api";
 
 import Modal from "../modal/Modal";
-import SpeakerForm from "./SpeakerForm";
-import SearchSpeaker from "./SearchSpeaker";
-import SpeakerOptions from "./SpeakerOptions";
+import SpeakerForm from "../speaker/SpeakerForm";
+import SearchSpeaker from "../speaker/SearchSpeaker";
+import SpeakerOptions from "../speaker/SpeakerOptions";
 import Speakercard from "../speaker/Speakercard";
 import SelectFormType1 from "../reselect/SelectFormType1";
 import TextEditor from "../text-editor/TextEditor";
 
-import ImageUploader from "../image-uploader/ImageUploader";
+import SingleImageUploader from "../image-uploader/SingleImageUploader";
 import MultiImageUploader from "../image-uploader/MultiImageUploader";
 
 import AddGreenIcon from "../icons/AddGreenIcon";
 import "./createConference.styles.scss";
+import DeleteIcon from "../icons/DeleteIcon";
 
 export default function ConferenceDetails2() {
   const [open, setOpen] = useState(false);
   const [showSpeakerOptions, setShowSpeakerOptions] = useState(true);
   const [showSpeakerForm, setShowSpeakerForm] = useState(false);
-  const [files, setFiles] = useState([]);
+
   const [amenities, setAmenities] = useState([]);
   const [speakerList, setSpeakerList] = useState([]);
-  const [venueImages, setVenueImages] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,7 +43,7 @@ export default function ConferenceDetails2() {
 
   const initialValues = {
     conferenceId: newConference?._id,
-    image: [],
+    banner: [],
     description: {},
     speaker: "",
     speakers: [],
@@ -66,7 +62,7 @@ export default function ConferenceDetails2() {
       conferenceDetails: {
         speakers: values.speakers,
         conferenceId: newConference?._id,
-        image: [],
+        banner: [],
         description: values.description,
         schedules: values.schedules,
         courseOutline: values.courseOutline,
@@ -77,13 +73,13 @@ export default function ConferenceDetails2() {
       },
     };
     //  Submit banner image and add image url to formData object
-    if (values.image.length > 0) {
+    if (values.banner?.length > 0) {
       const imageDataObj = new FormData();
-      imageDataObj.append("file", values.image[0]);
+      imageDataObj.append("file", values.banner[0]);
       try {
         const imagesResponse = await api.post("fileUploads", imageDataObj);
         if (imagesResponse) {
-          formData.conferenceDetails.image = imagesResponse.data.data;
+          formData.conferenceDetails.banner = imagesResponse.data.data;
         }
       } catch (err) {
         dispatch(alertAction(err.response.data.message, "danger"));
@@ -114,8 +110,6 @@ export default function ConferenceDetails2() {
         console.log("Details 2 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         // actions.resetForm({ values: initialValues });
-        setFiles([]);
-        setVenueImages([]);
         navigate("/dashboard/create-conf/step-4");
       }
     } catch (err) {
@@ -126,7 +120,7 @@ export default function ConferenceDetails2() {
   const formik = useFormik({
     initialValues: {
       conferenceId: newConference?._id,
-      image: newConference?.image || [],
+      banner: newConference?.banner || [],
       description: newConference?.description || {},
       speaker: "",
       speakers: newConference?.conferenceSpeakers || [],
@@ -134,50 +128,18 @@ export default function ConferenceDetails2() {
       courseOutline: newConference?.courseOutline || {},
       amenities: newConference?.venue?.conferenceAmenities || [],
       venueImages: newConference?.venue?.images || [],
+      deletedBanner: [],
+      deletedVenueImages: [],
+      deletedSpeakers: [],
     },
     // validationSchema: validationSchema,
     onSubmit: onSubmit,
     enableReinitialize: true,
   });
 
-  // //    images set up
-  // const { getRootProps, getInputProps } = useDropzone({
-  //   accept: {
-  //     "image/*": [".jpeg", ".png"],
-  //   },
-  //   maxFiles: 1,
-  //   onDrop: (acceptedFiles) => {
-  //     setFiles(
-  //       acceptedFiles.map((file) =>
-  //         Object.assign(file, {
-  //           preview: URL.createObjectURL(file),
-  //         })
-  //       )
-  //     );
-  //     formik.setFieldValue("image", acceptedFiles);
-  //   },
-  // });
-
-  // const thumbs = files.map((file) => (
-  //   <div style={thumb} key={file.name}>
-  //     <div style={thumbInner}>
-  //       <img
-  //         src={file.preview}
-  //         alt="banner"
-  //         style={img}
-  //         // Revoke data uri after image is loaded
-  //         onLoad={() => {
-  //           URL.revokeObjectURL(file.preview);
-  //         }}
-  //       />
-  //     </div>
-  //   </div>
-  // ));
-
   //  on calcelling the image upload
   const onCancel = () => {
-    setFiles([]);
-    formik.resetForm({ image: [] });
+    formik.resetForm({ banner: [] });
   };
 
   // load amenities from backend
@@ -220,7 +182,7 @@ export default function ConferenceDetails2() {
   }
 
   //  set formik Venue Images
-  function setFormikImagesFieldValue(newImages) {
+  function setFormikVenueImages(newImages) {
     formik.setFieldValue("venueImages", [
       ...formik.values.venueImages,
       ...newImages,
@@ -250,6 +212,20 @@ export default function ConferenceDetails2() {
     setShowSpeakerForm(false);
   }
 
+  const removeConfSpeaker = (val) => {
+    let speakersLeft = [];
+    let deletedSpeakers = [];
+    for (let i = 0; i < formik.values.speakers?.length; i++) {
+      if (formik.values.speakers[i].value == val) {
+        deletedSpeakers.push(formik.values.speakers[i]);
+      } else {
+        speakersLeft.push(formik.values.speakers[i]);
+      }
+    }
+    formik.setFieldValue("speakers", speakersLeft);
+    formik.setFieldValue("deletedSpeakers", deletedSpeakers);
+  };
+
   useEffect(() => {
     loadAmenities();
     let confHostId;
@@ -259,12 +235,17 @@ export default function ConferenceDetails2() {
       confHostId = user?._id;
     }
     loadSpeakers(newConference?.host, confHostId);
+  }, [open]);
 
+  useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => files?.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, [open, files]);
+    return () =>
+      formik.values.banner?.forEach((file) =>
+        URL.revokeObjectURL(file.Location)
+      );
+  }, [formik.values.banner]);
 
-  // console.log("Details2 formik", formik);
+  console.log("Details2 formik", formik);
 
   return (
     <main className="conf-form-wrap">
@@ -275,27 +256,52 @@ export default function ConferenceDetails2() {
       >
         <div className="mb-72">
           <h2>Banner image</h2>
-          <ImageUploader
-            files={files}
-            setFiles={setFiles}
-            apiImage={newConference?.image}
-            alt="conference banner"
-            fieldName="image"
-            setFormikFieldValue={setFormikFieldValue}
-            maxFiles={1}
-          />
-          {/* <div className="logo-upload-wrap">
-            <div {...getRootProps({ className: "logo-dropzone" })}>
-              <input {...getInputProps()} />
-              <CameraIcon className="camera-icon" />
-              {thumbs}
+          {formik.values?.banner?.length > 0 ? (
+            formik.values.banner?.map((image) => (
+              <div key={image._id} className="confbanner-container">
+                <div className="confbanner-wrap">
+                  <img
+                    className="confbanner"
+                    alt="conference banner"
+                    src={image.Location}
+                    // Revoke data uri after image is loaded
+                    onLoad={() => {
+                      URL.revokeObjectURL(image.Location);
+                    }}
+                  />
+                </div>
+                <div className="confbanner-overlay"></div>
+                <div
+                  onClick={() => {
+                    let imagesLeft = [];
+                    let deletedImages = [];
+                    for (let i = 0; i < formik.values.banner.length; i++) {
+                      if (formik.values.banner[i].Location == image.Location) {
+                        deletedImages.push(formik.values.banner[i]);
+                      } else {
+                        imagesLeft.push(formik.values.banner[i]);
+                      }
+                    }
+
+                    formik.setFieldValue("banner", imagesLeft);
+                    formik.setFieldValue("deletedBanner", deletedImages);
+                  }}
+                  className="confbanner-delete-circle"
+                >
+                  <DeleteIcon className="icon-size" />
+                </div>
+              </div>
+            ))
+          ) : (
+            // className="confbanner-dropzone-container " controls the size if SingleImageUploader
+            <div className="confbanner-dropzone-container ">
+              <SingleImageUploader
+                fieldName="banner"
+                setFormikFieldValue={setFormikFieldValue}
+                dropzoneContentType="confbanner"
+              />
             </div>
-            <div className="logo-upload-textbox">
-              <span>Drag and drop your banner image here or</span>
-              <span>Browse</span>
-              <span>to choose a file</span>
-            </div>
-          </div> */}
+          )}
         </div>
 
         <div className="mb-72">
@@ -318,29 +324,19 @@ export default function ConferenceDetails2() {
           <h2>Speakers</h2>
           <div className="grid-col-2">
             {formik.values.speakers?.map((speaker) => (
-              <div key={speaker?.label} style={{}}>
-                <Speakercard
-                  name={speaker?.label}
-                  degree={speaker?.degree}
-                  designation={speaker?.designation}
-                  image={speaker.image}
-                />
-              </div>
+              <Speakercard
+                key={speaker?.label}
+                name={speaker?.label}
+                degree={speaker?.degree}
+                value={speaker.value}
+                designation={speaker?.designation}
+                image={speaker.images}
+                removeConfSpeaker={removeConfSpeaker}
+              />
             ))}
             <div className="add-speaker-button">
-              <div
-                onClick={onOpen}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "#fff",
-                  width: "50px",
-                  height: "50px",
-                  borderRadius: "50%",
-                }}
-              >
-                <AddGreenIcon className="large-icon" />
+              <div onClick={onOpen}>
+                <AddGreenIcon className="icon-lg" />
               </div>
             </div>
           </div>
@@ -425,24 +421,67 @@ export default function ConferenceDetails2() {
               </p>
               <p>{newConference?.venue?.country}, 4110348 </p>
             </div>
+
             <div className="mb-48">
               <h4>Add Venue images</h4>
-              {/* <div className="details2-image-dropzone">
-                <div className="details2-camera-wrap mb-12">
-                  <CameraIcon className="details2-camera-icon" />
-                </div>
-                <div className="caption-1-regular-gray3">
-                  Drag and drop venue images
-                  <br />
-                  or click to browse and select.
-                </div>
-              </div> */}
+              {formik.values?.venueImages?.length > 0 &&
+                formik.values.venueImages?.map((image) => (
+                  <div
+                    key={image.Location}
+                    className="confbanner-container mb-16"
+                  >
+                    <div className="confbanner-wrap">
+                      <img
+                        className="confbanner"
+                        alt="venue images"
+                        src={image.Location}
+                        // Revoke data uri after image is loaded
+                        onLoad={() => {
+                          URL.revokeObjectURL(image.Location);
+                        }}
+                      />
+                    </div>
+                    <div className="confbanner-overlay"></div>
+                    <div
+                      className="confbanner-delete-circle"
+                      onClick={() => {
+                        let imagesLeft = [];
+                        let deletedImages = [];
+                        for (
+                          let i = 0;
+                          i < formik.values.venueImages.length;
+                          i++
+                        ) {
+                          if (
+                            formik.values.venueImages[i].Location ==
+                            image.Location
+                          ) {
+                            deletedImages.push(formik.values.venueImages[i]);
+                          } else {
+                            imagesLeft.push(formik.values.venueImages[i]);
+                          }
+                        }
 
-              <MultiImageUploader
-                setFormikImagesFieldValue={setFormikImagesFieldValue}
-                removeFormikImage={removeFormikImage}
-                apiImages={newConference?.venue.images}
-              />
+                        formik.setFieldValue("venueImages", imagesLeft);
+                        formik.setFieldValue("deletedVenueImages", [
+                          ...formik.values.deletedVenueImages,
+                          ...deletedImages,
+                        ]);
+                      }}
+                    >
+                      <DeleteIcon className="icon-size" />
+                    </div>
+                  </div>
+                ))}
+
+              <div className="confbanner-dropzone-container ">
+                <MultiImageUploader
+                  // fieldName="venueImages"
+                  setFormikImagefieldValue={setFormikVenueImages}
+                  dropzoneContentType="confbanner"
+                  maxFiles={10}
+                />
+              </div>
             </div>
             <div className="mb-80">
               <h4>Add Venue Amenities</h4>

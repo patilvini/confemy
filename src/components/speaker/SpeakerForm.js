@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import ImageUploader from "../image-uploader/ImageUploader";
+import SingleImageUploader from "../image-uploader/SingleImageUploader";
 import { alertAction } from "../../redux/alert/alertAction";
 
 import api from "../../utility/api";
 import TextError from "../formik/TextError";
+import DeleteIcon from "../icons/DeleteIcon";
+
+import "./speakerForm.styles.scss";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("Required"),
@@ -24,7 +27,6 @@ const initialValues = {
 };
 
 export default function SpeakerForm(props) {
-  const [files, setFiles] = useState([]);
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.user);
@@ -59,12 +61,7 @@ export default function SpeakerForm(props) {
             if (response) {
               console.log("speaker saved res", response);
               props.setFormikSpeakers(response.data.data.newSpeaker);
-              // props.setMySpeakers((prev) => [
-              //   ...prev,
-              //   response.data.data.newSpeaker,
-              // ]);
               actions.resetForm({ values: initialValues });
-              setFiles([]);
               props.onClose();
             }
           }
@@ -82,7 +79,7 @@ export default function SpeakerForm(props) {
             //   response.data.data.newSpeaker,
             // ]);
             actions.resetForm({ values: initialValues });
-            setFiles([]);
+
             props.onClose();
           }
         } catch (err) {
@@ -106,11 +103,13 @@ export default function SpeakerForm(props) {
     formik.setFieldValue(field, value);
   }
 
-  // useEffect(() => {
-  //   setFiles(apiImage);
-  //   // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-  //   return () => files?.forEach((file) => URL.revokeObjectURL(file.Location));
-  // }, [apiImage]);
+  useEffect(() => {
+    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+    return () =>
+      formik.values.images?.forEach((file) =>
+        URL.revokeObjectURL(file.Location)
+      );
+  }, [formik.values.images]);
 
   return (
     <div className="register-modal white-modal">
@@ -120,18 +119,47 @@ export default function SpeakerForm(props) {
           onSubmit={formik.handleSubmit}
           autoComplete="off"
         >
+          <div className="speaker-dzimg-container mb-40">
+            {formik.values?.images?.length > 0 ? (
+              formik.values.images?.map((image) => (
+                <div key={image.Location} className="speakerimage-container">
+                  <div className="speakerimage-wrap">
+                    <img
+                      className="speakerimage"
+                      alt="speaker image"
+                      src={image.Location}
+                      // Revoke data uri after image is loaded
+                      onLoad={() => {
+                        URL.revokeObjectURL(image.Location);
+                      }}
+                    />
+                  </div>
+                  <div className="speakerimage-overlay"></div>
+                  <div
+                    onClick={() => {
+                      const imagesLeft = formik.values.images?.filter(
+                        (e) => e !== image
+                      );
+                      formik.setFieldValue("images", imagesLeft);
+                    }}
+                    className="speakerimage-delete-circle"
+                  >
+                    <DeleteIcon className="icon-size" />
+                  </div>
+                </div>
+              ))
+            ) : (
+              // className="speaker-image-dropzone-container" controls the size if SingleImageUploader
+              <div className="speaker-image-dropzone-wrap">
+                <SingleImageUploader
+                  fieldName="images"
+                  setFormikFieldValue={setFormikFieldValue}
+                  // dropzoneContentType="speakerImage"
+                />
+              </div>
+            )}
+          </div>
           <div className="grid-col-2">
-            <div style={{ gridColumn: "1/-1" }}>
-              <ImageUploader
-                files={files}
-                setFiles={setFiles}
-                apiImage={[]}
-                alt="Speaker Picture"
-                fieldName="images"
-                setFormikFieldValue={setFormikFieldValue}
-                maxFiles={1}
-              />
-            </div>
             <div className="grid-1st-col">
               <div className="material-textfield">
                 <input

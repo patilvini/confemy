@@ -1,16 +1,9 @@
 @import "../../utility/utility.styles.scss";
 
-.image-upload-wrap {
-  display: flex;
-  //   align-items: center;
-}
-
-.image-upload-textbox {
-  // width: 400px;
+.singleimage-upload-textbox {
   display: flex;
   flex-direction: column;
   align-items: center;
-  //   justify-content: center;
   span {
     font-family: Avenir-Roman;
     font-size: 20px;
@@ -33,28 +26,18 @@
   }
 }
 
-.image-dropzone {
-  position: relative;
+.singleimage-dropzone {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 500px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
   padding: 50px;
   background-color: $shade-2;
 }
 
-.camera-icon {
-  // width: 50px;
-  // height: 45px;
-  width: 80px;
-  height: 72px;
-}
-
-.saveimage-buttons-wrap {
-  button {
-    padding: 8px 8px;
-    margin-top: 8px;
-    margin-right: 8px;
-  }
+.default-si-dz-content {
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
 }

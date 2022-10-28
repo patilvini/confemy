@@ -1,0 +1,99 @@
+@import "../../utility/utility.styles.scss";
+
+.speaker-dzimg-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.speaker-image-dropzone-wrap {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+// speaker image
+// aspect ratio is 1:1
+// 1080 x 1080 pixels,  1:1 ratio image size used widely across social media,
+
+.speakerimage-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: $colour-white;
+
+  &:hover {
+    & > .speakerimage-overlay {
+      opacity: 0.4;
+      transition: all 300ms ease;
+    }
+
+    & > .speakerimage-wrap {
+      transition: padding 300ms ease;
+      background-color: $shade-2;
+    }
+
+    & > .speakerimage-delete-circle {
+      opacity: 1;
+      transition: opacity 300ms ease;
+    }
+  }
+}
+
+.speakerimage-wrap {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0px;
+  transition: padding 400ms ease;
+}
+
+.speakerimage-delete-circle {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $colour-white;
+  border-radius: 50%;
+
+  position: absolute;
+  transition: 300ms ease;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.speakerimage-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 300ms ease;
+  border-radius: 4px;
+  background-color: $confemy-black;
+}
+
+.speakerimage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  opacity: 1;
+  transition: opacity 300ms ease;
+  backface-visibility: hidden;
+}

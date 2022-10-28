@@ -2,6 +2,7 @@
 @import "./utility/form.styles.scss";
 @import "./utility/font.styles.scss";
 @import "./utility/button.styles.scss";
+@import "./utility/images.styles.scss";
 
 /* Universal set up */
 
@@ -193,12 +194,12 @@ a {
 }
 
 // regular icon size
-.xs-icon {
+.icon-xs {
   width: 1.6rem;
   height: 1.6rem;
 }
 
-.small-icon {
+.icon-sm {
   width: 2rem;
   height: 2rem;
 }
@@ -210,9 +211,16 @@ a {
 
 // large icon size
 
-.large-icon {
+.icon-lg {
   width: 2.8rem;
   height: 2.8rem;
+}
+
+.camera-icon {
+  // width: 50px;
+  // height: 45px;
+  width: 80px;
+  height: 72px;
 }
 
 .right-input-icon {

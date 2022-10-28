@@ -156,6 +156,8 @@ export default function CreateOrganization() {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [files]);
 
+  console.log(formik);
+
   return (
     <div className="create-org-wrap">
       <form
@@ -274,7 +276,7 @@ export default function CreateOrganization() {
               placeholder="Facebook "
             />
             <i className="left-input-icon">
-              <FacebookBlueCircle className="large-icon" />
+              <FacebookBlueCircle className="icon-lg" />
             </i>
           </div>
           <div className="mb-24">
@@ -293,7 +295,7 @@ export default function CreateOrganization() {
               placeholder="Instagram "
             />
             <i className="left-input-icon">
-              <InstagramGradientIcon className="large-icon" />
+              <InstagramGradientIcon className="icon-lg" />
             </i>
           </div>
           <div className="mb-24">
@@ -312,7 +314,7 @@ export default function CreateOrganization() {
               placeholder="Twitter "
             />
             <i className="left-input-icon">
-              <TwitterBlueIcon className="large-icon" />
+              <TwitterBlueIcon className="icon-lg" />
             </i>
           </div>
           <div className="mb-24">
@@ -331,7 +333,7 @@ export default function CreateOrganization() {
               placeholder="Linkedin "
             />
             <i className="left-input-icon">
-              <LinkedinBlueIcon className="large-icon" />
+              <LinkedinBlueIcon className="icon-lg" />
             </i>
           </div>
           <div className="mb-24">

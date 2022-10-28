@@ -98,13 +98,13 @@ export default function Signin() {
                 onClick={togglePassword}
                 className={showPassword ? "display-none" : "right-input-icon"}
               >
-                <ClosedEyeIcon className="large-icon" />
+                <ClosedEyeIcon className="icon-lg" />
               </i>
               <i
                 onClick={togglePassword}
                 className={showPassword ? "right-input-icon" : "display-none"}
               >
-                <OpenEyeIcon className="large-icon" />
+                <OpenEyeIcon className="icon-lg" />
               </i>
             </div>
             <div className="mb-24">

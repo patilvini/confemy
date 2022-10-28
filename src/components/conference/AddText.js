@@ -12,15 +12,14 @@ const initialValues = {
 
 const validationSchema = yup.object({
   text: yup.object().required("required"),
-
 });
 
 export default function AddText({ source, active }) {
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
   );
-  const dispatch = useDispatch()
-  const conference = useSelector((state) => state.conference.newConference)
+  const dispatch = useDispatch();
+  const conference = useSelector((state) => state.conference.newConference);
   // console.log(conference)
 
   const onDelete = async () => {
@@ -34,28 +33,13 @@ export default function AddText({ source, active }) {
 
           conferenceId: conferenceId,
         }
-<<<<<<< HEAD
       );
 
-      console.log("redux change");
+      // console.log("redux change")
       // formik.resetForm({ values: initialValues });
       dispatch(createConferenceAction(r.data.data.conference));
     } catch (err) {
-      console.error(err);
-=======
-            
-        ,
-        conferenceId: conferenceId
-        })
-
-    // console.log("redux change")
-    // formik.resetForm({ values: initialValues });
-    dispatch(createConferenceAction(r.data.data.conference));
-     
- 
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"))
->>>>>>> pranit
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
@@ -67,8 +51,7 @@ export default function AddText({ source, active }) {
       conferenceId: conferenceId,
     };
 
-<<<<<<< HEAD
-    console.log(resourceRichText);
+    // console.log(resourceRichText)
 
     try {
       const r = await api.post(
@@ -77,34 +60,15 @@ export default function AddText({ source, active }) {
           resourceRichText: {
             text: resourceRichText.text,
           },
-=======
-    // console.log(resourceRichText)
-
-    try{
-      const r = await api.post("/conferences/step4/resources?resourceStatus=text", {
-        resourceRichText :{
-            text: resourceRichText.text
-        }
-            
-        ,
-        conferenceId: conferenceId
-        })
-        // console.log("text saving" , r)
-
-        dispatch(createConferenceAction(r.data.data.conference));
-    } catch (err){
-      dispatch(alertAction(err.response.data.message, "danger"))
-    }
->>>>>>> pranit
 
           conferenceId: conferenceId,
         }
       );
-      console.log("text saving", r);
+      // console.log("text saving" , r)
 
       dispatch(createConferenceAction(r.data.data.conference));
     } catch (err) {
-      console.err(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 

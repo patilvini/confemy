@@ -105,7 +105,7 @@ export default function OrganizationDetails() {
               Connect your social media accounts for better reachability.
             </p>
             <SocialMedia
-              socialMediaIcon={<FacebookBlueCircle className="large-icon" />}
+              socialMediaIcon={<FacebookBlueCircle className="icon-lg" />}
               name="facebook"
               removeName="removeFacebook"
               label="Facebook link"
@@ -113,7 +113,7 @@ export default function OrganizationDetails() {
               organizationId={organizationId}
             />
             <SocialMedia
-              socialMediaIcon={<LinkedinBlueIcon className="large-icon" />}
+              socialMediaIcon={<LinkedinBlueIcon className="icon-lg" />}
               name="linkedin"
               removeName="removeLinkedin"
               label="Linkedin link"
@@ -121,7 +121,7 @@ export default function OrganizationDetails() {
               organizationId={organizationId}
             />
             <SocialMedia
-              socialMediaIcon={<TwitterBlueIcon className="large-icon" />}
+              socialMediaIcon={<TwitterBlueIcon className="icon-lg" />}
               name="twitter"
               removeName="removeTwitter"
               label="Twitter link"
@@ -129,7 +129,7 @@ export default function OrganizationDetails() {
               organizationId={organizationId}
             />
             <SocialMedia
-              socialMediaIcon={<InstagramGradientIcon className="large-icon" />}
+              socialMediaIcon={<InstagramGradientIcon className="icon-lg" />}
               name="instagram"
               removeName="removeInstagram"
               label="Instagram link"

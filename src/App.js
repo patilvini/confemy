@@ -59,10 +59,8 @@ import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
 import EditorContainer from "./components/conference/EditorContainer";
 import SelectTest from "./components/reselect/SelectTest";
 import CreatableSelectTest from "./components/reselect/CreatableSlectTest";
-import ImageUploader from "./components/image-uploader/ImageUploader";
+import ImageUploader from "./components/image-uploader/SingleImageUploader";
 
-import SearchSpeaker from "./components/conference/SearchSpeaker";
-import RegisterForm from "./components/reselect/RegisterForm";
 import PNavbar from "./components/navbar/PNavbar";
 
 const App = () => {
@@ -126,7 +124,7 @@ const App = () => {
               }
             >
               <Route path="test" element={<ImageUploader />} />
-              <Route path="test2" element={<SearchSpeaker />} />
+              {/* <Route path="test2" element={<SearchSpeaker />} /> */}
               <Route
                 path="create-conference"
                 element={<CreateConfLandingPage />}
