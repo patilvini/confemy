@@ -27,6 +27,10 @@ import AddGreenIcon from "../icons/AddGreenIcon";
 import "./createConference.styles.scss";
 import DeleteIcon from "../icons/DeleteIcon";
 
+const validationSchema = yup.object().shape({
+  speakers: yup.array().of(yup.object()).min(1, "Add speaker(s)").compact(),
+});
+
 export default function ConferenceDetails2() {
   const [open, setOpen] = useState(false);
   const [showSpeakerOptions, setShowSpeakerOptions] = useState(true);
@@ -146,7 +150,7 @@ export default function ConferenceDetails2() {
       deletedVenueImages: [],
       deletedSpeakers: [],
     },
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: onSubmit,
     enableReinitialize: true,
   });
@@ -348,9 +352,16 @@ export default function ConferenceDetails2() {
                 removeConfSpeaker={removeConfSpeaker}
               />
             ))}
-            <div className="add-speaker-button">
-              <div onClick={onOpen}>
-                <AddGreenIcon className="icon-lg" />
+            <div>
+              <div className="add-speaker-button">
+                <div onClick={onOpen}>
+                  <AddGreenIcon className="icon-lg" />
+                </div>
+              </div>
+              <div>
+                {formik.touched.speakers && Boolean(formik.errors.speakers) && (
+                  <TextError>{formik.errors.speakers}</TextError>
+                )}
               </div>
             </div>
           </div>
