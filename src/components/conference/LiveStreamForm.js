@@ -33,7 +33,7 @@ export default function LiveStreamForm({ source, active, platform }) {
     const platformDetails = {
       conferenceId: conferenceId,
       meetingUrl: "",
-      instructions: {},
+      instructions: null,
       platformName: platform,
     };
 
@@ -45,9 +45,8 @@ export default function LiveStreamForm({ source, active, platform }) {
 
       dispatch(createConferenceAction(r.data.data.conference));
       dispatch(alertAction("Platform Details successfully deleted", "success"));
-      // formik.setFieldValue("link", "")
-      // formik.setFieldValue("instructions", {})
-      formik.resetForm({});
+      
+      formik.resetForm();
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -141,15 +140,13 @@ export default function LiveStreamForm({ source, active, platform }) {
                   fieldName="instructions"
                   apiRawContent={conference[platform]?.instructions}
                 />
-                {touched.instructions && Boolean(errors.instructions) && (
-                  <TextError>{errors.instructions}</TextError>
-                )}
+                
               </div>
 
               <button
-                style={{ margin: "5rem 0" }}
+                
                 onClick={handleSubmit}
-                className="button button-primary"
+                className="button button-primary my-40"
                 type="submit"
               >
                 Save

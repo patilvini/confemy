@@ -4,9 +4,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 
-// import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
-// import { Editor } from "react-draft-wysiwyg";
-
 import * as yup from "yup";
 
 import SelectFormType1 from "../reselect/SelectFormType1";
@@ -81,8 +78,6 @@ const validationSchema = yup.object().shape({
 export default function ConferenceDetails1() {
   const [creditOptions, setcreditOptions] = useState([]);
 
-  // const [editorState, setEditorState] = useState(EditorState.createEmpty());
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const newConference = useSelector((state) => state.conference.newConference);
@@ -144,13 +139,6 @@ export default function ConferenceDetails1() {
     enableReinitialize: true,
   });
 
-  // to capture changes in texteditor
-  // const onEditorStateChange = (state) => {
-  //   const forFormik = convertToRaw(editorState.getCurrentContent());
-  //   formik.setFieldValue("refundDescription", forFormik);
-  //   setEditorState(state);
-  // };
-
   // load credit types from backend
   async function getCreditTypes() {
     try {
@@ -203,18 +191,6 @@ export default function ConferenceDetails1() {
 
   useEffect(() => {
     getCreditTypes();
-    // let blocks;
-    // if (
-    //   newConference.refundDescription &&
-    //   Object.keys(newConference.refundDescription).length > 0
-    // ) {
-    //   console.log("refund Description", newConference.refundDescription);
-    //   blocks = convertFromRaw(newConference.refundDescription);
-    //   // setEditorState(EditorState.createWithContent(blocks));
-    //   setEditorState(
-    //     EditorState.push(editorState, blocks, "update-contentState")
-    //   );
-    // }
   }, []);
 
   return (
@@ -237,17 +213,7 @@ export default function ConferenceDetails1() {
             placeholder="Choose Professions"
             isMulti={true}
           />
-          {/* <Select
-            isMulti
-            label="professions"
-            // name="profession"
-            options={professions}
-            onChange={(value) => {
-              console.log("value from onchange handler", value);
-              formik.setFieldValue("professions", value);
-            }}
-            value={formik.values.professions}
-          /> */}
+
           <div className="mb-24">
             {formik.touched.professions &&
               Boolean(formik.errors.professions) && (
@@ -436,17 +402,6 @@ export default function ConferenceDetails1() {
               onChange={formik.handleChange}
             />
           </div>
-          {/* <div
-            className={`${formik.values.isRefundable ? "" : "display-none"}`}
-          >
-            <Editor
-              editorState={editorState}
-              onEditorStateChange={onEditorStateChange}
-              wrapperClassName="wrapper-class"
-              editorClassName="editr-class"
-              toolbarClassName="toolbar-class"
-            />
-          </div> */}
 
           <div
             className={`${formik.values.isRefundable ? "" : "display-none"}`}

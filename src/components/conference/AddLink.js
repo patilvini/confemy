@@ -85,26 +85,29 @@ export default function AddLink({ source, active }) {
     <div className="conf-form-wrap ">
       {source === active && (
         <div>
-          <div className="opposite-grid">
-            <h1>Add Links</h1>
-            <div style={{ width: "50%" }}>
-              {conference?.resourceLinks?.[0]?.title?.length > 0 && (
-                <button
-                  onClick={() => onDelete()}
-                  className="delete-button-icon"
-                >
-                  <DeleteIcon />
-                </button>
-              )}
-            </div>
-          </div>
-
           <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}
             validationSchema={validationSchema}
           >
             <Form>
+              <div className="opposite-grid">
+                <h1>Add Links</h1>
+                <div style={{ width: "50%" }}>
+                  {conference?.resourceLinks?.[0]?.title?.length > 0 && (
+                    <button
+                      onClick={() => {
+                        onDelete();
+                      }}
+                      type="reset"
+                      className="delete-button-icon"
+                    >
+                      <DeleteIcon />
+                    </button>
+                  )}
+                </div>
+              </div>
+
               <FieldArray
                 name="links"
                 render={(arrayHelpers) => (
