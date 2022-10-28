@@ -31,10 +31,11 @@ export default function TextEditor(props) {
       setEditorState(EditorState.createEmpty())
 
     }
-    
+ 
   }, [props.apiRawContent]);
 
-  
+  // console.log(props.apiRawContent)
+  // console.log(convertToRaw(editorState.getCurrentContent()))
   
 
   return (

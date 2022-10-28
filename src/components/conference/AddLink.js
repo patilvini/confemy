@@ -22,6 +22,7 @@ const validationSchema = yup.object({
 export default function AddLink({ source, active }) {
 
   const dispatch = useDispatch();
+ 
 
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
@@ -48,6 +49,8 @@ export default function AddLink({ source, active }) {
       console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
       dispatch(alertAction("Link deleted successfully", "success"));
+
+
       
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -84,22 +87,29 @@ export default function AddLink({ source, active }) {
     <div className="conf-form-wrap ">
       {source === active && (
         <div>
-          <div className="opposite-grid">
+          
+          <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}
+            
+          >
+
+            
+            <Form>
+            <div className="opposite-grid">
             <h1>Add Links</h1>
             <div style={{ width: "50%" }}>
               { conference?.resourceLinks?.[0]?.title?.length>0 &&
-              <button onClick={() => onDelete()} className="delete-button-icon">
+              <button onClick={() => {
+                
+                onDelete()
+                }}  type="reset" className="delete-button-icon">
                 <DeleteIcon/>
               </button>}
             </div>
           </div>
 
-          <Formik
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-            validationSchema={validationSchema}
-          >
-            <Form>
               <FieldArray
                 name="links"
                 render={(arrayHelpers) => (
