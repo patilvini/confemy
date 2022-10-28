@@ -10,7 +10,7 @@ import TextError from "../formik/TextError";
 import { useEffect } from "react";
 
 const validationSchema = yup.object({
-  text: yup.object().required("required"),
+  text: yup.object(),
 });
 
 export default function AddText({ source, active }) {
@@ -23,33 +23,37 @@ export default function AddText({ source, active }) {
 
   const initialValues = {
     text: conference?.resourceText || {},
+ 
   };
 
+  console.log("ren")
   const onDelete = async () => {
     try {
       const r = await api.post(
         "/conferences/step4/resources?resourceStatus=text",
         {
           resourceRichText: {
-            text: {},
+            text: null,
           },
 
           conferenceId: conferenceId,
         }
       );
 
-      console.log("delete")
+      console.log("deleted", r);
       // formik.resetForm({ values: initialValues });
       dispatch(createConferenceAction(r.data.data.conference));
       dispatch(alertAction("Text deleted successfully", "success"));
-      formik.resetForm({});
+   
+      formik.resetForm();
+      
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
   const onSubmit = async (values, actions) => {
-    console.log("form on submit", formik.values);
+    // console.log("form on submit", formik.values);
 
     const resourceRichText = {
       text: values.text,
@@ -73,8 +77,6 @@ export default function AddText({ source, active }) {
 
       dispatch(createConferenceAction(r.data.data.conference));
       dispatch(alertAction("Text saved", "success"));
-
-      
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -100,7 +102,6 @@ export default function AddText({ source, active }) {
     formik.setFieldValue(fieldName, fieldValue);
   }
 
-  console.log(conference.resourceText)
   return (
     <div>
       {source === active && (
@@ -113,7 +114,7 @@ export default function AddText({ source, active }) {
             <div className="opposite-grid">
               <h1>Add Text</h1>
               <div>
-                {conference?.resourceText && (
+                {conference?.resourceText?.blocks && (
                   <button
                     type="button"
                     onClick={() => onDelete()}
