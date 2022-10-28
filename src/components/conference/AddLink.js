@@ -1,4 +1,4 @@
-import { Formik, Form, Field, FieldArray, getIn } from "formik";
+import { Formik, Form, Field, FieldArray, getIn, useFormik } from "formik";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
@@ -6,6 +6,9 @@ import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
 import TextError from "../formik/TextError";
+import DeleteIcon from "../icons/DeleteIcon";
+
+// formik context
 
 const validationSchema = yup.object({
   links: yup.array().of(
@@ -46,6 +49,7 @@ export default function AddLink({ source, active }) {
 
       console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Link deleted successfully", "success"));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -71,6 +75,7 @@ export default function AddLink({ source, active }) {
       );
       console.log("added links", r);
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Links Saved", "success"));
     } catch (err) {
       console.err(err);
     }
@@ -83,10 +88,14 @@ export default function AddLink({ source, active }) {
           <div className="opposite-grid">
             <h1>Add Links</h1>
             <div style={{ width: "50%" }}>
-              {" "}
-              <button onClick={() => onDelete()} className="button button-red">
-                Delete All
-              </button>
+              {conference?.resourceLinks?.[0]?.title?.length > 0 && (
+                <button
+                  onClick={() => onDelete()}
+                  className="delete-button-icon"
+                >
+                  <DeleteIcon />
+                </button>
+              )}
             </div>
           </div>
 
@@ -162,20 +171,22 @@ export default function AddLink({ source, active }) {
                           style={{ margin: "2rem 0" }}
                           className="flex-container"
                         >
-                          <button
-                            style={{ margin: "0rem 2rem 2rem 0" }}
-                            className="button button-red "
-                            type="button"
-                            onClick={() => {
-                              // console.log(arrayHelpers);
+                          {
+                            <button
+                              style={{ margin: "0rem 2rem 2rem 0" }}
+                              className="button button-red "
+                              type="button"
+                              onClick={() => {
+                                // console.log(arrayHelpers);
 
-                              if (arrayHelpers.form.values.links.length > 1) {
-                                arrayHelpers.remove(index);
-                              }
-                            }}
-                          >
-                            -
-                          </button>
+                                if (arrayHelpers.form.values.links.length > 1) {
+                                  arrayHelpers.remove(index);
+                                }
+                              }}
+                            >
+                              -
+                            </button>
+                          }
                           <button
                             style={{ margin: "0rem 2rem 2rem 0" }}
                             className="button button-green "

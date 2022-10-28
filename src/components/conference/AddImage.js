@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
+import DeleteIcon from "../icons/DeleteIcon";
 // import "react-dropzone-uploader/dist/styles.css";
 
 export default function AddImage({ source, active }) {
@@ -38,6 +39,7 @@ export default function AddImage({ source, active }) {
 
       // console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Image deleted successfully", "success"));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -75,8 +77,8 @@ export default function AddImage({ source, active }) {
         console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceImages.resourceImages.data = imagesResponse.data.data;
-          if (conference?.resourceImages.length > 0) {
-            for (let i = 0; i < conference?.resourceImages.length; i++) {
+          if (conference?.resourceImages?.length > 0) {
+            for (let i = 0; i < conference?.resourceImages?.length; i++) {
               resourceImages.resourceImages.data.push(
                 conference?.resourceImages[i]
               );
@@ -95,6 +97,7 @@ export default function AddImage({ source, active }) {
           // console.log(response);
           if (response) {
             dispatch(createConferenceAction(response.data.data.conference));
+            dispatch(alertAction("Images saved", "success"));
             allFiles.forEach((f) => f.remove());
           }
         }
@@ -124,10 +127,10 @@ export default function AddImage({ source, active }) {
 
                       <div style={{ alignSelf: "center" }}>
                         <button
-                          className="button button-red ml-40"
+                          className="delete-button-icon ml-40"
                           onClick={() => deleteRec(item.Key)}
                         >
-                          Delete
+                         <DeleteIcon/>
                         </button>
                       </div>
                     </div>

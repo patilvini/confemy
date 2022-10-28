@@ -201,7 +201,7 @@ const Register = ({ registerAction, isAuthenticated }) => {
               <div className="text-align-center">
                 <div style={{ display: "inline-block" }}>
                   <div className="back-to-more-sign-up" onClick={resetForm}>
-                    <BackIcon className="large-icon" fill="#08415c" />
+                    <BackIcon className="icon-lg" fill="#08415c" />
                     <span className="back-to-more-sign-up">
                       Back to more sign up options
                     </span>

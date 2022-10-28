@@ -1,36 +1,80 @@
 @import "../../utility/utility.styles.scss";
 
 .speakercard {
-  width: 388px;
-  height: 290px;
+  position: relative;
+  width: 392px;
+  height: 304px;
+  max-width: 392px;
+  max-height: 304px;
   border: 1px solid $shade-1;
   border-radius: 4px;
   background-color: $colour-white;
   overflow: hidden;
   padding: 0 60px 16px;
+
+  &:hover {
+    & > .speakercard-overlay {
+      opacity: 0.4;
+      transition: all 300ms ease;
+    }
+
+    & > .speakercard-delete-circle {
+      opacity: 1;
+      transition: opacity 300ms ease;
+    }
+  }
 }
-.speaker-image-container {
-  height: 172px;
+
+.speakercard-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
   width: 100%;
-  min-height: 172px;
+  opacity: 0;
+  transition: 300ms ease;
+  border-radius: 4px;
+  background-color: $confemy-black;
+}
+
+.speakercard-delete-circle {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $colour-white;
+  border-radius: 50%;
+
+  position: absolute;
+  transition: 300ms ease;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.speaker-image-container {
+  height: 70%;
+  width: 100%;
   display: flex;
   align-items: center;
 }
 
 .speaker-image-wrap {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
   background-color: $background;
-  object-fit: contain;
   overflow: hidden;
-  &:hover {
-    cursor: pointer;
-  }
 }
 .speaker-profilesketch-size {
   width: 80px;
@@ -38,10 +82,9 @@
 }
 
 .speaker-name-container {
-  height: 100px;
+  height: 30%;
   width: 100%;
   text-align: center;
-  word-wrap: inherit;
   overflow: scroll;
 
   -ms-overflow-style: none; /* IE and Edge */

@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
+import DeleteIcon from "../icons/DeleteIcon";
 
 export default function AddDocument({ source, active }) {
   const dispatch = useDispatch();
@@ -46,8 +47,10 @@ export default function AddDocument({ source, active }) {
 
       console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Document deleted successfully", "success"));
     } catch (err) {
-      console.error(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
+      
     }
   };
 
@@ -77,8 +80,8 @@ export default function AddDocument({ source, active }) {
         // console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceDocuments.resourceDocuments.data = imagesResponse.data.data;
-          if (conference?.resourceImages.length > 0) {
-            for (let i = 0; i < conference?.resourceDocuments.length; i++) {
+          if (conference?.resourceDocuments?.length > 0) {
+            for (let i = 0; i < conference?.resourceDocuments?.length; i++) {
               resourceDocuments.resourceDocuments.data.push(
                 conference?.resourceDocuments[i]
               );
@@ -99,11 +102,13 @@ export default function AddDocument({ source, active }) {
           // console.log(response);
           if (response) {
             dispatch(createConferenceAction(response.data.data.conference));
+            dispatch(alertAction("Documents saved", "success"));
             allFiles.forEach((f) => f.remove());
           }
         }
       } catch (err) {
-        dispatch(alertAction(err.response.data.message, "danger"));
+        console.log(err)
+        // dispatch(alertAction(err.response.message, "danger"));
       }
     }
   };
@@ -112,12 +117,12 @@ export default function AddDocument({ source, active }) {
     <div>
       {active === source && (
         <div>
-          {conference?.resourceDocuments.length > 0 && (
+          {conference?.resourceDocuments?.length > 0 && (
             <div>
               <h1>Added Documents</h1>
 
               <div className="mb-40 mt-40">
-                {conference.resourceDocuments.map((item, index) => {
+                {conference?.resourceDocuments?.map((item, index) => {
                   return (
                     <div className="opposite-grid" key={index}>
                       <a href={item.Location}>
@@ -125,10 +130,10 @@ export default function AddDocument({ source, active }) {
                       </a>
                       <div style={{ alignSelf: "center" }}>
                         <button
-                          className="button button-red ml-40"
+                          className="delete-button-icon"
                           onClick={() => deleteRec(item.Key)}
                         >
-                          Delete
+                          <DeleteIcon/>
                         </button>
                       </div>
                     </div>

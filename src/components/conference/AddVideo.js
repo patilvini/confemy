@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
+import DeleteIcon from "../icons/DeleteIcon";
 // import "react-dropzone-uploader/dist/styles.css";
 
 export default function AddVideo({ source, active }) {
@@ -48,6 +49,7 @@ export default function AddVideo({ source, active }) {
 
       // console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Video deleted successfully", "success"));
     } catch (err) {
       console.error(err);
     }
@@ -78,8 +80,8 @@ export default function AddVideo({ source, active }) {
         // console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceVideos.resourceVideos.data = imagesResponse.data.data;
-          if (conference?.resourceImages.length > 0) {
-            for (let i = 0; i < conference?.resourceVideos.length; i++) {
+          if (conference?.resourceVideos?.length > 0) {
+            for (let i = 0; i < conference?.resourceVideos?.length; i++) {
               resourceVideos.resourceVideos.data.push(
                 conference?.resourceVideos[i]
               );
@@ -98,6 +100,7 @@ export default function AddVideo({ source, active }) {
           // console.log(response);
           if (response) {
             dispatch(createConferenceAction(response.data.data.conference));
+            dispatch(alertAction("Videos saved", "success"));
             allFiles.forEach((f) => f.remove());
           }
         }
@@ -126,10 +129,10 @@ export default function AddVideo({ source, active }) {
 
                         <div style={{ alignSelf: "center" }}>
                           <button
-                            className="button button-red ml-40"
+                            className="delete-button-icon ml-40"
                             onClick={() => deleteRec(item.Key)}
                           >
-                            Delete
+                            <DeleteIcon />
                           </button>
                         </div>
                       </div>

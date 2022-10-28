@@ -5,10 +5,9 @@ import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
 import TextEditor from "../text-editor/TextEditor";
-
-const initialValues = {
-  text: {},
-};
+import DeleteIcon from "../icons/DeleteIcon";
+import TextError from "../formik/TextError";
+import { useEffect } from "react";
 
 const validationSchema = yup.object({
   text: yup.object().required("required"),
@@ -21,6 +20,10 @@ export default function AddText({ source, active }) {
   const dispatch = useDispatch();
   const conference = useSelector((state) => state.conference.newConference);
   // console.log(conference)
+
+  const initialValues = {
+    text: conference?.resourceText || {},
+  };
 
   const onDelete = async () => {
     try {
@@ -35,16 +38,18 @@ export default function AddText({ source, active }) {
         }
       );
 
-      // console.log("redux change")
+      console.log("delete");
       // formik.resetForm({ values: initialValues });
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Text deleted successfully", "success"));
+      formik.resetForm({});
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
   const onSubmit = async (values, actions) => {
-    // console.log("form on submit", formik.values);
+    console.log("form on submit", formik.values);
 
     const resourceRichText = {
       text: values.text,
@@ -67,6 +72,7 @@ export default function AddText({ source, active }) {
       // console.log("text saving" , r)
 
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Text saved", "success"));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -88,10 +94,11 @@ export default function AddText({ source, active }) {
     handleChange,
   } = formik;
 
-  function formikSetFieldValue(fieldValue) {
-    formik.setFieldValue("text", fieldValue);
+  function setFormikFieldValue(fieldName, fieldValue) {
+    formik.setFieldValue(fieldName, fieldValue);
   }
 
+  console.log(conference.resourceText);
   return (
     <div>
       {source === active && (
@@ -103,29 +110,29 @@ export default function AddText({ source, active }) {
           >
             <div className="opposite-grid">
               <h1>Add Text</h1>
-              <div style={{ width: "50%" }}>
-                {" "}
-                <button
-                  type="button"
-                  onClick={() => onDelete()}
-                  className="button button-red mb-40"
-                >
-                  Delete
-                </button>
+              <div>
+                {conference?.resourceText && (
+                  <button
+                    type="button"
+                    onClick={() => onDelete()}
+                    className="delete-button-icon"
+                  >
+                    <DeleteIcon />
+                  </button>
+                )}
               </div>
             </div>
 
-            <TextEditor
-              formikSetFieldValue={formikSetFieldValue}
-              apiRawContent={conference?.resourceText}
-            />
+            <div className="mt-40">
+              <TextEditor
+                setFormikFieldValue={setFormikFieldValue}
+                fieldName="text"
+                apiRawContent={conference?.resourceText}
+              />
+            </div>
 
-            <button
-              style={{ margin: "2rem 0" }}
-              type="submit"
-              className="button button-primary"
-            >
-              Submit
+            <button type="submit" className="button button-primary mt-20">
+              Save
             </button>
           </form>
         </div>

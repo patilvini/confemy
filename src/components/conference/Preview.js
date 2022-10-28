@@ -14,16 +14,20 @@ import RadioFilled from "../icons/RadioFilled";
 import RadioIcon from "../icons/RadioIcon";
 import Modal from "../modal/Modal";
 import "./preview.scss";
+import { useSelector } from "react-redux";
 
 export default function Preview() {
   const [data, setData] = useState();
   const [visibility, setVisibitly] = useState(false);
 
   const [select, setSelect] = useState("now");
+  const conferenceId = useSelector(
+    (state) => state.conference.newConference._id
+  );
 
   const getData = async () => {
     try {
-      const r = await api.get("/conferences/6318cd9c106aaa5e009f7c80");
+      const r = await api.get("/conferences/"+conferenceId);
       console.log(r.data.data.conferences);
       setData(r.data.data.conferences);
     } catch (err) {

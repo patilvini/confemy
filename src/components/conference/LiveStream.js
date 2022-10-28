@@ -172,7 +172,7 @@ export default function LiveStream() {
                     ? "livestream-active"
                     : resourceTabs[index]?.length > 0 ||
                       resourceTabs[index]?.blocks?.length > 0 ||
-                      resourceTabs[index][0]?.title.length > 0
+                      resourceTabs[index]?.[0]?.title.length > 0
                     ? "livestream-done"
                     : "livestream-button"
                 }

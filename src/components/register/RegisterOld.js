@@ -136,7 +136,7 @@ function Register() {
                         showPassword ? "display-none" : "right-input-icon"
                       }
                     >
-                      <ClosedEyeIcon className="large-icon" />
+                      <ClosedEyeIcon className="icon-lg" />
                     </i>
 
                     <i
@@ -145,7 +145,7 @@ function Register() {
                         showPassword ? "right-input-icon" : "display-none"
                       }
                     >
-                      <OpenEyeIcon className="large-icon" />
+                      <OpenEyeIcon className="icon-lg" />
                     </i>
                   </div>
                   <ErrorMessage name="password" component={TextError} />
@@ -167,7 +167,7 @@ function Register() {
                           : "right-input-icon"
                       }
                     >
-                      <ClosedEyeIcon className="large-icon" />
+                      <ClosedEyeIcon className="icon-lg" />
                     </i>
 
                     <i
@@ -178,7 +178,7 @@ function Register() {
                           : "display-none"
                       }
                     >
-                      <OpenEyeIcon className="large-icon" />
+                      <OpenEyeIcon className="icon-lg" />
                     </i>
                   </div>
                   <ErrorMessage name="confirmPassword" component={TextError} />
