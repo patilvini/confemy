@@ -42,7 +42,6 @@ export default function ConferenceDetails2() {
   const newConference = useSelector((state) => state.conference.newConference);
 
   const initialValues = {
-    conferenceId: newConference?._id,
     banner: [],
     description: {},
     speaker: "",
@@ -51,6 +50,9 @@ export default function ConferenceDetails2() {
     courseOutline: {},
     amenities: [],
     venueImages: [],
+    deletedBanner: [],
+    deletedVenueImages: [],
+    deletedSpeakers: [],
   };
 
   async function onSubmit(values, actions) {
@@ -122,8 +124,8 @@ export default function ConferenceDetails2() {
       if (response) {
         console.log("Details 2 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
-        // actions.resetForm({ values: initialValues });
-        // navigate("/dashboard/create-conf/step-4");
+        actions.resetForm({ values: initialValues });
+        navigate("/dashboard/create-conf/step-4");
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -132,7 +134,6 @@ export default function ConferenceDetails2() {
 
   const formik = useFormik({
     initialValues: {
-      conferenceId: newConference?._id,
       banner: newConference?.banner || [],
       description: newConference?.description || {},
       speaker: "",
