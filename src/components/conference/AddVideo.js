@@ -78,8 +78,8 @@ export default function AddVideo({ source, active }) {
         // console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceVideos.resourceVideos.data = imagesResponse.data.data;
-          if (conference?.resourceImages.length > 0) {
-            for (let i = 0; i < conference?.resourceVideos.length; i++) {
+          if (conference?.resourceVideos?.length > 0) {
+            for (let i = 0; i < conference?.resourceVideos?.length; i++) {
               resourceVideos.resourceVideos.data.push(
                 conference?.resourceVideos[i]
               );

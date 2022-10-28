@@ -14,6 +14,9 @@ const validationSchema = yup.object({
   text: yup.object().required("required"),
 });
 
+
+
+
 export default function AddText({ source, active }) {
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
@@ -88,8 +91,8 @@ export default function AddText({ source, active }) {
     handleChange,
   } = formik;
 
-  function formikSetFieldValue(fieldValue) {
-    formik.setFieldValue("text", fieldValue);
+  function setFormikFieldValue(fieldName, fieldValue) {
+    formik.setFieldValue(fieldName, fieldValue);
   }
 
   return (
@@ -116,8 +119,9 @@ export default function AddText({ source, active }) {
             </div>
 
             <TextEditor
-              formikSetFieldValue={formikSetFieldValue}
-              apiRawContent={conference?.resourceText}
+               setFormikFieldValue={setFormikFieldValue}
+               fieldName="text"
+               apiRawContent={conference?.resourceText}
             />
 
             <button

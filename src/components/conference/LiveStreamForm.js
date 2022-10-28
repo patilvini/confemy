@@ -75,7 +75,7 @@ export default function LiveStreamForm({ source, active, platform }) {
       // console.log("added platform info", r);
       
       dispatch(createConferenceAction(r.data.data.conference));
-
+      dispatch(alertAction("Link and instructions saved", "success"))
      
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"))
@@ -104,6 +104,9 @@ export default function LiveStreamForm({ source, active, platform }) {
   } = formik;
 
 
+  function setFormikFieldValue(fieldName, fieldValue) {
+    formik.setFieldValue(fieldName, fieldValue);
+  }
 
   
   return (
@@ -140,7 +143,8 @@ export default function LiveStreamForm({ source, active, platform }) {
               </div>
               <div style={{ marginTop: "2rem" }}>
                 <TextEditor
-                  formikSetFieldValue={formikSetFieldValue}
+                  setFormikFieldValue={setFormikFieldValue}
+                  fieldName="instructions"
                   apiRawContent={conference[platform]?.instructions}
                 />
                 {touched.instructions && Boolean(errors.instructions) && (
