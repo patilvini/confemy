@@ -17,26 +17,29 @@ export default function AddImage({ source, active }) {
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
   );
-  
 
   // console.log(conference?.resourceImages)
 
   const deleteRec = async (key) => {
-    console.log(key)
+    console.log(key);
     try {
       const r = await api.delete(
-        "/conferences/"+conferenceId+"/deleteFiles?fileDeleteType=resourceImages",
-        {data:{
-          fileDeleteDetails: {
-            Key: key,
+        "/conferences/" +
+          conferenceId +
+          "/deleteFiles?fileDeleteType=resourceImages",
+        {
+          data: {
+            fileDeleteDetails: {
+              Key: key,
+            },
           },
-        }}
+        }
       );
 
       // console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"))
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
@@ -45,7 +48,6 @@ export default function AddImage({ source, active }) {
   };
 
   const handleSubmit = async (files, allFiles) => {
-  
     // console.log(
     //   "form on submit",
     //   files.map((f) => f.meta)
@@ -73,9 +75,11 @@ export default function AddImage({ source, active }) {
         console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceImages.resourceImages.data = imagesResponse.data.data;
-          if(conference?.resourceImages.length > 0){
-            for( let i= 0; i < conference?.resourceImages.length; i++){
-              resourceImages.resourceImages.data.push(conference?.resourceImages[i])
+          if (conference?.resourceImages.length > 0) {
+            for (let i = 0; i < conference?.resourceImages.length; i++) {
+              resourceImages.resourceImages.data.push(
+                conference?.resourceImages[i]
+              );
             }
           }
           // console.log("formData", files.length, resourceImages);
@@ -95,7 +99,7 @@ export default function AddImage({ source, active }) {
           }
         }
       } catch (err) {
-        dispatch(alertAction(err.response.data.message, "danger"))
+        dispatch(alertAction(err.response.data.message, "danger"));
       }
     }
   };
@@ -118,9 +122,8 @@ export default function AddImage({ source, active }) {
                         alt={"carousel-images"}
                       />
 
-                      <div style={{alignSelf:"center"}}>
-                        <button 
-                       
+                      <div style={{ alignSelf: "center" }}>
+                        <button
                           className="button button-red ml-40"
                           onClick={() => deleteRec(item.Key)}
                         >

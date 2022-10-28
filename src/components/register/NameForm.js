@@ -39,7 +39,7 @@ function NameForm() {
           <option value="caseManagement">Case Management</option>
           <option value="other">Other</option>
         </SelectOne>
-        <DropdownIcon className=" right-input-icon large-icon" />
+        <DropdownIcon className=" right-input-icon icon-lg" />
       </div>
 
       <div>
@@ -54,14 +54,14 @@ function NameForm() {
             onClick={togglePassword}
             className={showPassword ? "display-none" : "right-input-icon"}
           >
-            <ClosedEyeIcon className="large-icon" />
+            <ClosedEyeIcon className="icon-lg" />
           </i>
 
           <i
             onClick={togglePassword}
             className={showPassword ? "right-input-icon" : "display-none"}
           >
-            <OpenEyeIcon className="large-icon" />
+            <OpenEyeIcon className="icon-lg" />
           </i>
         </div>
 
@@ -78,7 +78,7 @@ function NameForm() {
               showConfirmPassword ? "display-none" : "right-input-icon"
             }
           >
-            <ClosedEyeIcon className="large-icon" />
+            <ClosedEyeIcon className="icon-lg" />
           </i>
 
           <i
@@ -87,7 +87,7 @@ function NameForm() {
               showConfirmPassword ? "right-input-icon" : "display-none"
             }
           >
-            <OpenEyeIcon className="large-icon" />
+            <OpenEyeIcon className="icon-lg" />
           </i>
         </div>
       </div>

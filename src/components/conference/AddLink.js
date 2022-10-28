@@ -1,4 +1,4 @@
-import { Formik, Form, Field, FieldArray, getIn } from "formik";
+import { Formik, Form, Field, FieldArray, getIn, useFormik} from "formik";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
@@ -17,6 +17,7 @@ const validationSchema = yup.object({
 });
 
 export default function AddLink({ source, active }) {
+
   const dispatch = useDispatch();
 
   const conferenceId = useSelector(
@@ -43,6 +44,8 @@ export default function AddLink({ source, active }) {
 
       console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
+      dispatch(alertAction("Link deleted successfully", "success"));
+      
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -110,7 +113,7 @@ export default function AddLink({ source, active }) {
                             />
                             <label>Enter title here</label>
                           </div>
-                          <div style={{ color: "red", fontSize:"1.2rem" }}>
+                          <div style={{ color: "red", fontSize: "1.2rem" }}>
                             <Field
                               name={`links[${index}.title]`}
                               render={({ form }) => {
@@ -137,7 +140,7 @@ export default function AddLink({ source, active }) {
                             />
                             <label>Enter url here</label>
                           </div>
-                          <div style={{ color: "red", fontSize:"1.2rem" }}>
+                          <div style={{ color: "red", fontSize: "1.2rem" }}>
                             <Field
                               name={`links[${index}.url]`}
                               render={({ form }) => {

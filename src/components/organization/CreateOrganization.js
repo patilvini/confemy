@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -77,7 +77,7 @@ export default function CreateOrganization() {
       formDataObj.append("file", logos[0]);
       try {
         const imagesResponse = await api.post("fileUploads", formDataObj);
-        console.log("images upload response", imagesResponse);
+        // console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           formData.organization.logo = imagesResponse.data.data;
           console.log("formData", logos.length, formData);
@@ -154,7 +154,9 @@ export default function CreateOrganization() {
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, []);
+  }, [files]);
+
+  console.log(formik);
 
   return (
     <div className="create-org-wrap">
@@ -274,7 +276,7 @@ export default function CreateOrganization() {
               placeholder="Facebook "
             />
             <i className="left-input-icon">
-              <FacebookBlueCircle className="large-icon" />
+              <FacebookBlueCircle className="icon-lg" />
             </i>
           </div>
           <div className="mb-24">
@@ -293,7 +295,7 @@ export default function CreateOrganization() {
               placeholder="Instagram "
             />
             <i className="left-input-icon">
-              <InstagramGradientIcon className="large-icon" />
+              <InstagramGradientIcon className="icon-lg" />
             </i>
           </div>
           <div className="mb-24">
@@ -312,7 +314,7 @@ export default function CreateOrganization() {
               placeholder="Twitter "
             />
             <i className="left-input-icon">
-              <TwitterBlueIcon className="large-icon" />
+              <TwitterBlueIcon className="icon-lg" />
             </i>
           </div>
           <div className="mb-24">
@@ -331,7 +333,7 @@ export default function CreateOrganization() {
               placeholder="Linkedin "
             />
             <i className="left-input-icon">
-              <LinkedinBlueIcon className="large-icon" />
+              <LinkedinBlueIcon className="icon-lg" />
             </i>
           </div>
           <div className="mb-24">

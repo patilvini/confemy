@@ -1,6 +1,7 @@
 import axios from "axios";
 import store from "../redux/store";
 import { LOGOUT } from "../redux/auth/authTypes";
+// import { logoutAction } from "../redux/auth/authAction";
 
 const api = axios.create({
   withCredentials: true,
@@ -27,8 +28,13 @@ const api = axios.create({
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response.data.msg === "Invalid Credentials") {
+    console.log("api error data", err.response.data);
+    // if (err.response.data.msg === "Invalid Credentials") {
+    //   store.dispatch({ type: LOGOUT });
+    if (err.response.data.message === "Please login") {
       store.dispatch({ type: LOGOUT });
+      console.log("should cick in logout action", store);
+      // store.dispatch(logoutAction());
     }
     return Promise.reject(err);
   }

@@ -99,16 +99,6 @@ export default function ConferenceDetails1() {
         refundDescription,
       } = values;
 
-      let professionsV = [];
-      let specialitiesV = [];
-
-      professions?.forEach((i) => {
-        professionsV.push(i.value);
-      });
-
-      specialities?.forEach((i) => {
-        specialitiesV.push(i.value);
-      });
       const formData = {
         conferenceDetails: {
           conferenceId: newConference?._id,
@@ -151,6 +141,7 @@ export default function ConferenceDetails1() {
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
+    enableReinitialize: true,
   });
 
   // to capture changes in texteditor
@@ -206,9 +197,8 @@ export default function ConferenceDetails1() {
   };
 
   // function to set formik field vlue for text editor
-
-  function formikSetFieldValue(fieldValue) {
-    formik.setFieldValue("refundDescription", fieldValue);
+  function setFormikFieldValue(fieldName, fieldValue) {
+    formik.setFieldValue(fieldName, fieldValue);
   }
 
   useEffect(() => {
@@ -226,8 +216,6 @@ export default function ConferenceDetails1() {
     //   );
     // }
   }, []);
-
-  console.log("formik", formik);
 
   return (
     <main className="conf-form-wrap">
@@ -464,7 +452,8 @@ export default function ConferenceDetails1() {
             className={`${formik.values.isRefundable ? "" : "display-none"}`}
           >
             <TextEditor
-              formikSetFieldValue={formikSetFieldValue}
+              setFormikFieldValue={setFormikFieldValue}
+              fieldName="refundDescription"
               apiRawContent={newConference?.refundDescription}
             />
           </div>
@@ -474,7 +463,7 @@ export default function ConferenceDetails1() {
             Cancel
           </button>
           <button type="submit" className="button button-primary">
-            Next
+            Save and Continue
           </button>
         </div>
       </form>

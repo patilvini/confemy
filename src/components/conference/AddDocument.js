@@ -10,8 +10,6 @@ import { createConferenceAction } from "../../redux/conference/conferenceAction"
 import api from "../../utility/api";
 
 export default function AddDocument({ source, active }) {
-  
-
   const dispatch = useDispatch();
   const conference = useSelector((state) => state.conference.newConference);
   // console.log(conference);
@@ -32,15 +30,18 @@ export default function AddDocument({ source, active }) {
   };
 
   const deleteRec = async (key) => {
- 
     try {
       const r = await api.delete(
-        "/conferences/"+conferenceId+"/deleteFiles?fileDeleteType=resourceDocuments",
-        {data:{
-          fileDeleteDetails: {
-            Key: key,
+        "/conferences/" +
+          conferenceId +
+          "/deleteFiles?fileDeleteType=resourceDocuments",
+        {
+          data: {
+            fileDeleteDetails: {
+              Key: key,
+            },
           },
-        }}
+        }
       );
 
       console.log(r);
@@ -66,8 +67,6 @@ export default function AddDocument({ source, active }) {
       },
     };
 
- 
-
     if (files.length > 0) {
       const formDataObj = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -78,9 +77,11 @@ export default function AddDocument({ source, active }) {
         // console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           resourceDocuments.resourceDocuments.data = imagesResponse.data.data;
-          if(conference?.resourceImages.length > 0){
-            for( let i= 0; i < conference?.resourceDocuments.length; i++){
-              resourceDocuments.resourceDocuments.data.push(conference?.resourceDocuments[i])
+          if (conference?.resourceImages.length > 0) {
+            for (let i = 0; i < conference?.resourceDocuments.length; i++) {
+              resourceDocuments.resourceDocuments.data.push(
+                conference?.resourceDocuments[i]
+              );
             }
           }
 
@@ -89,13 +90,12 @@ export default function AddDocument({ source, active }) {
             "/conferences/step4/resources?resourceStatus=documents",
             {
               resourceDocs: {
-                data: resourceDocuments.resourceDocuments.data ,
+                data: resourceDocuments.resourceDocuments.data,
               },
               conferenceId: conferenceId,
             }
           );
 
-          
           // console.log(response);
           if (response) {
             dispatch(createConferenceAction(response.data.data.conference));
@@ -103,7 +103,7 @@ export default function AddDocument({ source, active }) {
           }
         }
       } catch (err) {
-        dispatch(alertAction(err.response.data.message, "danger"))
+        dispatch(alertAction(err.response.data.message, "danger"));
       }
     }
   };
@@ -120,10 +120,11 @@ export default function AddDocument({ source, active }) {
                 {conference.resourceDocuments.map((item, index) => {
                   return (
                     <div className="opposite-grid" key={index}>
-                      <a href={item.Location}><h3>Document {index + 1}</h3></a>
-                      <div style={{alignSelf:"center"}}>
-                        <button 
-                       
+                      <a href={item.Location}>
+                        <h3>Document {index + 1}</h3>
+                      </a>
+                      <div style={{ alignSelf: "center" }}>
+                        <button
                           className="button button-red ml-40"
                           onClick={() => deleteRec(item.Key)}
                         >

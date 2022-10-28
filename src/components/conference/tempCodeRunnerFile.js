@@ -1,1 +1,0 @@
-<form className="form-type-1" autoComplete="off" onSubmit={handleSubmit}>

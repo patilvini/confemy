@@ -395,7 +395,7 @@ export default function OneComponentOrganization() {
                 placeholder="Facebook (optional)"
               />
               <i className="left-input-icon">
-                <FacebookBlueCircle className="large-icon" />
+                <FacebookBlueCircle className="icon-lg" />
               </i>
             </div>
             {formik.touched.facebook && Boolean(formik.errors.facebook) && (
@@ -414,7 +414,7 @@ export default function OneComponentOrganization() {
                 placeholder="Instagram (optional)"
               />
               <i className="left-input-icon">
-                <InstagramGradientIcon className="large-icon" />
+                <InstagramGradientIcon className="icon-lg" />
               </i>
             </div>
             {formik.touched.instagram && Boolean(formik.errors.instagram) && (
@@ -432,7 +432,7 @@ export default function OneComponentOrganization() {
                 placeholder="Twitter (optional)"
               />
               <i className="left-input-icon">
-                <TwitterBlueIcon className="large-icon" />
+                <TwitterBlueIcon className="icon-lg" />
               </i>
             </div>
             {formik.touched.twitter && Boolean(formik.errors.twitter) && (
@@ -450,7 +450,7 @@ export default function OneComponentOrganization() {
                 placeholder="Linkedin (optional)"
               />
               <i className="left-input-icon">
-                <LinkedinBlueIcon className="large-icon" />
+                <LinkedinBlueIcon className="icon-lg" />
               </i>
             </div>
             {formik.touched.linkedin && Boolean(formik.errors.linkedin) && (

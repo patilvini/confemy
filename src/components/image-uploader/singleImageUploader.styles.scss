@@ -1,22 +1,9 @@
 @import "../../utility/utility.styles.scss";
 
-.create-org-wrap {
-  margin: 20px 310px 64px 64px;
-  h2 {
-    color: $primary;
-  }
-}
-
-.logo-upload-wrap {
+.singleimage-upload-textbox {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 16px;
-  margin-top: 40px;
-}
-
-.logo-upload-textbox {
-  width: 293px;
-  margin-left: 24px;
   span {
     font-family: Avenir-Roman;
     font-size: 20px;
@@ -39,31 +26,18 @@
   }
 }
 
-.logo-dropzone {
-  position: relative;
+.singleimage-dropzone {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 240px;
-  height: 240px;
+  width: 100%;
+  height: 100%;
   padding: 50px;
   background-color: $shade-2;
 }
 
-.socialmedia-wrap {
-  input[type="text"] {
-    padding-left: 80px;
-
-    &:focus {
-      border: solid 2px $info;
-    }
-  }
-}
-
-.savelogo-buttons-wrap {
-  button {
-    padding: 8px 8px;
-    margin-top: 8px;
-    margin-right: 8px;
-  }
+.default-si-dz-content {
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
 }
