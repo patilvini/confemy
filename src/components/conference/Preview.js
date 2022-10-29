@@ -91,7 +91,7 @@ export default function Preview() {
             </p>
             <LocationIcon className="preview-icon" />
             <div className="preview-grid-item ticket-details-text caption-2-regular-gray3">
-              {data?.mode.map((item, index) => {
+              {data?.mode?.map((item, index) => {
                 return (
                   <span style={{ marginRight: "1rem" }} key={index}>
                     {item}
@@ -102,7 +102,7 @@ export default function Preview() {
 
             <CreditsIcon className="preview-icon" />
             <div className="preview-grid-item ticket-details-text caption-2-regular-gray3">
-              {data?.credits.map((item, index) => {
+              {data?.credits?.map((item, index) => {
                 return (
                   <span style={{ marginRight: "1rem" }} key={index}>
                     {item.creditType} {item.quantity}
@@ -229,7 +229,7 @@ export default function Preview() {
                 {data?.venue?.city}
               </h4>
               <div className="venue-card-flex">
-                {data?.venue?.ameneties.map((item, index) => {
+                {data?.venue?.ameneties?.map((item, index) => {
                   return (
                     <div className="venue-flex-item" key={index}>
                       <h4 className="venue-card-text">
@@ -255,7 +255,7 @@ export default function Preview() {
 
           <h3 className="section-heading">Course Schedule</h3>
           <div>
-            {data?.schedules.map((item, index) => {
+            {data?.schedules?.map((item, index) => {
               const date = DateTime.fromISO(item.date);
               let scheduleDate = date.toLocaleString({
                 ...DateTime.DATE_MED_WITH_WEEKDAY,
@@ -277,7 +277,7 @@ export default function Preview() {
 
             <h2 className="section-heading">Conference Speakers</h2>
             <div className="speaker-grid">
-              {data?.speakers.map((item) => {
+              {data?.speakers?.map((item) => {
                 return (
                   <div key={item._id}>
                     <SpeakerCard
@@ -342,7 +342,7 @@ export default function Preview() {
           </div>
           <div className="conference-card-grid-item">
             <div className="conference-card-text caption-2-regular-gray3">
-              {data?.mode.map((item) => {
+              {data?.mode?.map((item) => {
                 return (
                   <span style={{ marginRight: "1rem" }} key={item}>
                     {item}
@@ -356,7 +356,7 @@ export default function Preview() {
           </div>
           <div className="conference-card-grid-item">
             <div className="conference-card-text caption-2-regular-gray3">
-              {data?.credits.map((item, index) => {
+              {data?.credits?.map((item, index) => {
                 return (
                   <span style={{ marginRight: "1rem" }} key={index}>
                     {" "}
