@@ -45,7 +45,7 @@ export default function LiveStreamForm({ source, active, platform }) {
 
       dispatch(createConferenceAction(r.data.data.conference));
       dispatch(alertAction("Platform Details successfully deleted", "success"));
-      
+
       formik.resetForm();
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -103,7 +103,7 @@ export default function LiveStreamForm({ source, active, platform }) {
               onSubmit={handleSubmit}
             >
               <div className="opposite-grid">
-                <h1>{source}</h1>
+                <h2>{source}</h2>
                 {conference[platform]?.meetingUrl?.length > 0 && (
                   <div style={{ alignSelf: "center" }}>
                     {" "}
@@ -140,11 +140,9 @@ export default function LiveStreamForm({ source, active, platform }) {
                   fieldName="instructions"
                   apiRawContent={conference[platform]?.instructions}
                 />
-                
               </div>
 
               <button
-                
                 onClick={handleSubmit}
                 className="button button-primary my-40"
                 type="submit"
