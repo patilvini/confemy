@@ -2,7 +2,7 @@ import { useState } from "react";
 import LiveStreamForm from "./LiveStreamForm";
 
 import "./liveStream.scss";
-// import GoogleIcon from "../icons/GoogleIcon";
+
 import ZoomLogo from "../icons/ZoomLogo";
 import GoogleMeetIcon from "../icons/GoogleMeetIcon";
 import VimeoIcon from "../icons/VimeoIcon";
@@ -18,16 +18,28 @@ import AddText from "./AddText";
 import AddImage from "./AddImage";
 import AddVideo from "./AddVideo";
 import AddLink from "./AddLink";
-import { object } from "yup";
+
 import { useSelector } from "react-redux";
 
 export default function LiveStream() {
   const [activeTab, setActiveTab] = useState(null);
-
   const [activeRec, setActiveRec] = useState(null);
+
   const conference = useSelector((state) => state.conference.newConference);
-  const links = [conference?.zoom, conference?.googleMeet, conference?.vimeo, conference?.youtube, conference?.facebook]
-  const resourceTabs = [conference?.resourceDocuments, conference?.resourceText, conference?.resourceImages, conference?.resourceVideos, conference?.resourceLinks]
+  const links = [
+    conference?.zoom,
+    conference?.googleMeet,
+    conference?.vimeo,
+    conference?.youtube,
+    conference?.facebook,
+  ];
+  const resourceTabs = [
+    conference?.resourceDocuments,
+    conference?.resourceText,
+    conference?.resourceImages,
+    conference?.resourceVideos,
+    conference?.resourceLinks,
+  ];
 
   const buttonClasses = [
     "livestream-button",
@@ -36,11 +48,26 @@ export default function LiveStream() {
   ];
 
   const tabs = [
-    { name: "Zoom", icon: <ZoomLogo />, platform: "zoom", class:{}},
-    { name: "Google Meet", icon: <GoogleMeetIcon />, platform: "googleMeet", class:{}},
-    { name: "Vimeo", icon: <VimeoIcon />, platform: "vimeo", },
-    { name: "Youtube Live", icon: <YoutubeIcon />, platform: "youtube", class:{}},
-    { name: "Facebook", icon: <FacebookIcon />, platform: "facebook", class:{}},
+    { name: "Zoom", icon: <ZoomLogo />, platform: "zoom", class: {} },
+    {
+      name: "Google Meet",
+      icon: <GoogleMeetIcon />,
+      platform: "googleMeet",
+      class: {},
+    },
+    { name: "Vimeo", icon: <VimeoIcon />, platform: "vimeo" },
+    {
+      name: "Youtube Live",
+      icon: <YoutubeIcon />,
+      platform: "youtube",
+      class: {},
+    },
+    {
+      name: "Facebook",
+      icon: <FacebookIcon />,
+      platform: "facebook",
+      class: {},
+    },
   ];
 
   const recs = ["Files", "Text", "Image", "Video", "Link"];
@@ -74,18 +101,23 @@ export default function LiveStream() {
   ];
 
   return (
-    <div>
-      <h1>Add Live video streaming</h1>
-      <p style={{ marginTop: "1.6rem" }} className="caption-2-regular-gray3">
+    <div className="livestream-container">
+      <h2>Add Live video streaming</h2>
+      <p className="caption-1-regular-gray3">
         Add Livestream to your online conference
       </p>
-
       <div className="flex-container">
         {tabs.map((item, index) => {
           return (
             <div key={index}>
               <button
-                className={activeTab === item.name ? "livestream-active" : (links[index]?.meetingUrl ? "livestream-done" : "livestream-button")}
+                className={
+                  activeTab === item.name
+                    ? "livestream-active"
+                    : links[index]?.meetingUrl
+                    ? "livestream-done"
+                    : "livestream-button"
+                }
                 onClick={() => {
                   if (activeTab === null) {
                     setActiveTab(item.name);
@@ -119,14 +151,13 @@ export default function LiveStream() {
         );
       })}
 
-      <h1>Resources</h1>
-      <p
-        style={{ lineHeight: "2rem", width: "88%", marginTop: "1.6rem" }}
-        className="caption-2-regular-gray3"
-      >
+      <h2>Resources</h2>
+      <p className="caption-1-regular-gray3">
         Share any important details with your attendees before they join the
-        event. These resources will be shared with the attendees only after they
-        book for the conference.
+        event.
+        <br />
+        These resources will be shared with the attendees only after they book
+        for the conference.
       </p>
 
       <div className="flex-container">
@@ -134,7 +165,15 @@ export default function LiveStream() {
           return (
             <div key={index}>
               <button
-                className={activeRec === item.name ? "livestream-active" :  (resourceTabs[index]?.length> 0 || resourceTabs[index]?.blocks?.length>0 || resourceTabs[index]?.[0]?.title.length > 0  ? "livestream-done" : "livestream-button")}
+                className={
+                  activeRec === item.name
+                    ? "livestream-active"
+                    : resourceTabs[index]?.length > 0 ||
+                      resourceTabs[index]?.blocks?.length > 0 ||
+                      resourceTabs[index]?.[0]?.title.length > 0
+                    ? "livestream-done"
+                    : "livestream-button"
+                }
                 onClick={() => {
                   if (activeRec === null) {
                     setActiveRec(item.name);
