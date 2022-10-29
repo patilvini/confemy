@@ -127,7 +127,7 @@ export default function ConferenceSearchSelect() {
                 {data?.venue?.city}
               </h4>
               <div className="venue-card-flex">
-                {data?.venue?.ameneties.map((item, index) => {
+                {data?.venue?.ameneties?.map((item, index) => {
                   return (
                     <div className="venue-flex-item" key={index}>
                       <h4 className="venue-card-text">
@@ -153,7 +153,7 @@ export default function ConferenceSearchSelect() {
 
           <h3 className="section-heading">Course Schedule</h3>
           <div>
-            {data?.schedules.map((item, index) => {
+            {data?.schedules?.map((item, index) => {
               const date = DateTime.fromISO(item.date);
               let scheduleDate = date.toLocaleString({
                 ...DateTime.DATE_MED_WITH_WEEKDAY,
@@ -175,7 +175,7 @@ export default function ConferenceSearchSelect() {
 
             <h2 className="section-heading">Conference Speakers</h2>
             <div className="speaker-grid">
-              {data?.speakers.map((item) => {
+              {data?.speakers?.map((item) => {
                 return (
                   <div key={item._id}>
                     <SpeakerCard
