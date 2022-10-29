@@ -66,7 +66,6 @@ export default function ConferenceDetails2() {
     const {
       banner,
       description,
-      speaker,
       speakers,
       schedules,
       courseOutline,
@@ -74,38 +73,24 @@ export default function ConferenceDetails2() {
       venueImages,
       deletedBanner,
       deletedVenueImages,
-      deletedSpeakers,
     } = values;
 
     const formData = {
       conferenceDetails: {
-        speakers: values.speakers,
+        speakers: speakers,
         conferenceId: newConference?._id,
-        banner: values.banner,
-        deletedBanner: values.deletedBanner,
-        description: values.description,
-        schedules: values.schedules,
-        courseOutline: values.courseOutline,
+        banner: banner,
+        deletedBanner: deletedBanner,
+        description: description,
+        schedules: schedules,
+        courseOutline: courseOutline,
         venue: {
-          images: values.venueImages,
-          amenities: values.amenities,
-          deletedVenueImages: values.deletedVenueImages,
+          images: venueImages,
+          amenities: amenities,
+          deletedVenueImages: deletedVenueImages,
         },
       },
     };
-    // //  Submit banner image and add image url to formData object
-    // if (values.banner?.length > 0 && !values.banner[0].Key) {
-    //   const imageDataObj = new FormData();
-    //   imageDataObj.append("file", values.banner[0]);
-    //   try {
-    //     const imagesResponse = await api.post("fileUploads", imageDataObj);
-    //     if (imagesResponse) {
-    //       formData.conferenceDetails.banner = imagesResponse.data.data;
-    //     }
-    //   } catch (err) {
-    //     dispatch(alertAction(err.response.data.message, "danger"));
-    //   }
-    // }
 
     //  Submit banner image and add image url to formData object
     if (banner?.length > 0) {
@@ -297,34 +282,15 @@ export default function ConferenceDetails2() {
   }
 
   const removeConfSpeaker = (val) => {
-    let speakersLeft = [];
-    let deletedSpeakers = [];
-    for (let i = 0; i < formik.values.speakers?.length; i++) {
-      if (formik.values.speakers[i].value == val) {
-        deletedSpeakers.push(formik.values.speakers[i]);
-      } else {
-        speakersLeft.push(formik.values.speakers[i]);
-      }
-    }
+    const speakersLeft = formik.values.speakers.filter(
+      (speaker) => speaker.value !== val
+    );
     formik.setFieldValue("speakers", speakersLeft);
-    formik.setFieldValue("deletedSpeakers", deletedSpeakers);
   };
 
   function deleteBanner(image) {
     let imagesDeleted = [];
     let imagesLeft = [];
-
-    // for (let i = 0; i < formik.values.banner.length; i++) {
-    //   if (formik.values.banner[i].Location !== image.Location) {
-    //     imagesLeft.push(formik.values.banner[i]);
-    //   }
-    //   if (
-    //     formik.values.banner[i].Key &&
-    //     formik.values.banner[i].Location == image.Location
-    //   ) {
-    //     imagesDeleted.push(formik.values.banner[i]);
-    //   }
-    // }
 
     formik.values.banner.map((item) => {
       if (item.Location !== image.Location) {
@@ -573,33 +539,7 @@ export default function ConferenceDetails2() {
                     <div className="confbanner-overlay"></div>
                     <div
                       className="confbanner-delete-circle"
-                      onClick={
-                        () => deletedVenueImage(image)
-                        //   () => {
-                        //   let imagesLeft = [];
-                        //   let deletedImages = [];
-                        //   for (
-                        //     let i = 0;
-                        //     i < formik.values.venueImages.length;
-                        //     i++
-                        //   ) {
-                        //     if (
-                        //       formik.values.venueImages[i].Location ==
-                        //       image.Location
-                        //     ) {
-                        //       deletedImages.push(formik.values.venueImages[i]);
-                        //     } else {
-                        //       imagesLeft.push(formik.values.venueImages[i]);
-                        //     }
-                        //   }
-
-                        //   formik.setFieldValue("venueImages", imagesLeft);
-                        //   formik.setFieldValue("deletedVenueImages", [
-                        //     ...formik.values.deletedVenueImages,
-                        //     ...deletedImages,
-                        //   ]);
-                        // }
-                      }
+                      onClick={() => deletedVenueImage(image)}
                     >
                       <DeleteIcon className="icon-size" />
                     </div>
