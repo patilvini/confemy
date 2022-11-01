@@ -119,33 +119,6 @@ export default function ConferenceDetails2() {
       }
     }
 
-    //  Submit venue images and add image urls to formData object
-    // if (values.venueImages.length > 0) {
-    //   const venueImagesObj = new FormData();
-    //   let imagesForS3 = [];
-    //   for (let i = 0; i < values.venueImages.length; i++) {
-    //     if (!values.venueImages[i].Key) {
-    //       imagesForS3.push(values.venueImages[i]);
-    //     }
-    //   }
-    //   if (imagesForS3.length > 0) {
-    //     imagesForS3.map((img) => venueImagesObj.append("file", img));
-    //     try {
-    //       const imagesResponse = await api.post("fileUploads", venueImagesObj);
-    //       if (imagesResponse) {
-    //         const filtredVenueImages =
-    //           formData.conferenceDetails.venue.images.filter((img) => img.Key);
-    //         formData.conferenceDetails.venue.images = [
-    //           ...filtredVenueImages,
-    //           ...imagesResponse.data.data,
-    //         ];
-    //       }
-    //     } catch (err) {
-    //       dispatch(alertAction("Image(s) failed to save", "danger"));
-    //     }
-    //   }
-    // }
-
     if (venueImages?.length > 0) {
       const imageDataObj = new FormData();
       let oldVenueImages = [];
@@ -226,7 +199,6 @@ export default function ConferenceDetails2() {
 
   async function loadSpeakers(host, id) {
     const url = `speakers?_id=${id}&type=${host}`;
-    // const organizationUrl = `speakers?_id=${id}&type=organization`
     try {
       const response = await api.get(url);
       if (response) {
@@ -247,7 +219,21 @@ export default function ConferenceDetails2() {
   // set formik field speakers value
 
   function setFormikSpeakers(newSpeaker) {
-    formik.setFieldValue("speakers", [...formik.values.speakers, newSpeaker]);
+    const speakerAlreadyAssigned = formik.values.speakers.find(
+      (speaker) => speaker._id === newSpeaker._id
+    );
+
+    console.log("newSpeaker", newSpeaker);
+    console.log("speakerAlreadyAssigned", speakerAlreadyAssigned);
+
+    if (
+      speakerAlreadyAssigned &&
+      Object.keys(speakerAlreadyAssigned).length > 0
+    ) {
+      dispatch(alertAction("Speaker is already assigned", "danger"));
+    } else {
+      formik.setFieldValue("speakers", [...formik.values.speakers, newSpeaker]);
+    }
   }
 
   //  set formik Venue Images
@@ -256,11 +242,6 @@ export default function ConferenceDetails2() {
       ...formik.values.venueImages,
       ...newImages,
     ]);
-  }
-  //  remove formikVenue Images
-  function removeFormikImage(file) {
-    const newImages = formik.values.venueImages.filter((e) => e !== file);
-    formik.setFieldValue("venueImages", [...newImages]);
   }
 
   // Modal open and close
@@ -272,13 +253,6 @@ export default function ConferenceDetails2() {
   }
   function onOpen() {
     setOpen(true);
-  }
-  // Show and not show speaker form
-  function onShowSpeakerFom() {
-    setShowSpeakerForm(true);
-  }
-  function onCloseSpeakerFom() {
-    setShowSpeakerForm(false);
   }
 
   const removeConfSpeaker = (val) => {
@@ -447,7 +421,6 @@ export default function ConferenceDetails2() {
               ) : showSpeakerForm ? (
                 <SpeakerForm
                   onClose={onClose}
-                  //   setSpeakerList={setSpeakerList}
                   setFormikSpeakers={setFormikSpeakers}
                 />
               ) : (
@@ -458,12 +431,12 @@ export default function ConferenceDetails2() {
                   onChange={(value) =>
                     formik.setFieldValue("speaker", value?.value)
                   }
-                  label="Search Speaker"
                   placeholder="Choose speaker"
                   isMulit={false}
                   onClose={onClose}
                   showForm={setShowSpeakerForm}
                   setFormikSpeakers={setFormikSpeakers}
+                  isDisabled={false}
                 />
               )}
             </Modal>

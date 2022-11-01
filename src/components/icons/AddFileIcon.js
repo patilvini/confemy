@@ -1,12 +1,10 @@
 export default function AddFileIcon({ className }) {
   return (
     <svg
-      width="5rem"
       className={className}
       viewBox="0 0 40 40"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
-     
     >
       <title>icon/add file</title>
       <defs>

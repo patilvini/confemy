@@ -5,76 +5,62 @@ import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
 import TextEditor from "../text-editor/TextEditor";
-import DeleteIcon from "../icons/DeleteIcon";
-import TextError from "../formik/TextError";
-import { useEffect } from "react";
 
 const validationSchema = yup.object({
   text: yup.object(),
 });
 
-export default function AddText({ source, active }) {
-  const conferenceId = useSelector(
-    (state) => state.conference.newConference._id
-  );
+export default function AddText() {
   const dispatch = useDispatch();
-  const conference = useSelector((state) => state.conference.newConference);
-  // console.log(conference)
+  const newConference = useSelector((state) => state.conference.newConference);
 
   const initialValues = {
-    text: conference?.resourceText || {},
+    text: newConference?.resourceText || {},
   };
 
-  console.log("ren");
   const onDelete = async () => {
+    if (!newConference?.completedStep1) {
+      dispatch(alertAction("Complete step-1 first", "danger"));
+      return;
+    }
+    const url = "/conferences/step4/resources?resourceStatus=text";
+    const formData = {
+      resourceRichText: {
+        text: null,
+      },
+      conferenceId: newConference?._id,
+    };
     try {
-      const r = await api.post(
-        "/conferences/step4/resources?resourceStatus=text",
-        {
-          resourceRichText: {
-            text: null,
-          },
-
-          conferenceId: conferenceId,
-        }
-      );
-
-      console.log("deleted", r);
-      // formik.resetForm({ values: initialValues });
-      dispatch(createConferenceAction(r.data.data.conference));
-      dispatch(alertAction("Text deleted successfully", "success"));
-
-      formik.resetForm();
+      const response = await api.post(url, formData);
+      if (response) {
+        formik.resetForm({ values: initialValues });
+        dispatch(createConferenceAction(response.data.data.conference));
+        dispatch(alertAction("Text deleted successfully", "success"));
+      }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
   const onSubmit = async (values, actions) => {
-    // console.log("form on submit", formik.values);
+    if (!newConference?.completedStep1) {
+      dispatch(alertAction("Complete step-1 first", "danger"));
+      return;
+    }
 
-    const resourceRichText = {
-      text: values.text,
-      conferenceId: conferenceId,
+    const url = "/conferences/step4/resources?resourceStatus=text";
+    const formData = {
+      resourceRichText: {
+        text: values.text,
+      },
+      conferenceId: newConference._id,
     };
-
-    // console.log(resourceRichText)
-
     try {
-      const r = await api.post(
-        "/conferences/step4/resources?resourceStatus=text",
-        {
-          resourceRichText: {
-            text: resourceRichText.text,
-          },
-
-          conferenceId: conferenceId,
-        }
-      );
-      // console.log("text saving" , r)
-
-      dispatch(createConferenceAction(r.data.data.conference));
-      dispatch(alertAction("Text saved", "success"));
+      const response = await api.post(url, formData);
+      if (response) {
+        dispatch(createConferenceAction(response.data.data.conference));
+        dispatch(alertAction("Text saved", "success"));
+      }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -84,17 +70,8 @@ export default function AddText({ source, active }) {
     initialValues,
     validationSchema,
     onSubmit,
+    enableReinitialize: true,
   });
-
-  const {
-    errors,
-    touched,
-    values,
-    isSubmitting,
-    handleSubmit,
-    getFieldProps,
-    handleChange,
-  } = formik;
 
   function setFormikFieldValue(fieldName, fieldValue) {
     formik.setFieldValue(fieldName, fieldValue);
@@ -102,42 +79,37 @@ export default function AddText({ source, active }) {
 
   return (
     <div>
-      {source === active && (
-        <div>
-          <form
-            className="form-type-1"
-            autoComplete="off"
-            onSubmit={handleSubmit}
-          >
-            <div className="opposite-grid">
-              <h1>Add Text</h1>
-              <div>
-                {conference?.resourceText?.blocks && (
-                  <button
-                    type="button"
-                    onClick={() => onDelete()}
-                    className="delete-button-icon"
-                  >
-                    <DeleteIcon />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="mt-40">
-              <TextEditor
-                setFormikFieldValue={setFormikFieldValue}
-                fieldName="text"
-                apiRawContent={conference?.resourceText}
-              />
-            </div>
-
-            <button type="submit" className="button button-primary mt-20">
-              Save
-            </button>
-          </form>
+      <form
+        className="form-type-1"
+        autoComplete="off"
+        onSubmit={formik.handleSubmit}
+      >
+        <h2>Add Text</h2>
+        <div className="mt-40">
+          <TextEditor
+            setFormikFieldValue={setFormikFieldValue}
+            fieldName="text"
+            apiRawContent={newConference?.resourceText}
+          />
         </div>
-      )}
+        <div className="mt-24">
+          <button
+            className={
+              !newConference?.resourceText
+                ? "button-outlined-inactive"
+                : "button button-green "
+            }
+            type="button"
+            onClick={() => onDelete()}
+            disabled={!newConference?.resourceText ? true : false}
+          >
+            Delete
+          </button>
+          <button className="button button-primary ml-16" type="submit">
+            Save
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

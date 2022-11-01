@@ -1,22 +1,13 @@
-import Select, { components, PlaceholderProps } from "react-select";
+import Select, { components } from "react-select";
 import PropTypes from "prop-types";
-import { useState } from "react";
 import "./searchAndAdd.styles.scss";
-import AddGreenIcon from "../icons/AddGreenIcon";
 import AddIcon from "../icons/AddIcon";
-
-const speakers = [
-  { label: "Prakash Rathore", value: "prakash" },
-  { label: "Sanjeev Raniyal", value: "sanjeev" },
-  { label: "Praveen Tomar", value: "praveen" },
-  { label: "Salim Shekh", value: "salim" },
-];
 
 const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";
 const shade1 = "#ced9de";
 const shade2 = "#ecf0f2";
-const shade3 = "#fcfdfd";
+// const shade3 = "#fcfdfd";
 const shade4 = "#aabdc7";
 const primary = "#08415c";
 
@@ -33,13 +24,6 @@ export default function SearchAndAdd(props) {
       return options ? options?.find((option) => option.value === value) : "";
     }
   };
-
-  //   const Checkbox = ({ children, ...props }) => (
-  //     <label style={{ marginRight: "1em" }}>
-  //       <input type="checkbox" {...props} />
-  //       {children}
-  //     </label>
-  //   );
 
   const customStyles = {
     control: (styles, state) => {

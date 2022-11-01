@@ -3,7 +3,7 @@ import LiveStreamForm from "./LiveStreamForm";
 
 import "./liveStream.scss";
 
-import ZoomLogo from "../icons/ZoomLogo";
+import ZoomMeetingIcon from "../icons/ZoomMeetingIcon";
 import GoogleMeetIcon from "../icons/GoogleMeetIcon";
 import VimeoIcon from "../icons/VimeoIcon";
 import YoutubeIcon from "../icons/YoutubeIcon";
@@ -19,183 +19,179 @@ import AddImage from "./AddImage";
 import AddVideo from "./AddVideo";
 import AddLink from "./AddLink";
 
-import { useSelector } from "react-redux";
-
 export default function LiveStream() {
-  const [activeTab, setActiveTab] = useState(null);
+  const [activeStep, setActiveStep] = useState(null);
   const [activeRec, setActiveRec] = useState(null);
-
-  const conference = useSelector((state) => state.conference.newConference);
-  const links = [
-    conference?.zoom,
-    conference?.googleMeet,
-    conference?.vimeo,
-    conference?.youtube,
-    conference?.facebook,
-  ];
-  const resourceTabs = [
-    conference?.resourceDocuments,
-    conference?.resourceText,
-    conference?.resourceImages,
-    conference?.resourceVideos,
-    conference?.resourceLinks,
-  ];
-
-  const buttonClasses = [
-    "livestream-button",
-    "livestream-active",
-    "livestream-done",
-  ];
+  const [activeResourceStep, setActiveResourceStep] = useState(null);
 
   const tabs = [
-    { name: "Zoom", icon: <ZoomLogo />, platform: "zoom", class: {} },
+    {
+      name: "Zoom",
+      icon: <ZoomMeetingIcon className="icon-xxl" />,
+      value: "zoom",
+    },
     {
       name: "Google Meet",
-      icon: <GoogleMeetIcon />,
-      platform: "googleMeet",
-      class: {},
+      icon: <GoogleMeetIcon className="icon-xxl" />,
+      value: "googleMeet",
     },
-    { name: "Vimeo", icon: <VimeoIcon />, platform: "vimeo" },
+    {
+      name: "Vimeo",
+      icon: <VimeoIcon className="vimeo-icon-size" />,
+      value: "vimeo",
+    },
     {
       name: "Youtube Live",
-      icon: <YoutubeIcon />,
-      platform: "youtube",
-      class: {},
+      icon: <YoutubeIcon className="youtube-icon-size" />,
+      value: "youtube",
     },
     {
-      name: "Facebook",
-      icon: <FacebookIcon />,
-      platform: "facebook",
-      class: {},
+      name: "Facebook Live",
+      icon: <FacebookIcon className="facebook-icon-size" />,
+      value: "facebook",
     },
   ];
-
-  const recs = ["Files", "Text", "Image", "Video", "Link"];
 
   const resources = [
     {
       name: "Files",
-      icon: <AddFileIcon />,
-      component: <AddDocument active={activeRec} source={recs[0]} />,
+      icon: <AddFileIcon className="icon-xxl" />,
     },
     {
       name: "Text",
-      icon: <AddTextIcon />,
-      component: <AddText active={activeRec} source={recs[1]} />,
+      icon: <AddTextIcon className="icon-xxl" />,
     },
     {
       name: "Image",
-      icon: <AddImageIcon />,
-      component: <AddImage active={activeRec} source={recs[2]} />,
+      icon: <AddImageIcon className="icon-xxl" />,
     },
     {
       name: "Video",
-      icon: <AddVideoIcon />,
-      component: <AddVideo active={activeRec} source={recs[3]} />,
+      icon: <AddVideoIcon className="icon-xxl" />,
     },
     {
       name: "Link",
-      icon: <AddLinkIcon />,
-      component: <AddLink active={activeRec} source={recs[4]} />,
+      icon: <AddLinkIcon className="icon-xxl" />,
     },
   ];
 
+  function renderResource(step) {
+    switch (step) {
+      case 0:
+        return <AddDocument />;
+      case 1:
+        return <AddText />;
+      case 2:
+        return <AddImage />;
+      case 3:
+        return <AddVideo />;
+      case 4:
+        return <AddLink />;
+
+      default:
+        return null;
+    }
+  }
+
   return (
     <div className="livestream-container">
-      <h2>Add Live video streaming</h2>
-      <p className="caption-1-regular-gray3">
-        Add Livestream to your online conference
-      </p>
-      <div className="flex-container">
-        {tabs.map((item, index) => {
-          return (
-            <div key={index}>
-              <button
-                className={
-                  activeTab === item.name
-                    ? "livestream-active"
-                    : links[index]?.meetingUrl
-                    ? "livestream-done"
-                    : "livestream-button"
-                }
-                onClick={() => {
-                  if (activeTab === null) {
-                    setActiveTab(item.name);
+      <div className="mb-72">
+        <h2 className="mb-16">Add Live video streaming</h2>
+        <p className="caption-1-regular-gray3">
+          Add Livestream to your online conference
+        </p>
+        <div className="grid-col-5 mt-56 mb-80">
+          {tabs.map((tab, index) => {
+            return (
+              <div className="livestream-tab-wrap" key={tab.name}>
+                <div
+                  className={
+                    activeStep === index
+                      ? "active-livestream-tab"
+                      : "livestream-tab"
                   }
-                  if (activeTab === item.name) {
-                    setActiveTab(null);
-                  }
-                  if (activeTab !== item.name) {
-                    setActiveTab(item.name);
-                  }
-                }}
-              >
-                {item.icon}
-              </button>
-            </div>
-          );
-        })}
-      </div>
-
-      {tabs.map((item, index) => {
-        return (
-          <div key={index}>
-            <div>
+                  onClick={() => {
+                    if (activeStep === null) {
+                      setActiveStep(index);
+                    }
+                    if (activeStep === index) {
+                      setActiveStep(null);
+                    }
+                    if (activeStep !== index) {
+                      setActiveStep(index);
+                    }
+                  }}
+                >
+                  {tab.icon}
+                </div>
+                <div
+                  style={{ opacity: 0.6 }}
+                  className="mt-24 caption-1-regular-cblack"
+                >
+                  {tab.name}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {tabs.map(
+          (tab, index) =>
+            activeStep === index && (
               <LiveStreamForm
-                active={activeTab}
-                source={item.name}
-                platform={item.platform}
+                key={tab.name}
+                tabName={tab.name}
+                tabIcon={tab.icon}
+                tabValue={tab.value}
               />
-            </div>
-          </div>
-        );
-      })}
-
-      <h2>Resources</h2>
-      <p className="caption-1-regular-gray3">
-        Share any important details with your attendees before they join the
-        event.
-        <br />
-        These resources will be shared with the attendees only after they book
-        for the conference.
-      </p>
-
-      <div className="flex-container">
-        {resources?.map((item, index) => {
-          return (
-            <div key={index}>
-              <button
-                className={
-                  activeRec === item.name
-                    ? "livestream-active"
-                    : resourceTabs[index]?.length > 0 ||
-                      resourceTabs[index]?.blocks?.length > 0 ||
-                      resourceTabs[index]?.[0]?.title.length > 0
-                    ? "livestream-done"
-                    : "livestream-button"
-                }
-                onClick={() => {
-                  if (activeRec === null) {
-                    setActiveRec(item.name);
-                  }
-                  if (activeRec === item.name) {
-                    setActiveRec(null);
-                  }
-                  if (activeRec !== item.name) {
-                    setActiveRec(item.name);
-                  }
-                }}
-              >
-                {item.icon}
-              </button>
-            </div>
-          );
-        })}
+            )
+        )}
       </div>
-
-      {resources.map((item, index) => {
-        return <div key={index}>{item.component}</div>;
-      })}
+      <div className="mb-80">
+        <h2 className="mb-16 mt-32">Add Resources</h2>
+        <p className="caption-1-regular-gray3">
+          Share any important details with your attendees before they join the
+          event.
+          <br />
+          These resources will be shared with the attendees only after they book
+          for the conference.
+        </p>
+        <div className="grid-col-5 mt-56 mb-80">
+          {resources.map((resource, index) => {
+            return (
+              <div className="livestream-tab-wrap" key={resource.name}>
+                <div
+                  className={
+                    activeResourceStep === index
+                      ? "active-livestream-tab"
+                      : "livestream-tab"
+                  }
+                  onClick={() => {
+                    if (activeResourceStep === null) {
+                      setActiveResourceStep(index);
+                    }
+                    if (activeResourceStep === index) {
+                      setActiveResourceStep(null);
+                    }
+                    if (activeResourceStep !== index) {
+                      setActiveResourceStep(index);
+                    }
+                  }}
+                >
+                  {resource.icon}
+                </div>
+                <div
+                  style={{ opacity: 0.6 }}
+                  className="mt-24 caption-1-regular-cblack"
+                >
+                  {" "}
+                  {resource.name}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div>{renderResource(activeResourceStep)}</div>
+      </div>
     </div>
   );
 }

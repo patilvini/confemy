@@ -132,6 +132,13 @@ a {
   grid-template-rows: auto;
 }
 
+.grid-col-5 {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto;
+}
+
 .conf-display-grid {
   margin-top: 3.1rem;
   grid-gap: 4.2rem;
@@ -216,6 +223,11 @@ a {
   height: 2.8rem;
 }
 
+.icon-xxl {
+  width: 40px;
+  height: 40px;
+}
+
 .camera-icon {
   // width: 50px;
   // height: 45px;
@@ -246,6 +258,20 @@ a {
   transform: translateY(-50%);
   transform-origin: left top;
   pointer-events: none;
+}
+
+.vimeo-icon-size {
+  width: 46px;
+  height: 40px;
+}
+.youtube-icon-size {
+  width: 57px;
+  height: 40px;
+}
+
+.facebook-icon-size {
+  width: 44px;
+  height: 44px;
 }
 
 // modal classes

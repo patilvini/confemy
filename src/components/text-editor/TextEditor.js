@@ -27,21 +27,17 @@ export default function TextEditor(props) {
         EditorState.push(editorState, blocks, "update-contentState")
       );
     }
-    if(!props.apiRawContent){
-      setEditorState(EditorState.createEmpty())
-
+    if (!props.apiRawContent) {
+      setEditorState(EditorState.createEmpty());
     }
- 
   }, [props.apiRawContent]);
 
   // console.log(props.apiRawContent)
   // console.log(convertToRaw(editorState.getCurrentContent()))
-  
 
   return (
     <>
       <Editor
-      
         editorState={editorState}
         onEditorStateChange={onEditorStateChange}
         // wrapperClassName="wrapper-class"

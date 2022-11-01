@@ -259,6 +259,40 @@
   margin-right: 24px;
   h2 {
     color: $primary;
-    margin-bottom: 32px;
   }
+}
+
+.livestream-tabs-container {
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin livestream-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.livestream-tab {
+  @include livestream-tab;
+  background-color: $shade-2;
+
+  &:hover {
+    background-color: $shade-1;
+  }
+}
+
+.active-livestream-tab {
+  @include livestream-tab;
+  background-color: $shade-1;
+}
+
+.livestream-tab-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
