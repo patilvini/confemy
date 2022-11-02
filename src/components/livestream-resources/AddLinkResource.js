@@ -27,7 +27,8 @@ export default function AddLinkResource({ source, active }) {
   const newConference = useSelector((state) => state.conference.newConference);
 
   const initialValues = {
-    links: newConference?.resourceLinks || [{ title: "", url: "" }],
+    links: (newConference?.resourceLinks?.length > 0 &&
+      newConference?.resourceLinks) || [{ title: "", url: "" }],
   };
 
   const onDelete = async () => {
