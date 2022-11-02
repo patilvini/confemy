@@ -1,0 +1,7 @@
+.link-resource-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  grid-template-rows: auto;
+  row-gap: 40px;
+}

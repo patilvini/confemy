@@ -13,15 +13,16 @@ import AddImageIcon from "../icons/AddImageIcon";
 import AddLinkIcon from "../icons/AddLinkIcon";
 import AddVideoIcon from "../icons/AddVideoIcon";
 import AddTextIcon from "../icons/AddTextIcon";
-import AddDocument from "./AddDocument";
+import AddDocuments from "../livestream-resources/AddDocuments";
 import AddText from "./AddText";
-import AddImage from "./AddImage";
 import AddVideo from "./AddVideo";
 import AddLink from "./AddLink";
+import AddImageResource from "../livestream-resources/AddImageRosource";
+import AddVideoResource from "../livestream-resources/AddVideoResource";
+import AddLinkResource from "../livestream-resources/AddLinkResource";
 
 export default function LiveStream() {
   const [activeStep, setActiveStep] = useState(null);
-  const [activeRec, setActiveRec] = useState(null);
   const [activeResourceStep, setActiveResourceStep] = useState(null);
 
   const tabs = [
@@ -78,15 +79,15 @@ export default function LiveStream() {
   function renderResource(step) {
     switch (step) {
       case 0:
-        return <AddDocument />;
+        return <AddDocuments />;
       case 1:
         return <AddText />;
       case 2:
-        return <AddImage />;
+        return <AddImageResource />;
       case 3:
-        return <AddVideo />;
+        return <AddVideoResource />;
       case 4:
-        return <AddLink />;
+        return <AddLinkResource />;
 
       default:
         return null;

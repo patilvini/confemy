@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import AddFileIcon from "../icons/AddFileIcon";
+import AddImageIcon from "../icons/AddImageIcon";
 import CloseIcon from "../icons/CloseIcon";
 import { useDropzone } from "react-dropzone";
 import {
@@ -18,7 +18,7 @@ import api from "../../utility/api";
 import "./fileUploader.styles.scss";
 import DeleteIcon from "../icons/DeleteIcon";
 
-export default function FileUploader({ dropzoneContentType = "forDefault" }) {
+export default function AddImageResource() {
   const [files, setFiles] = useState([]);
 
   const dispatch = useDispatch();
@@ -27,11 +27,15 @@ export default function FileUploader({ dropzoneContentType = "forDefault" }) {
   const myDropZone = useDropzone({
     accept: {
       "image/*": [".jpeg", ".png"],
-      "application/pdf": [".pdf"],
     },
-    maxFiles: 5,
+    maxFiles: 10,
     onDrop: (acceptedFiles) => {
-      setFiles((prev) => [...prev, ...acceptedFiles]);
+      const acceptedFilesWithUrl = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          Location: URL.createObjectURL(file),
+        })
+      );
+      setFiles((prev) => [...prev, ...acceptedFilesWithUrl]);
     },
   });
 
@@ -49,7 +53,6 @@ export default function FileUploader({ dropzoneContentType = "forDefault" }) {
   );
 
   const handleSubmit = async (e) => {
-    console.log("save clicked");
     e.preventDefault();
     if (!newConference?.completedStep1) {
       dispatch(alertAction("Complete step-1 first", "danger"));
@@ -57,36 +60,29 @@ export default function FileUploader({ dropzoneContentType = "forDefault" }) {
     }
     if (files.length < 1) {
       dispatch(
-        alertAction("Drag and drop files or browse and upload files", "danger")
+        alertAction("Drag and drop images or browse and upload", "danger")
       );
-      // return;
+      return;
     }
 
     const formData = {
-      resourceDocs: {
+      resourceImages: {
         data: [],
       },
       conferenceId: newConference._id,
     };
 
-    //  Submit banner image and add image url to formData object
+    //  Submit  images to AWS
     if (files?.length > 0) {
       const imageDataObj = new FormData();
-      let oldFiles = [];
-      files.map((file) => {
-        if (!file.Key) {
-          imageDataObj.append("file", file);
-        } else {
-          oldFiles.push(file);
-        }
-      });
+      files.map((file) => imageDataObj.append("file", file));
 
       if (imageDataObj.has("file")) {
         try {
           const imagesResponse = await api.post("fileUploads", imageDataObj);
           if (imagesResponse) {
-            formData.resourceDocs.data = [
-              ...oldFiles,
+            formData.resourceImages.data = [
+              ...newConference?.resourceImages,
               ...imagesResponse.data.data,
             ];
           }
@@ -99,21 +95,22 @@ export default function FileUploader({ dropzoneContentType = "forDefault" }) {
       console.log("formData", formData);
 
       try {
-        const url = "/conferences/step4/resources?resourceStatus=documents";
-        const response = api.post(url, formData);
+        const url = "/conferences/step4/resources?resourceStatus=images";
+        const response = await api.post(url, formData);
         if (response) {
-          console.log("Fileupload response", response);
+          console.log("Imageupload response", response);
+          setFiles([]);
           dispatch(createConferenceAction(response?.data?.data?.conference));
-          dispatch(alertAction(response.data.data.message, "success"));
+          dispatch(alertAction(response.data.message, "success"));
         }
       } catch (err) {
-        console.log(err);
+        dispatch(alertAction(err.response.data.message, "danger"));
       }
     }
   };
 
   const deleteResource = async (key) => {
-    const url = `/conferences/${newConference._id}/deleteFiles?fileDeleteType=resourceDocuments`;
+    const url = `/conferences/${newConference._id}/deleteFiles?fileDeleteType=resourceImages`;
     const formData = {
       data: {
         fileDeleteDetails: {
@@ -131,48 +128,64 @@ export default function FileUploader({ dropzoneContentType = "forDefault" }) {
     }
   };
 
-  // dropzone size and shape is controlled by its container declared in parent component
+  useEffect(() => {
+    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, []);
 
   return (
     <>
-      <h2 className="mb-32">Saved Files</h2>
+      <h2 className="mb-32">Saved Images</h2>
       <div
         className={
-          newConference?.resourceDocuments?.length > 0
+          newConference?.resourceImages?.length > 0
             ? "display-none"
             : "body-bold flex-hc"
         }
       >
-        No saved files
+        No saved images
       </div>
-      <ul className="mb-72">
-        {newConference?.resourceDocuments?.length > 0 &&
-          newConference?.resourceDocuments.map((file) => (
-            <li key={file._id} className="flex-vc body-bold mx-24">
-              <AddFileIcon className="icon-lg mr-16" />
-              <div style={{ flexGrow: 1 }}>
-                <a href={file.Location}>{file._id}</a>
-              </div>
-              <i onClick={() => deleteResource(file.Key)}>
-                <DeleteIcon className="icon-size" />
-              </i>
-            </li>
-          ))}
-      </ul>
-      <h2 className="mb-32">Upload new files</h2>
+      <div className="resource-media-display-wrap mb-72">
+        <ul>
+          {newConference?.resourceImages?.length > 0 &&
+            newConference?.resourceImages.map((file) => (
+              <li key={file._id} className=" mx-24">
+                <div>
+                  <img
+                    className="resource-image-display"
+                    alt="conference"
+                    src={file.Location}
+                    // Revoke data uri after image is loaded
+                    onLoad={() => {
+                      URL.revokeObjectURL(file.Location);
+                    }}
+                  />
+                </div>
+                <i onClick={() => deleteResource(file.Key)}>
+                  <DeleteIcon className="icon-size" />
+                </i>
+              </li>
+            ))}
+        </ul>
+      </div>
+      <h2 className="mb-32">Upload new images</h2>
       <form onSubmit={handleSubmit}>
         <div className="filesdz-section-wrap mb-24">
           <div className="filesdz-section-innerwrap">
-            <div
-              className="filesdz-files-container"
-              // style={{
-              //   borderBottom: files?.length > 0 ? "1px solid #c4c4c4" : null,
-              // }}
-            >
+            <div className="filesdz-files-container">
               {files?.map((file) => (
                 <div className="filesdz-files-row" key={file.name}>
-                  <AddFileIcon className="icon-xs mr-16" />
-                  <div>{file.name}</div>
+                  <div>
+                    <img
+                      className="resource-media-preview"
+                      alt="resource"
+                      src={file.Location}
+                      // Revoke data uri after image is loaded
+                      onLoad={() => {
+                        URL.revokeObjectURL(file.Location);
+                      }}
+                    />
+                  </div>
                   <i
                     onClick={() => {
                       const remainingFiles = files.filter(
@@ -195,7 +208,7 @@ export default function FileUploader({ dropzoneContentType = "forDefault" }) {
               >
                 <input {...getInputProps()} />
                 <div className="filesdz-label-container">
-                  <AddFileIcon className="icon-lg mb-16" />
+                  <AddImageIcon className="icon-lg mb-16" />
                   <div style={{ textAlign: "center" }}>
                     <span>Drag and drop your image here or </span>
                     <span>Browse</span>

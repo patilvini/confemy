@@ -96,13 +96,17 @@ export default function ConferenceDetails2() {
     if (banner?.length > 0) {
       const imageDataObj = new FormData();
       let oldBanners = [];
-      banner.map((img) => {
-        if (!img.Key) {
-          imageDataObj.append("file", img);
-        } else {
-          oldBanners.push(img);
-        }
-      });
+      banner.map((img) =>
+        !img.Key ? imageDataObj.append("file", img) : oldBanners.push(img)
+      );
+
+      // banner.map((img) => {
+      //   if (!img.Key) {
+      //     imageDataObj.append("file", img);
+      //   } else {
+      //     oldBanners.push(img);
+      //   }
+      // });
 
       if (imageDataObj.has("file")) {
         try {
@@ -122,17 +126,25 @@ export default function ConferenceDetails2() {
     if (venueImages?.length > 0) {
       const imageDataObj = new FormData();
       let oldVenueImages = [];
-      venueImages.map((img) => {
-        if (!img.Key) {
-          imageDataObj.append("file", img);
-        } else {
-          oldVenueImages.push(img);
-        }
-      });
+
+      venueImages.map((img) =>
+        !img.Key ? imageDataObj.append("file", img) : oldVenueImages.push(img)
+      );
+
+      // venueImages.map((img) => {
+      //   if (!img.Key) {
+      //     imageDataObj.append("file", img);
+      //   } else {
+      //     oldVenueImages.push(img);
+      //   }
+      // });
+
+      console.log("OldVenuImages", oldVenueImages);
 
       if (imageDataObj.has("file")) {
         try {
           const imagesResponse = await api.post("fileUploads", imageDataObj);
+          console.log("imageResp", imagesResponse);
           if (imagesResponse) {
             formData.conferenceDetails.venue.images = [
               ...oldVenueImages,
@@ -178,11 +190,6 @@ export default function ConferenceDetails2() {
     onSubmit: onSubmit,
     enableReinitialize: true,
   });
-
-  //  on calcelling the image upload
-  const onCancel = () => {
-    formik.resetForm({ banner: [] });
-  };
 
   // load amenities from backend
   async function loadAmenities() {
@@ -266,14 +273,22 @@ export default function ConferenceDetails2() {
     let imagesDeleted = [];
     let imagesLeft = [];
 
-    formik.values.banner.map((item) => {
-      if (item.Location !== image.Location) {
-        imagesLeft.push(item);
-      }
-      if (item.Key && item.Location == image.Location) {
-        imagesDeleted.push(item);
-      }
-    });
+    formik.values.banner.map((item) =>
+      item.Location !== image.Location
+        ? imagesLeft.push(item)
+        : item.Key && item.Location === image.Location
+        ? imagesDeleted.push(item)
+        : null
+    );
+
+    // formik.values.banner.map((item) => {
+    //   if (item.Location !== image.Location) {
+    //     imagesLeft.push(item);
+    //   }
+    //   if (item.Key && item.Location === image.Location) {
+    //     imagesDeleted.push(item);
+    //   }
+    // });
 
     formik.setFieldValue("banner", imagesLeft);
     formik.setFieldValue("deletedBanner", [
@@ -285,14 +300,23 @@ export default function ConferenceDetails2() {
   function deletedVenueImage(image) {
     let imagesDeleted = [];
     let imagesLeft = [];
-    formik.values.venueImages.map((item) => {
-      if (item.Location !== image.Location) {
-        imagesLeft.push(item);
-      }
-      if (item.Key && item.Location == image.Location) {
-        imagesDeleted.push(item);
-      }
-    });
+
+    formik.values.venueImages.map((item) =>
+      item.Location !== image.Location
+        ? imagesLeft.push(item)
+        : item.Key && item.Location === image.Location
+        ? imagesDeleted.push(item)
+        : null
+    );
+
+    // formik.values.venueImages.map((item) => {
+    //   if (item.Location !== image.Location) {
+    //     imagesLeft.push(item);
+    //   }
+    //   if (item.Key && item.Location === image.Location) {
+    //     imagesDeleted.push(item);
+    //   }
+    // });
 
     formik.setFieldValue("venueImages", imagesLeft);
     formik.setFieldValue("deletedVenueImages", [
@@ -304,7 +328,7 @@ export default function ConferenceDetails2() {
   useEffect(() => {
     loadAmenities();
     let confHostId;
-    if (newConference?.host == "organization") {
+    if (newConference?.host === "organization") {
       confHostId = newConference?.hostedBy.organization;
     } else {
       confHostId = user?._id;
