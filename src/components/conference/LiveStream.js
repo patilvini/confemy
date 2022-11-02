@@ -1,8 +1,5 @@
 import { useState } from "react";
 import LiveStreamForm from "./LiveStreamForm";
-
-import "./liveStream.scss";
-
 import ZoomMeetingIcon from "../icons/ZoomMeetingIcon";
 import GoogleMeetIcon from "../icons/GoogleMeetIcon";
 import VimeoIcon from "../icons/VimeoIcon";
@@ -14,9 +11,7 @@ import AddLinkIcon from "../icons/AddLinkIcon";
 import AddVideoIcon from "../icons/AddVideoIcon";
 import AddTextIcon from "../icons/AddTextIcon";
 import AddDocuments from "../livestream-resources/AddDocuments";
-import AddText from "./AddText";
-import AddVideo from "./AddVideo";
-import AddLink from "./AddLink";
+import AddTextResource from "../livestream-resources/AddTextResource";
 import AddImageResource from "../livestream-resources/AddImageRosource";
 import AddVideoResource from "../livestream-resources/AddVideoResource";
 import AddLinkResource from "../livestream-resources/AddLinkResource";
@@ -81,7 +76,7 @@ export default function LiveStream() {
       case 0:
         return <AddDocuments />;
       case 1:
-        return <AddText />;
+        return <AddTextResource />;
       case 2:
         return <AddImageResource />;
       case 3:

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Formik, Form, Field, FieldArray, getIn, ErrorMessage } from "formik";
+import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import { alertAction } from "../../redux/alert/alertAction";
@@ -143,7 +143,7 @@ export default function AddLinkResource({ source, active }) {
                         {/*  */}
                         <div className="grid-2nd-col flex-vchc">
                           <div>
-                            {arrayHelpers.form.values.links.length > 1 ? (
+                            {arrayHelpers.form.values.links.length > 0 ? (
                               <i
                                 type="button"
                                 onClick={() => arrayHelpers.remove(index)}
@@ -156,6 +156,12 @@ export default function AddLinkResource({ source, active }) {
                       </Fragment>
                     ))}
                   </div>
+                  {arrayHelpers.form.values.links.length < 1 && (
+                    <div className="body-regular-gray3">
+                      All links removed. Use Save Data button to save changes.
+                      Or use + Add link button to add a new link.
+                    </div>
+                  )}
                   <button
                     className="button button-green flex-vc mt-16 mb-72 p-4"
                     type="button"
@@ -167,7 +173,11 @@ export default function AddLinkResource({ source, active }) {
                     }
                   >
                     <AddIcon className="icon-sm mr-8" fill="#fff" />
-                    <span>Add more</span>
+                    <span>
+                      {arrayHelpers.form.values.links.length > 0
+                        ? "Add more"
+                        : "Add link"}{" "}
+                    </span>
                   </button>
                 </div>
               )}

@@ -10,7 +10,7 @@ const validationSchema = yup.object({
   text: yup.object(),
 });
 
-export default function AddText() {
+export default function AddTextResource() {
   const dispatch = useDispatch();
   const newConference = useSelector((state) => state.conference.newConference);
 
