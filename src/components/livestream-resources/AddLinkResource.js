@@ -108,79 +108,82 @@ export default function AddLinkResource({ source, active }) {
 
             <FieldArray
               name="links"
-              render={(arrayHelpers) => (
-                <div>
-                  <div className="link-resource-grid">
-                    {arrayHelpers.form.values.links?.map((link, index) => (
-                      <Fragment key={index}>
-                        {/*  */}
-                        <div className="grid-1st-col">
-                          <div className="material-textfield">
-                            <Field
-                              type="text"
+              render={(arrayHelpers) => {
+                console.log("arrayHelpers", arrayHelpers);
+                return (
+                  <div>
+                    <div className="link-resource-grid">
+                      {arrayHelpers.form.values.links?.map((link, index) => (
+                        <Fragment key={index}>
+                          {/*  */}
+                          <div className="grid-1st-col">
+                            <div className="material-textfield">
+                              <Field
+                                type="text"
+                                name={`links[${index}].title`}
+                                placeholder=" "
+                              />
+                              <label>Title for url </label>
+                            </div>
+                            <ErrorMessage
                               name={`links[${index}].title`}
-                              placeholder=" "
+                              component={TextError}
                             />
-                            <label>Title for url </label>
-                          </div>
-                          <ErrorMessage
-                            name={`links[${index}].title`}
-                            component={TextError}
-                          />
-                          <div className="material-textfield mt-8">
-                            <Field
-                              type="text"
+                            <div className="material-textfield mt-8">
+                              <Field
+                                type="text"
+                                name={`links[${index}].url`}
+                                placeholder=" "
+                              />
+                              <label>URL</label>
+                            </div>
+                            <ErrorMessage
                               name={`links[${index}].url`}
-                              placeholder=" "
+                              component={TextError}
                             />
-                            <label>URL</label>
                           </div>
-                          <ErrorMessage
-                            name={`links[${index}].url`}
-                            component={TextError}
-                          />
-                        </div>
-                        {/*  */}
-                        <div className="grid-2nd-col flex-vchc">
-                          <div>
-                            {arrayHelpers.form.values.links.length > 0 ? (
-                              <i
-                                type="button"
-                                onClick={() => arrayHelpers.remove(index)}
-                              >
-                                <DeleteIcon className="icon-lg" />
-                              </i>
-                            ) : null}
+                          {/*  */}
+                          <div className="grid-2nd-col flex-vchc">
+                            <div>
+                              {arrayHelpers.form.values.links.length > 0 ? (
+                                <i
+                                  type="button"
+                                  onClick={() => arrayHelpers.remove(index)}
+                                >
+                                  <DeleteIcon className="icon-lg" />
+                                </i>
+                              ) : null}
+                            </div>
                           </div>
-                        </div>
-                      </Fragment>
-                    ))}
-                  </div>
-                  {arrayHelpers.form.values.links.length < 1 && (
-                    <div className="body-regular-gray3">
-                      All links removed. Use Save Data button to save changes.
-                      Or use + Add link button to add a new link.
+                        </Fragment>
+                      ))}
                     </div>
-                  )}
-                  <button
-                    className="button button-green flex-vc mt-16 mb-72 p-4"
-                    type="button"
-                    onClick={() =>
-                      arrayHelpers.push({
-                        title: "",
-                        url: "",
-                      })
-                    }
-                  >
-                    <AddIcon className="icon-sm mr-8" fill="#fff" />
-                    <span>
-                      {arrayHelpers.form.values.links.length > 0
-                        ? "Add more"
-                        : "Add link"}{" "}
-                    </span>
-                  </button>
-                </div>
-              )}
+                    {arrayHelpers.form.values.links.length < 1 && (
+                      <div className="body-regular-gray3">
+                        No links. Use Save Data button to save any changes. Use
+                        + Add link button to add a new link.
+                      </div>
+                    )}
+                    <button
+                      className="button button-green flex-vc mt-16 mb-72 p-4"
+                      type="button"
+                      onClick={() =>
+                        arrayHelpers.push({
+                          title: "",
+                          url: "",
+                        })
+                      }
+                    >
+                      <AddIcon className="icon-sm mr-8" fill="#fff" />
+                      <span>
+                        {arrayHelpers.form.values.links.length > 0
+                          ? "Add more"
+                          : "Add link"}{" "}
+                      </span>
+                    </button>
+                  </div>
+                );
+              }}
             />
 
             <button className="button button-primary " type="submit">
