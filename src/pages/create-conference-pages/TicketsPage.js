@@ -1,7 +1,5 @@
-import CreatePass from "../../components/conference/CreatePass";
-
+import ConferenceTickets from "../../components/conference/ConferenceTickets";
 
 export default function TicketsPage() {
-  return <CreatePass/>
-  
+  return <ConferenceTickets />;
 }

@@ -314,12 +314,10 @@ a {
   h2 {
     text-align: center;
     color: $primary;
-    margin-bottom: 4.8rem;
   }
 
   button {
     width: 100%;
-    // margin-bottom: 3.4rem;
   }
 }
 
@@ -327,6 +325,22 @@ a {
   text-align: center;
   border-top: solid 1px $shade-1;
   padding-top: 3rem;
+}
+
+.or-container {
+  opacity: 0.67;
+  display: flex;
+  align-items: center;
+  margin: 3.2rem auto;
+  text-align: center;
+}
+
+.or-line {
+  margin: auto 2.2rem;
+  display: inline-block;
+  width: 175px;
+  height: 1px;
+  background-color: $shade-1;
 }
 
 // Margin & Padding

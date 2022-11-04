@@ -16,7 +16,6 @@ import PropTypes from "prop-types";
 import { alertAction } from "../../redux/alert/alertAction";
 import { registerAction } from "../../redux/auth/authAction";
 import BackIcon from "../icons/BackIcon";
-import Message from "../message/Message";
 import api from "../../utility/api";
 
 const initialValues = {

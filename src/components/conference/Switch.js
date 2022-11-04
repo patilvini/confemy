@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import "./switch.scss";
 
-const Switch = ({ id, name, value, checked, onChange }) => {
+const Switch = ({ id, name, value, checked, onChange, disable }) => {
   return (
     <>
       <label className="switch">
@@ -12,6 +12,7 @@ const Switch = ({ id, name, value, checked, onChange }) => {
           value={value}
           checked={checked}
           onChange={onChange}
+          disabled={disable}
         />
         <span className="slider round"></span>
       </label>
@@ -27,6 +28,7 @@ Switch.propTypes = {
   value: PropTypes.string.isRequired,
   checked: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
+  disable: PropTypes.bool,
 };
 
 // const Switch = ({ isOn, handleToggle }) => {

@@ -100,14 +100,6 @@ export default function ConferenceDetails2() {
         !img.Key ? imageDataObj.append("file", img) : oldBanners.push(img)
       );
 
-      // banner.map((img) => {
-      //   if (!img.Key) {
-      //     imageDataObj.append("file", img);
-      //   } else {
-      //     oldBanners.push(img);
-      //   }
-      // });
-
       if (imageDataObj.has("file")) {
         try {
           const imagesResponse = await api.post("fileUploads", imageDataObj);
@@ -130,16 +122,6 @@ export default function ConferenceDetails2() {
       venueImages.map((img) =>
         !img.Key ? imageDataObj.append("file", img) : oldVenueImages.push(img)
       );
-
-      // venueImages.map((img) => {
-      //   if (!img.Key) {
-      //     imageDataObj.append("file", img);
-      //   } else {
-      //     oldVenueImages.push(img);
-      //   }
-      // });
-
-      console.log("OldVenuImages", oldVenueImages);
 
       if (imageDataObj.has("file")) {
         try {
@@ -281,15 +263,6 @@ export default function ConferenceDetails2() {
         : null
     );
 
-    // formik.values.banner.map((item) => {
-    //   if (item.Location !== image.Location) {
-    //     imagesLeft.push(item);
-    //   }
-    //   if (item.Key && item.Location === image.Location) {
-    //     imagesDeleted.push(item);
-    //   }
-    // });
-
     formik.setFieldValue("banner", imagesLeft);
     formik.setFieldValue("deletedBanner", [
       ...formik.values.deletedBanner,
@@ -308,15 +281,6 @@ export default function ConferenceDetails2() {
         ? imagesDeleted.push(item)
         : null
     );
-
-    // formik.values.venueImages.map((item) => {
-    //   if (item.Location !== image.Location) {
-    //     imagesLeft.push(item);
-    //   }
-    //   if (item.Key && item.Location === image.Location) {
-    //     imagesDeleted.push(item);
-    //   }
-    // });
 
     formik.setFieldValue("venueImages", imagesLeft);
     formik.setFieldValue("deletedVenueImages", [
