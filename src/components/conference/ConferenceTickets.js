@@ -122,7 +122,7 @@ export default function ConferenceTickets() {
   };
 
   useEffect(() => {
-    if (newConference?.isFreeStatusSubmitted) {
+    if (newConference?.hasConfPayStatus) {
       setcurrentPage(1);
     }
   }, []);
@@ -150,7 +150,7 @@ export default function ConferenceTickets() {
         <div className="mb-56">{renderPageContent(currentPage)}</div>
         <div>
           <button
-            disable={formik.isSubmitting}
+            disabled={formik.isSubmitting}
             type="submit"
             className="button button-primary "
           >
