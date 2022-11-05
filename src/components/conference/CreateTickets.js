@@ -48,7 +48,9 @@ export default function CreateTickets({ formik, setFormikFieldValue }) {
                         <td>{ticket.name}</td>
                         <td>{ticket.quantity}</td>
                         <td>
-                          {ticket.currency} {ticket.price}
+                          {ticket.type === "FREE"
+                            ? "Free"
+                            : `${ticket.currency} ${ticket.price}`}
                         </td>
                         <td>
                           <span>
