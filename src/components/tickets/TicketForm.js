@@ -22,16 +22,13 @@ const validationSchema = yup.object({
   currency: yup.string().required("Required"),
 });
 
-export default function TicketForm({ onClose, isFree, isFreeTicket }) {
+export default function TicketForm({ onClose }) {
   const newConference = useSelector((state) => state.conference.newConference);
   const dispatch = useDispatch();
-
-  // const { isTicketFree } = useContext(TicketContext);
 
   async function onSubmit(values, actions) {
     const formData = {
       ticketDetails: {
-        type: values.type,
         name: values.name,
         info: values.info,
         currency: values.currency,
@@ -39,7 +36,7 @@ export default function TicketForm({ onClose, isFree, isFreeTicket }) {
         price: values.price,
         saleStartDate: values.saleStartDate,
         conferenceId: newConference?._id,
-        regularTicket: values.regularTicket,
+        // regularTicket: values.regularTicket,
       },
     };
 
@@ -57,29 +54,18 @@ export default function TicketForm({ onClose, isFree, isFreeTicket }) {
 
   const formik = useFormik({
     initialValues: {
-      type: "",
       name: "",
       info: "",
       currency: "",
       quantity: 1,
       price: 1,
       saleStartDate: Date,
-      regularTicket: newConference?.isRegularTicketCreated ? false : true,
+      // regularTicket: newConference?.isRegularTicketCreated ? false : true,
     },
     // validationSchema: validationSchema,
     onSubmit: onSubmit,
     enableReinitialize: true,
   });
-
-  useEffect(() => {
-    if (isFree) {
-      formik.setFieldValue("type", "FREE");
-    } else if (isFreeTicket) {
-      formik.setFieldValue("type", "FREE");
-    } else {
-      formik.setFieldValue("type", "PAID");
-    }
-  }, [isFree, isFreeTicket]);
 
   console.log("Ticket Form", formik);
 
@@ -87,12 +73,7 @@ export default function TicketForm({ onClose, isFree, isFreeTicket }) {
     <div>
       <div className="mb-24">
         <h2>
-          {isFree || isFreeTicket
-            ? "Free"
-            : newConference?.isRegularTicketCreated
-            ? "Paid"
-            : "Base Price"}{" "}
-          Ticket
+          {newConference?.isRegularTicketCreated ? "" : "Base Price "}Ticket
         </h2>
       </div>
       <form onSubmit={formik.handleSubmit} className="form-type-1">
@@ -147,11 +128,7 @@ export default function TicketForm({ onClose, isFree, isFreeTicket }) {
           )}
         </div>
 
-        <div
-          className={
-            isFree || isFreeTicket ? "display-none" : "ticket-form-price-wrap"
-          }
-        >
+        <div className={"ticket-form-price-wrap"}>
           <SelectFormType1
             label="currency"
             options={currencylist}
@@ -159,7 +136,7 @@ export default function TicketForm({ onClose, isFree, isFreeTicket }) {
             onChange={(value) => formik.setFieldValue("currency", value?.value)}
             placeholder="Select currency"
             value={formik.values.currency}
-            isDisabled={isFree || isFreeTicket}
+            isDisabled={false}
           />
           <div className="mb-8">
             <div className="material-textfield">
@@ -170,41 +147,15 @@ export default function TicketForm({ onClose, isFree, isFreeTicket }) {
                 value={formik.values.price}
                 onChange={formik.handleChange}
                 placeholder=" "
-                disabled={isFree || isFreeTicket}
+                disabled={false}
               />
               <label>Price*</label>
             </div>
-
             {formik.touched.price && Boolean(formik.errors.price) && (
               <TextError>{formik.errors.price}</TextError>
             )}
           </div>
         </div>
-        {/* <div
-          className={
-            isFree || isFreeTicket
-              ? "display-none"
-              : newConference?.isRegularTicketCreated
-              ? "display-none"
-              : " mb-8"
-          }
-        >
-          <div className="ticketform-checkbox-wrap">
-            <label htmlFor="regularTicket">Is this base price</label>
-            <input
-              id="regularTicket"
-              type="checkbox"
-              name="regularTicket"
-              onChange={formik.handleChange}
-              checked={formik.values.regularTicket}
-              disabled={isFree}
-            />
-          </div>
-          {formik.touched.regularTicket &&
-            Boolean(formik.errors.regularTicket) && (
-              <TextError>{formik.errors.regularTicket}</TextError>
-            )}
-        </div> */}
         <div className="mb-8">
           <input
             type="date"
@@ -216,7 +167,6 @@ export default function TicketForm({ onClose, isFree, isFreeTicket }) {
               <TextError>{formik.errors.saleStartDate}</TextError>
             )}
         </div>
-
         <div className="flex-vc mt-16">
           <button
             className="button button-green mr-8"

@@ -7,11 +7,9 @@ import Switch from "./Switch";
 import TextEditor from "../text-editor/TextEditor";
 import TicketForm from "../tickets/TicketForm";
 import Modal from "../modal/Modal";
-import NextIcon from "../icons/NextIcon";
 
 export default function CreateTickets({ formik, setFormikFieldValue }) {
   const [open, setOpen] = useState(false);
-  const [isFreeTicket, setIsFreeTicket] = useState(false);
 
   const newConference = useSelector((state) => state.conference.newConference);
 
@@ -23,9 +21,12 @@ export default function CreateTickets({ formik, setFormikFieldValue }) {
     <div>
       <div className="mb-72">
         <h4 className="mb-32">
-          {formik.values.isFree
-            ? "For free conference, create one free ticket."
-            : "For conference which is not free, create first ticket at base price and provide how many tickets at base price are available. Add additional tickets at different prices with quantities as needed."}
+          First ticket will be created at base price or regular price. For free
+          conferences, set baseprice as zero. Base price will be used as price
+          of the conference for search criteria. Conference with base price set
+          at zero is considered as a free conference. After base price ticket is
+          created, one can add additional tickets at different prices with
+          quantities as needed.
         </h4>
 
         <div>
@@ -48,8 +49,8 @@ export default function CreateTickets({ formik, setFormikFieldValue }) {
                         <td>{ticket.name}</td>
                         <td>{ticket.quantity}</td>
                         <td>
-                          {ticket.type === "FREE"
-                            ? "Free"
+                          {ticket.currency && ticket.price === 0
+                            ? "FREE"
                             : `${ticket.currency} ${ticket.price}`}
                         </td>
                         <td>
@@ -84,16 +85,13 @@ export default function CreateTickets({ formik, setFormikFieldValue }) {
             className="button button-primary mb-40"
             onClick={onOpen}
           >
-            {/* if baseTicket Created, change label to Create More Tickets */}
-            {newConference?.isFree
-              ? "Create Free Ticket"
-              : newConference.isRegularTicketCreated
+            {newConference.isRegularTicketCreated
               ? "Create more tickets"
-              : "Create ticket at baseprice"}
+              : "Create ticket at base price"}
           </button>
         </div>
       </div>
-      {!formik.values.isFree && newConference?.tickets?.length > 0 && (
+      {newConference?.tickets?.length > 0 && (
         <div className="mb-72">
           <h2>Refund Policy</h2>
           <div className="flex-vc mb-24">
@@ -125,37 +123,7 @@ export default function CreateTickets({ formik, setFormikFieldValue }) {
         <Modal>
           <div className="ticket-form-container white-modal">
             <div className="modal-form-wrapper">
-              <TicketForm
-                isFreeTicket={isFreeTicket}
-                isFree={formik.values.isFree}
-                onClose={() => setOpen(false)}
-              />
-              <div
-                className={
-                  formik.values.isFree || !newConference?.isRegularTicketCreated
-                    ? "display-none"
-                    : null
-                }
-              >
-                <div className="caption-1-regular-cblack or-container">
-                  <span className="or-line"></span> OR{" "}
-                  <span className="or-line"></span>
-                </div>
-                <div className="flex-vchc">
-                  <p
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      setIsFreeTicket((prev) => !prev);
-                    }}
-                    className="caption-1-heavy-primary"
-                  >
-                    {isFreeTicket
-                      ? "Create paid tier ticket"
-                      : "Create Free tier ticket for paid conference"}
-                  </p>
-                  <NextIcon />
-                </div>
-              </div>
+              <TicketForm onClose={() => setOpen(false)} />
             </div>
           </div>
         </Modal>
