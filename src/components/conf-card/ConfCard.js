@@ -1,4 +1,3 @@
-import React from "react";
 import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
 import CreditsIcon from "../icons/CreditsIcon";
@@ -6,7 +5,6 @@ import LikeInactiveIcon from "../icons/LikeInactiveIcon";
 import PropTypes from "prop-types";
 import { DateTime } from "luxon";
 
-import "./ConfCard.styles.scss";
 import { useNavigate } from "react-router-dom";
 
 function ConfCard({
@@ -19,31 +17,37 @@ function ConfCard({
   currency,
   creditAmount,
   price,
-  link
+  link,
 }) {
+  const navigate = useNavigate();
+  const date = DateTime.fromISO(startDate);
+  let start = date.toLocaleString({
+    ...DateTime.DATE_MED_WITH_WEEKDAY,
+    weekday: "short",
+  });
 
-  const navigate = useNavigate()
-  const date = DateTime.fromISO(startDate)
-  let start = date.toLocaleString({...DateTime.DATE_MED_WITH_WEEKDAY, weekday: 'short' })
-
-  const time = DateTime.fromISO(startTime)
+  const time = DateTime.fromISO(startTime);
   // console.log(time.toFormat('h:mm a'))
 
-
-
   return (
-    <div onClick={()=>navigate("/search-conference/"+link)} className="conf-card">
+    <div
+      onClick={() => navigate("/search-conference/" + link)}
+      className="conf-card"
+    >
       <div className="conf-img-container">
         <img
           src="https://www.simplemost.com/wp-content/uploads/2016/08/beach-vacation-e1470663653924.jpeg"
           alt="conference banner"
         />
       </div>
-      <p className="conf-title">{confName}</p>
-      <div>
+      <div className="confcard-header mt-12 mr-23 mb-9 ml-12">
+        <p>{confName}</p>
+      </div>
+
+      <div className="flex-vc">
         <DateIcon className="conf-card-icons" />
-        <span className="conf-card-text caption-2-regular-gray3">
-          {start} - {time.toFormat('h:mm a')}
+        <span className="caption-2-regular-gray3">
+          {start} - {time.toFormat("h:mm a")}
         </span>
       </div>
       <div className="conf-card-location">

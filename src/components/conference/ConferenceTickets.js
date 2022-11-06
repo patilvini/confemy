@@ -29,13 +29,13 @@ export default function ConferenceTickets() {
   const navigate = useNavigate();
 
   const validationSchema = ConfTicketsValSchema[currentPage];
-  function backPage() {
-    setcurrentPage(currentPage - 1);
-  }
 
   async function onSubmit(values, actions) {
+    if (!newConference?.completedStep1) {
+      dispatch(alertAction("Complete Basic Info step first", "danger"));
+      return;
+    }
     // for step 0
-
     if (currentPage === 0) {
       const formData = {
         conferenceDetails: {
@@ -117,7 +117,9 @@ export default function ConferenceTickets() {
     setopen(false);
   };
   const yesAction = () => {
-    console.log("API Call and once tickets deleted, set current page to 0");
+    setcurrentPage(0);
+    formik.setTouched({});
+    formik.setSubmitting(false);
     setopen(false);
   };
 
@@ -125,7 +127,7 @@ export default function ConferenceTickets() {
     if (newConference?.hasConfPayStatus) {
       setcurrentPage(1);
     }
-  }, []);
+  }, [newConference?.hasConfPayStatus]);
 
   return (
     <div>
@@ -164,7 +166,11 @@ export default function ConferenceTickets() {
       </form>
       {open && (
         <Dialogue
-          msg="Are you sure you want to change the conference payment status? All added tickets will be deleted."
+          msg={`Are you sure you want to change the conference payment status?${
+            formik.values.isFree
+              ? "All tickets will be deleted"
+              : "All tickets and refund policy will be deleted"
+          }.`}
           title="Conference status"
           closeDialogue={closeDialogue}
           yesAction={yesAction}

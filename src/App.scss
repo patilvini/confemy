@@ -3,6 +3,7 @@
 @import "./utility/font.styles.scss";
 @import "./utility/button.styles.scss";
 @import "./utility/images.styles.scss";
+@import "./utility/confCard.styles.scss";
 
 /* Universal set up */
 
@@ -154,6 +155,10 @@ a {
 
 // common classes
 
+.color-primary {
+  color: $primary;
+}
+
 .conf-display {
   padding-left: 9.7rem;
   padding-right: 9.7rem;
@@ -200,7 +205,16 @@ a {
   justify-content: center;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 // regular icon size
+.icon-xxs {
+  width: 1.4rem;
+  height: 1.4rem;
+}
 .icon-xs {
   width: 1.6rem;
   height: 1.6rem;
