@@ -13,7 +13,7 @@ import { professions, subspecialties } from "../../utility/commonUtil";
 
 import TextEditor from "../text-editor/TextEditor";
 import CancelIcon from "../icons/CancelIcon";
-import Switch from "./Switch";
+import Switch from "../switch/Switch";
 
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import { alertAction } from "../../redux/alert/alertAction";
