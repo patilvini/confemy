@@ -27,6 +27,10 @@ export default function TicketForm({ onClose }) {
   const dispatch = useDispatch();
 
   async function onSubmit(values, actions) {
+    if (!newConference?.completedStep1) {
+      dispatch(alertAction("Complete step-1 first", "danger"));
+      return;
+    }
     const formData = {
       ticketDetails: {
         name: values.name,
@@ -36,7 +40,7 @@ export default function TicketForm({ onClose }) {
         price: values.price,
         saleStartDate: values.saleStartDate,
         conferenceId: newConference?._id,
-        // regularTicket: values.regularTicket,
+        regularTicket: values.regularTicket,
       },
     };
 
@@ -60,7 +64,7 @@ export default function TicketForm({ onClose }) {
       quantity: 1,
       price: 1,
       saleStartDate: Date,
-      // regularTicket: newConference?.isRegularTicketCreated ? false : true,
+      regularTicket: newConference?.isRegularTicketCreated ? false : true,
     },
     // validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -73,7 +77,9 @@ export default function TicketForm({ onClose }) {
     <div>
       <div className="mb-24">
         <h2>
-          {newConference?.isRegularTicketCreated ? "" : "Base Price "}Ticket
+          {newConference?.isRegularTicketCreated
+            ? "Create ticket"
+            : "Create base price ticket"}
         </h2>
       </div>
       <form onSubmit={formik.handleSubmit} className="form-type-1">

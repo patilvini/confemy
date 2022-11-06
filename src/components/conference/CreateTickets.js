@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import EditIcon from "../icons/EditIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 import OpeneyeIcon from "../icons/OpenEyeIcon";
-import Switch from "./Switch";
+import Switch from "../switch/Switch";
 import TextEditor from "../text-editor/TextEditor";
 import TicketForm from "../tickets/TicketForm";
 import Modal from "../modal/Modal";
