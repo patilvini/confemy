@@ -1,4 +1,4 @@
-import CreateConfLanding from "../../components/conference/CreateConfLanding";
+import CreateConfLanding from "../../components/create-conference/CreateConfLanding";
 
 export default function CreateConfLandingPage() {
   return (

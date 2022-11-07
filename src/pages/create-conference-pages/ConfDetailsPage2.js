@@ -1,8 +1,8 @@
-import ConferenceDetails2 from "../../components/conference/ConferenceDetails2";
+import ConfDetails2 from "../../components/create-conference/ConfDetails2";
 export default function ConfDetailsPage2() {
   return (
     <>
-      <ConferenceDetails2 />
+      <ConfDetails2 />
     </>
   );
 }

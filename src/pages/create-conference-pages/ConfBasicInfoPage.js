@@ -1,4 +1,4 @@
-import ConfBasicInfo from "../../components/conference/ConfBasicInfo";
+import ConfBasicInfo from "../../components/create-conference/ConfBasicInfo";
 export default function ConfBasicInfoPage() {
   return (
     <>

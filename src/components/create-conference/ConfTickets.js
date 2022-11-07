@@ -15,7 +15,7 @@ import api from "../../utility/api";
 
 const validationSchema = yup.object().shape({});
 
-export default function ConferenceTickets() {
+export default function ConfTickets() {
   const newConference = useSelector((state) => state.conference.newConference);
   const dispatch = useDispatch();
   const navigate = useNavigate();

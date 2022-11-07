@@ -75,7 +75,7 @@ const validationSchema = yup.object().shape({
   //       .positive("Enter amount more than 0"),
   //   }),
 });
-export default function ConferenceDetails1() {
+export default function ConfDetails1() {
   const [creditOptions, setcreditOptions] = useState([]);
 
   const dispatch = useDispatch();
@@ -84,15 +84,7 @@ export default function ConferenceDetails1() {
 
   async function onSubmit(values, actions) {
     if (newConference?.completedStep > 0) {
-      const {
-        professions,
-        specialities,
-        tags,
-        isAccredited,
-        isRefundable,
-        credits,
-        refundDescription,
-      } = values;
+      const { professions, specialities, tags, isAccredited, credits } = values;
 
       const formData = {
         conferenceDetails: {
@@ -102,8 +94,6 @@ export default function ConferenceDetails1() {
           tags,
           isAccredited,
           credits,
-          refundPolicy: isRefundable,
-          refundDescription,
         },
       };
 
@@ -113,6 +103,7 @@ export default function ConferenceDetails1() {
           console.log("step 2", response);
           dispatch(createConferenceAction(response.data.data.conference));
           navigate("/dashboard/create-conf/step-3");
+          dispatch(alertAction(response.data.message, "success"));
         }
       } catch (err) {
         dispatch(alertAction(err.response.data.message, "danger"));
@@ -131,8 +122,6 @@ export default function ConferenceDetails1() {
       creditAmount: newConference?.creditAmount || 1,
       creditType: "",
       credits: newConference?.conferenceCredits || [],
-      isRefundable: newConference?.refundPolicy || false,
-      refundDescription: {},
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -147,7 +136,7 @@ export default function ConferenceDetails1() {
         setcreditOptions(response.data.data.credits);
       }
     } catch (err) {
-      if (err) console.log(err);
+      if (err) dispatch(alertAction(err.response.data.message, "danger"));
     }
   }
 
@@ -183,11 +172,6 @@ export default function ConferenceDetails1() {
       formik.setFieldValue("tag", "");
     }
   };
-
-  // function to set formik field vlue for text editor
-  function setFormikFieldValue(fieldName, fieldValue) {
-    formik.setFieldValue(fieldName, fieldValue);
-  }
 
   useEffect(() => {
     getCreditTypes();
@@ -386,31 +370,6 @@ export default function ConferenceDetails1() {
                 Add Credit
               </button>
             </div>
-          </div>
-        </div>
-        <div className="mb-72">
-          <h2>Refund Policy</h2>
-          <div className="flex-vc mb-24">
-            <p className="caption-1-regular-gray3 mr-16">
-              Is the conference refundable?
-            </p>
-            <Switch
-              id="isRefundable"
-              name="isRefundable"
-              value="isRefundable"
-              checked={formik.values.isRefundable}
-              onChange={formik.handleChange}
-            />
-          </div>
-
-          <div
-            className={`${formik.values.isRefundable ? "" : "display-none"}`}
-          >
-            <TextEditor
-              setFormikFieldValue={setFormikFieldValue}
-              fieldName="refundDescription"
-              apiRawContent={newConference?.refundDescription}
-            />
           </div>
         </div>
         <div className="mb-72">

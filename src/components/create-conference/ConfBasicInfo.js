@@ -59,23 +59,27 @@ const validationSchema = yup.object().shape({
     is: (mode) => mode.includes("venue"),
     then: yup.string().required("Required"),
   }),
-  currency: yup.string().when("isFree", {
-    is: false,
+  zipcode: yup.string().when("mode", {
+    is: (mode) => mode.includes("venue"),
     then: yup.string().required("Required"),
   }),
-  isFree: yup.boolean(),
-  basePrice: yup
-    .number()
-    .nullable(true)
-    .transform((v) => (v === "" ? null : v))
-    .when("isFree", {
-      is: false,
-      then: yup
-        .number("Give a valid number")
-        .typeError("Enter a number")
-        .required("Required")
-        .positive("Enter amount more than 0"),
-    }),
+  // currency: yup.string().when("isFree", {
+  //   is: false,
+  //   then: yup.string().required("Required"),
+  // }),
+  // isFree: yup.boolean(),
+  // basePrice: yup
+  //   .number()
+  //   .nullable(true)
+  //   .transform((v) => (v === "" ? null : v))
+  //   .when("isFree", {
+  //     is: false,
+  //     then: yup
+  //       .number("Give a valid number")
+  //       .typeError("Enter a number")
+  //       .required("Required")
+  //       .positive("Enter amount more than 0"),
+  //   }),
 });
 
 export default function ConfBasicInfo() {
@@ -96,9 +100,7 @@ export default function ConfBasicInfo() {
       title,
       host,
       organizationId,
-      isFree,
-      currency,
-      basePrice,
+
       startDate,
       endDate,
       startTime,
@@ -111,6 +113,7 @@ export default function ConfBasicInfo() {
       city,
       state,
       country,
+      zipcode,
     } = values;
 
     const formData = {
@@ -119,9 +122,7 @@ export default function ConfBasicInfo() {
         conferenceId: newConference?._id,
         organizationId,
         userId: user._id,
-        isFree,
-        currency,
-        basePrice,
+
         startDate,
         endDate,
         startTime,
@@ -136,6 +137,7 @@ export default function ConfBasicInfo() {
           city,
           state,
           country,
+          zipcode,
         },
       },
     };
@@ -147,6 +149,7 @@ export default function ConfBasicInfo() {
         console.log("submit step1 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         navigate("/dashboard/create-conf/step-2");
+        dispatch(alertAction(response.data.message, "success"));
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -186,10 +189,7 @@ export default function ConfBasicInfo() {
       state: newConference?.venue?.state || "",
       country: newConference?.venue?.country || "",
       city: newConference?.venue?.city || "",
-
-      isFree: newConference?.isFree || false,
-      currency: newConference?.currency || "INR",
-      basePrice: newConference?.basePrice || 1,
+      zipcode: newConference?.venue?.zipcode || "",
     },
     validationSchema: validationSchema,
     onSubmit: onSubmit,
@@ -206,21 +206,13 @@ export default function ConfBasicInfo() {
         );
       }
     } catch (err) {
-      console.log(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
   useEffect(() => {
     loadMyOrgnizations(user._id);
   }, [user._id]);
-
-  // useEffect(() => {
-  //   const conferenceData = { ...initialValues };
-  //   for (const key in newConference) {
-  //     if (key in conferenceData) conferenceData[key] = newConference[key];
-  //   }
-  //   setFormData(conferenceData);
-  // }, []);
 
   return (
     <>
@@ -329,9 +321,15 @@ export default function ConfBasicInfo() {
             <div className="grid-col-2">
               <div className="grid-1st-col">
                 <h4>Start Date</h4>
+
                 <DateView
                   id="startDate"
                   name="startDate"
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={5}
+                  timeCaption="time"
+                  dateFormat="MMMM d, yyyy h:mm aa"
                   peekNextMonth
                   showMonthDropdown
                   showYearDropdown
@@ -487,7 +485,7 @@ export default function ConfBasicInfo() {
               >
                 <h4>Venue Details</h4>
                 <div className="grid-col-2">
-                  <div className="grid-1st-col">
+                  <div style={{ gridColumn: "1/-1" }}>
                     <div className="material-textfield">
                       <input
                         id="venueName"
@@ -508,7 +506,7 @@ export default function ConfBasicInfo() {
                     </div>
                   </div>
 
-                  <div className="grid-2nd-col">
+                  <div className="grid-1st-col">
                     <div className="material-textfield">
                       <input
                         id="street1"
@@ -528,7 +526,7 @@ export default function ConfBasicInfo() {
                         )}
                     </div>
                   </div>
-                  <div className="grid-1st-col">
+                  <div className="grid-2nd-col">
                     <div className="material-textfield">
                       <input
                         id="street2"
@@ -548,7 +546,7 @@ export default function ConfBasicInfo() {
                         )}
                     </div>
                   </div>
-                  <div className="grid-2nd-col">
+                  <div className="grid-1st-col">
                     <div className="material-textfield">
                       <input
                         id="city"
@@ -567,7 +565,7 @@ export default function ConfBasicInfo() {
                       )}
                     </div>
                   </div>
-                  <div className="grid-1st-col">
+                  <div className="grid-2nd-col">
                     <div className="material-textfield">
                       <input
                         id="state"
@@ -586,7 +584,7 @@ export default function ConfBasicInfo() {
                       )}
                     </div>
                   </div>
-                  <div className="grid-2nd-col">
+                  <div className="grid-1st-col">
                     <div className="material-textfield">
                       <input
                         id="country"
@@ -606,12 +604,32 @@ export default function ConfBasicInfo() {
                         )}
                     </div>
                   </div>
+                  <div className="grid-2nd-col">
+                    <div className="material-textfield">
+                      <input
+                        id="zipcode"
+                        type="text"
+                        name="zipcode"
+                        value={formik.values.zipcode}
+                        onChange={formik.handleChange}
+                        placeholder=" "
+                        disabled={!formik.values.mode.includes("venue")}
+                      />
+                      <label>Zip Code*</label>
+                    </div>
+                    <div className="mb-24">
+                      {formik.touched.zipcode &&
+                        Boolean(formik.errors.zipcode) && (
+                          <TextError>{formik.errors.zipcode}</TextError>
+                        )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           {/* section changed */}
-          <div className="mb-72">
+          {/* <div className="mb-72">
             <h2>Pricing</h2>
             <div className="mb-24">
               <input
@@ -697,7 +715,7 @@ export default function ConfBasicInfo() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <section className="mb-72">
             <button type="button" className="button button-green mr-8">
               Cancel

@@ -30,7 +30,7 @@ const validationSchema = yup.object().shape({
   speakers: yup.array().of(yup.object()).min(1, "Add speaker(s)").compact(),
 });
 
-export default function ConferenceDetails2() {
+export default function ConfDetails2() {
   const [open, setOpen] = useState(false);
   const [showSpeakerOptions, setShowSpeakerOptions] = useState(true);
   const [showSpeakerForm, setShowSpeakerForm] = useState(false);

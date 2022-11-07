@@ -23,9 +23,8 @@ import CreateConfLandingPage from "./pages/create-conference-pages/CreateConfLan
 import ConfBasicInfoPage from "./pages/create-conference-pages/ConfBasicInfoPage";
 import ConfDetailsPage1 from "./pages/create-conference-pages/ConfDetailsPage1";
 import ConfDetailsPage2 from "./pages/create-conference-pages/ConfDetailsPage2";
-import LiveStreamPage from "./pages/create-conference-pages/LiveStreamPage";
-import TicketsPage from "./pages/create-conference-pages/TicketsPage";
-import OCreateConference from "./components/conference/OCreateConference";
+import ConfLiveStreamPage from "./pages/create-conference-pages/ConfLiveStreamPage";
+import ConfTicketsPage from "./pages/create-conference-pages/ConfTicketsPage";
 import ConfPreviewPage from "./pages/create-conference-pages/ConfPreviewPage";
 
 import MyPrivateRoute from "./components/routing/MyPrivateRoute";
@@ -35,7 +34,6 @@ import CreateConfLayoutPage from "./pages/layout-pages/CreateConfLayoutPage";
 import DashboardLayoutPage from "./pages/layout-pages/DashboardLayoutPage";
 import { loadUserAction } from "./redux/auth/authAction";
 import "./App.scss";
-import CreateOrgs from "./pages/organizer-profile-page/CreateOrgs";
 import CreateOrganizationPage from "./pages/organization-pages/CreateOrganizationPage";
 import VerifyManagerPage from "./pages/verify-manager-page/VerifyManagerPage";
 import MyOrganizationsPage from "./pages/organization-pages/MyOrganizationsPage";
@@ -56,9 +54,7 @@ import UserViewProfilePage from "./pages/org-profile-userView-page/UserViewProfi
 import OrganizerConfPreviewFinishedPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewFinishedPage";
 import TrackCreditPage from "./pages/track-credit-page/TrackCreditPage";
 import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
-import EditorContainer from "./components/conference/EditorContainer";
-import SelectTest from "./components/reselect/SelectTest";
-import CreatableSelectTest from "./components/reselect/CreatableSlectTest";
+
 import ImageUploader from "./components/image-uploader/SingleImageUploader";
 
 import PNavbar from "./components/navbar/PNavbar";
@@ -138,8 +134,8 @@ const App = () => {
                 <Route path="step-1" element={<ConfBasicInfoPage />}></Route>
                 <Route path="step-2" element={<ConfDetailsPage1 />}></Route>
                 <Route path="step-3" element={<ConfDetailsPage2 />}></Route>
-                <Route path="step-4" element={<LiveStreamPage />}></Route>
-                <Route path="step-5" element={<TicketsPage />}></Route>
+                <Route path="step-4" element={<ConfLiveStreamPage />}></Route>
+                <Route path="step-5" element={<ConfTicketsPage />}></Route>
                 <Route path="step-6" element={<ConfPreviewPage />}></Route>
               </Route>
               <Route

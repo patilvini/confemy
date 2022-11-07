@@ -16,7 +16,7 @@ import AddImageResource from "../livestream-resources/AddImageRosource";
 import AddVideoResource from "../livestream-resources/AddVideoResource";
 import AddLinkResource from "../livestream-resources/AddLinkResource";
 
-export default function LiveStream() {
+export default function ConfLiveStream() {
   const [activeStep, setActiveStep] = useState(null);
   const [activeResourceStep, setActiveResourceStep] = useState(null);
 
