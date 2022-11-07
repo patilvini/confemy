@@ -17,8 +17,9 @@ const shade3 = "#fcfdfd";
 const shade4 = "#aabdc7";
 
 export default function OrganizerDash() {
-  const userID = useSelector((state) => state.auth.user?._id);
+  
   const user = useSelector((state) => state.auth.user);
+  console.log(user)
   const [data, setData] = useState();
   const [filtered, setFiltered] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -28,12 +29,23 @@ export default function OrganizerDash() {
   const getSaved = async (args) => {
     console.log(args);
 
-    if (user.hasOrganization) {
+    // if (user.hasOrganization) {
+    //   try {
+    //     const r = await api.get(
+    //       "/conferences/users/"+user._id+"?" +
+    //         args +
+    //         "&organizationId="+user.organizations[0].organization._id
+    //     );
+    //     console.log(r.data.data.conferences);
+
+    //     setData(r.data.data.conferences);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // } else {
       try {
         const r = await api.get(
-          "/conferences/users/628ea4c65fc8c008249c6dc3?" +
-            args +
-            "&organizationId=62e728bdddc09c136b363680"
+          "/conferences/users/"+user._id+"?getAllOrganizationConferences=true"
         );
         console.log(r.data.data.conferences);
 
@@ -41,18 +53,7 @@ export default function OrganizerDash() {
       } catch (err) {
         console.log(err);
       }
-    } else {
-      try {
-        const r = await api.get(
-          "/conferences/users/628ea4c65fc8c008249c6dc3?" + args
-        );
-        console.log(r.data.data.conferences);
-
-        setData(r.data.data.conferences);
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    // }
   };
 
   const sort = async (e) => {
@@ -61,7 +62,7 @@ export default function OrganizerDash() {
 
   useEffect(() => {
     getSaved();
-  }, [userID]);
+  }, [user._id]);
 
   useEffect(() => {
     console.log("searchValue:", searchValue);
