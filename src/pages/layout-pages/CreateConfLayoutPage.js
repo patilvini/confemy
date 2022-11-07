@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import ConfSteps from "../../components/conference/ConfSteps";
+import ConfSteps from "../../components/create-conference/ConfSteps";
 import Modal from "../../components/modal/Modal";
 import { removeConferenceStateAction } from "../../redux/conference/conferenceAction";
 

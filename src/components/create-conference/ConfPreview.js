@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
+
+import { useNavigate } from "react-router-dom";
+
+import DateView from "react-datepicker";
+import DatePicker from "react-datepicker";
+import { CalendarContainer } from "react-datepicker";
+import { forwardRef } from "react";
+import getYear from "date-fns/getYear";
+import getMonth from "date-fns/getYear";
+import CustomDatepicker from "../react-datepicker/CustomDatepicker";
+
+// import "react-datepicker/dist/react-datepicker.css";
 
 import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
@@ -12,6 +24,10 @@ import RadioIcon from "../icons/RadioIcon";
 import RadioFilledIcon from "../icons/RadioFilled";
 import Modal from "../modal/Modal";
 
+import { createConferenceAction } from "../../redux/conference/conferenceAction";
+import { alertAction } from "../../redux/alert/alertAction";
+
+import api from "../../utility/api";
 import "./createConference.styles.scss";
 
 const validationSchema = yup.object().shape({});
@@ -20,13 +36,33 @@ export default function ConfPreview() {
   const [open, setopen] = useState(false);
   const newConference = useSelector((state) => state.conference.newConference);
 
-  const onSubmit = (values, actions) => {
-    console.log(values);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onSubmit = async (values, actions) => {
+    const formData = {
+      conferenceDetails: {
+        conferenceId: newConference._id,
+        whenToPublish: values.whenToPublish,
+        publishDate: values.publishDate,
+      },
+    };
+    try {
+      const response = await api.post("conferences/step6", formData);
+      if (response) {
+        console.log("submit step1 response", response);
+        dispatch(createConferenceAction(response.data.data.conference));
+        navigate("/dashboard/create-conf/step-2");
+        dispatch(alertAction(response.data.message, "success"));
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
   };
   const formik = useFormik({
     initialValues: {
       whenToPublish: "",
-      publishDate: Date,
+      publishDate: new Date(),
     },
     onSubmit: onSubmit,
     // validationSchema: validationSchema,
@@ -62,6 +98,51 @@ export default function ConfPreview() {
   const closeModal = () => {
     setopen(false);
   };
+
+  const MyContainer = ({ className, children }) => {
+    return (
+      <div
+        style={{
+          padding: "8px",
+          background: "#216ba5",
+          color: "#fff",
+        }}
+      >
+        <CalendarContainer className={className}>
+          <div>Pick a date to publish the conference</div>
+          <div
+            style={{
+              position: "relative",
+              fontSize: 14,
+              width: 350,
+              height: 250,
+            }}
+          >
+            {children}
+          </div>
+        </CalendarContainer>
+      </div>
+    );
+  };
+
+  const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
+    <button className="button button-primary" onClick={onClick} ref={ref}>
+      pick date to publish
+      {value}
+    </button>
+  ));
+
+  function getJsDateObj(str) {
+    let jsDateObj;
+    if (str) {
+      jsDateObj = new Date(str);
+    } else {
+      jsDateObj = null;
+    }
+    return jsDateObj;
+  }
+
+  const jsStartDateObj = getJsDateObj(newConference?.startDate);
 
   return (
     <div>
@@ -118,7 +199,7 @@ export default function ConfPreview() {
                 <CreditsIcon className="icon-xxs mr-12" />
                 <span className="caption-2-regular-gray3">
                   {newConference?.credits?.length > 0
-                    ? newConference?.credits[0].creditId.name
+                    ? `${newConference?.credits[0].creditId.name} - ${newConference?.credits[0].quantity}`
                     : "Credits not added"}
                 </span>
               </div>
@@ -181,8 +262,33 @@ export default function ConfPreview() {
               Pubish later
             </label>
           </div>
-          <div className="mb-80">
-            <input type="Date" />
+          <div className="mb-72">
+            {/* <DatePicker
+              id="publishDate"
+              name="publishDate"
+              selected={formik.values.publishDate}
+              onChange={(date) => formik.setFieldValue("publishDate", date)}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              timeCaption="time"
+              dateFormat="MMMM d, yyyy h:mm aa"
+              showYearDropdown
+              dropdownMode="select"
+              // showMonthDropdown
+              // peekNextMonth
+              calendarContainer={MyContainer}
+              customInput={<ExampleCustomInput />}
+            ></DatePicker>*/}
+          </div>
+
+          <div className="mb-72" style={{ fontSize: 18 }}>
+            <CustomDatepicker
+              selected={formik.values.publishDate}
+              onChange={(date) => formik.setFieldValue("publishDate", date)}
+              minDate={new Date()}
+              maxDate={jsStartDateObj}
+            />
           </div>
           <div>
             <button type="submit" className="button button-primary">
