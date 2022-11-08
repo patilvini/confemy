@@ -25,6 +25,7 @@ import MultiImageUploader from "../image-uploader/MultiImageUploader";
 import AddGreenIcon from "../icons/AddGreenIcon";
 import "./createConference.styles.scss";
 import DeleteIcon from "../icons/DeleteIcon";
+import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 
 const validationSchema = yup.object().shape({
   speakers: yup.array().of(yup.object()).min(1, "Add speaker(s)").compact(),
@@ -533,12 +534,7 @@ export default function ConfDetails2() {
         )}
 
         <div className="mb-72">
-          <button type="button" className="button button-green mr-8">
-            Cancel
-          </button>
-          <button type="submit" className="button button-primary">
-            Save and Continue
-          </button>
+          <SubmitCancelButtonWithLoader isSubmitting={formik.isSubmitting} />
         </div>
       </form>
     </main>

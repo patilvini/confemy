@@ -53,17 +53,6 @@
   }
 }
 
-// .react-datepicker-wrapper,
-// .react-datepicker__input-container,
-// .react-datepicker__input-container input {
-//   display: block;
-//   width: 100%;
-// }
-
-.react-datepicker {
-  font-size: 12px;
-}
-
 // styles for details page 1
 
 .tags-display {
@@ -423,4 +412,14 @@
     width: 100%;
     padding: 12px;
   }
+}
+
+.preview-label-wrap {
+  label {
+    display: inline-block;
+  }
+}
+
+.publish-date-wrap {
+  max-width: 300px;
 }

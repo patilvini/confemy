@@ -4,8 +4,7 @@ import api from "../../utility/api";
 import { currencylist } from "../../utility/commonUtil";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-
-import DatePicker from "../formik/DatePicker";
+import CustomDatepicker from "../react-datepicker/CustomDatepicker";
 
 import TextError from "../formik/TextError";
 
@@ -63,7 +62,7 @@ export default function TicketForm({ onClose }) {
       currency: "",
       quantity: 1,
       price: 1,
-      saleStartDate: Date,
+      saleStartDate: null,
       regularTicket: newConference?.isRegularTicketCreated ? false : true,
     },
     // validationSchema: validationSchema,
@@ -163,10 +162,14 @@ export default function TicketForm({ onClose }) {
           </div>
         </div>
         <div className="mb-8">
-          <input
-            type="date"
+          <CustomDatepicker
+            id="saleStartDate"
             name="saleStartDate"
-            onChange={formik.handleChange}
+            selected={formik.values.saleStartDate}
+            onChange={(date) => formik.setFieldValue("saleStartDate", date)}
+            // minDate={new Date()}
+            placeholder="Pick end date and time"
+            disabled={false}
           />
           {formik.touched.saleStartDate &&
             Boolean(formik.errors.saleStartDate) && (

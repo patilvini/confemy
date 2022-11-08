@@ -5,16 +5,7 @@ import * as yup from "yup";
 import TextError from "../formik/TextError";
 
 import { useNavigate } from "react-router-dom";
-
-import DateView from "react-datepicker";
-import DatePicker from "react-datepicker";
-import { CalendarContainer } from "react-datepicker";
-import { forwardRef } from "react";
-import getYear from "date-fns/getYear";
-import getMonth from "date-fns/getYear";
 import CustomDatepicker from "../react-datepicker/CustomDatepicker";
-
-// import "react-datepicker/dist/react-datepicker.css";
 
 import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
@@ -29,8 +20,22 @@ import { alertAction } from "../../redux/alert/alertAction";
 
 import api from "../../utility/api";
 import "./createConference.styles.scss";
+import SubmitButtonWithLoader from "../button/SubmitButtonWithLoader";
 
-const validationSchema = yup.object().shape({});
+const validationSchema = yup.object().shape({
+  whenToPublish: yup.string().required("Required"),
+  publishDate: yup
+    .date()
+    .nullable()
+    .when("whenToPublish", {
+      is: (val) => val === "later",
+      then: yup
+        .date()
+        .typeError("Enter a valid date to publish")
+        .required("Required"),
+      otherwise: yup.date().notRequired().nullable(),
+    }),
+});
 
 export default function ConfPreview() {
   const [open, setopen] = useState(false);
@@ -40,6 +45,16 @@ export default function ConfPreview() {
   const navigate = useNavigate();
 
   const onSubmit = async (values, actions) => {
+    // if (!newConference?.completedAllMandatorySteps) {
+    //   dispatch(
+    //     alertAction(
+    //       "Complete all steps before publishing the conference.",
+    //       "danger"
+    //     )
+    //   );
+    //   return;
+    // }
+
     const formData = {
       conferenceDetails: {
         conferenceId: newConference._id,
@@ -65,7 +80,7 @@ export default function ConfPreview() {
       publishDate: new Date(),
     },
     onSubmit: onSubmit,
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
   });
 
   const getLocationString = () => {
@@ -98,39 +113,6 @@ export default function ConfPreview() {
   const closeModal = () => {
     setopen(false);
   };
-
-  const MyContainer = ({ className, children }) => {
-    return (
-      <div
-        style={{
-          padding: "8px",
-          background: "#216ba5",
-          color: "#fff",
-        }}
-      >
-        <CalendarContainer className={className}>
-          <div>Pick a date to publish the conference</div>
-          <div
-            style={{
-              position: "relative",
-              fontSize: 14,
-              width: 350,
-              height: 250,
-            }}
-          >
-            {children}
-          </div>
-        </CalendarContainer>
-      </div>
-    );
-  };
-
-  const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
-    <button className="button button-primary" onClick={onClick} ref={ref}>
-      pick date to publish
-      {value}
-    </button>
-  ));
 
   function getJsDateObj(str) {
     let jsDateObj;
@@ -228,72 +210,80 @@ export default function ConfPreview() {
           When should we publish your event?
         </p>
         <form onSubmit={formik.handleSubmit}>
-          <div className="flex-column mb-16">
-            <label className="body-regular-gray3 flex-vc mb-18">
-              <input
-                style={{ appearance: "none" }}
-                type="radio"
-                id="publishNow"
-                name="whenToPublish"
-                value="now"
-                onChange={formik.handleChange}
-              />
-              {formik.values.whenToPublish === "now" ? (
-                <RadioFilledIcon className="icon-size  mr-12" />
-              ) : (
-                <RadioIcon className="icon-size  mr-12" />
+          <div>
+            <div className="preview-label-wrap mb-18">
+              <label className="body-regular-gray3">
+                <div className="flex-vc">
+                  <input
+                    style={{ appearance: "none" }}
+                    type="radio"
+                    id="publishNow"
+                    name="whenToPublish"
+                    value="now"
+                    onChange={formik.handleChange}
+                  />
+                  {formik.values.whenToPublish === "now" ? (
+                    <RadioFilledIcon className="icon-size  mr-12" />
+                  ) : (
+                    <RadioIcon className="icon-size  mr-12" />
+                  )}
+                  Publish now
+                </div>
+              </label>
+            </div>
+            <div className="preview-label-wrap mb-18">
+              <label className="body-regular-gray3  mb-18">
+                <div className="flex-vc">
+                  <input
+                    style={{ appearance: "none" }}
+                    type="radio"
+                    id="publishLater"
+                    name="whenToPublish"
+                    value="later"
+                    onChange={formik.handleChange}
+                  />
+                  {formik.values.whenToPublish === "later" ? (
+                    <RadioFilledIcon className="icon-size  mr-12" />
+                  ) : (
+                    <RadioIcon className="icon-size  mr-12" />
+                  )}
+                  Pubish later
+                </div>
+              </label>
+            </div>
+            {formik.touched.whenToPublish &&
+              Boolean(formik.errors.whenToPublish) && (
+                <TextError>{formik.errors.whenToPublish}</TextError>
               )}
-              Publish now
-            </label>
-            <label className="body-regular-gray3 flex-vc mb-18">
-              <input
-                style={{ appearance: "none" }}
-                type="radio"
-                id="publishLater"
-                name="whenToPublish"
-                value="later"
-                onChange={formik.handleChange}
-              />
-              {formik.values.whenToPublish === "later" ? (
-                <RadioFilledIcon className="icon-size  mr-12" />
-              ) : (
-                <RadioIcon className="icon-size  mr-12" />
-              )}
-              Pubish later
-            </label>
           </div>
           <div className="mb-72">
-            {/* <DatePicker
-              id="publishDate"
-              name="publishDate"
-              selected={formik.values.publishDate}
-              onChange={(date) => formik.setFieldValue("publishDate", date)}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              timeCaption="time"
-              dateFormat="MMMM d, yyyy h:mm aa"
-              showYearDropdown
-              dropdownMode="select"
-              // showMonthDropdown
-              // peekNextMonth
-              calendarContainer={MyContainer}
-              customInput={<ExampleCustomInput />}
-            ></DatePicker>*/}
-          </div>
-
-          <div className="mb-72" style={{ fontSize: 18 }}>
-            <CustomDatepicker
-              selected={formik.values.publishDate}
-              onChange={(date) => formik.setFieldValue("publishDate", date)}
-              minDate={new Date()}
-              maxDate={jsStartDateObj}
-            />
+            <div
+              className={
+                formik.values.whenToPublish !== "later"
+                  ? "display-none"
+                  : "publish-date-wrap"
+              }
+            >
+              <CustomDatepicker
+                selected={formik.values.publishDate}
+                onChange={(date) => formik.setFieldValue("publishDate", date)}
+                minDate={new Date()}
+                maxDate={jsStartDateObj}
+                placeholder="Pick date to publish"
+                disabled={formik.values.whenToPublish === "now"}
+              />
+              {formik.touched.publishDate &&
+                Boolean(formik.errors.publishDate) && (
+                  <TextError>{formik.errors.publishDate}</TextError>
+                )}
+            </div>
           </div>
           <div>
-            <button type="submit" className="button button-primary">
-              Publish Conference
-            </button>
+            <SubmitButtonWithLoader
+              isSubmitting={formik.isSubmitting}
+              className="button button-primary"
+              text="Publish conference"
+            />
           </div>
         </form>
       </div>

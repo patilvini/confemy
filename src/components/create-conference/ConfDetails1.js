@@ -23,6 +23,7 @@ import api from "../../utility/api";
 import "./createConference.styles.scss";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "../text-editor/textEditor.styles.scss";
+import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 
 const validationSchema = yup.object().shape({
   professions: yup
@@ -373,12 +374,7 @@ export default function ConfDetails1() {
           </div>
         </div>
         <div className="mb-72">
-          <button type="button" className="button button-green mr-8">
-            Cancel
-          </button>
-          <button type="submit" className="button button-primary">
-            Save and Continue
-          </button>
+          <SubmitCancelButtonWithLoader isSubmitting={formik.isSubmitting} />
         </div>
       </form>
     </main>

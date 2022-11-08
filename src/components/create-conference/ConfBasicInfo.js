@@ -19,6 +19,8 @@ import { timezones, currencylist } from "../../utility/commonUtil";
 import "./createConference.styles.scss";
 import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
 import { alertAction } from "../../redux/alert/alertAction";
+import CustomDatepicker from "../react-datepicker/CustomDatepicker";
+import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required("Required"),
@@ -30,9 +32,9 @@ const validationSchema = yup.object().shape({
     then: yup.string().required("Required"),
   }),
   startDate: yup.date().required("Required").nullable(),
-  startTime: yup.date().required("Required").nullable(),
+  // startTime: yup.date().required("Required").nullable(),
   endDate: yup.date().required("Required").nullable(),
-  endTime: yup.date().required("Required").nullable(),
+  // endTime: yup.date().required("Required").nullable(),
   timezone: yup.string().required("Required"),
   mode: yup
     .array()
@@ -122,7 +124,6 @@ export default function ConfBasicInfo() {
         conferenceId: newConference?._id,
         organizationId,
         userId: user._id,
-
         startDate,
         endDate,
         startTime,
@@ -141,7 +142,6 @@ export default function ConfBasicInfo() {
         },
       },
     };
-
     console.log("formData", formData);
     try {
       const response = await api.post("conferences/step1", formData);
@@ -217,12 +217,8 @@ export default function ConfBasicInfo() {
   return (
     <>
       <main className="conf-form-wrap">
-        <form
-          className="form-type-1"
-          onSubmit={formik.handleSubmit}
-          autoComplete="off"
-        >
-          <div className="mb-72">
+        <form onSubmit={formik.handleSubmit} autoComplete="off">
+          <div className="form-type-1 mb-72">
             <h2>Basic Information</h2>
             <h4>Title</h4>
             <div className="material-textfield">
@@ -320,22 +316,16 @@ export default function ConfBasicInfo() {
 
             <div className="grid-col-2">
               <div className="grid-1st-col">
-                <h4>Start Date</h4>
-
-                <DateView
+                <h4>Start Date and Time</h4>
+                <CustomDatepicker
                   id="startDate"
                   name="startDate"
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={5}
-                  timeCaption="time"
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  peekNextMonth
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
                   selected={formik.values.startDate}
                   onChange={(date) => formik.setFieldValue("startDate", date)}
+                  minDate={new Date()}
+                  maxDate={formik.values.endDate}
+                  placeholder="Pick start date and time"
+                  disabled={false}
                 />
                 <div className="mb-24">
                   {formik.touched.startDate &&
@@ -344,7 +334,7 @@ export default function ConfBasicInfo() {
                     )}
                 </div>
               </div>
-              <div className="grid-2nd-col">
+              {/* <div className="grid-2nd-col">
                 <h4>Start time</h4>
                 <DatePicker
                   id="startTime"
@@ -363,18 +353,17 @@ export default function ConfBasicInfo() {
                       <TextError>{formik.errors.startTime}</TextError>
                     )}
                 </div>
-              </div>
-              <div className=" grid-1st-col ">
-                <h4>End Date</h4>
-                <DateView
+              </div> */}
+              <div className="grid-2nd-col">
+                <h4>End Date and Time</h4>
+                <CustomDatepicker
                   id="endDate"
                   name="endDate"
-                  peekNextMonth
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
                   selected={formik.values.endDate}
                   onChange={(date) => formik.setFieldValue("endDate", date)}
+                  minDate={formik.values.startDate}
+                  placeholder="Pick end date and time"
+                  disabled={false}
                 />
                 <div className="mb-24">
                   {formik.touched.endDate && Boolean(formik.errors.endDate) && (
@@ -382,7 +371,7 @@ export default function ConfBasicInfo() {
                   )}
                 </div>
               </div>
-              <div className="grid-2nd-col">
+              {/* <div className="grid-2nd-col">
                 <h4>End Time</h4>
                 <DatePicker
                   id="endTime"
@@ -399,7 +388,7 @@ export default function ConfBasicInfo() {
                     <TextError>{formik.errors.endTime}</TextError>
                   )}
                 </div>
-              </div>
+              </div> */}
               <div className="grid-1st-col">
                 <h4>Timezone</h4>
 
@@ -475,7 +464,7 @@ export default function ConfBasicInfo() {
               )}
             </div>
 
-            <div>
+            <div className="form-type-1">
               <div
                 className={`${
                   formik.values.mode.includes("venue")
@@ -628,102 +617,9 @@ export default function ConfBasicInfo() {
               </div>
             </div>
           </div>
-          {/* section changed */}
-          {/* <div className="mb-72">
-            <h2>Pricing</h2>
-            <div className="mb-24">
-              <input
-                type="checkbox"
-                style={{ display: "none" }}
-                id="isFree"
-                name="isFree"
-                value="isFree"
-                checked={formik.values.isFree}
-                onChange={(e) => {
-                  // formik.setFieldValue("basePrice", 0);
-                  // formik.setFieldValue("currency", "");
-                  formik.handleChange(e);
-                }}
-              />
-              <label htmlFor="isFree">
-                <div
-                  className={`mr-20 ${
-                    formik.values.isFree
-                      ? "button-outlined-active"
-                      : "button-outlined-inactive"
-                  }`}
-                >
-                  Free
-                </div>
-              </label>
-              <div
-                className={`mr-20 ${
-                  formik.values.isFree
-                    ? "button-outlined-inactive"
-                    : "button-outlined-active"
-                }`}
-                onClick={() => {
-                  formik.setFieldValue("isFree", !formik.values.isFree);
-                }}
-              >
-                Add Baseprice
-              </div>
-            </div>
-
-            <div className={`${formik.values.isFree ? "display-none" : ""}`}>
-              <div className="grid-col-2">
-                <div className="grid-1st-col">
-                  <h4>Currency</h4>
-                  <div>
-                    <SelectFormType1
-                      label="currency"
-                      options={currencylist}
-                      name="currency"
-                      onChange={(value) =>
-                        formik.setFieldValue("currency", value?.value)
-                      }
-                      placeholder="Select currency"
-                      value={formik.values.currency}
-                    />
-                  </div>
-                  <div className="mb-24">
-                    {formik.touched.currency &&
-                      Boolean(formik.errors.currency) && (
-                        <TextError>{formik.errors.currency}</TextError>
-                      )}
-                  </div>
-                </div>
-                <div className="grid-2nd-col">
-                  <h4>Amount</h4>
-                  <div className="material-textfield">
-                    <input
-                      id="basePrice"
-                      type="number"
-                      name="basePrice"
-                      value={formik.values.basePrice}
-                      onChange={formik.handleChange}
-                      placeholder=" "
-                    />
-                    <label>Choose Amount</label>
-                  </div>
-                  <div className="mb-24">
-                    {formik.touched.basePrice &&
-                      Boolean(formik.errors.basePrice) && (
-                        <TextError>{formik.errors.basePrice}</TextError>
-                      )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
-          <section className="mb-72">
-            <button type="button" className="button button-green mr-8">
-              Cancel
-            </button>
-            <button type="submit" className="button button-primary">
-              Save and Continue
-            </button>
-          </section>
+          <div className="mb-72">
+            <SubmitCancelButtonWithLoader isSubmitting={formik.isSubmitting} />
+          </div>
         </form>
       </main>
     </>

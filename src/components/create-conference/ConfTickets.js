@@ -12,6 +12,7 @@ import { createConferenceAction } from "../../redux/conference/conferenceAction"
 import { alertAction } from "../../redux/alert/alertAction";
 
 import api from "../../utility/api";
+import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 
 const validationSchema = yup.object().shape({});
 
@@ -67,14 +68,8 @@ export default function ConfTickets() {
             setFormikFieldValue={setFormikFieldValue}
           />
         </div>
-        <div>
-          <button
-            disabled={formik.isSubmitting}
-            type="submit"
-            className="button button-primary "
-          >
-            {formik.isSubmitting ? "Submitting..." : "Save and continue "}
-          </button>
+        <div className="mb-72">
+          <SubmitCancelButtonWithLoader isSubmitting={formik.isSubmitting} />
         </div>
       </form>
     </div>
