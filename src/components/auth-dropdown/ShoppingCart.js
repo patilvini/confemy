@@ -49,7 +49,7 @@ const [openCart, setOpenCart] = useState(false);
         // onMouseEnter={() => setOpenCart(true)}
         // onMouseLeave={() => setOpenCart(false)}
       >
-        <BookingCart/>
+        <BookingCart className="cart"/>
       </div>
     </div>)
 

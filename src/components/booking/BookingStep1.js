@@ -5,7 +5,7 @@ import Select from "react-select";
 import api from "../../utility/api";
 import "./step1.scss";
 import {useSelector} from 'react-redux'
-import BookingCart from "./BookingCart";
+
 
 export default function BookingStep1() {
   const [data, setData] = useState();
@@ -121,9 +121,9 @@ export default function BookingStep1() {
                 preserve and nurture the ecosystem of independent venues and
                 promoters throughout the United States.</p>
               </div>
-              {item.type === "PAID" && <div style={{display:"flex"}} className="step1-grid-item">
+              {item.price > 0 && <div style={{display:"flex"}} className="step1-grid-item">
                 <div style={{marginLeft:"1rem"}}><h4>{item.currency} {item.price} x </h4></div>
-                <div style={{marginLeft:"1rem"}}><Select options={options} placeholder="Pick" 
+                <div style={{backgroundColor:"red"}}><Select options={options} placeholder="Pick" 
                 onChange={(e)=>{
                 tickets[index] = item.price * e.value
               
@@ -138,7 +138,7 @@ export default function BookingStep1() {
 
                 }} style={{height:"3rem", padding:".5rem", width: "30%"}} type="number"/> </div>
               </div>}
-              {item.type === "FREE" && <div style={{display:"flex"}} className="step1-grid-item">
+              {item.price === 0 && <div style={{display:"flex"}} className="step1-grid-item">
                 
                 <div style={{marginLeft:"8.5rem"}}><Select options={options} placeholder="Pick" 
                 onChange={(e)=>{

@@ -54,7 +54,7 @@ const authDropdownOptions = [
   },
 ];
 
-export default function AuthDropdown() {
+export default function AuthDropdown({className}) {
   const [openAuthDropdown, setOpenAuthDropdown] = useState(false);
   const onDropdownClick = () => setOpenAuthDropdown(!openAuthDropdown);
 
@@ -109,7 +109,7 @@ export default function AuthDropdown() {
         // onMouseEnter={() => setOpenAuthDropdown(true)}
         // onMouseLeave={() => setOpenAuthDropdown(false)}
       >
-        <div className="auth-dropdown">
+        <div className={className}>
           <ul>
             {authDropdownOptions.map((e) => (
               <li
