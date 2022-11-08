@@ -4,11 +4,12 @@ import { useSelector } from "react-redux";
 import DeleteIcon from "../icons/DeleteIcon";
 import { useNavigate } from "react-router-dom";
 
-export default function BookingCart() {
+export default function BookingCart({className}) {
   const userID = useSelector((state) => state.auth.user?._id);
   const navigate = useNavigate()
 
   const [data, setData] = useState();
+  
 
 
   const getData = async () => {
@@ -50,7 +51,7 @@ export default function BookingCart() {
   }
 
   return (
-    <div className="cart">
+    <div className={className}>
       <h2> Cart {data?.count}</h2>
       <hr  style={{marginTop:"2rem", marginBottom:"2rem", width:"100%"}}/>
       {data?.bookingDetails.map((item, index) => {

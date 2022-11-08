@@ -70,12 +70,12 @@ export default function ConferenceSearchSelect() {
 
   return (
     <div className="conference-component">
-      <div></div>
+      
       <div className="conference-gird-container">
-        <div className="conference-grid-item">
+        <div style={{marginTop:"6rem"}} className="conference-grid-item">
           <img
             width="100%"
-            src="https://www.incimages.com/uploaded_files/image/1920x1080/getty_486734270_86526.jpg"
+            src={data?.banner[0].Location}
             alt="cover"
           />
 
@@ -117,8 +117,8 @@ export default function ConferenceSearchSelect() {
                   <img width="100%" src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNvbmZlcmVuY2V8ZW58MHx8MHx8&w=1000&q=80" />
                 </div>
           </Carousel>
-            <div></div>
-            <div style={{ paddingLeft: "2rem" }}>
+            
+            {/* <div style={{ paddingLeft: "2rem" }}>
               <h3 className="section-heading">{data?.venue?.venueName}</h3>
 
               <h4 className="venue-card-text">
@@ -138,7 +138,7 @@ export default function ConferenceSearchSelect() {
                   );
                 })}
               </div>
-            </div>
+            </div> */}
           </div>
 
           <h3 className="section-heading">Course Outline</h3>
@@ -153,7 +153,7 @@ export default function ConferenceSearchSelect() {
 
           <h3 className="section-heading">Course Schedule</h3>
           <div>
-            {data?.schedules?.map((item, index) => {
+            {/* {data?.schedules?.map((item, index) => {
               const date = DateTime.fromISO(item.date);
               let scheduleDate = date.toLocaleString({
                 ...DateTime.DATE_MED_WITH_WEEKDAY,
@@ -171,10 +171,10 @@ export default function ConferenceSearchSelect() {
                   </p>
                 </div>
               );
-            })}
+            })} */}
 
             <h2 className="section-heading">Conference Speakers</h2>
-            <div className="speaker-grid">
+            {/* <div className="speaker-grid">
               {data?.speakers?.map((item) => {
                 return (
                   <div key={item._id}>
@@ -186,20 +186,20 @@ export default function ConferenceSearchSelect() {
                   </div>
                 );
               })}
-            </div>
+            </div> */}
 
             <h2 className="section-heading">Refund Policy</h2>
             <div>
-              {data?.refundPolicy && (
+              
                 <p className="conference-card-text caption-2-regular-gray3">
                   If you are entitled to a replacement or refund, we will
                   replace the product or refund the purchase price, using the
                   original method of payment.
                 </p>
-              )}
-              {data?.refundPolicy === false && (
+         
+              
                 <h4 className="conference-schedule-day">Non-refundable</h4>
-              )}
+             
             </div>
           </div>
         </div>
