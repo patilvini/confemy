@@ -410,7 +410,10 @@ $spaceamounts: (
   68,
   72,
   76,
-  80
+  80,
+  84,
+  88,
+  92
 );
 
 @each $space in $spaceamounts {

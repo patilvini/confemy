@@ -7,7 +7,7 @@ export default function TwitterBlueIcon({ className }) {
       <img
         className={className}
         src={twitterBlueIcon}
-        alt="facebook blue circle logo"
+        alt="twitter blue logo"
       />
     </Fragment>
   );

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
+// import { formatInTimeZone } from "date-fns-tz";
+import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
 
 import TextError from "../formik/TextError";
 import DateView from "react-datepicker";
@@ -118,14 +120,20 @@ export default function ConfBasicInfo() {
       zipcode,
     } = values;
 
+    const utcDate = zonedTimeToUtc(startDate, timezone); // In June 10am in Los Angeles is 5pm UTC
+    console.log(utcDate.toISOString()); // post 2014-06-25T17:00:00.000Z, America/Los_Angeles
+
+    const apiDate = utcToZonedTime(utcDate.toISOString(), timezone);
+    console.log("api", apiDate);
+
     const formData = {
       conferenceDetails: {
         title,
         conferenceId: newConference?._id,
         organizationId,
         userId: user._id,
-        startDate,
-        endDate,
+        startDate: zonedTimeToUtc(startDate, timezone).toISOString(),
+        endDate: zonedTimeToUtc(endDate, timezone).toISOString(),
         startTime,
         endTime,
         timezone,
@@ -167,7 +175,7 @@ export default function ConfBasicInfo() {
   }
 
   const jsStartDateObj = getJsDateObj(newConference?.startDate);
-  const jsEndDateObj = getJsDateObj(newConference?.startDate);
+  const jsEndDateObj = getJsDateObj(newConference?.endDate);
   const jsStartTimeObj = getJsDateObj(newConference?.startTime);
   const jsEndTimeObj = getJsDateObj(newConference?.endTime);
 
@@ -176,10 +184,15 @@ export default function ConfBasicInfo() {
       title: newConference?.title || "",
       host: newConference?.host || "",
       organizationId: newConference?.hostedBy?.organization || "",
-      startDate: jsStartDateObj || null,
-      startTime: jsStartTimeObj || null,
-      endDate: jsEndDateObj || null,
-      endTime: jsEndTimeObj || null,
+      startDate:
+        utcToZonedTime(newConference?.startDate, newConference?.timezone) ||
+        null,
+      // startDate: newDateToDisplay || null,
+      // startTime: jsStartTimeObj || null,
+      endDate:
+        utcToZonedTime(newConference?.endDate, newConference?.timezone) || null,
+      // endDate: jsEndDateObj || null,
+      // endTime: jsEndTimeObj || null,
       timezone: newConference?.timezone || "",
 
       mode: newConference?.mode || [],
@@ -288,7 +301,7 @@ export default function ConfBasicInfo() {
             </div>
             <div
               className={`${
-                formik.values.host == "organization" ? "" : "display-none"
+                formik.values.host === "organization" ? "" : "display-none"
               }`}
             >
               <SelectFormType1

@@ -18,7 +18,7 @@ export default function SuccessTickIcon({ className, fill }) {
         fillRule="evenodd"
         id="Page-1"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
       >
         <g fillRule="nonzero" id="correct">
           <path
