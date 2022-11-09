@@ -23,7 +23,9 @@ import "./createConference.styles.scss";
 import SubmitButtonWithLoader from "../button/SubmitButtonWithLoader";
 
 const validationSchema = yup.object().shape({
-  whenToPublish: yup.string().required("Required"),
+  whenToPublish: yup
+    .string()
+    .required("Required, pick when to publish the conference, now or later"),
   publishDate: yup
     .date()
     .nullable()
@@ -32,7 +34,7 @@ const validationSchema = yup.object().shape({
       then: yup
         .date()
         .typeError("Enter a valid date to publish")
-        .required("Required"),
+        .required("Required, pick when to publish the conference"),
       otherwise: yup.date().notRequired().nullable(),
     }),
 });
@@ -40,20 +42,27 @@ const validationSchema = yup.object().shape({
 export default function ConfPreview() {
   const [open, setopen] = useState(false);
   const newConference = useSelector((state) => state.conference.newConference);
+  const { completedStep1, completedStep2, completedStep3, completedStep5 } =
+    newConference;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = async (values, actions) => {
-    // if (!newConference?.completedAllMandatorySteps) {
-    //   dispatch(
-    //     alertAction(
-    //       "Complete all steps before publishing the conference.",
-    //       "danger"
-    //     )
-    //   );
-    //   return;
-    // }
+    if (
+      !completedStep1 ||
+      !completedStep2 ||
+      !completedStep3 ||
+      !completedStep5
+    ) {
+      dispatch(
+        alertAction(
+          `Except Live Stream page, all steps are required to be completed before publishing the conference.`,
+          "danger"
+        )
+      );
+      return;
+    }
 
     const formData = {
       conferenceDetails: {

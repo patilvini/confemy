@@ -20,7 +20,7 @@ export default function PNavbar() {
   const auth = useSelector((state) => state.auth);
   const { isAuthenticated, user } = auth;
   const [cart, setCartOpen] = useState(false);
-  const [authShow, setAuthShow] = useState(false)
+  const [authShow, setAuthShow] = useState(false);
   return (
     <div className="navbar-responsive">
       <div className="navbar-left-item">
@@ -49,7 +49,7 @@ export default function PNavbar() {
               Create Conference
             </Link>
             <ShoppingCart />
-            <AuthDropdown className={"auth-dropdown"}/>
+            <AuthDropdown className={"auth-dropdown"} />
           </div>
         ) : (
           <div className="navbar-mid-item">
@@ -126,21 +126,16 @@ export default function PNavbar() {
                     <DropdownIcon className="icon-size" />
                   </div>
                 </div>
-                {
-                  cart && <div className="cart-container"><BookingCart className="cart-small" /></div> 
-                }
-                
+                {cart && (
+                  <div className="cart-container">
+                    <BookingCart className="cart-small" />
+                  </div>
+                )}
               </div>
-              
+
               <div className="nav-item">
-              
-                
-              
-              
                 <AuthDropdown className="auth-dropdown-small" />
-                
               </div>
-              
             </>
           ) : (
             <>

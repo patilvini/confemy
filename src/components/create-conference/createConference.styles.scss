@@ -55,11 +55,25 @@
 
 // styles for details page 1
 
+.tags-modal-contentwrap {
+  width: 400px;
+  h2 {
+    text-align: center;
+    color: $primary;
+  }
+}
+
 .tags-display {
+  // width: 100%;
+  // min-height: 100px;
+  // background-color: $colour-white;
+  // border: 2px solid $shade-1;
+
   display: flex;
   flex-wrap: wrap;
 
   li {
+    height: 50px;
     display: flex;
     align-items: center;
     list-style: none;
@@ -73,9 +87,9 @@
     letter-spacing: 0.01px;
     color: $gray-3;
 
-    padding: 14px 12px;
-    margin-right: 16px;
-    margin-bottom: 12px;
+    padding: 12px;
+    margin: 4px;
+    // margin-bottom: 12px;
     border-radius: 4px;
     background-color: $shade-2;
 

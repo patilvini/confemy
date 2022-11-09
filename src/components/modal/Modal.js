@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 // JSX to Be added to component
 // {open && (
 //   <Modal
-//     onDismiss
+//     onDismiss={someFunction}
 //   >
 //    <ComponentToBeShown/>
 //   </Modal>
