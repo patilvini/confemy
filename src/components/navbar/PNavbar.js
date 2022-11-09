@@ -9,7 +9,7 @@ import "./navbar.styles.scss";
 import ShoppingCart from "../auth-dropdown/ShoppingCart";
 import SettingsIcon from "../icons/SettingsIcon";
 import HamburgerIcon from "../icons/HamburgerIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloseMenu from "../icons/CloseMenu";
 import DropdownIcon from "../icons/DropdownIcon";
 import { set } from "date-fns";
@@ -21,6 +21,11 @@ export default function PNavbar() {
   const { isAuthenticated, user } = auth;
   const [cart, setCartOpen] = useState(false);
   const [authShow, setAuthShow] = useState(false);
+
+  // useEffect(()=>{
+  //   setMenuOpen(false)
+  // },[])
+
   return (
     <div className="navbar-responsive">
       <div className="navbar-left-item">
@@ -98,7 +103,12 @@ export default function PNavbar() {
 
       {menu && (
         <div className="nav-menu">
-          <Link to="search-conference">
+          <Link
+            onClick={() => {
+              setMenuOpen(false);
+            }}
+            to="search-conference"
+          >
             <div className="nav-item">
               <SearchIcon height="1.4rem" width="1.4rem" />
               <span className="explore-conferences">Explore Conferences</span>
@@ -107,6 +117,9 @@ export default function PNavbar() {
 
           <div className="nav-item">
             <Link
+              onClick={() => {
+                setMenuOpen(false);
+              }}
               className="create-conference"
               to="dashboard/create-conference"
             >
@@ -128,13 +141,19 @@ export default function PNavbar() {
                 </div>
                 {cart && (
                   <div className="cart-container">
-                    <BookingCart className="cart-small" />
+                    <BookingCart
+                      closeNav={() => setMenuOpen(false)}
+                      className="cart-small"
+                    />
                   </div>
                 )}
               </div>
 
               <div className="nav-item">
-                <AuthDropdown className="auth-dropdown-small" />
+                <AuthDropdown
+                  closeNav={() => setMenuOpen(false)}
+                  className="auth-dropdown-small"
+                />
               </div>
             </>
           ) : (

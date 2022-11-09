@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import DeleteIcon from "../icons/DeleteIcon";
 import { useNavigate } from "react-router-dom";
 
-export default function BookingCart({className}) {
+export default function BookingCart({closeNav, className}) {
   const userID = useSelector((state) => state.auth.user?._id);
   const navigate = useNavigate()
 
@@ -59,7 +59,12 @@ export default function BookingCart({className}) {
         return (
           <div key={index}>
             <div className="cart-grid" key={index}>
-              <h3 onClick={()=>{navigate("/booking-step2/"+item._id)}} className="cart-item">{item.conference.title}</h3>
+              <h3 onClick={()=>{
+                if(className== "cart-small"){
+                  closeNav()
+                }
+                
+                navigate("/booking-step2/"+item._id)}} className="cart-item">{item.conference.title}</h3>
               <p  className="cart-item" style={{ fontSize: "1.5rem" }}>
                 {item.conference.currency} {item.totalPrice}
               </p>
