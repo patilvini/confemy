@@ -54,7 +54,7 @@ const authDropdownOptions = [
   },
 ];
 
-export default function AuthDropdown({className}) {
+export default function AuthDropdown({className, closeNav}) {
   const [openAuthDropdown, setOpenAuthDropdown] = useState(false);
   const onDropdownClick = () => setOpenAuthDropdown(!openAuthDropdown);
 
@@ -115,6 +115,9 @@ export default function AuthDropdown({className}) {
               <li
                 key={e.name}
                 onClick={() => {
+                  if(className=="auth-dropdown-small"){
+                    closeNav()
+                  }
                   navigate(e.path);
                   setOpenAuthDropdown(false);
                 }}
