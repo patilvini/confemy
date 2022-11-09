@@ -2,28 +2,19 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
-
+import { Field, useFormik } from "formik";
 import * as yup from "yup";
-
-import SelectFormType1 from "../reselect/SelectFormType1";
 import TextError from "../formik/TextError";
-
+import SelectFormType1 from "../reselect/SelectFormType1";
 import { professions, subspecialties } from "../../utility/commonUtil";
-
-import TextEditor from "../text-editor/TextEditor";
 import CancelIcon from "../icons/CancelIcon";
 import Switch from "../switch/Switch";
-
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import { alertAction } from "../../redux/alert/alertAction";
-
 import api from "../../utility/api";
-
 import "./createConference.styles.scss";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import "../text-editor/textEditor.styles.scss";
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
+import Modal from "../modal/Modal";
 
 const validationSchema = yup.object().shape({
   professions: yup
@@ -36,7 +27,10 @@ const validationSchema = yup.object().shape({
     .of(yup.object())
     .min(1, "Choose specialitities")
     .compact(),
-
+  // tag: yup.string().when("openTagsModal", {
+  //   is: true,
+  //   then: yup.string().required("Required"),
+  // }),
   tags: yup
     .array()
     .of(yup.string())
@@ -78,6 +72,7 @@ const validationSchema = yup.object().shape({
 });
 export default function ConfDetails1() {
   const [creditOptions, setcreditOptions] = useState([]);
+  // const [openTagsModal, setOpenTagsModal] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -117,6 +112,7 @@ export default function ConfDetails1() {
     initialValues: {
       professions: newConference?.professions || [],
       specialities: newConference?.specialities || [],
+      // openTagsModal: false,
       tag: "",
       tags: newConference?.tags || [],
       isAccredited: newConference?.isAccredited || false,
@@ -167,10 +163,17 @@ export default function ConfDetails1() {
 
   //  add tags button onClick
   const addTags = () => {
+    if (!formik.values.tag?.length > 0) {
+      formik.setFieldError("tag", "Required");
+      formik.setFieldTouched("tag", true, true);
+      return;
+    }
     const match = formik.values.tags.includes(formik.values.tag);
+
     if ((formik.values.tag?.length > 0) & !match) {
       formik.setFieldValue("tags", [...formik.values.tags, formik.values.tag]);
       formik.setFieldValue("tag", "");
+      formik.setFieldValue("openTagsModal", false);
     }
   };
 
@@ -178,6 +181,7 @@ export default function ConfDetails1() {
     getCreditTypes();
   }, []);
 
+  // console.log(formik);
   return (
     <main className="conf-form-wrap">
       <form
@@ -239,6 +243,14 @@ export default function ConfDetails1() {
               </li>
             ))}
           </ul>
+          {/* Add button for modal, now commented */}
+          {/* <button
+            type="button"
+            onClick={() => formik.setFieldValue("openTagsModal", true)}
+            className="button button-primary"
+          >
+            Add Tags
+          </button> */}
           <div style={{ display: "flex" }}>
             <div style={{ flexGrow: 1 }} className="material-textfield">
               <input
@@ -380,3 +392,50 @@ export default function ConfDetails1() {
     </main>
   );
 }
+
+// Modal to be added for tags
+// {formik.values.openTagsModal && (
+//   <Modal>
+//     <div className="tags-modal-contentwrap white-modal">
+//       <div className="modal-form-wrapper">
+//         <h2 className="mb-32">Add Tag</h2>
+//         <div className="form-type-1 mb-24">
+//           <div className="material-textfield">
+//             <input
+//               id="tag"
+//               type="text"
+//               name="tag"
+//               // value={tag}
+//               value={formik.values.tag}
+//               // onChange={onTagChange}
+//               onChange={formik.handleChange}
+//               placeholder=" "
+//             />
+//             <label>Tag</label>
+//           </div>
+//           {formik.touched.tag && Boolean(formik.errors.tag) && (
+//             <TextError>{formik.errors.tag}</TextError>
+//           )}
+//           {/* <TextError>{formik.errors.tag}</TextError> */}
+//         </div>
+
+//         <div className="flex">
+//           <button
+//             type="button"
+//             onClick={() => formik.setFieldValue("openTagsModal", false)}
+//             className="button button-green"
+//           >
+//             Cancel
+//           </button>
+//           <button
+//             onClick={addTags}
+//             type="button"
+//             className="button button-primary ml-16"
+//           >
+//             Add
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   </Modal>
+// )}

@@ -3,6 +3,7 @@
 
 .alert-container {
   position: sticky;
+  // position: absolue;
   // z index is one more than navbar
   z-index: 100;
   // Putting it just below navbar which is 64px in height.
@@ -19,23 +20,29 @@
   margin-left: auto;
 
   padding: 0.8rem 2rem;
-  opacity: 0.8;
+  // opacity: 0.8;
   border-radius: 4px;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  @include caption-2-regular;
 
   &.alert-primary {
     background-color: $primary;
+    color: $colour-white;
   }
   &.alert-dark {
     // background-color: $shade-1;
     background-color: #ffce32;
+    color: $primary;
   }
   &.alert-success {
     background-color: $accent;
+    color: $colour-white;
   }
   &.alert-danger {
     background-color: $warning;
+    color: $colour-white;
   }
 }
