@@ -5,6 +5,7 @@ import { currencylist } from "../../utility/commonUtil";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDatepicker from "../react-datepicker/CustomDatepicker";
+import { zonedTimeToUtc } from "date-fns-tz";
 
 import TextError from "../formik/TextError";
 
@@ -30,6 +31,7 @@ export default function TicketForm({ onClose }) {
       dispatch(alertAction("Complete step-1 first", "danger"));
       return;
     }
+
     const formData = {
       ticketDetails: {
         name: values.name,
@@ -37,7 +39,10 @@ export default function TicketForm({ onClose }) {
         currency: values.currency,
         quantity: values.quantity,
         price: values.price,
-        saleStartDate: values.saleStartDate,
+        saleStartDate: zonedTimeToUtc(
+          values.saleStartDate,
+          newConference?.timezone
+        ).toISOString(),
         conferenceId: newConference?._id,
         regularTicket: values.regularTicket,
       },
@@ -71,6 +76,8 @@ export default function TicketForm({ onClose }) {
   });
 
   console.log("Ticket Form", formik);
+
+  const todaysDate = new Date();
 
   return (
     <div>
@@ -167,7 +174,7 @@ export default function TicketForm({ onClose }) {
             name="saleStartDate"
             selected={formik.values.saleStartDate}
             onChange={(date) => formik.setFieldValue("saleStartDate", date)}
-            // minDate={new Date()}
+            minDate={todaysDate}
             placeholder="Pick end date and time"
             disabled={false}
           />
