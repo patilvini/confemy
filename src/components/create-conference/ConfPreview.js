@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
+import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
 
 import { useNavigate } from "react-router-dom";
 import CustomDatepicker from "../react-datepicker/CustomDatepicker";
@@ -68,7 +69,11 @@ export default function ConfPreview() {
       conferenceDetails: {
         conferenceId: newConference._id,
         whenToPublish: values.whenToPublish,
-        publishDate: values.publishDate,
+        // publishDate: values.publishDate,
+        publishDate: zonedTimeToUtc(
+          values.publishDate,
+          newConference?.timezone
+        ).toISOString(),
       },
     };
     try {
@@ -76,7 +81,7 @@ export default function ConfPreview() {
       if (response) {
         console.log("submit step1 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
-        navigate("/dashboard/create-conf/step-2");
+        navigate("/dashboard/my-conferences");
         dispatch(alertAction(response.data.message, "success"));
       }
     } catch (err) {
@@ -123,17 +128,27 @@ export default function ConfPreview() {
     setopen(false);
   };
 
-  function getJsDateObj(str) {
-    let jsDateObj;
-    if (str) {
-      jsDateObj = new Date(str);
-    } else {
-      jsDateObj = null;
-    }
-    return jsDateObj;
-  }
+  // function getJsDateObj(str) {
+  //   let jsDateObj;
+  //   if (str) {
+  //     jsDateObj = new Date(str);
+  //   } else {
+  //     jsDateObj = null;
+  //   }
+  //   return jsDateObj;
+  // }
 
-  const jsStartDateObj = getJsDateObj(newConference?.startDate);
+  // const jsStartDateObj = getJsDateObj(newConference?.startDate);
+
+  let apiStartDate;
+  if (newConference?.startDate && newConference?.timezone) {
+    apiStartDate = utcToZonedTime(
+      newConference?.startDate,
+      newConference?.timezone
+    );
+  } else {
+    apiStartDate = null;
+  }
 
   return (
     <div>
@@ -229,7 +244,13 @@ export default function ConfPreview() {
                     id="publishNow"
                     name="whenToPublish"
                     value="now"
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                      const date = new Date();
+                      if (formik.values.whenToPublish === "now") {
+                        formik.setFieldValue("publishDate", date);
+                      }
+                      formik.handleChange(e);
+                    }}
                   />
                   {formik.values.whenToPublish === "now" ? (
                     <RadioFilledIcon className="icon-size  mr-12" />
@@ -277,7 +298,11 @@ export default function ConfPreview() {
                 selected={formik.values.publishDate}
                 onChange={(date) => formik.setFieldValue("publishDate", date)}
                 minDate={new Date()}
-                maxDate={jsStartDateObj}
+                // maxDate={utcToZonedTime(
+                //   newConference?.startDate,
+                //   newConference?.timezone
+                // )}
+                maxDate={apiStartDate}
                 placeholder="Pick date to publish"
                 disabled={formik.values.whenToPublish === "now"}
               />
