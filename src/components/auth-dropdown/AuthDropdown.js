@@ -94,9 +94,9 @@ export default function AuthDropdown({className, closeNav}) {
   };
 
   return (
-    <div ref={ref}>
+    <div  ref={ref}>
       <div
-        className="user-name-wrapper mr-20"
+        className="user-name-wrapper mr-15 mt-6"
         onClick={onDropdownClick}
         // onMouseEnter={() => setOpenAuthDropdown(true)}
         // onMouseLeave={() => setOpenAuthDropdown(false)}
@@ -109,7 +109,7 @@ export default function AuthDropdown({className, closeNav}) {
         // onMouseEnter={() => setOpenAuthDropdown(true)}
         // onMouseLeave={() => setOpenAuthDropdown(false)}
       >
-        <div className={className}>
+        <div  className={className}>
           <ul>
             {authDropdownOptions.map((e) => (
               <li

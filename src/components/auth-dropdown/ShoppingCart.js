@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BookingCart from "../booking/BookingCart";
+import CartIcon from "../icons/CartIcon";
 import DropdownIcon from "../icons/DropdownIcon";
 
 
@@ -35,13 +36,15 @@ const [openCart, setOpenCart] = useState(false);
   return (
     <div  ref={ref}>
       <div
-        className="user-name-wrapper mr-20"
+        className="user-name-wrapper mr-10"
         onClick={onDropdownClick}
         // onMouseEnter={() => setOpenCart(true)}
         // onMouseLeave={() => setOpenCart(false)}
       >
-        <span className="signin">Cart</span>
-        <div><DropdownIcon  className="icon-size" /></div>
+       
+        <span><CartIcon className="icon-sm mr-2"/></span>
+        <p className="signin cart-text-res">Cart</p>
+        <div><DropdownIcon  className="icon-size mr-10" /></div>
         
       </div>
       <div
