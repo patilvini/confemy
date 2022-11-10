@@ -4,18 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-// import { formatInTimeZone } from "date-fns-tz";
+import TextError from "../formik/TextError";
+
 import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
 
-import TextError from "../formik/TextError";
-import DateView from "react-datepicker";
-import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-
 import api from "../../utility/api";
-
 import SelectFormType1 from "../reselect/SelectFormType1";
-
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import { timezones, currencylist } from "../../utility/commonUtil";
 import "./createConference.styles.scss";
@@ -87,8 +81,6 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ConfBasicInfo() {
-  // const [formData, setFormData] = useState({});
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -104,11 +96,10 @@ export default function ConfBasicInfo() {
       title,
       host,
       organizationId,
-
       startDate,
       endDate,
-      startTime,
-      endTime,
+      // startTime,
+      // endTime,
       timezone,
       mode,
       venueName,
@@ -120,12 +111,6 @@ export default function ConfBasicInfo() {
       zipcode,
     } = values;
 
-    const utcDate = zonedTimeToUtc(startDate, timezone); // In June 10am in Los Angeles is 5pm UTC
-    console.log(utcDate.toISOString()); // post 2014-06-25T17:00:00.000Z, America/Los_Angeles
-
-    const apiDate = utcToZonedTime(utcDate.toISOString(), timezone);
-    console.log("api", apiDate);
-
     const formData = {
       conferenceDetails: {
         title,
@@ -134,8 +119,8 @@ export default function ConfBasicInfo() {
         userId: user._id,
         startDate: zonedTimeToUtc(startDate, timezone).toISOString(),
         endDate: zonedTimeToUtc(endDate, timezone).toISOString(),
-        startTime,
-        endTime,
+        // startTime,
+        // endTime,
         timezone,
         mode,
         host,
@@ -164,33 +149,50 @@ export default function ConfBasicInfo() {
     }
   }
 
-  function getJsDateObj(str) {
-    let jsDateObj;
-    if (str) {
-      jsDateObj = new Date(str);
-    } else {
-      jsDateObj = null;
-    }
-    return jsDateObj;
+  // function getJsDateObj(str) {
+  //   let jsDateObj;
+  //   if (str) {
+  //     jsDateObj = new Date(str);
+  //   } else {
+  //     jsDateObj = null;
+  //   }
+  //   return jsDateObj;
+  // }
+
+  // const jsStartDateObj = getJsDateObj(newConference?.startDate);
+  // const jsEndDateObj = getJsDateObj(newConference?.endDate);
+  // const jsStartTimeObj = getJsDateObj(newConference?.startTime);
+  // const jsEndTimeObj = getJsDateObj(newConference?.endTime);
+
+  let apiStartDate;
+  if (newConference?.startDate && newConference?.timezone) {
+    apiStartDate = utcToZonedTime(
+      newConference?.startDate,
+      newConference?.timezone
+    );
+  } else {
+    apiStartDate = null;
   }
 
-  const jsStartDateObj = getJsDateObj(newConference?.startDate);
-  const jsEndDateObj = getJsDateObj(newConference?.endDate);
-  const jsStartTimeObj = getJsDateObj(newConference?.startTime);
-  const jsEndTimeObj = getJsDateObj(newConference?.endTime);
+  let apiEndDate;
+  if (newConference?.endDate && newConference?.timezone) {
+    apiEndDate = utcToZonedTime(
+      newConference?.endDate,
+      newConference?.timezone
+    );
+  } else {
+    apiEndDate = null;
+  }
 
   const formik = useFormik({
     initialValues: {
       title: newConference?.title || "",
       host: newConference?.host || "",
       organizationId: newConference?.hostedBy?.organization || "",
-      startDate:
-        utcToZonedTime(newConference?.startDate, newConference?.timezone) ||
-        null,
+      startDate: apiStartDate || null,
       // startDate: newDateToDisplay || null,
       // startTime: jsStartTimeObj || null,
-      endDate:
-        utcToZonedTime(newConference?.endDate, newConference?.timezone) || null,
+      endDate: apiEndDate || null,
       // endDate: jsEndDateObj || null,
       // endTime: jsEndTimeObj || null,
       timezone: newConference?.timezone || "",

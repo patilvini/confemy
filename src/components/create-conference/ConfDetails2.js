@@ -476,7 +476,9 @@ export default function ConfDetails2() {
                 <span> {newConference?.venue?.city},</span>{" "}
                 <span> {newConference?.venue?.state}</span>
               </p>
-              <p>{newConference?.venue?.country}, 4110348 </p>
+              <p>
+                {newConference?.venue?.country}, {newConference?.venue?.zipcode}
+              </p>
             </div>
 
             <div className="mb-48">
