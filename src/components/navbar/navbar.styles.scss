@@ -2,7 +2,7 @@
 
 .navbar {
   width: 100%;
-  // max-width: $containerWidth;
+
   height: 6.4rem;
   margin: 0 auto;
   display: flex;
@@ -13,6 +13,7 @@
   position: sticky;
   // position: fixed;
   top: 0;
+
 
   // div:last-child {
   //   margin-left: auto;
@@ -34,7 +35,7 @@
 
 .navbar-first-container {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
 .navbar-second-container {
@@ -60,7 +61,9 @@
   display: flex;
   align-items: center;
   height: 100%;
-  margin-left: 4rem;
+  margin-left: 2rem;
+  
+  
 
 }
 
@@ -123,6 +126,12 @@
   margin-left: 1.2rem;
   font-family: Avenir-Roman;
   font-size: 1.6rem;
+
+  &-drop{
+    margin-left:0;
+    margin-right: 1.2rem;
+
+  }
 }
 
 .nav-location-icon {
@@ -151,18 +160,33 @@
   line-height: 1;
   letter-spacing: 0.01px;
   color: $gray-2;
+
+  &-drop{
+    margin-left: 0;
+    margin-right: 1.2rem;
+    font-family: Avenir-Roman;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
+  color: $gray-2;
+  }
 }
 
 .user-name-wrapper {
   display: flex;
   align-items: center;
+  margin-top: .6rem;
 
   justify-content:flex-start &:hover {
     cursor: pointer;
   }
 
+
   svg {
-    margin-left: 0.8rem;
+    margin-left: 0.6rem;
   }
 }
 
@@ -209,16 +233,21 @@
   }
 }
 
+
+
 .navbar-responsive {
   display: grid;
   grid-template-columns: 1fr 1fr .2fr;
 
   width: 100%;
+  max-width: $containerWidth;
+
   height: 6.4rem;
   position: fixed;
   background-color: $colour-white;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
   align-items: center;
+
   z-index: 99;
 
 }
@@ -227,6 +256,7 @@
 
   display: flex;
   align-items: center;
+  justify-content: left;
 
 }
 
@@ -244,15 +274,21 @@
 
   display: flex;
 
+
 }
 
+.auth-cart {
+  display: none;
+}
 
 
 .location-flex {
   display: flex;
 
   justify-content: flex-start;
+  align-items: center;
   margin-right: 2rem;
+  margin-top: 7px;
 }
 
 
@@ -260,6 +296,9 @@
 .hamburger-button {
   display: none;
   justify-content: end;
+  align-items: center;
+  margin-top: .6rem;
+  margin-left: 1rem;
 
   button {
     background-color: $colour-white;
@@ -268,8 +307,8 @@
 }
 
 .nav-menu {
-  width: 40rem;
-  height: 100%;
+  width: 30rem;
+  // height: 100%;
   position: fixed;
   z-index: 1;
   overflow: auto;
@@ -278,18 +317,18 @@
   border-radius: 4px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
   background-color: #fafbfc;
-  
+
   text-align: left;
 
-  @media screen and (min-width: 974px) {
+  @media screen and (min-width: 1000px) {
     display: none;
   }
 
-  @media screen and (max-width: 600px) {
-    width: 100%;
-    height: 100%;
+  // @media screen and (max-width: 600px) {
+  //   width: 100%;
+  //   height: 100%;
 
-  }
+  // }
 
 
 
@@ -297,12 +336,12 @@
 }
 
 .auth-dropdown-small {
-  width: 100%;
-  height: 53.4rem;
-  // position: absolute;
+  width: 32.5rem;
+  // height: 53.4rem;
+  position: absolute;
   z-index: 1;
   overflow: auto;
-  // top: 6.4rem;
+  top: 4.5rem;
   right: 0;
   border-radius: 4px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
@@ -310,6 +349,7 @@
   margin-top: 2rem;
 
   ul {
+
     width: 100%;
     height: 100%;
     display: flex;
@@ -346,25 +386,25 @@
 
 
 
-.cart-small{
+.cart-small {
   margin-top: 2rem;
   height: 100%;
-  
-    // position: fixed;
-    // top:6.5rem;
- 
-    background-color: $colour-white;
-    z-index: 1;
-    overflow: auto;
 
-    
-    width: 100%;
+  // position: fixed;
+  // top:6.5rem;
 
-    right: 0;
-    padding: 2rem;
-    border-radius: 1rem;
-    
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  background-color: $colour-white;
+  z-index: 1;
+  overflow: auto;
+
+
+  width: 100%;
+
+  right: 0;
+  padding: 2rem;
+  border-radius: 1rem;
+
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
 }
 
 .nav-item {
@@ -378,7 +418,16 @@
   border-radius: 4px;
 }
 
-@media screen and (max-width: 974px) {
+@media screen and (max-width: 1000px) {
+
+  .cart-text-res {
+    display: none;
+  }
+
+  .auth-cart {
+    display: flex;
+
+  }
 
   .navbar-mid-item {
     display: none;
@@ -407,5 +456,17 @@
   .search-button-nav {
     display: none;
   }
+
+}
+
+@media screen and (max-width:413px){
+  
+
+    .hamburger-button {
+   
+  
+  
+      margin-right: 2rem;
+    }
 
 }

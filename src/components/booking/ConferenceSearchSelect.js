@@ -68,6 +68,9 @@ export default function ConferenceSearchSelect() {
             src="https://wallpaperaccess.com/full/682838.jpg"
             alt="cover"
           />
+          <div className="photo-card">
+            <BookingCard data={data} reload={() => setAction(!action)} />
+          </div>
 
           <h2>About this conference</h2>
           <p className="avenir-roman-18-gray3">
@@ -134,18 +137,22 @@ export default function ConferenceSearchSelect() {
             </div>
 
             <div className="amenities-section">
-              <div className="file"><DocumentIcon/> <span>Pool</span></div>
-              <div className="file"><DocumentIcon/> <span>Parking</span></div>
-              <div className="file"><DocumentIcon/> <span>Cafe</span></div>
-              <div className="file"><DocumentIcon/> <span>Laundry</span></div>
-              <div className="file"><DocumentIcon/> <span>Lounge</span></div>
-              
-
+              <div className="file">
+                <DocumentIcon /> <span>Pool</span>
+              </div>
+              <div className="file">
+                <DocumentIcon /> <span>Parking</span>
+              </div>
+              <div className="file">
+                <DocumentIcon /> <span>Cafe</span>
+              </div>
+              <div className="file">
+                <DocumentIcon /> <span>Laundry</span>
+              </div>
+              <div className="file">
+                <DocumentIcon /> <span>Lounge</span>
+              </div>
             </div>
-
-
-
-
           </div>
 
           <h3 className="course-outline-heading">Course Outline</h3>
@@ -159,25 +166,19 @@ export default function ConferenceSearchSelect() {
           </p>
 
           <div className="added-docs">
-
             <div className="file">
-            <DocumentIcon fill="#c4c4c4" className="icon-size" />
+              <DocumentIcon fill="#c4c4c4" className="icon-size" />
               <span>Document.docx</span>
-
             </div>
             <div className="file">
-            <DocumentIcon fill="#c4c4c4" className="icon-size" />
+              <DocumentIcon fill="#c4c4c4" className="icon-size" />
               <span>Document2.docx</span>
-
             </div>
-
           </div>
 
-         <h3>
-          Conference Schedule
-         </h3>
+          <h3>Conference Schedule</h3>
 
-         <p className="avenir-roman-18-gray3">
+          <p className="avenir-roman-18-gray3">
             Established in 1962, the MIT Press is one of the largest and most
             distinguished university presses in the world and a leading
             publisher of books and journals at the intersection of science,
@@ -186,39 +187,32 @@ export default function ConferenceSearchSelect() {
             standards, interdisciplinary focus, and distinctive design.
           </p>
 
-          <h3 className="mt-92">
-            Conference Speakers
-          </h3>
+          <h3 className="mt-92">Conference Speakers</h3>
 
           <div className="conference-details-speakers">
-          
-          <SpeakerCard
-                      firstName={"Pranit"}
-                      lastName={"Deshpande"}
-                      designation={"MD saddsfad dsakjhdbjsahdv"}
-                    />
-                    <SpeakerCard
-                      firstName={"Pranit"}
-                      lastName={"Deshpande"}
-                      designation={"MD saddsfad dsakjhdbjsahdv"}
-                    />
-                    <SpeakerCard
-                      firstName={"Pranit"}
-                      lastName={"Deshpande"}
-                      designation={"MD saddsfad dsakjhdbjsahdv"}
-                    />
-                    <SpeakerCard
-                      firstName={"Pranit"}
-                      lastName={"Deshpande"}
-                      designation={"MD saddsfad dsakjhdbjsahdv"}
-                    />
-                    
-
+            <SpeakerCard
+              name={"Pranit Deshpande"}
+              degree={"MD MBBS"}
+              
+            />
+            <SpeakerCard
+              name={"Pranit Deshpande"}
+              degree={"MD MBBS"}
+              
+            />
+            <SpeakerCard
+              name={"Pranit Deshpande"}
+              degree={"MD MBBS"}
+              
+            />
+            <SpeakerCard
+              name={"Pranit Deshpande"}
+              degree={"MD MBBS"}
+              
+            />
           </div>
 
-          <h3 className="mt-92">
-            Refund Policy
-          </h3>
+          <h3 className="mt-92">Refund Policy</h3>
 
           <p className="avenir-roman-18-gray3 mb-88">
             Established in 1962, the MIT Press is one of the largest and most
@@ -228,13 +222,10 @@ export default function ConferenceSearchSelect() {
             journals are known for their intellectual daring, scholarly
             standards, interdisciplinary focus, and distinctive design.
           </p>
-
-
-
-
-
         </div>
-        <div><BookingCard data={data} reload={()=>setAction(!action)}/></div>
+        <div className="side-card">
+          <BookingCard data={data} reload={() => setAction(!action)} />
+        </div>
       </div>
     </div>
   );
