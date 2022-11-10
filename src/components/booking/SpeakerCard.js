@@ -1,14 +1,38 @@
-export default function SpeakerCard({firstName, lastName, designation}) {
+import ProfileSketch from "../icons/ProfileSketch";
+
+export default function SpeakerCard({
+  name,
+  designation,
+  degree,
+  image,
+  value,
+  removeConfSpeaker,
+}) {
   return (
     <div className="speaker-card">
-      <img
-        className="profile-pic"
-        src="https://st4.depositphotos.com/4329009/19956/v/600/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg"
-        alt="profile"
-      />
-      <h4 style={{color:"#000"}} className="mx-76 mt-0 mb-8" >{firstName} {lastName}</h4>
-      <p className="px-27 pt-0 pb-14" >{designation}</p>
+      <div className="speaker-image-container">
+        <div className="speaker-image-wrap">
+          {image && image?.length > 0 ? (
+            <img
+              alt="profile picture"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              src={image[0].Location}
+            />
+          ) : (
+            <ProfileSketch
+              className="speaker-profilesketch-size"
+              fill="#c4c4c4"
+            />
+          )}
+        </div>
+      </div>
+      <div className="speaker-name-container">
+        <p className="speaker-name mb-8">{name}</p>
+        <p className="caption-3">{degree}</p>
+        <p className="caption-3">{designation}</p>
+      </div>
 
+      
     </div>
   );
 }
