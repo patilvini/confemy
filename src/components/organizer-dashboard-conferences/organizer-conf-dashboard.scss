@@ -46,6 +46,37 @@
 
 }
 
+.dash-options{
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  width:29.6rem;
+
+  
+  
+ 
+
+  
+  
+
+  &-item{
+    
+    // padding-left: 2rem;
+    // align-self:center;
+    padding: 2.1rem;
+    justify-self: center;
+    font-size: 18px;
+    border-radius: 4px;
+    
+    
+
+    &:hover{
+      background-color: $gray-1;
+    }
+  }
+  
+}
+
 .dash-table-heading {
 
   display: grid;

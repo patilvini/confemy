@@ -9,6 +9,8 @@ import Select from "react-select";
 import { DateTime } from "luxon";
 import OrganizersNavbar from "../navbar/OrganizersNavbar";
 import DashMenuIcon from "../icons/DashMenuIcon";
+import ExploreIcon from "../icons/ExploreIcon";
+import ThreeDotsVIcon from "../icons/ThreeDotsVIcon";
 
 const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";
@@ -25,6 +27,7 @@ export default function OrganizerDash() {
   const [searchValue, setSearchValue] = useState("");
   const [dashOpen, setDashOpen] = useState(false);
   const ref = useRef(null);
+  const [optionsOpen, setOptionsOpen] = useState(false)
 
   const navigate = useNavigate();
 
@@ -106,8 +109,9 @@ export default function OrganizerDash() {
         fontFamily: "Avenir-Roman",
         fontSize: 16,
         zIndex: 1,
-        maxWidth:"25rem",
-        minWidth:"16rem",
+        
+        width:"16rem",
+        margin:'.5rem',
 
         ":hover": {
           border: state.isFocused ? "1px solid #55a0fa" : `solid 3px ${shade4}`,
@@ -153,7 +157,7 @@ export default function OrganizerDash() {
   return (
     <div className="dash-wrapper">
       <div>
-        <div className="grid-col-2">
+        <div className="grid-col-2 mb-20">
           <div style={{ alignSelf: "center" }}>
             <h1>Conferences</h1>
           </div>
@@ -163,8 +167,8 @@ export default function OrganizerDash() {
           </div>
         </div>
 
-        <div className="flex-vc-sb mt-20">
-          <div>
+        <div className="grid-col-2-2_1">
+          <div style={{ alignSelf: "center" }}>
             <SearchBar
               onClear={() => setSearchValue("")}
               setValue={(value) => {
@@ -175,7 +179,13 @@ export default function OrganizerDash() {
             />
           </div>
           
-          <div>
+          <div style={{justifyContent:"right" }} className="flex-vc-sb">
+            <Select
+              placeholder={"Sort"}
+              onChange={(e) => sort(e)}
+              options={options}
+              styles={customStyles}
+            />
             <Select
               placeholder={"Sort"}
               onChange={(e) => sort(e)}
@@ -183,16 +193,16 @@ export default function OrganizerDash() {
               styles={customStyles}
             />
           </div>
-          <div>
-            <Select
-              placeholder={"Sort"}
-              onChange={(e) => sort(e)}
-              options={options}
-              styles={customStyles}
-            />
-          </div>
+         
         </div>
       </div>
+
+      {optionsOpen && <div className="dash-options">
+                  <div className="dash-options-item">View</div>
+                  <div className="dash-options-item">Duplicate</div>
+                  <div className="dash-options-item">Edit</div>
+                  
+                  </div>}
 
       <div>
         <div className="dash-table-heading mt-20">
@@ -203,6 +213,8 @@ export default function OrganizerDash() {
 
           <div className="dash-table-item">Status</div>
         </div>
+
+        
 
         {filtered?.map((item, index) => {
           return (
@@ -226,7 +238,25 @@ export default function OrganizerDash() {
 
               <div className="dash-table-item">{item.grossPrice}</div>
 
-              <div className="dash-table-item">{item.active.toString()}</div>
+              <div className="dash-table-item">
+                
+
+                <div className="flex-vc-se">
+
+                  <div>{item.active.toString()}</div>
+                  <div><i onClick={()=>setOptionsOpen(!optionsOpen)}><ThreeDotsVIcon className={"icon-size mt-5  "}/></i> </div>
+                
+                
+
+               
+
+                </div>
+                
+               
+                
+                
+                
+                </div>
             </div>
           );
         })}

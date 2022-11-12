@@ -1,6 +1,6 @@
-import React from 'react';
 
-function ExploreIcon({ className }) {
+
+export default function ExploreIcon({ className }) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -30,4 +30,4 @@ function ExploreIcon({ className }) {
   );
 }
 
-export default ExploreIcon;
+

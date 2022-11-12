@@ -108,6 +108,15 @@ a {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   gap: 8px;
+
+  &-2_1{
+    width: 100%;
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  grid-template-rows: auto;
+  gap: 8px;
+
+  }
 }
 
 .grid-1st-col {
@@ -203,6 +212,13 @@ a {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  }
+  &-se{
+    display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+
   }
 }
 // flexbox, horizontal center
