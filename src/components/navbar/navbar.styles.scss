@@ -336,17 +336,17 @@
 }
 
 .auth-dropdown-small {
-  width: 32.5rem;
-  // height: 53.4rem;
+  width: 32.4rem;
+  // height: c);
   position: absolute;
   z-index: 1;
-  overflow: auto;
-  top: 4.5rem;
+  overflow-y: scroll ;
+  top: 6.4rem;
   right: 0;
   border-radius: 4px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
   background-color: $colour-white;
-  margin-top: 2rem;
+  
 
   ul {
 
@@ -418,7 +418,30 @@
   border-radius: 4px;
 }
 
+.close-org-dash{
+  display: none;
+  align-items: center;
+
+  background-color: #fff;
+ 
+  
+  width: 270px;
+  padding: 2rem 2.5rem;
+  border: 1px solid rgba(164, 164, 164, 0.327);
+
+  
+  
+  p{
+    font-size: 16px;
+    
+  }
+}
+
 @media screen and (max-width: 1000px) {
+
+  .close-org-dash{
+    display: flex;
+  }
 
   .cart-text-res {
     display: none;

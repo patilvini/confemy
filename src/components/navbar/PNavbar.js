@@ -9,18 +9,37 @@ import "./navbar.styles.scss";
 import ShoppingCart from "../auth-dropdown/ShoppingCart";
 import SettingsIcon from "../icons/SettingsIcon";
 import HamburgerIcon from "../icons/HamburgerIcon";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CloseMenu from "../icons/CloseMenu";
 import DropdownIcon from "../icons/DropdownIcon";
 import { set } from "date-fns";
 import BookingCart from "../booking/BookingCart";
 
-export default function PNavbar() {
+export default function PNavbar({onClickOutside}) {
   const [menu, setMenuOpen] = useState(false);
   const auth = useSelector((state) => state.auth);
   const { isAuthenticated, user } = auth;
   const [cart, setCartOpen] = useState(false);
   const [authShow, setAuthShow] = useState(false);
+
+  const ref =useRef(null);
+
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // console.log(event.target)
+      // console.log(ref)
+
+      if (ref.current && !ref.current.contains(event.target)) {
+        setMenuOpen(false);
+        onClickOutside && onClickOutside();
+      }
+    };
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [onClickOutside]);
 
   // useEffect(()=>{
   //   setMenuOpen(false)
@@ -125,7 +144,7 @@ export default function PNavbar() {
         </div>
 
         {menu && (
-          <div className="nav-menu">
+          <div ref={ref} className="nav-menu">
             <Link
               onClick={() => {
                 setMenuOpen(false);
