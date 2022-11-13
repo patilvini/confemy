@@ -3,8 +3,20 @@
 
 .dash-wrapper {
   // margin: 0rem 2rem 3rem 12.2rem;
-  max-width: 119.6rem;
+  // max-width: 119.6rem;
   border-radius: .5rem;
+  width: 90%;
+
+  @media screen and (max-width: 400px) {
+    width: 95%;
+    
+  }
+
+  @media screen and (max-width: 560px) {
+    h1{
+      font-size: 25px;
+    }
+  }
 
 
 }
@@ -14,8 +26,19 @@
   margin: 1rem 0 0 0;
   font-family: Avenir-Roman;
   display: grid;
-  grid-template-columns: 50% 15% 15% 20%;
+  grid-template-columns: 2.5fr .5fr .5fr 1fr;
+  align-items: center;
 
+  @media screen and (max-width:860px){
+    grid-template-columns: 2fr .5fr .5fr 1fr;
+  }
+
+}
+
+.dash-right-item{
+ display: flex;
+ justify-content: end;
+ align-items: center;
 }
 
 .dash-table:hover {
@@ -23,24 +46,64 @@
 
 }
 
+.dash-options{
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  width:29.6rem;
+
+  
+  
+ 
+
+  
+  
+
+  &-item{
+    
+    // padding-left: 2rem;
+    // align-self:center;
+    padding: 2.1rem;
+    justify-self: center;
+    font-size: 18px;
+    border-radius: 4px;
+    
+    
+
+    &:hover{
+      background-color: $gray-1;
+    }
+  }
+  
+}
+
 .dash-table-heading {
-  margin: 3.2rem 0 0 0;
+
   display: grid;
-  grid-template-columns: 50% 15% 15% 20%;
+  align-items: center;
+  grid-template-columns: 2.5fr .5fr .5fr 1fr ;
   background-color: $shade-1;
   border-radius: .4rem;
-  height: 5.2rem
+  height: 5.2rem;
+
+  @media screen and (max-width:860px){
+    grid-template-columns: 2fr .5fr .5fr 1fr;
+  }
 }
 
 
 
 .dash-table-item {
-  // font-family: Avenir;
+  font-family: Avenir;
   font-size: 2rem;
   align-self: center;
-  text-align: center;
-  // font-weight: bold;
+  // text-align: center;
+  padding-left: 1rem;
+  font-weight: bold;
  
+  @media screen and (max-width:860px){
+    font-size: 1.5rem;
+  }
 
 
 }
@@ -49,13 +112,27 @@
 .conference-card-dash {
 
   display: grid;
-  grid-template-columns: 45% 55%;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+  
+
+  @media screen and (max-width:860px){
+    grid-template-columns: 1fr ;
+    padding:1rem;
+  }
 
 
   img {
     width: 100%;
     border-radius: .1rem;
-    padding: 1.5rem 1rem 1rem 0
+
+
+    @media screen and (max-width:860px){
+      display: none;
+    }
+    
     
 
   }
@@ -66,27 +143,21 @@
 
 .details-grid {
   display: grid;
-  grid-template-columns: 10% 90%;
+  grid-template-columns: 1fr 10fr;
+  gap:1rem;
+  align-items: center;
   padding-top: 1rem;
 }
 
-.conf-image-dash{
-  width: 500px;
-
-}
 
 
 
-.ticket-item {
 
-  padding: .3rem 0rem;
 
-  align-self: center;
-}
 
-.dash-conf-details {
-  padding: 1rem 0 0rem 1rem;
-}
+// .dash-conf-details {
+//   padding: 1rem 0 0rem 1rem;
+// }
 
 .data-grid {
   display: grid;

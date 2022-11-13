@@ -12,7 +12,7 @@ import SettingsIcon from "../icons/SettingsIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import DropdownIcon from "../icons/DropdownIcon";
 
-import "./AuthDropdown.styles.scss";
+import "./AuthDropdown.styles.scss"; 
 import api from "../../utility/api";
 // import { capitalize } from "../../utility/commonUtil";
 
@@ -54,7 +54,7 @@ const authDropdownOptions = [
   },
 ];
 
-export default function AuthDropdown({className, closeNav}) {
+export default function AuthDropdown({className}) {
   const [openAuthDropdown, setOpenAuthDropdown] = useState(false);
   const onDropdownClick = () => setOpenAuthDropdown(!openAuthDropdown);
 
@@ -115,9 +115,7 @@ export default function AuthDropdown({className, closeNav}) {
               <li
                 key={e.name}
                 onClick={() => {
-                  if(className=="auth-dropdown-small"){
-                    closeNav()
-                  }
+                  
                   navigate(e.path);
                   setOpenAuthDropdown(false);
                 }}

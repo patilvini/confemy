@@ -85,11 +85,19 @@ a {
   overflow: hidden;
 }
 .container-offSidemenu {
-  max-width: calc(
-    #{$containerWidth} - #{$organizersNavbarWidth + $mrContainerOffSidemenu + $mlContainerOffSidemenu}
-  );
-  margin: 96px $mrContainerOffSidemenu 64px $mlContainerOffSidemenu;
-  overflow: hidden;
+  // max-width: calc(
+  //   #{$containerWidth} - #{$organizersNavbarWidth + $mrContainerOffSidemenu + $mlContainerOffSidemenu}
+  // );
+  // margin: 96px $mrContainerOffSidemenu 64px $mlContainerOffSidemenu;
+  margin: 9.4rem 0 64px 0;
+  display: flex;
+  justify-content: center;
+  // width: 95%;
+  // overflow: hidden;
+
+  @media screen and (max-width:1000px){
+    margin:3.4rem 0 64px 0;
+  }
 }
 
 // grids
@@ -100,6 +108,15 @@ a {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   gap: 8px;
+
+  &-2_1{
+    width: 100%;
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  grid-template-rows: auto;
+  gap: 8px;
+
+  }
 }
 
 .grid-1st-col {
@@ -190,12 +207,26 @@ a {
 .flex-vc {
   display: flex;
   align-items: center;
+  &-sb{
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  }
+  &-se{
+    display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+
+  }
 }
 // flexbox, horizontal center
 
 .flex-hc {
   display: flex;
   justify-content: center;
+
 }
 
 // flexbox, vertical center, horizontal center
