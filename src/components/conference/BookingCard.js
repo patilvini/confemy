@@ -1,3 +1,6 @@
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import CreditsIcon from "../icons/CreditsIcon";
 import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
@@ -7,10 +10,8 @@ import ShareIcon from "../icons/ShareIcon";
 import LikeBlueIcon from "../icons/LikeBlueIcon";
 import LikeRedIcon from "../icons/LikeRedIcon";
 import { DateTime } from "luxon";
-import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+
 import api from "../../utility/api";
-import { useState } from "react";
 
 export default function BookingCard({ data, reload }) {
   console.log(data);

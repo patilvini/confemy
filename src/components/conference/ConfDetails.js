@@ -1,9 +1,8 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../utility/api";
-import BookingCard from "../booking/BookingCard";
+import BookingCard from "./BookingCard";
 import SpeakerCard from "../booking/SpeakerCard";
-import { useEffect, useState } from "react";
-import { DateTime } from "luxon";
 
 import LocationIcon from "../icons/LocationIcon";
 import DocumentIcon from "../icons/DocumentIcon";
