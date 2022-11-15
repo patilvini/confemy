@@ -54,6 +54,7 @@ import UserViewProfilePage from "./pages/org-profile-userView-page/UserViewProfi
 import OrganizerConfPreviewFinishedPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewFinishedPage";
 import TrackCreditPage from "./pages/track-credit-page/TrackCreditPage";
 import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
+import MyConfsPage from "./pages/my-confs-page/MyConfsPage";
 
 import ImageUploader from "./components/image-uploader/SingleImageUploader";
 
@@ -115,7 +116,7 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
-              <Route path="test" element={<ImageUploader />} />
+              <Route path="test" element={<MyConfsPage />} />
               {/* <Route path="test2" element={<SearchSpeaker />} /> */}
               <Route
                 path="create-conference"

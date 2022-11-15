@@ -3,12 +3,14 @@ import {
   REMOVE_NEWCONF_STATE,
   LOAD_INCOMPLETE_CONFS,
   LOAD_INCOMPLETE_CONF,
+  LOAD_ALL_MY_CONFS,
 } from "./conferenceTypes";
 
 const initialState = {
   isLoading: true,
   newConference: {},
   incompleteConfs: null,
+  allMyConfs: null,
   error: false,
 };
 
@@ -38,6 +40,11 @@ function conferenceReducer(state = initialState, action) {
         incompleteConfs: payload,
       };
 
+    case LOAD_ALL_MY_CONFS:
+      return {
+        ...state,
+        allMyConfs: payload,
+      };
     default:
       return state;
   }

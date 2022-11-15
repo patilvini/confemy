@@ -1,0 +1,10 @@
+@import "../../utility//utility.styles.scss";
+
+.myconfs-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  h1 {
+    color: $primary;
+  }
+}

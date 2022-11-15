@@ -27,7 +27,7 @@ export default function OrganizerDash() {
   const [searchValue, setSearchValue] = useState("");
   const [dashOpen, setDashOpen] = useState(false);
   const ref = useRef(null);
-  const [optionsOpen, setOptionsOpen] = useState(false)
+  const [optionsOpen, setOptionsOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -109,9 +109,9 @@ export default function OrganizerDash() {
         fontFamily: "Avenir-Roman",
         fontSize: 16,
         zIndex: 1,
-        
-        width:"16rem",
-        margin:'.5rem',
+
+        width: "16rem",
+        margin: ".5rem",
 
         ":hover": {
           border: state.isFocused ? "1px solid #55a0fa" : `solid 3px ${shade4}`,
@@ -158,7 +158,7 @@ export default function OrganizerDash() {
     <div className="dash-wrapper">
       <div>
         <div className="grid-col-2 mb-20">
-          <div style={{ alignSelf: "center" }}>
+          <div>
             <h1>Conferences</h1>
           </div>
 
@@ -178,8 +178,8 @@ export default function OrganizerDash() {
               data={data}
             />
           </div>
-          
-          <div style={{justifyContent:"right" }} className="flex-vc-sb">
+
+          <div style={{ justifyContent: "right" }} className="flex-vc-sb">
             <Select
               placeholder={"Sort"}
               onChange={(e) => sort(e)}
@@ -193,16 +193,16 @@ export default function OrganizerDash() {
               styles={customStyles}
             />
           </div>
-         
         </div>
       </div>
 
-      {optionsOpen && <div className="dash-options">
-                  <div className="dash-options-item">View</div>
-                  <div className="dash-options-item">Duplicate</div>
-                  <div className="dash-options-item">Edit</div>
-                  
-                  </div>}
+      {optionsOpen && (
+        <div className="dash-options">
+          <div className="dash-options-item">View</div>
+          <div className="dash-options-item">Duplicate</div>
+          <div className="dash-options-item">Edit</div>
+        </div>
+      )}
 
       <div>
         <div className="dash-table-heading mt-20">
@@ -213,8 +213,6 @@ export default function OrganizerDash() {
 
           <div className="dash-table-item">Status</div>
         </div>
-
-        
 
         {filtered?.map((item, index) => {
           return (
@@ -239,24 +237,15 @@ export default function OrganizerDash() {
               <div className="dash-table-item">{item.grossPrice}</div>
 
               <div className="dash-table-item">
-                
-
                 <div className="flex-vc-se">
-
                   <div>{item.active.toString()}</div>
-                  <div><i onClick={()=>setOptionsOpen(!optionsOpen)}><ThreeDotsVIcon className={"icon-size mt-5  "}/></i> </div>
-                
-                
-
-               
-
+                  <div>
+                    <i onClick={() => setOptionsOpen(!optionsOpen)}>
+                      <ThreeDotsVIcon className={"icon-size mt-5  "} />
+                    </i>{" "}
+                  </div>
                 </div>
-                
-               
-                
-                
-                
-                </div>
+              </div>
             </div>
           );
         })}
