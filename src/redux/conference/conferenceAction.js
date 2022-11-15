@@ -6,6 +6,7 @@ import {
   REMOVE_NEWCONF_STATE,
   LOAD_INCOMPLETE_CONFS,
   LOAD_INCOMPLETE_CONF,
+  LOAD_ALL_MY_CONFS,
 } from "./conferenceTypes";
 
 // Creat a conference
@@ -35,6 +36,12 @@ export const loadOneIncopleteConfAction = (data) => (dispatch) => {
 export const loadIncopleteConfsAction = (data) => (dispatch) => {
   dispatch({
     type: LOAD_INCOMPLETE_CONFS,
+    payload: data,
+  });
+};
+export const loadAllMyConfsAction = (data) => (dispatch) => {
+  dispatch({
+    type: LOAD_ALL_MY_CONFS,
     payload: data,
   });
 };

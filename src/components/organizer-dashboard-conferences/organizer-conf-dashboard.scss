@@ -1,107 +1,134 @@
 @import "../../utility/utility.styles.scss";
 
-
 .dash-wrapper {
   // margin: 0rem 2rem 3rem 12.2rem;
-  max-width: 119.6rem;
-  border-radius: .5rem;
+  // max-width: 119.6rem;
+  border-radius: 0.5rem;
+  width: 90%;
 
+  @media screen and (max-width: 400px) {
+    width: 95%;
+  }
 
+  @media screen and (max-width: 560px) {
+    h1 {
+      font-size: 25px;
+    }
+  }
 }
-
 
 .dash-table {
   margin: 1rem 0 0 0;
   font-family: Avenir-Roman;
   display: grid;
-  grid-template-columns: 50% 15% 15% 20%;
+  grid-template-columns: 2.5fr 0.5fr 0.5fr 1fr;
+  align-items: center;
 
+  @media screen and (max-width: 860px) {
+    grid-template-columns: 2fr 0.5fr 0.5fr 1fr;
+  }
+}
+
+.dash-right-item {
+  display: flex;
+  justify-content: end;
+  align-items: center;
 }
 
 .dash-table:hover {
   background-color: $shade-2;
+}
 
+.dash-options {
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  width: 29.6rem;
+
+  &-item {
+    // padding-left: 2rem;
+    // align-self:center;
+    padding: 2.1rem;
+    justify-self: center;
+    font-size: 18px;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: $gray-1;
+    }
+  }
 }
 
 .dash-table-heading {
-  margin: 3.2rem 0 0 0;
   display: grid;
-  grid-template-columns: 50% 15% 15% 20%;
+  align-items: center;
+  grid-template-columns: 2.5fr 0.5fr 0.5fr 1fr;
   background-color: $shade-1;
-  border-radius: .4rem;
-  height: 5.2rem
+  border-radius: 0.4rem;
+  height: 5.2rem;
+
+  @media screen and (max-width: 860px) {
+    grid-template-columns: 2fr 0.5fr 0.5fr 1fr;
+  }
 }
-
-
 
 .dash-table-item {
-  // font-family: Avenir;
+  font-family: Avenir;
   font-size: 2rem;
   align-self: center;
-  text-align: center;
-  // font-weight: bold;
- 
+  // text-align: center;
+  padding-left: 1rem;
+  font-weight: bold;
 
-
+  @media screen and (max-width: 860px) {
+    font-size: 1.5rem;
+  }
 }
 
-
 .conference-card-dash {
-
   display: grid;
-  grid-template-columns: 45% 55%;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
 
+  @media screen and (max-width: 860px) {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
 
   img {
     width: 100%;
-    border-radius: .1rem;
-    padding: 1.5rem 1rem 1rem 0
-    
+    border-radius: 0.1rem;
 
+    @media screen and (max-width: 860px) {
+      display: none;
+    }
   }
-
-
 }
-
 
 .details-grid {
   display: grid;
-  grid-template-columns: 10% 90%;
+  grid-template-columns: 1fr 10fr;
+  gap: 1rem;
+  align-items: center;
   padding-top: 1rem;
 }
 
-.conf-image-dash{
-  width: 500px;
-
-}
-
-
-
-.ticket-item {
-
-  padding: .3rem 0rem;
-
-  align-self: center;
-}
-
-.dash-conf-details {
-  padding: 1rem 0 0rem 1rem;
-}
+// .dash-conf-details {
+//   padding: 1rem 0 0rem 1rem;
+// }
 
 .data-grid {
   display: grid;
   grid-template-columns: auto auto auto auto;
   margin: 3.8rem 0;
-
-
 }
 
 .data-grid-3 {
   display: grid;
   grid-template-columns: auto auto auto;
   margin: 3.8rem 0;
-
-
 }
 
 .data-container {
@@ -111,18 +138,13 @@
   width: 100%;
   text-align: center;
   padding: 1.6rem;
-
-
 }
-
-
 
 .overview-table {
   margin: 1rem 0 0 0;
   font-family: Avenir-Roman;
   display: grid;
   grid-template-columns: 40% 20% 20% 20%;
-
 }
 
 .overview-table-heading {
@@ -130,17 +152,14 @@
   display: grid;
   grid-template-columns: 40% 20% 20% 20%;
   background-color: $shade-1;
-  border-radius: .4rem;
-
+  border-radius: 0.4rem;
 }
-
 
 .earnings-table {
   margin: 1rem 0 0 0;
   font-family: Avenir-Roman;
   display: grid;
   grid-template-columns: 20% 40% 20% 20%;
-
 }
 
 .earnings-table-heading {
@@ -148,8 +167,7 @@
   display: grid;
   grid-template-columns: 20% 40% 20% 20%;
   background-color: $shade-1;
-  border-radius: .4rem;
-
+  border-radius: 0.4rem;
 }
 
 .overview-table-item {
@@ -159,23 +177,17 @@
   text-align: center;
   font-weight: bold;
   padding: 1.2rem;
-
-
 }
 
 .overview-table:hover {
   background-color: $shade-2;
-
-
 }
-
 
 .request-table {
   margin: 1rem 0 0 0;
   font-family: Avenir-Roman;
   display: grid;
   grid-template-columns: 20% 30% 15% 15% 20%;
-
 }
 
 .request-table-heading {
@@ -183,11 +195,10 @@
   display: grid;
   grid-template-columns: 20% 30% 15% 15% 20%;
   background-color: $shade-1;
-  border-radius: .4rem;
-
+  border-radius: 0.4rem;
 }
 
-.card-icons{
+.card-icons {
   width: 1.5rem;
 }
 
@@ -206,73 +217,48 @@
     color: white;
     border: none;
     padding: 1rem 2rem;
-    border-radius: .5rem ;
-
-
-
+    border-radius: 0.5rem;
   }
 
   button:hover {
-    
     background-color: rgb(50, 150, 50);
-
   }
-  
-
-
 }
 
-
 .request-table-name {
-
   font-size: 1.6rem;
   align-self: center;
   margin-left: 2rem;
   font-weight: bold;
-
-
 }
 
 .request-table-conf {
-
   width: 90%;
 
   align-self: center;
 
   font-weight: bold;
-
-
 }
 
-
 .request-table-date {
-
   font-size: 1.4rem;
   align-self: center;
-  
-  font-weight: bold;
-  
 
+  font-weight: bold;
 }
 
 .request-table-registration {
-
   font-size: 1.4rem;
   align-self: center;
-  
-  font-weight: bold;
-  
 
+  font-weight: bold;
 }
 
 .request-table:hover {
   background-color: $shade-2;
-
-
 }
 
-
-.credits-button{
+.credits-button {
   font-weight: bold;
   // padding: 1.5rem 0rem;
 }
@@ -282,7 +268,6 @@
   font-family: Avenir-Roman;
   display: grid;
   grid-template-columns: 20% 25% 15% 15% 25%;
-
 }
 
 .credit-request-table-heading {
@@ -290,12 +275,10 @@
   display: grid;
   grid-template-columns: 20% 25% 15% 15% 25%;
   background-color: $shade-1;
-  border-radius: .4rem;
-
+  border-radius: 0.4rem;
 }
 
-
-.live-dash{
+.live-dash {
   display: grid;
   grid-template-columns: 45% 55%;
 }

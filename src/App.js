@@ -41,7 +41,7 @@ import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDeta
 
 // import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
 import SearchConferencePage from "./pages/search-conference-page/SearchConference";
-import SearchConfSelectPage from "./pages/booking-page/SearchConfSelectPage";
+import ConfDetailsPage from "./pages/conference-page/ConfDetailsPage";
 import BookingStep1Page from "./pages/booking-page/BookingStep1Page";
 import BookingStep2Page from "./pages/booking-page/BookingStep2Page";
 import UserProfilePage from "./pages/user-profile-page/UserProfilePage";
@@ -54,6 +54,7 @@ import UserViewProfilePage from "./pages/org-profile-userView-page/UserViewProfi
 import OrganizerConfPreviewFinishedPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewFinishedPage";
 import TrackCreditPage from "./pages/track-credit-page/TrackCreditPage";
 import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
+import MyConfsPage from "./pages/my-confs-page/MyConfsPage";
 
 import ImageUploader from "./components/image-uploader/SingleImageUploader";
 
@@ -84,7 +85,7 @@ const App = () => {
             ></Route>
             <Route
               path="search-conference/:confID"
-              element={<SearchConfSelectPage />}
+              element={<ConfDetailsPage />}
             ></Route>
 
             <Route
@@ -95,21 +96,17 @@ const App = () => {
               path="booking-step2/:bookingID"
               element={<BookingStep2Page />}
             ></Route>
-
             <Route path="user-profile" element={<UserProfilePage />}></Route>
             <Route path="track-credits" element={<TrackCreditPage />}></Route>
             <Route
               path="list-conferences"
               element={<ListConferencesPage />}
             ></Route>
-
             <Route path="user-view" element={<UserViewProfilePage />}></Route>
-
             <Route
               path="organizer-preview/finished/:id"
               element={<OrganizerConfPreviewFinishedPage />}
             ></Route>
-
             <Route path="/message" element={<MessagePage />}></Route>
             <Route
               path="dashboard"
@@ -119,7 +116,7 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
-              <Route path="test" element={<ImageUploader />} />
+              <Route path="test" element={<MyConfsPage />} />
               {/* <Route path="test2" element={<SearchSpeaker />} /> */}
               <Route
                 path="create-conference"

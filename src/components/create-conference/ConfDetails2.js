@@ -85,11 +85,9 @@ export default function ConfDetails2() {
         description: description,
         schedules: schedules,
         courseOutline: courseOutline,
-        venue: {
-          images: venueImages,
-          amenities: amenities,
-          deletedVenueImages: deletedVenueImages,
-        },
+        venueImages: [],
+        amenities: amenities,
+        deletedVenueImages: deletedVenueImages,
       },
     };
 
@@ -129,7 +127,7 @@ export default function ConfDetails2() {
           const imagesResponse = await api.post("fileUploads", imageDataObj);
           console.log("imageResp", imagesResponse);
           if (imagesResponse) {
-            formData.conferenceDetails.venue.images = [
+            formData.conferenceDetails.venueImages = [
               ...oldVenueImages,
               ...imagesResponse.data.data,
             ];
@@ -163,8 +161,8 @@ export default function ConfDetails2() {
       speakers: newConference?.conferenceSpeakers || [],
       schedules: newConference?.schedules || {},
       courseOutline: newConference?.courseOutline || {},
-      amenities: newConference?.venue?.conferenceAmenities || [],
-      venueImages: newConference?.venue?.images || [],
+      amenities: newConference?.conferenceAmenities || [],
+      venueImages: newConference?.venueImages || [],
       deletedBanner: [],
       deletedVenueImages: [],
       deletedSpeakers: [],
@@ -464,20 +462,20 @@ export default function ConfDetails2() {
           </div>
         </div>
 
-        {newConference?.venue && Object.keys(newConference?.venue)?.length > 0 && (
+        {newConference?.venueName && newConference?.venueName?.length > 0 && (
           <div className="details2-venue-wrap">
             <h2>Venue and Amenities</h2>
 
             <div className=" details2-venue caption-2-regular-gray3 ">
-              <h4>{newConference?.venue?.venueName}</h4>
-              <p>{newConference?.venue?.street1}</p>
-              <p>{newConference?.venue?.street2}</p>
+              <h4>{newConference?.venueName}</h4>
+              <p>{newConference?.street1}</p>
+              <p>{newConference?.street2}</p>
               <p>
-                <span> {newConference?.venue?.city},</span>{" "}
-                <span> {newConference?.venue?.state}</span>
+                <span> {newConference?.city},</span>{" "}
+                <span> {newConference?.state}</span>
               </p>
               <p>
-                {newConference?.venue?.country}, {newConference?.venue?.zipcode}
+                {newConference?.country}, {newConference?.zipcode}
               </p>
             </div>
 

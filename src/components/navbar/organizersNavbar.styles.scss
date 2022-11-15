@@ -4,21 +4,45 @@
   width: $organizersNavbarWidth;
   min-width: $organizersNavbarWidth;
   //   padding-left: 106px;
-  padding-left: 90px;
+  // padding-left: 90px;
   padding-top: 80px;
   overflow: hidden;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  
+
+
+  &-small {
+   
+    padding-top: 5rem;
+    z-index: 99;
+    position: fixed;
+    overflow-y: auto;
+
+    left: 0;
+    top: 6.4rem;
+    background-color: $background;
+    height: calc(100% - 64px); 
+    display: none;
+    box-shadow: 0 32px 8px 0 rgba(0, 0, 0, 0.08);
+
+
+
+  }
 }
 
 .organizers-dashboard {
-  width: 100%;
+  width: 270px;
   height: auto;
   padding: 0px 16px;
   flex-shrink: 0;
   color: black;
 
+
   h2 {
     font-family: Avenir;
+
     &:hover {
       cursor: pointer;
     }
@@ -33,6 +57,7 @@
       color: $gray-3;
       transition: background-color 1s, border-radius 1.5s, color 2s;
       border-radius: 5px;
+
       &:hover {
         background-color: $shade-2;
         font-weight: bold;
@@ -50,4 +75,47 @@
 
 .active-sidenav-item {
   background-color: $shade-2;
+}
+
+
+.org-dash-responsive {
+  display: none;
+  
+
+
+  &-button {
+    display: none;
+    padding-left: 5%;
+  }
+}
+
+
+@media screen and (max-width:1000px) {
+  .sidemenu-container {
+    display: none;
+
+
+    &-small {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      
+
+      
+      
+
+    }
+  }
+
+  .org-dash-responsive {
+
+
+
+    &-button {
+      display: block;
+      z-index: 99;
+    }
+  }
+
+
 }
