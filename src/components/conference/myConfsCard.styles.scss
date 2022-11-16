@@ -1,0 +1,58 @@
+@import "../../utility/utility.styles.scss";
+
+.myconfs-imgcard-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.myconfs-img-wrap {
+  height: 7.2rem;
+  width: 12.8rem;
+  object-fit: cover;
+  background-color: "#fff";
+  overflow: hidden;
+}
+
+.myconfs-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.myconfs-no-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 40;
+  background-color: $shade-1;
+  font-size: 16;
+  border-radius: 0.4rem;
+}
+
+.myconfs-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 250px;
+  // height: 100px;
+  padding: 0rem 1.6rem;
+  border-radius: 4px;
+  // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.08);
+}
+
+.myconfs-card-header {
+  font-family: Avenir;
+  font-size: 20px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: 0.22px;
+  color: "#000";
+}
+
+.myconfs-card-body {
+}

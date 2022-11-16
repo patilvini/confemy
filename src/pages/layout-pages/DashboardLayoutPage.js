@@ -28,7 +28,7 @@ export default function DashboardLayoutPage({ onClickOutside }) {
     <div>
       <div className="sub-navbar-layout">
         <i
-          style={{zIndex:"0"}}
+          style={{ zIndex: "0" }}
           className="org-dash-responsive-button"
           onClick={() => setDashOpen(!dashOpen)}
         >
@@ -41,7 +41,10 @@ export default function DashboardLayoutPage({ onClickOutside }) {
       >
         {dashOpen && (
           <div ref={ref}>
-            <OrganizersNavbar closeDash={()=>setDashOpen(false)} className="sidemenu-container-small" />
+            <OrganizersNavbar
+              closeDash={() => setDashOpen(false)}
+              className="sidemenu-container-small"
+            />
           </div>
         )}
         <OrganizersNavbar className={"sidemenu-container"} />
@@ -53,4 +56,18 @@ export default function DashboardLayoutPage({ onClickOutside }) {
       </main>
     </div>
   );
+
+  // (
+  //   <div
+  //     className="container"
+  //     style={{ display: "flex", backgroundColor: "#fafbfc" }}
+  //   >
+  //     <OrganizersNavbar />
+  //     <div style={{ flexGrow: 1 }}>
+  //       <div className="container-offSidemenu">
+  //         <Outlet />
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 }

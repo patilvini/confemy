@@ -116,7 +116,7 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
-              <Route path="test" element={<MyConfsPage />} />
+              <Route path="test" element={<OrganizerConfDashPage />} />
               {/* <Route path="test2" element={<SearchSpeaker />} /> */}
               <Route
                 path="create-conference"
@@ -145,10 +145,7 @@ const App = () => {
                 path="credit-requests"
                 element={<CreditRequestsPage />}
               ></Route>
-              <Route
-                path="my-conferences"
-                element={<OrganizerConfDashPage />}
-              ></Route>
+              <Route path="my-conferences" element={<MyConfsPage />}></Route>
               <Route
                 path="my-conferences/live/:id"
                 element={<OrganizerConfPreviewPage />}
@@ -162,7 +159,6 @@ const App = () => {
                 // element={<OrganizerDashboardPage />}
                 element={<MyOrganizationsPage />}
               ></Route>
-
               <Route
                 path="my-organizations/:organizationId"
                 element={<OrganizationDetailsPage />}
