@@ -10,7 +10,7 @@ const initialState = {
   isLoading: true,
   newConference: {},
   incompleteConfs: null,
-  allMyConfs: null,
+  myConfs: null,
   error: false,
 };
 
@@ -43,7 +43,7 @@ function conferenceReducer(state = initialState, action) {
     case LOAD_ALL_MY_CONFS:
       return {
         ...state,
-        allMyConfs: payload,
+        myConfs: payload,
       };
     default:
       return state;

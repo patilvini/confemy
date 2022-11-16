@@ -213,6 +213,7 @@ export default function ConfBasicInfo() {
     const url = `organizations/users/${id}?orgForConference=true`;
     try {
       const response = await api.get(url);
+      console.log("myorgs", response);
       if (response) {
         dispatch(
           loadMyOrganizationsSelectListAction(response.data?.data?.organization)
