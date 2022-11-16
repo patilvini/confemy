@@ -100,8 +100,8 @@ export default function ConfPreview() {
   const getLocationString = () => {
     let locationStrig = "Location";
     if (newConference?.mode?.length > 0) {
-      if (newConference?.mode?.includes("venue") && newConference?.venue.city) {
-        locationStrig = newConference?.venue.city;
+      if (newConference?.mode?.includes("venue") && newConference?.city) {
+        locationStrig = newConference?.city;
         console.log("venue", locationStrig);
       }
 
@@ -114,7 +114,7 @@ export default function ConfPreview() {
         newConference?.mode?.includes("venue") &&
         newConference?.mode?.includes("onlineConf")
       ) {
-        locationStrig = `${newConference?.venue.city} & Online`;
+        locationStrig = `${newConference?.city} & Online`;
         console.log("both", locationStrig);
       }
     }
