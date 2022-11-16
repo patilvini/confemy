@@ -1,5 +1,7 @@
 import SearchIcon from "../icons/SearchIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import Select from "react-select";
 import SelectFormType3 from "../reselect/SelectFormType3";
 import ThreeDotsVIcon from "../icons/ThreeDotsVIcon";
@@ -8,6 +10,9 @@ import MyConfsCard from "./MyConfsCard";
 import EditIcon from "../icons/EditIcon";
 
 import "./myConfs.styles.scss";
+import api from "../../utility/api";
+import { alertAction } from "../../redux/alert/alertAction";
+import { loadAllMyConfsAction } from "../../redux/conference/conferenceAction";
 
 const options1 = [
   { value: "drafts", label: "Drafts" },
@@ -29,6 +34,9 @@ export default function MyConfs() {
   const [filterText1, setFilterText1] = useState("");
   const [filterText2, setFilterText2] = useState("");
 
+  const user = useSelector((state) => state.auth.user);
+  const myConfs = useSelector((state) => state.conference.myConfs);
+  const dispatch = useDispatch();
   const { searchText } = formData;
 
   const onInputChange = (e) =>
@@ -38,6 +46,23 @@ export default function MyConfs() {
     e.preventDefault();
     const formData = { searchText, filterText1 };
   };
+
+  const getMyConfs = async (userId) => {
+    const url = `/conferences/users/${userId}?getAllOrganizationConferences=true`;
+    try {
+      const response = await api.get(url);
+      console.log("myconfs", response);
+      if (response) {
+        dispatch(loadAllMyConfsAction(response.data.data.conferences));
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
+
+  useEffect(() => {
+    getMyConfs(user._id);
+  }, [user._id]);
 
   return (
     <div>
@@ -109,20 +134,29 @@ export default function MyConfs() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <MyConfsCard />
-              </td>
-              <td>10/50</td>
-              <td>$200</td>
-              <td>Live</td>
-              <td>
-                <i>
-                  {/* <ThreeDotsVIcon className="icon-size" /> */}
-                  <EditIcon className="icon-size" />
-                </i>
-              </td>
-            </tr>
+            {myConfs?.map((conf) => (
+              <tr key={conf._id}>
+                <td>
+                  <MyConfsCard
+                    banner={conf.banner}
+                    title={conf.title}
+                    startDate={conf.startDate}
+                    credits={conf.credits}
+                    city={conf.city}
+                    mode={conf.mode}
+                  />
+                </td>
+                <td>{conf.totalSold}</td>
+                <td>{conf.grossPrice}</td>
+                <td>Live</td>
+                <td>
+                  <i>
+                    {/* <ThreeDotsVIcon className="icon-size" /> */}
+                    <EditIcon className="icon-size" />
+                  </i>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

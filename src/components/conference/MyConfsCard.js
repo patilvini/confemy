@@ -1,22 +1,43 @@
-import { useSelector, useDispatch } from "react-redux";
-
 import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
 import CreditsIcon from "../icons/CreditsIcon";
 
 import "./myConfsCard.styles.scss";
 
-export default function MyConfsCard() {
-  const newConference = useSelector((state) => state.conference.newConference);
+export default function MyConfsCard({
+  banner,
+  title,
+  startDate,
+  credits,
+  city,
+  mode,
+}) {
+  const getLocationString = () => {
+    let locationStrig = "Location";
+    if (mode?.length > 0) {
+      if (mode?.includes("venue") && city) {
+        locationStrig = city;
+      }
+
+      if (mode?.includes("onlineConf")) {
+        locationStrig = "Online";
+      }
+
+      if (mode?.includes("venue") && mode?.includes("onlineConf")) {
+        locationStrig = `${city} & Online`;
+      }
+    }
+    return locationStrig;
+  };
 
   return (
     <div className="myconfs-imgcard-wrap">
       <div className="myconfs-img-wrap">
-        {newConference?.banner?.length > 0 ? (
+        {banner?.length > 0 ? (
           <img
             className="myconfs-img"
             alt="preview"
-            src={newConference?.banner[0]?.Location}
+            src={banner[0]?.Location}
           />
         ) : (
           <div className="myconfs-no-img">
@@ -28,28 +49,24 @@ export default function MyConfsCard() {
       </div>
       <div className="myconfs-card">
         <div className="confcard-header mb-6">
-          <p>
-            {newConference?.title ? newConference?.title : "Conference title "}
-          </p>
+          <p>{title}</p>
         </div>
         <div className="myconfs-card-body">
           <div className="flex-vc  mb-6">
             <DateIcon className="icon-xxs mr-12" />
-            <span className="caption-2-regular-gray3">
-              {newConference?.startDate ? newConference?.startDate : "Date"}
-            </span>
+            <span className="caption-2-regular-gray3">{startDate}</span>
           </div>
           <div className="flex-vc  mb-4">
             <LocationIcon className="icon-xxs mr-12" />
             <span className="caption-2-regular-gray3">
-              {/* {getLocationString()} */}
+              {getLocationString()}
             </span>
           </div>
           <div className="flex-vc  mb-6">
             <CreditsIcon className="icon-xxs mr-12" />
             <span className="caption-2-regular-gray3">
-              {newConference?.credits?.length > 0
-                ? `${newConference?.credits[0].creditId.name} - ${newConference?.credits[0].quantity}`
+              {credits?.length > 0
+                ? `${credits[0].creditId.name} - ${credits[0].quantity}`
                 : "Credits not added"}
             </span>
           </div>
