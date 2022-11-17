@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -81,6 +81,8 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ConfBasicInfo() {
+  const [countryList, setCountryList] = useState([]);
+  const [stateList, setStateList] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -224,8 +226,33 @@ export default function ConfBasicInfo() {
     }
   };
 
+  const loadCountryList = async () => {
+    const url = `venues/countryList`;
+    try {
+      const response = await api.get(url);
+      if (response) {
+        setCountryList(response.data.data.countries);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
+
+  const loadStateList = async (stateId) => {
+    const url = `venues/stateList?countryId=${stateId}`;
+    try {
+      const response = await api.get(url);
+      if (response) {
+        setStateList(response.data.data.states);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
+
   useEffect(() => {
     loadMyOrgnizations(user._id);
+    loadCountryList();
   }, [user._id]);
 
   return (
@@ -550,6 +577,67 @@ export default function ConfBasicInfo() {
                     </div>
                   </div>
                   <div className="grid-1st-col">
+                    <SelectFormType1
+                      label="country"
+                      options={countryList}
+                      name="country"
+                      onChange={(value) => {
+                        formik.setFieldValue("country", value?.value);
+                        loadStateList(value.value);
+                      }}
+                      placeholder="Select country"
+                      value={formik.values.country}
+                    />
+                    {/* <div className="material-textfield">
+                      <input
+                        id="country"
+                        type="text"
+                        name="country"
+                        value={formik.values.country}
+                        onChange={formik.handleChange}
+                        placeholder=" "
+                        disabled={!formik.values.mode.includes("venue")}
+                      />
+                      <label>Country*</label>
+                    </div> */}
+                    <div className="mb-24">
+                      {formik.touched.country &&
+                        Boolean(formik.errors.country) && (
+                          <TextError>{formik.errors.country}</TextError>
+                        )}
+                    </div>
+                  </div>
+
+                  <div className="grid-2nd-col">
+                    <SelectFormType1
+                      label="state"
+                      options={stateList}
+                      name="state"
+                      onChange={(value) =>
+                        formik.setFieldValue("state", value?.value)
+                      }
+                      placeholder="Select state"
+                      value={formik.values.state}
+                    />
+                    {/* <div className="material-textfield">
+                      <input
+                        id="state"
+                        type="text"
+                        name="state"
+                        value={formik.values.state}
+                        onChange={formik.handleChange}
+                        placeholder=" "
+                        disabled={!formik.values.mode.includes("venue")}
+                      />
+                      <label>State</label>
+                    </div> */}
+                    <div className="mb-24">
+                      {formik.touched.state && Boolean(formik.errors.state) && (
+                        <TextError>{formik.errors.state}</TextError>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid-1st-col">
                     <div className="material-textfield">
                       <input
                         id="city"
@@ -566,45 +654,6 @@ export default function ConfBasicInfo() {
                       {formik.touched.city && Boolean(formik.errors.city) && (
                         <TextError>{formik.errors.city}</TextError>
                       )}
-                    </div>
-                  </div>
-                  <div className="grid-2nd-col">
-                    <div className="material-textfield">
-                      <input
-                        id="state"
-                        type="text"
-                        name="state"
-                        value={formik.values.state}
-                        onChange={formik.handleChange}
-                        placeholder=" "
-                        disabled={!formik.values.mode.includes("venue")}
-                      />
-                      <label>State</label>
-                    </div>
-                    <div className="mb-24">
-                      {formik.touched.state && Boolean(formik.errors.state) && (
-                        <TextError>{formik.errors.state}</TextError>
-                      )}
-                    </div>
-                  </div>
-                  <div className="grid-1st-col">
-                    <div className="material-textfield">
-                      <input
-                        id="country"
-                        type="text"
-                        name="country"
-                        value={formik.values.country}
-                        onChange={formik.handleChange}
-                        placeholder=" "
-                        disabled={!formik.values.mode.includes("venue")}
-                      />
-                      <label>Country*</label>
-                    </div>
-                    <div className="mb-24">
-                      {formik.touched.country &&
-                        Boolean(formik.errors.country) && (
-                          <TextError>{formik.errors.country}</TextError>
-                        )}
                     </div>
                   </div>
                   <div className="grid-2nd-col">
