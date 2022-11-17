@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
-import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
+import { zonedTimeToUtc, utcToZonedTime, format } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
 
 import { useNavigate } from "react-router-dom";
 import CustomDatepicker from "../react-datepicker/CustomDatepicker";
@@ -140,14 +141,21 @@ export default function ConfPreview() {
 
   // const jsStartDateObj = getJsDateObj(newConference?.startDate);
 
-  let apiStartDate;
+  let startDateInConfTz;
+  let formattedStartDate;
+
   if (newConference?.startDate && newConference?.timezone) {
-    apiStartDate = utcToZonedTime(
+    startDateInConfTz = utcToZonedTime(
       newConference?.startDate,
       newConference?.timezone
     );
+    formattedStartDate = format(startDateInConfTz, "MMM-dd-yyyy, HH:mm aa", {
+      timeZone: newConference?.timezone,
+      locale: enGB,
+    });
   } else {
-    apiStartDate = null;
+    startDateInConfTz = null;
+    formattedStartDate = null;
   }
 
   return (
@@ -192,7 +200,7 @@ export default function ConfPreview() {
               <div className="flex-vc  mb-12">
                 <DateIcon className="icon-xxs mr-12" />
                 <span className="caption-2-regular-gray3">
-                  {newConference?.startDate ? newConference?.startDate : "Date"}
+                  {formattedStartDate ? formattedStartDate : "Date"}
                 </span>
               </div>
               <div className="flex-vc  mb-12">
@@ -302,7 +310,7 @@ export default function ConfPreview() {
                 //   newConference?.startDate,
                 //   newConference?.timezone
                 // )}
-                maxDate={apiStartDate}
+                maxDate={startDateInConfTz}
                 placeholder="Pick date to publish"
                 disabled={formik.values.whenToPublish === "now"}
               />

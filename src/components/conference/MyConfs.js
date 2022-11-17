@@ -1,6 +1,7 @@
 import SearchIcon from "../icons/SearchIcon";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import Select from "react-select";
 import SelectFormType3 from "../reselect/SelectFormType3";
@@ -37,6 +38,8 @@ export default function MyConfs() {
   const user = useSelector((state) => state.auth.user);
   const myConfs = useSelector((state) => state.conference.myConfs);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { searchText } = formData;
 
   const onInputChange = (e) =>
@@ -140,6 +143,7 @@ export default function MyConfs() {
                   <MyConfsCard
                     banner={conf.banner}
                     title={conf.title}
+                    timezone={conf.timezone}
                     startDate={conf.startDate}
                     credits={conf.credits}
                     city={conf.city}

@@ -1,3 +1,6 @@
+import { formatInTimeZone } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
+
 import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
 import CreditsIcon from "../icons/CreditsIcon";
@@ -8,6 +11,7 @@ export default function MyConfsCard({
   banner,
   title,
   startDate,
+  timezone,
   credits,
   city,
   mode,
@@ -30,6 +34,14 @@ export default function MyConfsCard({
     return locationStrig;
   };
 
+  const startDateObj = new Date(startDate);
+  const formattedStartDate = formatInTimeZone(
+    startDateObj,
+    timezone,
+    "MMM-dd-yyyy, HH:mm aa",
+    { locale: enGB }
+  );
+
   return (
     <div className="myconfs-imgcard-wrap">
       <div className="myconfs-img-wrap">
@@ -42,7 +54,7 @@ export default function MyConfsCard({
         ) : (
           <div className="myconfs-no-img">
             <div className="text-align-center">
-              <p>Banner</p>
+              <p>Banner?</p>
             </div>
           </div>
         )}
@@ -54,7 +66,9 @@ export default function MyConfsCard({
         <div className="myconfs-card-body">
           <div className="flex-vc  mb-6">
             <DateIcon className="icon-xxs mr-12" />
-            <span className="caption-2-regular-gray3">{startDate}</span>
+            <span className="caption-2-regular-gray3">
+              {formattedStartDate}
+            </span>
           </div>
           <div className="flex-vc  mb-4">
             <LocationIcon className="icon-xxs mr-12" />
