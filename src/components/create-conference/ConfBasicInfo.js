@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import Select, { components } from "react-select";
+
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
@@ -10,6 +12,7 @@ import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
 
 import api from "../../utility/api";
 import SelectFormType1 from "../reselect/SelectFormType1";
+import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import { timezones, currencylist } from "../../utility/commonUtil";
 import "./createConference.styles.scss";
@@ -83,6 +86,7 @@ const validationSchema = yup.object().shape({
 export default function ConfBasicInfo() {
   const [countryList, setCountryList] = useState([]);
   const [stateList, setStateList] = useState([]);
+  const [cityList, setCityList] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -215,7 +219,7 @@ export default function ConfBasicInfo() {
     const url = `organizations/users/${id}?orgForConference=true`;
     try {
       const response = await api.get(url);
-      console.log("myorgs", response);
+
       if (response) {
         dispatch(
           loadMyOrganizationsSelectListAction(response.data?.data?.organization)
@@ -232,14 +236,21 @@ export default function ConfBasicInfo() {
       const response = await api.get(url);
       if (response) {
         setCountryList(response.data.data.countries);
+        if (countryList) {
+          loadStateList(
+            countryList?.find(
+              (country) => country.label === newConference?.country
+            )?.countryId
+          );
+        }
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
-  const loadStateList = async (stateId) => {
-    const url = `venues/stateList?countryId=${stateId}`;
+  const loadStateList = async (countryId) => {
+    const url = `venues/stateList?countryId=${countryId}`;
     try {
       const response = await api.get(url);
       if (response) {
@@ -250,10 +261,40 @@ export default function ConfBasicInfo() {
     }
   };
 
+  const loadCityList = async (stateId) => {
+    const url = `venues/cityList?stateId=${stateId}`;
+    try {
+      const response = await api.get(url);
+      if (response) {
+        setCityList(response.data.data.cities);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
+
   useEffect(() => {
     loadMyOrgnizations(user._id);
     loadCountryList();
   }, [user._id]);
+
+  useEffect(() => {
+    if (countryList.length > 0) {
+      const myCountryId = countryList.find(
+        (country) => country.value === newConference?.country
+      )?.countryId;
+      loadStateList(myCountryId);
+    }
+  }, [countryList]);
+
+  useEffect(() => {
+    if (stateList.length > 0) {
+      const myStateId = stateList.find(
+        (state) => state.value === newConference?.state
+      )?.stateId;
+      loadCityList(myStateId);
+    }
+  }, [stateList]);
 
   return (
     <>
@@ -578,15 +619,20 @@ export default function ConfBasicInfo() {
                   </div>
                   <div className="grid-1st-col">
                     <SelectFormType1
-                      label="country"
                       options={countryList}
-                      name="country"
+                      value={formik.values.country}
+                      isMulti={false}
                       onChange={(value) => {
+                        if (formik.values.country !== value?.value) {
+                          formik.setFieldValue("state", "");
+                          formik.setFieldValue("city", "");
+                        }
                         formik.setFieldValue("country", value?.value);
-                        loadStateList(value.value);
+                        loadStateList(value?.countryId);
                       }}
                       placeholder="Select country"
-                      value={formik.values.country}
+                      isDisabled={false}
+                      name="country"
                     />
                     {/* <div className="material-textfield">
                       <input
@@ -609,15 +655,20 @@ export default function ConfBasicInfo() {
                   </div>
 
                   <div className="grid-2nd-col">
-                    <SelectFormType1
-                      label="state"
+                    <ReloadableSelectFormType1
                       options={stateList}
-                      name="state"
-                      onChange={(value) =>
-                        formik.setFieldValue("state", value?.value)
-                      }
-                      placeholder="Select state"
                       value={formik.values.state}
+                      isMulti={false}
+                      onChange={(value) => {
+                        if (formik.values.state !== value?.value) {
+                          formik.setFieldValue("city", "");
+                        }
+                        formik.setFieldValue("state", value?.value);
+                        loadCityList(value?.stateId);
+                      }}
+                      placeholder="Select state"
+                      isDisabled={false}
+                      name="state"
                     />
                     {/* <div className="material-textfield">
                       <input
@@ -638,7 +689,18 @@ export default function ConfBasicInfo() {
                     </div>
                   </div>
                   <div className="grid-1st-col">
-                    <div className="material-textfield">
+                    <ReloadableSelectFormType1
+                      options={cityList}
+                      value={formik.values.city}
+                      isMulti={false}
+                      onChange={(value) => {
+                        formik.setFieldValue("city", value?.value);
+                      }}
+                      placeholder="Select city"
+                      isDisabled={false}
+                      name="city"
+                    />
+                    {/* <div className="material-textfield">
                       <input
                         id="city"
                         type="text"
@@ -649,7 +711,7 @@ export default function ConfBasicInfo() {
                         disabled={!formik.values.mode.includes("venue")}
                       />
                       <label>City</label>
-                    </div>
+                    </div> */}
                     <div className="mb-24">
                       {formik.touched.city && Boolean(formik.errors.city) && (
                         <TextError>{formik.errors.city}</TextError>
