@@ -307,7 +307,7 @@ export default function ConfDetails2() {
       );
   }, [formik.values.banner]);
 
-  console.log("Details2 formik", formik);
+  // console.log("Details2 formik", formik);
 
   return (
     <main className="conf-form-wrap">

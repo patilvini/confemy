@@ -150,8 +150,11 @@ export default function MyConfs() {
                     mode={conf.mode}
                   />
                 </td>
-                <td>{conf.totalSold}</td>
-                <td>{conf.grossPrice}</td>
+                <td>
+                  {conf.totalSold ? conf.totalSold : 0}/
+                  {conf.totalTickets ? conf.totalTickets : 0}
+                </td>
+                <td>{conf.grossPrice ? conf.grossPrice : 0}</td>
                 <td>Live</td>
                 <td>
                   <i>

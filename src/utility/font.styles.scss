@@ -45,6 +45,13 @@ h2 {
 // h3 = Heading in zeplin project
 
 h3 {
+  font-family: Avenir-Heavy;
+  font-size: 24px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
   font-size: 24px;
   font-weight: 900;
 }
@@ -92,6 +99,11 @@ h4 {
 .caption-1-heavy-primary {
   @include caption-1-heavy;
   color: $primary;
+}
+
+.caption-1-heavy-gray3 {
+  @include caption-1-heavy;
+  color: $gray-3;
 }
 
 .caption-2-bold-cblack {
