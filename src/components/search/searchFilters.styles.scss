@@ -1,0 +1,64 @@
+@import "../../utility/utility.styles.scss";
+
+.sf-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.4rem 3rem 1.6rem;
+  color: $primary;
+}
+
+.sf-item {
+  width: 100%;
+  //   height: 68px;
+  //   border: 1px solid black;
+  padding: 16px 24px 16px 16px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-family: Avenir-Heavy;
+  font-size: 18px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: 0.2px;
+  color: $gray-3;
+
+  &:hover {
+    background-color: $shade-2;
+  }
+}
+
+.sf-input-wrap {
+  width: 100%;
+  //   height: 90px;
+  padding: 0px 24px 16px 16px;
+  //   border: 1px solid black;
+  background-color: $shade-2;
+  margin-bottom: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.active-sf-item {
+  background-color: $shade-2;
+  color: $primary;
+  width: 100%;
+  //   height: 68px;
+  padding: 16px 24px 16px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-family: Avenir-Heavy;
+  font-size: 18px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: 0.2px;
+}

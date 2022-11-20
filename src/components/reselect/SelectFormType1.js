@@ -43,7 +43,7 @@ export default function SelectFormType1(props) {
         fontSize: 16,
 
         ":hover": {
-          border: state.isFocused ? "1px solid #55a0fa" : `solid 3px ${shade4}`,
+          border: state.isFocused ? "1px solid #55a0fa" : `solid 2px ${shade4}`,
         },
       };
     },

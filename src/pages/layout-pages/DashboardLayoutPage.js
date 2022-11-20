@@ -37,7 +37,10 @@ export default function DashboardLayoutPage({ onClickOutside }) {
       </div>
       <main
         className="container"
-        style={{ display: "flex", backgroundColor: "#fafbfc" }}
+        style={{
+          display: "flex",
+          backgroundColor: "#fafbfc",
+        }}
       >
         {dashOpen && (
           <div ref={ref}>

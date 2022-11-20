@@ -40,7 +40,7 @@ import MyOrganizationsPage from "./pages/organization-pages/MyOrganizationsPage"
 import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDetailsPage";
 
 // import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
-import SearchConferencePage from "./pages/search-conference-page/SearchConference";
+import SearchPage from "./pages/search-page/SearchPage";
 import ConfDetailsPage from "./pages/conference-page/ConfDetailsPage";
 import BookingStep1Page from "./pages/booking-page/BookingStep1Page";
 import BookingStep2Page from "./pages/booking-page/BookingStep2Page";
@@ -55,8 +55,6 @@ import OrganizerConfPreviewFinishedPage from "./pages/organizer-conf-dashboard-p
 import TrackCreditPage from "./pages/track-credit-page/TrackCreditPage";
 import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
 import MyConfsPage from "./pages/my-confs-page/MyConfsPage";
-
-import ImageUploader from "./components/image-uploader/SingleImageUploader";
 
 import PNavbar from "./components/navbar/PNavbar";
 
@@ -79,10 +77,7 @@ const App = () => {
               path="/verify-email/:secret"
               element={<VerifyEmail />}
             ></Route>
-            <Route
-              path="search-conference"
-              element={<SearchConferencePage />}
-            ></Route>
+            <Route path="search-conference" element={<SearchPage />}></Route>
             <Route
               path="search-conference/:confID"
               element={<ConfDetailsPage />}
