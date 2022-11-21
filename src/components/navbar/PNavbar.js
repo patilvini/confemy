@@ -15,15 +15,14 @@ import DropdownIcon from "../icons/DropdownIcon";
 import { set } from "date-fns";
 import BookingCart from "../booking/BookingCart";
 
-export default function PNavbar({onClickOutside}) {
+export default function PNavbar({ onClickOutside }) {
   const [menu, setMenuOpen] = useState(false);
   const auth = useSelector((state) => state.auth);
   const { isAuthenticated, user } = auth;
   const [cart, setCartOpen] = useState(false);
   const [authShow, setAuthShow] = useState(false);
 
-  const ref =useRef(null);
-
+  const ref = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -46,7 +45,7 @@ export default function PNavbar({onClickOutside}) {
   // },[])
 
   return (
-    <div className="navbar-first-container">
+    <div className="navbar-container">
       <div className="navbar-responsive">
         <div className="navbar-left-item">
           <div className="logo-container">

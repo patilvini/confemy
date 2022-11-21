@@ -15,7 +15,6 @@ export default function OnlyDatepicker({
   return (
     <div className="custom-datepicker-wrap">
       <DatePicker
-        id={id}
         name={name}
         selected={selected}
         onChange={onChange}
@@ -27,6 +26,7 @@ export default function OnlyDatepicker({
         isClearable
         placeholderText={placeholder}
         disabled={disabled}
+        autoComplete="off"
       />
     </div>
   );

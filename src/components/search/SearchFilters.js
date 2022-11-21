@@ -91,6 +91,8 @@ export default function SearchFilters({
     getCreditTypes();
   }, []);
 
+  console.log("location value", location);
+
   return (
     <div className="sf-container">
       <div>
@@ -132,7 +134,6 @@ export default function SearchFilters({
         <div className={openDate ? "sf-input-wrap flex" : "display-none"}>
           <div className="mr-4">
             <OnlyDatepicker
-              id="startDate"
               name="startDate"
               selected={startDate}
               onChange={(date) => setStartDate(date)}
@@ -143,7 +144,6 @@ export default function SearchFilters({
           </div>
           <div className="ml-4">
             <OnlyDatepicker
-              id="endDate"
               name="endDate"
               selected={endDate}
               onChange={(date) => setEndDate(date)}

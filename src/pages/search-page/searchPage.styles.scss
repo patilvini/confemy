@@ -1,0 +1,38 @@
+@import "../../utility//utility.styles.scss";
+
+// sp is search page
+.sp-container {
+  margin-left: 40.9rem;
+  margin-top: 5rem;
+  margin-right: 14.2rem;
+  overflow: hidden;
+}
+
+// sb is search bar
+.sb-container {
+  display: flex;
+  overflow: hidden;
+}
+
+.active-search-type {
+  padding: 1.6rem 0rem;
+  border-bottom: 3px solid $primary;
+  @include caption-1-heavy;
+  font-weight: 900;
+  color: $primary;
+}
+
+.inactive-search-type {
+  padding: 1.6rem 0rem;
+  @include caption-1-regular;
+  color: $gray-2;
+}
+
+// sr is search result
+.sr-container {
+  margin-top: 3.2rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+}

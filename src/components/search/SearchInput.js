@@ -1,6 +1,6 @@
 export default function SearchInput({ query, onQueryChange, onQuerySubmit }) {
   return (
-    <div className="flex">
+    <div>
       <div style={{ flexGrow: 1 }} className="form-type-2">
         <input
           type="text"
