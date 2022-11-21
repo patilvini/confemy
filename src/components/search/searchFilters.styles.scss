@@ -1,5 +1,32 @@
 @import "../../utility/utility.styles.scss";
 
+// container for search filters
+// sf = search filter
+.sf-container {
+  position: absolute;
+  // z-index: 100;
+  top: 6.4rem;
+  left: 0;
+  width: 33.75rem;
+  min-width: 33.75rem;
+  padding: 5rem 1.6rem 6rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  min-height: calc(100vh - 6.4rem);
+  max-height: calc(100vh - 6.4rem);
+  border-right: 1px solid $shade-1;
+  border-left: 1px solid $shade-1;
+
+  //    hide scroll bar
+  // -ms-overflow-style: none; /* IE and Edge */
+  // scrollbar-width: none; /* Firefox */
+
+  // /* Hide scrollbar for Chrome, Safari and Opera */
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
+}
+
 .sf-header {
   width: 100%;
   display: flex;
