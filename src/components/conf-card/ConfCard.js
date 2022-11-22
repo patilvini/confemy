@@ -1,81 +1,135 @@
+import { useNavigate } from "react-router-dom";
+import { utcToZonedTime, format } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
+
 import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
 import CreditsIcon from "../icons/CreditsIcon";
 import LikeInactiveIcon from "../icons/LikeInactiveIcon";
+import LikeBlueIcon from "../icons/LikeBlueIcon";
 import PropTypes from "prop-types";
-import { DateTime } from "luxon";
 
-import { useNavigate } from "react-router-dom";
-
-function ConfCard({
+export default function ConfCard({
+  mode,
+  city,
   src,
-  confName,
+  title,
   startDate,
-  startTime,
-  location,
+  timezone,
   credits,
   currency,
-  creditAmount,
-  price,
-  link,
+  basePrice,
+  confId,
 }) {
   const navigate = useNavigate();
-  const date = DateTime.fromISO(startDate);
-  let start = date.toLocaleString({
-    ...DateTime.DATE_MED_WITH_WEEKDAY,
-    weekday: "short",
-  });
 
-  const time = DateTime.fromISO(startTime);
-  // console.log(time.toFormat('h:mm a'))
+  const getLocationString = () => {
+    let locationStrig = "Location";
+    if (mode?.length > 0) {
+      if (mode?.includes("venue") && city) {
+        locationStrig = city;
+        // console.log("venue", locationStrig);
+      }
+
+      if (mode?.includes("onlineConf")) {
+        locationStrig = "Online";
+        // console.log("online", locationStrig);
+      }
+
+      if (mode?.includes("venue") && mode?.includes("onlineConf")) {
+        locationStrig = `${city} & Online`;
+        // console.log("both", locationStrig);
+      }
+    }
+    return locationStrig;
+  };
+
+  let startDateInConfTz;
+  let formattedStartDate;
+
+  if (startDate && timezone) {
+    startDateInConfTz = utcToZonedTime(startDate, timezone);
+    formattedStartDate = format(startDateInConfTz, "MMM-dd-yyyy, HH:mm aa", {
+      timeZone: timezone,
+      locale: enGB,
+    });
+  } else {
+    startDateInConfTz = null;
+    formattedStartDate = null;
+  }
 
   return (
-    <div
-      onClick={() => navigate("/search-conference/" + link)}
-      className="conf-card"
-    >
-      <div className="conf-img-container">
-        <img
-          src="https://www.simplemost.com/wp-content/uploads/2016/08/beach-vacation-e1470663653924.jpeg"
-          alt="conference banner"
-        />
+    <div className="conf-card">
+      <div
+        onClick={() => navigate(`/search-conference/${confId}`)}
+        className="cc-img-container"
+      >
+        {src ? (
+          <img src={src} alt="conference banner" />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "100%",
+              padding: 40,
+              backgroundColor: "#ecf0f2",
+            }}
+          >
+            <div className="text-align-center">
+              <h4>Banner coming</h4>
+            </div>
+          </div>
+        )}
       </div>
-      <div className="confcard-header mt-12 mr-23 mb-9 ml-12">
-        <p>{confName}</p>
-      </div>
-
-      <div className="flex-vc">
-        <DateIcon className="conf-card-icons" />
-        <span className="caption-2-regular-gray3">
-          {start} - {time.toFormat("h:mm a")}
-        </span>
-      </div>
-      <div className="conf-card-location">
-        <LocationIcon className="conf-card-icons" />
-        <span className="conf-card-text caption-2-regular-gray3">London</span>
-      </div>
-      <div>
-        <CreditsIcon className="conf-card-icons" />
-        {/* {credits.map((item)=>{
-          console.log(item)
-
-          return(
-            <span className="conf-card-text caption-2-regular-gray3" key={item._id}>
-              
-
-            </span>
-          )
-        })} */}
-        <span className="conf-card-text caption-2-regular-gray3">AMA 10</span>
-      </div>
-      <div className="card-grid-container conf-price-box">
-        <div style={{ marginTop: ".5rem" }}>
-          <span className="caption-2-bold-cblack">
-            {currency} {price} onwards
-          </span>
+      <div className="cc-content-container">
+        <div
+          onClick={() => navigate(`/search-conference/${confId}`)}
+          className="cc-headtrunc-wrap"
+        >
+          <div className="confcard-header">{title}</div>
+          <div className="confcard-trunc mt-8">
+            <div className="flex-vc  mb-8">
+              <DateIcon className="icon-xxs mr-8" />
+              <span className="caption-2-regular-gray3  cc-truncitem-wrap">
+                {formattedStartDate}
+              </span>
+            </div>
+            <div className="flex-vc  mb-8">
+              <LocationIcon className="icon-xxs mr-8" />
+              <span className="caption-2-regular-gray3 cc-truncitem-wrap">
+                {getLocationString()}
+              </span>
+            </div>
+            <div className="flex-vc  mb-8">
+              <CreditsIcon className="icon-xxs mr-8" />
+              <span className="caption-2-regular-gray3 cc-truncitem-wrap">
+                {credits?.length > 0
+                  ? `${credits[0].creditId?.name} - ${credits[0].quantity}`
+                  : "Credits not added"}
+              </span>
+            </div>
+          </div>
         </div>
-        <div>
-          <LikeInactiveIcon className="conf-likeicon" />
+        <div className="confcard-footer">
+          <div className="flex-vc-sb ">
+            <span className="caption-2-bold-cblack cc-truncitem-wrap">
+              {currency && basePrice > 0
+                ? `${currency} -  
+                    ${basePrice}`
+                : currency && basePrice === 0
+                ? "Free"
+                : "Price not availabe"}
+            </span>
+            <i
+              onClick={() => console.log("liked")}
+              className="cc-likeicon-wrap"
+            >
+              <LikeInactiveIcon className="icon-size" />
+            </i>
+          </div>
         </div>
       </div>
     </div>
@@ -83,14 +137,14 @@ function ConfCard({
 }
 
 ConfCard.propTypes = {
+  mode: PropTypes.array.isRequired,
+  city: PropTypes.string,
   src: PropTypes.string,
-  confName: PropTypes.string.isRequired,
-  startDate: PropTypes.string.isRequired,
-  // startTime: PropTypes.string.isRequired,
-  // location: PropTypes.string.isRequired,
-  creditType: PropTypes.string,
-  currency: PropTypes.string,
-  creditAmount: PropTypes.number,
+  title: PropTypes.string.isRequired,
+  startDate: PropTypes.string,
+  timezone: PropTypes.string,
+  credits: PropTypes.array,
+  currency: PropTypes.string.isRequired,
+  basePrice: PropTypes.number.isRequired,
+  confId: PropTypes.string.isRequired,
 };
-
-export default ConfCard;

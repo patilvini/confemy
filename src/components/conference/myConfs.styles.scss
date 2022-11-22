@@ -65,20 +65,6 @@
   padding-left: 5.2rem;
 }
 
-.conf-search-input-icon {
-  position: absolute;
-  left: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  transform-origin: left top;
-  pointer-events: none;
-
-  svg {
-    position: relative;
-    padding-top: 5px;
-  }
-}
-
 .myconfs-actions {
   background-color: #fff;
   text-align: left;

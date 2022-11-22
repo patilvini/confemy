@@ -6,8 +6,7 @@ import Select from "react-select";
 
 import NextIcon from "../icons/NextIcon";
 import DropdownIcon from "../icons/DropdownIcon";
-import SelectFormType3 from "../reselect/SelectFormType3";
-import CustomDatepicker from "../react-datepicker/CustomDatepicker";
+
 import OnlyDatepicker from "../react-datepicker/OnlyDatePicker";
 import "./searchFilters.styles.scss";
 import api from "../../utility/api";
@@ -41,8 +40,8 @@ export default function SearchFilters({
 
   currency,
   onCurrencyChange,
-  priceAmount,
-  onPriceAmountChange,
+  maxPrice,
+  onMaxPriceChange,
 }) {
   const [openLocation, setOpenLocation] = useState(false);
   const [openDate, setOpenDate] = useState(false);
@@ -53,19 +52,6 @@ export default function SearchFilters({
   const [creditOptions, setCreditOptions] = useState([]);
 
   const dispatch = useDispatch();
-
-  // const [location, setLocation] = useState("");
-
-  // const onLocationChange = (selectedLocation) => {
-  //   setLocation(selectedLocation);
-  // };
-
-  // const loadLocations = async (searchText, callback) => {
-  //   console.log("searchtext", searchText);
-  //   const response = await api.get(`venues/search?venue=${searchText}`);
-  //   console.log("veneu search", response);
-  //   callback(response.data.data.venue);
-  // };
 
   const getValue = (options, value, isMulti) => {
     if (isMulti) {
@@ -90,8 +76,6 @@ export default function SearchFilters({
   useEffect(() => {
     getCreditTypes();
   }, []);
-
-  console.log("location value", location);
 
   return (
     <div className="sf-container">
@@ -253,10 +237,10 @@ export default function SearchFilters({
           <div className="form-type-3 mt-8">
             <input
               type="number"
-              name="priceAmount"
-              placeholder="Amount"
-              value={priceAmount}
-              onChange={onPriceAmountChange}
+              name="maxPrice"
+              placeholder="Max Price"
+              value={maxPrice}
+              onChange={onMaxPriceChange}
             />
           </div>
         </div>

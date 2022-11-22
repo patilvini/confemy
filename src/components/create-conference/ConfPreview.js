@@ -196,7 +196,7 @@ export default function ConfPreview() {
                   : "Conference title"}
               </p>
             </div>
-            <div className="confcard-body">
+            <div className="pt-16">
               <div className="flex-vc  mb-12">
                 <DateIcon className="icon-xxs mr-12" />
                 <span className="caption-2-regular-gray3">

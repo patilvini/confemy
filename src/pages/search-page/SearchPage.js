@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { zonedTimeToUtc } from "date-fns-tz";
 
 import SearchFilters from "../../components/search/SearchFilters";
@@ -6,11 +7,17 @@ import SearchResult from "../../components/search/SearchResult";
 import SearchInput from "../../components/search/SearchInput";
 import api from "../../utility/api";
 import ConfCard from "../../components/conf-card/ConfCard";
+import Loader from "../../components/loader/Loader";
+import SearchIcon from "../../components/icons/SearchIcon";
+
+import { searchConfsAction } from "../../redux/conference/conferenceAction";
+import { alertAction } from "../../redux/alert/alertAction";
 
 import "./searchPage.styles.scss";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
+  const [location, setLocation] = useState("");
   const [profession, setProfession] = useState("");
   const [specialities, setSpecialities] = useState([]);
   const [startDate, setStartDate] = useState(null);
@@ -18,86 +25,98 @@ export default function SearchPage() {
   const [creditType, setCreditType] = useState("");
   const [creditAmount, setCreditAmount] = useState(0);
   const [currency, setCurrency] = useState("");
-  const [priceAmount, setPriceAmount] = useState(0);
-  const [location, setLocation] = useState("");
+  const [maxPrice, setMaxPrice] = useState(0);
   const [searchType, setSearchType] = useState("searchConf");
-  const [searchResults, setSearchResults] = useState([]);
 
-  const onLocationChange = (selectedLocation) => {
-    console.log("selected location", selectedLocation);
-    setLocation(selectedLocation);
-  };
+  const dispatch = useDispatch();
+  const search = useSelector((state) => state.conference.search);
 
-  const loadLocations = async (searchText, callback) => {
-    console.log("searchtext", searchText);
-    const response = await api.get(`venues/search?venue=${searchText}`);
-    console.log("veneu search", response);
-    callback(response.data.data.venue);
-  };
+  //  get utc date for location timezone
+  const timezone = location?.timezone;
+  const locationValue = location?.value;
+  let utcStartDate;
+  let utcEndDate;
+  if (startDate && timezone) {
+    utcStartDate = zonedTimeToUtc(startDate, timezone).toISOString();
+  }
+  if (endDate && timezone) {
+    utcEndDate = zonedTimeToUtc(endDate, timezone).toISOString();
+  }
+  // construct filters array from state values of filters
+  let filters = [];
+  if (locationValue) {
+    filters.push({ label: "location", value: locationValue });
+  }
+  if (profession) {
+    filters.push({ label: "profession", value: profession });
+  }
+  if (specialities?.length > 0) {
+    filters.push({ label: "specialities", values: specialities });
+  }
+  if (utcStartDate || utcEndDate) {
+    filters.push({ label: "date", start: utcStartDate, end: utcEndDate });
+  }
+  if (creditType && creditAmount) {
+    filters.push({
+      label: "credits",
+      value: creditType,
+      quantity: creditAmount,
+    });
+  }
+  if (currency && maxPrice) {
+    filters.push({
+      label: "price",
+      currency: currency,
+      min: 0,
+      max: maxPrice,
+    });
+  }
 
-  const onQueryChange = (e) => {
-    setQuery(e.target.value);
-  };
-  const handleSubmit = async (e) => {
-    console.log("sumbit clicked");
-    e.preventDefault();
+  // function to call search api. it will send above filters array
+  async function loadSearchResults() {
+    console.log("loadSearch called");
     const url = `homePage/conferences/search?page=1&limit=10&text=${query}`;
-    let timezone;
-    if (location && location.timezones.length > 0) {
-      timezone = location?.timezones[0]?.zoneName;
-    }
-    let utcStartDate;
-    let utcEndDate;
-    if (startDate && timezone) {
-      utcStartDate = zonedTimeToUtc(startDate, timezone).toISOString();
-    }
-    if (endDate && timezone) {
-      utcEndDate = zonedTimeToUtc(endDate, timezone).toISOString();
-    }
-
-    let filters = [];
-
-    if (profession) {
-      filters.push({ label: "profession", value: profession });
-    }
-
-    if (specialities?.length > 0) {
-      filters.push({ label: "specialities", values: specialities });
-    }
-
-    if (utcStartDate || utcEndDate) {
-      filters.push({ label: "date", start: utcStartDate, end: utcEndDate });
-    }
-
-    if (creditType && creditAmount) {
-      filters.push({
-        label: "credits",
-        value: creditType,
-        quantity: creditAmount,
-      });
-    }
-
-    if (currency && priceAmount) {
-      filters.push({
-        label: "price",
-        currency: currency,
-        min: 0,
-        max: priceAmount,
-      });
-    }
-
-    console.log("filters", filters);
-
     try {
       const response = await api.post(url, { filters });
       if (response) {
         console.log("search response", response);
-        setSearchResults(response.data.data.conferences);
+        dispatch(searchConfsAction(response.data.data.conferences));
       }
     } catch (err) {
-      console.log(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
+  }
+
+  const onQueryChange = (e) => {
+    setQuery(e.target.value);
   };
+
+  // async function to get locations. its called on every key change in location filter
+  const loadLocations = async (searchText, callback) => {
+    const response = await api.get(`venues/search?venue=${searchText}`);
+    callback(response.data.data.venue);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    loadSearchResults();
+  };
+
+  useEffect(() => {
+    loadSearchResults();
+  }, [
+    location,
+    profession,
+    specialities,
+    startDate,
+    endDate,
+    creditType,
+    creditAmount,
+    currency,
+    maxPrice,
+  ]);
+
+  console.log("filters", filters);
 
   return (
     <div className="container pt-64 position-relative">
@@ -105,7 +124,7 @@ export default function SearchPage() {
         <form onSubmit={handleSubmit} autoComplete="off">
           <SearchFilters
             location={location}
-            onLocationChange={onLocationChange}
+            onLocationChange={(location) => setLocation(location)}
             loadLocations={loadLocations}
             startDate={startDate}
             setStartDate={setStartDate}
@@ -123,11 +142,14 @@ export default function SearchPage() {
             onCreditAmountChange={(e) => setCreditAmount(e.target.value)}
             currency={currency}
             onCurrencyChange={(currency) => setCurrency(currency?.value)}
-            priceAmount={priceAmount}
-            onPriceAmountChange={(e) => setPriceAmount(e.target.value)}
+            maxPrice={maxPrice}
+            onMaxPriceChange={(e) => setMaxPrice(e.target.value)}
           />
           <div className="sb-container">
-            <div style={{ flexGrow: 1 }} className="form-type-2">
+            <div
+              style={{ flexGrow: 1, position: "relative" }}
+              className="form-type-2"
+            >
               <input
                 type="text"
                 name="query"
@@ -135,6 +157,13 @@ export default function SearchPage() {
                 onChange={onQueryChange}
                 placeholder="Search by conference title or tags..."
               />
+              <i
+                className={
+                  query?.length > 0 ? "display-none" : "conf-search-input-icon"
+                }
+              >
+                <SearchIcon width="2.4rem" height="2.4rem" />
+              </i>
             </div>
             <button
               type="submit"
@@ -156,13 +185,13 @@ export default function SearchPage() {
             />
             <label htmlFor="searchConf">
               <div
-                className={`mr-60 ${
+                className={`mr-40 ${
                   searchType === "searchConf"
                     ? "active-search-type"
                     : "inactive-search-type "
                 }`}
               >
-                Conferences (5)
+                Attend in person (5)
               </div>
             </label>
             <input
@@ -176,35 +205,79 @@ export default function SearchPage() {
             />
             <label htmlFor="searchOrg">
               <div
-                className={`mr-20 ${
+                className={`mr-40 ${
                   searchType === "searchOrg"
                     ? "active-search-type"
                     : "inactive-search-type "
                 }`}
               >
-                Organizations (0)
+                Stream Live (0)
+              </div>
+            </label>
+            <input
+              type="radio"
+              style={{ display: "none" }}
+              name="searchType"
+              id="searchVideo"
+              value="video"
+              checked={searchType === "video"}
+              onChange={(e) => setSearchType(e.target.value)}
+            />
+            <label htmlFor="searchVideo">
+              <div
+                className={`mr-40 ${
+                  searchType === "video"
+                    ? "active-search-type"
+                    : "inactive-search-type "
+                }`}
+              >
+                Video on demand (0)
+              </div>
+            </label>
+            <input
+              type="radio"
+              style={{ display: "none" }}
+              name="searchType"
+              id="searchAudio"
+              value="audio"
+              checked={searchType === "audio"}
+              onChange={(e) => setSearchType(e.target.value)}
+            />
+            <label htmlFor="searchAudio">
+              <div
+                className={`mr-20 ${
+                  searchType === "audio"
+                    ? "active-search-type"
+                    : "inactive-search-type "
+                }`}
+              >
+                Audio podcast (0)
               </div>
             </label>
           </div>
         </form>
-        <div className="sr-container">
-          {searchResults &&
-            searchResults.map((conf) => (
+        {search?.isLoading ? (
+          <Loader />
+        ) : (
+          <div className="sr-container">
+            {search?.result.map((conf) => (
               <div key={conf._id}>
                 <ConfCard
                   src={conf.banner[0]?.Location}
-                  confName={conf.title}
+                  title={conf.title}
                   startDate={conf.startDate}
-                  location={conf.city}
-                  credits={conf.credits[0]?.creditId}
+                  timezone={conf.timezone}
+                  mode={conf.mode}
+                  city={conf.city}
+                  credits={conf.credits}
                   currency={conf.currency}
-                  creditAmount={conf.credits[0].quantity}
-                  price={conf.basePrice}
-                  // link
+                  basePrice={conf.basePrice}
+                  confId={conf._id}
                 />
               </div>
             ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

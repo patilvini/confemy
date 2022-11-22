@@ -79,7 +79,7 @@ const App = () => {
             ></Route>
             <Route path="search-conference" element={<SearchPage />}></Route>
             <Route
-              path="search-conference/:confID"
+              path="search-conference/:confId"
               element={<ConfDetailsPage />}
             ></Route>
 
