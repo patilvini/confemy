@@ -17,6 +17,58 @@ import {
 } from "../../utility/commonUtil";
 import { alertAction } from "../../redux/alert/alertAction";
 
+const confemyWhite = "#ffffff";
+const confemyBlac = "#000000";
+const shade1 = "#ced9de";
+const shade2 = "#ecf0f2";
+const shade3 = "#fcfdfd";
+const shade4 = "#aabdc7";
+
+const customStyles = {
+  control: (styles, state) => {
+    return {
+      ...styles,
+      backgroundColor: confemyWhite,
+      border: state.isFocused ? "1px solid #55a0fa" : `1px solid ${shade1}`,
+      padding: "4px 0px 4px 0px",
+      fontFamily: "Avenir-Roman",
+      fontSize: "1.6rem",
+      ":hover": {
+        border: state.isFocused ? "1px solid #55a0fa" : `solid 1px ${shade4}`,
+      },
+    };
+  },
+  placeholder: (provided) => ({
+    ...provided,
+    fontFamily: "Avenir-Roman",
+    fontSize: "1.6rem",
+  }),
+  option: (provided, state) => {
+    return {
+      ...provided,
+      color: confemyBlac,
+      fontSize: "1.4rem",
+      fontFamily: "Avenir-Roman",
+    };
+  },
+  dropdownIndicator: (provided, state) => {
+    return {
+      ...provided,
+      paddingRight: 6,
+      paddingLeft: 4,
+    };
+  },
+
+  noOptionsMessage: (provided, state) => {
+    return {
+      ...provided,
+      backgroundColor: shade3,
+      color: confemyBlac,
+      fontSize: 16,
+    };
+  },
+};
+
 export default function SearchFilters({
   location,
   onLocationChange,
@@ -102,6 +154,7 @@ export default function SearchFilters({
             placeholder={"Select country, state or city..."}
             loadOptions={loadLocations}
             isClearable
+            styles={customStyles}
           />
         </div>
         <div
@@ -157,6 +210,7 @@ export default function SearchFilters({
             placeholder="Select Profession"
             isClearable={true}
             isMulti={false}
+            styles={customStyles}
           />
         </div>
         <div
@@ -179,6 +233,7 @@ export default function SearchFilters({
             placeholder="Select specialties"
             onChange={onSpecialitiesChange}
             isClearable={false}
+            styles={customStyles}
           />
         </div>
 
@@ -202,6 +257,7 @@ export default function SearchFilters({
             placeholder="Select credit"
             isClearable={true}
             isMulti={false}
+            styles={customStyles}
           />
           <div className="form-type-3 mt-8">
             <input
@@ -233,6 +289,7 @@ export default function SearchFilters({
             placeholder="Select currency"
             isClearable={true}
             isMulti={false}
+            styles={customStyles}
           />
           <div className="form-type-3 mt-8">
             <input

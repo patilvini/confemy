@@ -57,7 +57,6 @@ export default function PNavbar({ onClickOutside }) {
           <div className="search-button-nav">
             <Link to="search-conference">
               <div className="search-box">
-                <SearchIcon height="1.4rem" width="1.4rem" />
                 <span className="explore-conferences">Explore Conferences</span>
               </div>
             </Link>

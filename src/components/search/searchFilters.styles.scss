@@ -3,17 +3,21 @@
 // container for search filters
 // sf = search filter
 .sf-container {
-  position: absolute;
-  z-index: 98;
-  top: 6.4rem;
+  // position: absolute;
+  position: relative;
+  float: left;
+  // z-index: 98;
+  // top: 6.4rem;
+  top: 0;
   left: 0;
   width: 33.75rem;
   min-width: 33.75rem;
   padding: 5rem 1.6rem 6rem;
+  margin-right: 5rem;
   overflow-x: hidden;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   min-height: calc(100vh - 6.4rem);
-  max-height: calc(100vh - 6.4rem);
+  // max-height: calc(100vh - 6.4rem);
   border-right: 1px solid $shade-1;
   border-left: 1px solid $shade-1;
   border-bottom: 1px solid $shade-1;

@@ -119,7 +119,7 @@ export default function SearchPage() {
   console.log("filters", filters);
 
   return (
-    <div className="container pt-64 position-relative">
+    <div className="container pt-64">
       <div className="sp-container">
         <form onSubmit={handleSubmit} autoComplete="off">
           <SearchFilters
@@ -167,7 +167,11 @@ export default function SearchPage() {
             </div>
             <button
               type="submit"
-              style={{ padding: "1.4rem 2.4rem", maxHeight: "4.6rem" }}
+              style={{
+                padding: "1.4rem 2.4rem",
+                maxHeight: "4.6rem",
+                marginRight: "1.6rem",
+              }}
               className="button button-primary ml-16"
             >
               Search
