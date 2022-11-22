@@ -4,6 +4,7 @@ import {
   LOAD_INCOMPLETE_CONFS,
   LOAD_INCOMPLETE_CONF,
   LOAD_ALL_MY_CONFS,
+  SEARCH_CONFS,
 } from "./conferenceTypes";
 
 const initialState = {
@@ -12,6 +13,11 @@ const initialState = {
   incompleteConfs: null,
   myConfs: null,
   error: false,
+  search: {
+    isLoading: true,
+    error: false,
+    result: [],
+  },
 };
 
 function conferenceReducer(state = initialState, action) {
@@ -44,6 +50,16 @@ function conferenceReducer(state = initialState, action) {
       return {
         ...state,
         myConfs: payload,
+      };
+
+    case SEARCH_CONFS:
+      return {
+        ...state,
+        search: {
+          isLoading: false,
+          error: false,
+          result: payload,
+        },
       };
     default:
       return state;

@@ -1,17 +1,31 @@
 @import "./utility.styles.scss";
 
+$confcard-width: 28rem;
+$confcard-height: 34.1rem;
+// $confcard-height: 35.5rem;
+
 .conf-card {
-  width: 28rem;
-  height: 36.1rem;
-  padding: 0 0 0.8rem;
+  // width: 28rem;
+  // height: 34.1rem;
+  width: $confcard-width;
+  height: $confcard-height;
   border-radius: 0.4rem;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
   background-color: $colour-white;
+  display: flex;
+  flex-direction: column;
 }
 
-.conf-img-container {
+.cc-img-container {
+  // width: 28rem;
+  // height: 15.75rem;
   width: 100%;
-  height: 161px;
+  max-width: 100%;
+  height: calc(#{$confcard-width * 9 / 16});
+
+  &:hover {
+    cursor: pointer;
+  }
 
   img {
     width: 100%;
@@ -20,8 +34,57 @@
   }
 }
 
-.confcard-body {
-  padding-top: 16px;
+.cc-content-container {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  // height: 18rem;
+  overflow: hidden;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.cc-headtrunc-wrap {
+  flex-grow: 1;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+// conf card classes useful to other cards
+// apply to div containing conf card header
+
+.confcard-header {
+  width: 100%;
+  height: 5rem;
+  max-height: 5rem;
+  overflow: hidden;
+  font-family: Avenir-Heavy;
+  font-size: 2rem;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: 0.22px;
+  color: $confemy-black;
+}
+
+.confcard-trunc {
+  // padding-top: 16px;
+}
+.cc-truncitem-wrap {
+  max-width: 80%;
+  max-height: 2.8rem;
+  line-height: 1.4rem;
+  overflow: hidden;
+}
+
+.cc-likeicon-wrap {
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .conf-card-icons {

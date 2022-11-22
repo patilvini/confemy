@@ -7,6 +7,7 @@ import {
   LOAD_INCOMPLETE_CONFS,
   LOAD_INCOMPLETE_CONF,
   LOAD_ALL_MY_CONFS,
+  SEARCH_CONFS,
 } from "./conferenceTypes";
 
 // Creat a conference
@@ -39,9 +40,17 @@ export const loadIncopleteConfsAction = (data) => (dispatch) => {
     payload: data,
   });
 };
+
 export const loadAllMyConfsAction = (data) => (dispatch) => {
   dispatch({
     type: LOAD_ALL_MY_CONFS,
+    payload: data,
+  });
+};
+
+export const searchConfsAction = (data) => (dispatch) => {
+  dispatch({
+    type: SEARCH_CONFS,
     payload: data,
   });
 };

@@ -14,7 +14,7 @@ import "./slider.scss";
 export default function ConfDetails() {
   const [data, setData] = useState();
   const [action, setAction] = useState(false);
-  const confID = useParams().confID;
+  const confId = useParams().confId;
 
   const responsive = {
     desktop: {
@@ -24,14 +24,14 @@ export default function ConfDetails() {
     },
   };
 
-  // console.log(confID)
+  // console.log(confId)
 
   const addRecentlyViewed = async () => {
     console.log(data);
     // try {
     //   const r = await api.post("/homePage/recentlyviewed", {
     //     recentlyViewedConferenceDetails: {
-    //       conferenceId: confID,
+    //       conferenceId: confId,
     //     },
     //   });
     //   console.log(r.data.data);
@@ -40,13 +40,12 @@ export default function ConfDetails() {
     // }
   };
 
-  const getData = async () => {
+  const loadConferenceDetails = async (Id) => {
     try {
-      const r = await api.get("/conferences/" + confID);
-      console.log(r.data.data.conferences);
-      setData(r.data.data.conferences);
-
-      if (r.data.data.conferences.completedAllMandatorySteps) {
+      const response = await api.get(`conferences/${Id}`);
+      console.log(response.data.data.conferences);
+      setData(response.data.data.conferences);
+      if (response.data.data.conferences.completedAllMandatorySteps) {
         addRecentlyViewed();
       }
     } catch (err) {
@@ -55,8 +54,8 @@ export default function ConfDetails() {
   };
 
   useEffect(() => {
-    getData();
-  }, [action]);
+    loadConferenceDetails(confId);
+  }, [confId]);
 
   return (
     <div className="conference-component">
@@ -129,7 +128,7 @@ export default function ConfDetails() {
             <h4>Holiday Inn Norwich City</h4>
 
             <div className="icon-text">
-              <LocationIcon fill="#c4c4c4" className="filter-icon" />
+              <LocationIcon fill="#c4c4c4" className="icon-xs" />
               <span>Norwich</span>
             </div>
 
