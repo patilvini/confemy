@@ -16,6 +16,7 @@ import {
   currencylist,
 } from "../../utility/commonUtil";
 import { alertAction } from "../../redux/alert/alertAction";
+import { hover } from "@testing-library/user-event/dist/hover";
 
 const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";
@@ -28,7 +29,7 @@ const customStyles = {
   control: (styles, state) => {
     return {
       ...styles,
-      backgroundColor: confemyWhite,
+      backgroundColor: state.isDisabled ? shade2 : confemyWhite,
       border: state.isFocused ? "1px solid #55a0fa" : `1px solid ${shade1}`,
       padding: "4px 0px 4px 0px",
       fontFamily: "Avenir-Roman",
@@ -38,7 +39,7 @@ const customStyles = {
       },
     };
   },
-  placeholder: (provided) => ({
+  placeholder: (provided, state) => ({
     ...provided,
     fontFamily: "Avenir-Roman",
     fontSize: "1.6rem",
@@ -83,17 +84,24 @@ export default function SearchFilters({
   onProfessionChange,
   specialities,
   onSpecialitiesChange,
+  spltDisabled,
 
   creditType,
   onCreditTypeChange,
 
   creditAmount,
   onCreditAmountChange,
+  creditAmountDisabled,
 
   currency,
   onCurrencyChange,
   maxPrice,
   onMaxPriceChange,
+  minPrice,
+  onMinPriceChange,
+  priceDisabled,
+
+  clearAllFilters,
 }) {
   const [openLocation, setOpenLocation] = useState(false);
   const [openDate, setOpenDate] = useState(false);
@@ -134,7 +142,15 @@ export default function SearchFilters({
       <div>
         <div className="sf-header">
           <h3>Filters</h3>
-          <div className="caption-1-heavy-gray3">Clear all</div>
+          <div
+            onClick={() => clearAllFilters()}
+            className="caption-1-heavy-gray3"
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            Clear all
+          </div>
         </div>
         <div
           onClick={() => setOpenLocation((prev) => !prev)}
@@ -203,6 +219,7 @@ export default function SearchFilters({
         </div>
         <div className={openProfession ? "sf-input-wrap" : "display-none"}>
           <Select
+            key={getValue(professions, profession)}
             name="profession"
             options={professions}
             value={getValue(professions, profession)}
@@ -234,6 +251,7 @@ export default function SearchFilters({
             onChange={onSpecialitiesChange}
             isClearable={false}
             styles={customStyles}
+            isDisabled={spltDisabled}
           />
         </div>
 
@@ -250,6 +268,7 @@ export default function SearchFilters({
         </div>
         <div className={openCredits ? "sf-input-wrap" : "display-none"}>
           <Select
+            key={getValue(creditOptions, creditType)}
             name="creditType"
             options={creditOptions}
             value={getValue(creditOptions, creditType)}
@@ -261,11 +280,15 @@ export default function SearchFilters({
           />
           <div className="form-type-3 mt-8">
             <input
+              style={{
+                ...(creditAmountDisabled && { backgroundColor: shade2 }),
+              }}
               type="number"
               name="creditAmount"
               placeholder="Credit Amount"
               value={creditAmount}
               onChange={onCreditAmountChange}
+              disabled={creditAmountDisabled}
             />
           </div>
         </div>
@@ -282,6 +305,7 @@ export default function SearchFilters({
         </div>
         <div className={openPrice ? "sf-input-wrap" : "display-none"}>
           <Select
+            key={getValue(currencylist, currency)}
             name="currency"
             options={currencylist}
             value={getValue(currencylist, currency)}
@@ -292,12 +316,27 @@ export default function SearchFilters({
             styles={customStyles}
           />
           <div className="form-type-3 mt-8">
+            <p className="caption-3-regular-gray3 ml-4">Min Price</p>
             <input
+              style={{ ...(priceDisabled && { backgroundColor: shade2 }) }}
+              type="number"
+              name="minPrice"
+              placeholder="Min Price"
+              value={minPrice}
+              onChange={onMinPriceChange}
+              disabled={priceDisabled}
+            />
+          </div>
+          <div className="form-type-3 mt-8">
+            <p className="caption-3 ml-4">Max Price</p>
+            <input
+              style={{ backgroundColor: priceDisabled ? shade2 : null }}
               type="number"
               name="maxPrice"
               placeholder="Max Price"
               value={maxPrice}
               onChange={onMaxPriceChange}
+              disabled={priceDisabled}
             />
           </div>
         </div>
