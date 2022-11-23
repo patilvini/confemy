@@ -39,11 +39,15 @@ const customStyles = {
       },
     };
   },
-  placeholder: (provided, state) => ({
-    ...provided,
-    fontFamily: "Avenir-Roman",
-    fontSize: "1.6rem",
-  }),
+  placeholder: (provided, state) => {
+    console.log("provided", provided);
+    return {
+      ...provided,
+      color: state.isDisabled ? shade4 : "hsl(0, 0%, 50%)",
+      fontFamily: "Avenir-Roman",
+      fontSize: "1.6rem",
+    };
+  },
   option: (provided, state) => {
     return {
       ...provided,
@@ -281,7 +285,10 @@ export default function SearchFilters({
           <div className="form-type-3 mt-8">
             <input
               style={{
-                ...(creditAmountDisabled && { backgroundColor: shade2 }),
+                ...(creditAmountDisabled && {
+                  backgroundColor: shade2,
+                  color: shade4,
+                }),
               }}
               type="number"
               name="creditAmount"
@@ -316,9 +323,14 @@ export default function SearchFilters({
             styles={customStyles}
           />
           <div className="form-type-3 mt-8">
-            <p className="caption-3-regular-gray3 ml-4">Min Price</p>
+            <p className="caption-3 ml-4">Min Price</p>
             <input
-              style={{ ...(priceDisabled && { backgroundColor: shade2 }) }}
+              style={{
+                ...(priceDisabled && {
+                  backgroundColor: shade2,
+                  color: shade4,
+                }),
+              }}
               type="number"
               name="minPrice"
               placeholder="Min Price"
@@ -330,7 +342,13 @@ export default function SearchFilters({
           <div className="form-type-3 mt-8">
             <p className="caption-3 ml-4">Max Price</p>
             <input
-              style={{ backgroundColor: priceDisabled ? shade2 : null }}
+              style={{
+                ...(priceDisabled && {
+                  backgroundColor: shade2,
+                  color: shade4,
+                }),
+              }}
+              // style={{ backgroundColor: priceDisabled ? shade2 : null }}
               type="number"
               name="maxPrice"
               placeholder="Max Price"
