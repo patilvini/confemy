@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { zonedTimeToUtc } from "date-fns-tz";
-
 import SearchFilters from "../../components/search/SearchFilters";
-import SearchResult from "../../components/search/SearchResult";
-import SearchInput from "../../components/search/SearchInput";
 import api from "../../utility/api";
 import ConfCard from "../../components/conf-card/ConfCard";
 import Loader from "../../components/loader/Loader";
@@ -14,6 +11,8 @@ import { searchConfsAction } from "../../redux/conference/conferenceAction";
 import { alertAction } from "../../redux/alert/alertAction";
 
 import "./searchPage.styles.scss";
+import { min } from "date-fns";
+import { number } from "yup";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
@@ -25,8 +24,12 @@ export default function SearchPage() {
   const [creditType, setCreditType] = useState("");
   const [creditAmount, setCreditAmount] = useState(0);
   const [currency, setCurrency] = useState("");
+  const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
-  const [searchType, setSearchType] = useState("searchConf");
+  const [mode, setMode] = useState("venue");
+  const [spltDisabled, setSpltDisabled] = useState(true);
+  const [creditAmountDisabled, setCreditAmountDisabled] = useState(true);
+  const [priceDisabled, setPriceDisabled] = useState(true);
 
   const dispatch = useDispatch();
   const search = useSelector((state) => state.conference.search);
@@ -63,12 +66,18 @@ export default function SearchPage() {
       quantity: creditAmount,
     });
   }
-  if (currency && maxPrice) {
+  if (currency && minPrice && maxPrice) {
     filters.push({
       label: "price",
       currency: currency,
-      min: 0,
+      min: minPrice,
       max: maxPrice,
+    });
+  }
+  if (mode === "onlineConf") {
+    filters.push({
+      label: "mode",
+      value: "onlineConf",
     });
   }
 
@@ -91,6 +100,39 @@ export default function SearchPage() {
     setQuery(e.target.value);
   };
 
+  const onProfessionChange = (value) => {
+    if (profession !== value?.value) {
+      setSpecialities([]);
+    }
+    if (!value?.value) {
+      setSpltDisabled(true);
+    } else {
+      setSpltDisabled(false);
+    }
+    setProfession(value?.value);
+  };
+
+  const onCreditTypeChange = (credit) => {
+    if (!credit?.value) {
+      setCreditAmountDisabled(true);
+      setCreditAmount(0);
+    } else {
+      setCreditAmountDisabled(false);
+    }
+    setCreditType(credit?.value);
+  };
+
+  const onCurrencyChange = (currency) => {
+    if (!currency?.value) {
+      setPriceDisabled(true);
+      setMinPrice(0);
+      setMaxPrice(0);
+    } else {
+      setPriceDisabled(false);
+    }
+    setCurrency(currency?.value);
+  };
+
   // async function to get locations. its called on every key change in location filter
   const loadLocations = async (searchText, callback) => {
     const response = await api.get(`venues/search?venue=${searchText}`);
@@ -101,6 +143,22 @@ export default function SearchPage() {
     e.preventDefault();
     loadSearchResults();
   };
+
+  function clearAllFilters() {
+    setLocation("");
+    setProfession("");
+    setSpecialities([]);
+    setStartDate(null);
+    setEndDate(null);
+    setCreditType("");
+    setCreditAmount(0);
+    setCurrency("");
+    setMinPrice(0);
+    setMaxPrice(0);
+    setSpltDisabled(true);
+    setCreditAmountDisabled(true);
+    setPriceDisabled(true);
+  }
 
   useEffect(() => {
     loadSearchResults();
@@ -114,6 +172,8 @@ export default function SearchPage() {
     creditAmount,
     currency,
     maxPrice,
+    minPrice,
+    mode,
   ]);
 
   console.log("filters", filters);
@@ -131,19 +191,23 @@ export default function SearchPage() {
             endDate={endDate}
             setEndDate={setEndDate}
             profession={profession}
-            onProfessionChange={(profession) =>
-              setProfession(profession?.value)
-            }
+            onProfessionChange={onProfessionChange}
             specialities={specialities}
             onSpecialitiesChange={(speciality) => setSpecialities(speciality)}
+            spltDisabled={spltDisabled}
             creditType={creditType}
-            onCreditTypeChange={(credit) => setCreditType(credit?.value)}
+            onCreditTypeChange={onCreditTypeChange}
             creditAmount={creditAmount}
             onCreditAmountChange={(e) => setCreditAmount(e.target.value)}
+            creditAmountDisabled={creditAmountDisabled}
             currency={currency}
-            onCurrencyChange={(currency) => setCurrency(currency?.value)}
+            onCurrencyChange={onCurrencyChange}
+            minPrice={minPrice}
+            onMinPriceChange={(e) => setMinPrice(e.target.value)}
             maxPrice={maxPrice}
             onMaxPriceChange={(e) => setMaxPrice(e.target.value)}
+            priceDisabled={priceDisabled}
+            clearAllFilters={clearAllFilters}
           />
           <div className="sb-container">
             <div
@@ -181,56 +245,57 @@ export default function SearchPage() {
             <input
               type="radio"
               style={{ display: "none" }}
-              id="searchConf"
-              name="searchType"
-              value="searchConf"
-              checked={searchType === "searchConf"}
-              onChange={(e) => setSearchType(e.target.value)}
+              id="searchVenueConf"
+              name="mode"
+              value="venue"
+              checked={mode === "venue"}
+              onChange={(e) => setMode(e.target.value)}
             />
-            <label htmlFor="searchConf">
+            <label htmlFor="searchVenueConf">
               <div
                 className={`mr-40 ${
-                  searchType === "searchConf"
+                  mode === "venue"
                     ? "active-search-type"
                     : "inactive-search-type "
                 }`}
               >
-                Attend in person (5)
+                Conferences ({mode === "venue" ? search.result.length : 0})
               </div>
             </label>
             <input
               type="radio"
               style={{ display: "none" }}
-              name="searchType"
-              id="searchOrg"
-              value="searchOrg"
-              checked={searchType === "searchOrg"}
-              onChange={(e) => setSearchType(e.target.value)}
+              name="mode"
+              id="searchOnlineConf"
+              value="onlineConf"
+              checked={mode === "onlineConf"}
+              onChange={(e) => setMode(e.target.value)}
             />
-            <label htmlFor="searchOrg">
+            <label htmlFor="searchOnlineConf">
               <div
                 className={`mr-40 ${
-                  searchType === "searchOrg"
+                  mode === "onlineConf"
                     ? "active-search-type"
                     : "inactive-search-type "
                 }`}
               >
-                Stream Live (0)
+                Stream Live (
+                {mode === "onlineConf" ? search.result.length : "tbd"})
               </div>
             </label>
             <input
               type="radio"
               style={{ display: "none" }}
-              name="searchType"
+              name="mode"
               id="searchVideo"
               value="video"
-              checked={searchType === "video"}
-              onChange={(e) => setSearchType(e.target.value)}
+              checked={mode === "video"}
+              onChange={(e) => setMode(e.target.value)}
             />
             <label htmlFor="searchVideo">
               <div
                 className={`mr-40 ${
-                  searchType === "video"
+                  mode === "video"
                     ? "active-search-type"
                     : "inactive-search-type "
                 }`}
@@ -241,16 +306,16 @@ export default function SearchPage() {
             <input
               type="radio"
               style={{ display: "none" }}
-              name="searchType"
+              name="mode"
               id="searchAudio"
               value="audio"
-              checked={searchType === "audio"}
-              onChange={(e) => setSearchType(e.target.value)}
+              checked={mode === "audio"}
+              onChange={(e) => setMode(e.target.value)}
             />
             <label htmlFor="searchAudio">
               <div
                 className={`mr-20 ${
-                  searchType === "audio"
+                  mode === "audio"
                     ? "active-search-type"
                     : "inactive-search-type "
                 }`}
