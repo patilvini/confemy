@@ -190,7 +190,7 @@ export default function SearchFilters({
               name="startDate"
               selected={startDate}
               onChange={(date) => setStartDate(date)}
-              minDate={new Date()}
+              // minDate={new Date()}
               placeholder="Start date"
               disabled={false}
             />
@@ -319,24 +319,6 @@ export default function SearchFilters({
             styles={customStyles}
           />
           <div className="form-type-3 mt-8">
-            <p className="caption-3 ml-4">Min Price</p>
-            <input
-              style={{
-                ...(priceDisabled && {
-                  backgroundColor: shade2,
-                  color: shade4,
-                }),
-              }}
-              type="number"
-              name="minPrice"
-              placeholder="Min Price"
-              value={minPrice}
-              onChange={onMinPriceChange}
-              disabled={priceDisabled}
-              min="0"
-            />
-          </div>
-          <div className="form-type-3 mt-8">
             <p className="caption-3 ml-4">Max Price</p>
             <input
               style={{
@@ -352,6 +334,24 @@ export default function SearchFilters({
               value={maxPrice}
               onChange={onMaxPriceChange}
               disabled={priceDisabled}
+            />
+          </div>
+          <div className="form-type-3 mt-8">
+            <p className="caption-3 ml-4">Min Price</p>
+            <input
+              style={{
+                ...(priceDisabled && {
+                  backgroundColor: shade2,
+                  color: shade4,
+                }),
+              }}
+              type="number"
+              name="minPrice"
+              placeholder="Min Price"
+              value={minPrice}
+              onChange={onMinPriceChange}
+              disabled={priceDisabled}
+              min="0"
             />
           </div>
         </div>

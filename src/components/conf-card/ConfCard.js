@@ -15,6 +15,7 @@ export default function ConfCard({
   src,
   title,
   startDate,
+  endDate,
   timezone,
   credits,
   currency,
@@ -47,6 +48,9 @@ export default function ConfCard({
   let startDateInConfTz;
   let formattedStartDate;
 
+  let endDateInConfTz;
+  let formattedEndDate;
+
   if (startDate && timezone) {
     startDateInConfTz = utcToZonedTime(startDate, timezone);
     formattedStartDate = format(startDateInConfTz, "MMM-dd-yyyy, HH:mm aa", {
@@ -56,6 +60,17 @@ export default function ConfCard({
   } else {
     startDateInConfTz = null;
     formattedStartDate = null;
+  }
+
+  if (endDate && timezone) {
+    endDateInConfTz = utcToZonedTime(endDate, timezone);
+    formattedEndDate = format(endDateInConfTz, "MMM-dd-yyyy, HH:mm aa", {
+      timeZone: timezone,
+      locale: enGB,
+    });
+  } else {
+    endDateInConfTz = null;
+    formattedEndDate = null;
   }
 
   return (
@@ -93,8 +108,16 @@ export default function ConfCard({
           <div className="confcard-trunc mt-8">
             <div className="flex-vc  mb-8">
               <DateIcon className="icon-xxs mr-8" />
+              <span className="caption-2-regular-gray3 mr-4">Start: </span>
               <span className="caption-2-regular-gray3  cc-truncitem-wrap">
                 {formattedStartDate}
+              </span>
+            </div>
+            <div className="flex-vc  mb-8">
+              <DateIcon className="icon-xxs mr-8" />
+              <span className="caption-2-regular-gray3 mr-4">End: </span>
+              <span className="caption-2-regular-gray3  cc-truncitem-wrap">
+                {formattedEndDate}
               </span>
             </div>
             <div className="flex-vc  mb-8">

@@ -140,6 +140,7 @@ export default function ConfBasicInfo() {
       },
     };
     console.log("formData", formData);
+
     try {
       const response = await api.post("conferences/step1", formData);
       if (response) {
