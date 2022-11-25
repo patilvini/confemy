@@ -4,7 +4,8 @@ import {
   LOAD_INCOMPLETE_CONFS,
   LOAD_INCOMPLETE_CONF,
   LOAD_ALL_MY_CONFS,
-  SEARCH_CONFS,
+  CONF_SEARCH_DONE,
+  CONF_SEARCH_INITIATED,
 } from "./conferenceTypes";
 
 const initialState = {
@@ -14,14 +15,17 @@ const initialState = {
   myConfs: null,
   error: false,
   search: {
-    isLoading: true,
+    isLoading: false,
     error: false,
-    result: [],
+    conferences: [],
+    liveStreamConfs: [],
   },
 };
 
 function conferenceReducer(state = initialState, action) {
   const { type, payload } = action;
+  let searchObj = state.search;
+
   switch (type) {
     case CREATE_CONFERENCE:
     case LOAD_INCOMPLETE_CONF:
@@ -52,13 +56,23 @@ function conferenceReducer(state = initialState, action) {
         myConfs: payload,
       };
 
-    case SEARCH_CONFS:
+    case CONF_SEARCH_INITIATED:
+      return {
+        ...state,
+        search: {
+          ...searchObj,
+          isLoading: true,
+        },
+      };
+
+    case CONF_SEARCH_DONE:
       return {
         ...state,
         search: {
           isLoading: false,
           error: false,
-          result: payload,
+          conferences: payload?.conferences,
+          liveStreamConfs: payload?.liveStreamConf,
         },
       };
     default:
@@ -67,3 +81,23 @@ function conferenceReducer(state = initialState, action) {
 }
 
 export default conferenceReducer;
+
+// if (isDef(data.min)) {
+//   queryObj = {
+//     ...queryObj,
+//     basePrice: {
+//       $gte: data.min,
+//     },
+//   };
+// }
+
+// if (isDef(data.max)) {
+//   let baseP = queryObj.basePrice;
+//   queryObj = {
+//     ...queryObj,
+//     basePrice: {
+//       ...baseP,
+//       $lte: data.max,
+//     },
+//   };
+// }

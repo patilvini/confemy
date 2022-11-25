@@ -40,7 +40,6 @@ const customStyles = {
     };
   },
   placeholder: (provided, state) => {
-    console.log("provided", provided);
     return {
       ...provided,
       color: state.isDisabled ? shade4 : "hsl(0, 0%, 50%)",
@@ -148,12 +147,9 @@ export default function SearchFilters({
           <h3>Filters</h3>
           <div
             onClick={() => clearAllFilters()}
-            className="caption-1-heavy-gray3"
-            style={{
-              cursor: "pointer",
-            }}
+            className="caption-1-heavy-gray3 clearall-btn-wrap"
           >
-            Clear all
+            Clear All
           </div>
         </div>
         <div
@@ -337,6 +333,7 @@ export default function SearchFilters({
               value={minPrice}
               onChange={onMinPriceChange}
               disabled={priceDisabled}
+              min="0"
             />
           </div>
           <div className="form-type-3 mt-8">

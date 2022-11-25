@@ -8,7 +8,7 @@
 
 // sb is search bar
 .sb-container {
-  padding-top: 6rem;
+  padding-top: 3.8rem;
   display: flex;
   overflow: hidden;
 }
@@ -31,6 +31,7 @@
 
 // sr is search result
 .sr-container {
+  position: relative;
   margin-top: 3.2rem;
   margin-bottom: 1.6rem;
   // width: 100%;
@@ -38,4 +39,22 @@
   grid-template-columns: repeat(3, 28rem);
   grid-template-rows: auto;
   gap: 2.4rem;
+}
+
+.sr-container-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  border-radius: 4px;
+  background-color: $colour-white;
+}
+
+.sr-noresult-container {
+  width: 600px;
+  height: 600px;
 }
