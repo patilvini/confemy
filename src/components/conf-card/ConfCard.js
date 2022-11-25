@@ -76,7 +76,10 @@ export default function ConfCard({
   return (
     <div className="conf-card">
       <div
-        onClick={() => navigate(`/search-conference/${confId}`)}
+        onClick={() => {
+          console.log("confcard clicked");
+          navigate(`/search-conference/${confId}`);
+        }}
         className="cc-img-container"
       >
         {src ? (
@@ -147,7 +150,9 @@ export default function ConfCard({
                 : "Price not availabe"}
             </span>
             <i
-              onClick={() => console.log("liked")}
+              onClick={() => {
+                console.log("Liked");
+              }}
               className="cc-likeicon-wrap"
             >
               <LikeInactiveIcon className="icon-size" />

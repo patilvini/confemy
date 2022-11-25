@@ -1,14 +1,17 @@
+import { useSelector } from "react-redux";
 import ConfCard from "../conf-card/ConfCard";
 import UserOnBenchSketch from "../SVG-assets/UserOnBenchSketch";
 
 export default function SearchResult({ result, isLoading }) {
-  // console.log("result array", result);
+  const user = useSelector((state) => state.auth.user);
   return (
     <>
       {!isLoading && result.length === 0 ? (
         <div className="sr-noresult-container">
           <UserOnBenchSketch className="icon-size" />
-          <h2>Nothing matched your search “Harward” </h2>
+          <h2>
+            Nothing matched your search {user && `“${user && user.firstName}”`}
+          </h2>
         </div>
       ) : (
         <div className="sr-container">
