@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Editor, EditorState, convertFromRaw } from "draft-js";
+import DOMPurify from "dompurify";
+import draftToHtml from "draftjs-to-html";
+import { convertToHTML } from "draft-convert";
+
 import api from "../../utility/api";
 import BookingCard from "./BookingCard";
 import SpeakerCard from "../booking/SpeakerCard";
@@ -12,7 +17,7 @@ import "./ConfDetails.scss";
 import "./slider.scss";
 
 export default function ConfDetails() {
-  const [data, setData] = useState();
+  const [selectedConference, setSelectedConference] = useState(null);
   const [action, setAction] = useState(false);
   const confId = useParams().confId;
 
@@ -26,31 +31,49 @@ export default function ConfDetails() {
 
   // console.log(confId)
 
-  const addRecentlyViewed = async () => {
-    console.log(data);
-    // try {
-    //   const r = await api.post("/homePage/recentlyviewed", {
-    //     recentlyViewedConferenceDetails: {
-    //       conferenceId: confId,
-    //     },
-    //   });
-    //   console.log(r.data.data);
-    // } catch (err) {
-    //   // console.error(err);
-    // }
+  const addRecentlyViewed = async (Id) => {
+    console.log(selectedConference);
+    try {
+      const response = await api.post("/homePage/recentlyviewed", {
+        recentlyViewedConferenceDetails: {
+          conferenceId: Id,
+        },
+      });
+      // console.log(response.selectedConference.selectedConference);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const loadConferenceDetails = async (Id) => {
     try {
       const response = await api.get(`conferences/${Id}`);
-      console.log(response.data.data.conferences);
-      setData(response.data.data.conferences);
-      if (response.data.data.conferences.completedAllMandatorySteps) {
-        addRecentlyViewed();
-      }
+      console.log(response.data.data);
+      setSelectedConference(response.data.data.conferences);
+      // if (response.data.data.conferences.completedAllMandatorySteps) {
+      //   addRecentlyViewed(Id);
+      // }
     } catch (err) {
       console.error(err);
     }
+  };
+
+  // markup setup
+
+  let blocks;
+  let myHtml;
+  if (
+    selectedConference?.description &&
+    Object.keys(selectedConference?.description).length > 0
+  ) {
+    blocks = convertFromRaw(selectedConference?.description);
+    const myHtml = convertToHTML(blocks);
+  }
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
   };
 
   useEffect(() => {
@@ -58,152 +81,177 @@ export default function ConfDetails() {
   }, [confId]);
 
   return (
-    <div className="conference-component">
-      <div className="conf-details-grid">
-        <div className="conf-details-item">
-          <img
-            width="100%"
-            src="https://wallpaperaccess.com/full/682838.jpg"
-            alt="cover"
-          />
-          <div className="photo-card">
-            <BookingCard data={data} reload={() => setAction(!action)} />
+    <div className="cd-container">
+      <div className="cd-grid">
+        <div className="cd-1st-col">
+          <div className="cd-banner-container mb-40">
+            {selectedConference?.banner?.length > 0 ? (
+              <img
+                className="cd-banner"
+                src={selectedConference.banner?.[0].Location}
+                alt="banner"
+              />
+            ) : (
+              <div className="cd-no-banner">
+                <div className="text-align-center">
+                  <h4>Banner coming</h4>
+                </div>
+              </div>
+            )}
           </div>
+          <div className="cd-1stcol-cardwrap">
+            <BookingCard
+              data={selectedConference}
+              reload={() => setAction(!action)}
+            />
+          </div>
+          {selectedConference?.description &&
+            Object.keys(selectedConference?.description).length > 0 && (
+              <div className="mb-60">
+                <h2 className="mb-16">Description</h2>
+                <div
+                  className="editor-text"
+                  dangerouslySetInnerHTML={createMarkup(
+                    draftToHtml(selectedConference?.description)
+                  )}
+                ></div>
+              </div>
+            )}
+          {selectedConference?.mode.includes("venue") && (
+            <div className="mb-60">
+              <h2 className="mb-32">Venue and Amenities</h2>
+              <div className="cd-venuecard">
+                {selectedConference?.venueImages?.length > 0 && (
+                  <div className="cd-carousel-wrap">
+                    <Carousel
+                      // swipeable={true}
+                      // draggable={true}
+                      showDots={true}
+                      responsive={responsive}
+                      infinite={true}
+                      autoPlaySpeed={1000}
+                      keyBoardControl={true}
+                      transitionDuration={500}
+                      containerClass="carousel-container"
+                      // removeArrowOnDeviceType={["tablet", "mobile"]}
+                      dotListClass="custom-dot-list-style"
+                      itemClass="carousel-item-padding-40-px"
+                    >
+                      {selectedConference?.venueImages?.map((image) => (
+                        <div key={image._id}>
+                          <img width="100%" src={image.Location} alt="cover" />
+                        </div>
+                      ))}
+                    </Carousel>
+                  </div>
+                )}
+                <div className="cd-venuecard-content">
+                  <h4>{selectedConference?.venueName}</h4>
+                  <div className="flex mt-16">
+                    <LocationIcon fill="#c4c4c4" className="icon-xs mr-8" />
+                    <div>
+                      <div className="caption-1-regular-cblack">
+                        {selectedConference?.street1}
+                      </div>
+                      <div className="caption-1-regular-cblack">
+                        {selectedConference?.street2}
+                      </div>
+                      <div className="caption-1-regular-cblack">
+                        <span>{selectedConference?.city}, </span>
+                        <span className="caption-1-regular-cblack">
+                          {selectedConference?.state}
+                        </span>
+                      </div>
 
-          <h2>About this conference</h2>
-          <p className="avenir-roman-18-gray3">
-            Established in 1962, the MIT Press is one of the largest and most
-            distinguished university presses in the world and a leading
-            publisher of books and journals at the intersection of science,
-            technology, art, social science, and design. MIT Press books and
-            journals are known for their intellectual daring, scholarly
-            standards, interdisciplinary focus, and distinctive design.
-          </p>
-          <h3 className="venue-section-heading">Venue and Amenities</h3>
-          <div className="venuecard">
-            <Carousel
-              // swipeable={true}
-              // draggable={true}
-              showDots={true}
-              responsive={responsive}
-              infinite={true}
-              autoPlaySpeed={1000}
-              keyBoardControl={true}
-              transitionDuration={500}
-              containerClass="carousel-container"
-              // removeArrowOnDeviceType={["tablet", "mobile"]}
-              dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-40-px"
-            >
-              <div>
-                <img
-                  width="100%"
-                  src="https://wallpaperaccess.com/full/1406863.jpg"
-                  alt="cover"
+                      <div className="caption-1-regular-cblack">
+                        <span> {selectedConference?.country} </span>
+                        <span className="caption-1-regular-cblack">
+                          {selectedConference?.zipcode}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="cd-amenities pt-16">
+                    {selectedConference?.amenities?.map((amenity) => (
+                      <div className="flex-vc " key={amenity._id}>
+                        <img
+                          className="icon-sm mr-8"
+                          alt="preview"
+                          src={amenity?.icon?.location}
+                        />
+                        <span className="caption-1-regular-cblack">
+                          {amenity.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {selectedConference?.courseOutline &&
+            Object.keys(selectedConference?.courseOutline).length > 0 && (
+              <div className="mb-60">
+                <h2 className="mb-16">Conference Outline</h2>
+                <div
+                  className="editor-text"
+                  dangerouslySetInnerHTML={createMarkup(
+                    draftToHtml(selectedConference?.courseOutline)
+                  )}
+                ></div>
+              </div>
+            )}
+
+          {selectedConference?.schedules &&
+            Object.keys(selectedConference?.schedules).length > 0 && (
+              <div className="mb-60">
+                <h2 className="mb-16">Conference Schedule</h2>
+                <div
+                  className="editor-text"
+                  dangerouslySetInnerHTML={createMarkup(
+                    draftToHtml(selectedConference?.schedules)
+                  )}
+                ></div>
+              </div>
+            )}
+          <h2 className="mb-16">Conference Speakers</h2>
+          <div className="cd-speakers-grid mb-60">
+            {selectedConference?.speakers?.map((speaker) => (
+              <div key={speaker._id}>
+                <SpeakerCard
+                  name={`${speaker.speaker.firstName} ${speaker.speaker.lastName}`}
+                  degree={speaker.speaker.degree}
                 />
               </div>
-              <div>
-                <img
-                  width="100%"
-                  src="https://wallpaperaccess.com/full/3137469.png"
-                  alt="cover"
-                />
-              </div>
-              <div>
-                <img
-                  width="100%"
-                  src="https://wallpaperaccess.com/full/1406842.jpg"
-                  alt="cover"
-                />
-              </div>
-              <div>
-                <img
-                  width="100%"
-                  src="https://wallpaperaccess.com/full/3443862.jpg"
-                  alt="cover"
-                />
-              </div>
-            </Carousel>
-
-            <h4>Holiday Inn Norwich City</h4>
-
-            <div className="icon-text">
-              <LocationIcon fill="#c4c4c4" className="icon-xs" />
-              <span>Norwich</span>
-            </div>
-
-            <div className="amenities-section">
-              <div className="file">
-                <DocumentIcon /> <span>Pool</span>
-              </div>
-              <div className="file">
-                <DocumentIcon /> <span>Parking</span>
-              </div>
-              <div className="file">
-                <DocumentIcon /> <span>Cafe</span>
-              </div>
-              <div className="file">
-                <DocumentIcon /> <span>Laundry</span>
-              </div>
-              <div className="file">
-                <DocumentIcon /> <span>Lounge</span>
-              </div>
-            </div>
+            ))}
           </div>
-
-          <h3 className="course-outline-heading">Course Outline</h3>
-          <p className="avenir-roman-18-gray3">
-            Established in 1962, the MIT Press is one of the largest and most
-            distinguished university presses in the world and a leading
-            publisher of books and journals at the intersection of science,
-            technology, art, social science, and design. MIT Press books and
-            journals are known for their intellectual daring, scholarly
-            standards, interdisciplinary focus, and distinctive design.
-          </p>
-
-          <div className="added-docs">
-            <div className="file">
-              <DocumentIcon fill="#c4c4c4" className="icon-size" />
-              <span>Document.docx</span>
-            </div>
-            <div className="file">
-              <DocumentIcon fill="#c4c4c4" className="icon-size" />
-              <span>Document2.docx</span>
-            </div>
-          </div>
-
-          <h3>Conference Schedule</h3>
-
-          <p className="avenir-roman-18-gray3">
-            Established in 1962, the MIT Press is one of the largest and most
-            distinguished university presses in the world and a leading
-            publisher of books and journals at the intersection of science,
-            technology, art, social science, and design. MIT Press books and
-            journals are known for their intellectual daring, scholarly
-            standards, interdisciplinary focus, and distinctive design.
-          </p>
-
-          <h3 className="mt-92">Conference Speakers</h3>
-
-          <div className="conference-details-speakers">
-            <SpeakerCard name={"Pranit Deshpande"} degree={"MD MBBS"} />
-            <SpeakerCard name={"Pranit Deshpande"} degree={"MD MBBS"} />
-            <SpeakerCard name={"Pranit Deshpande"} degree={"MD MBBS"} />
-            <SpeakerCard name={"Pranit Deshpande"} degree={"MD MBBS"} />
-          </div>
-
-          <h3 className="mt-92">Refund Policy</h3>
-          <p className="avenir-roman-18-gray3 mb-88">
-            Established in 1962, the MIT Press is one of the largest and most
-            distinguished university presses in the world and a leading
-            publisher of books and journals at the intersection of science,
-            technology, art, social science, and design. MIT Press books and
-            journals are known for their intellectual daring, scholarly
-            standards, interdisciplinary focus, and distinctive design.
-          </p>
+          {selectedConference?.refundPolicy &&
+            Object.keys(selectedConference?.refundDescription).length > 0 && (
+              <div className="mb-60">
+                <h2 className="mt-92">Refund</h2>
+                <div
+                  className="editor-text mt-16"
+                  dangerouslySetInnerHTML={createMarkup(
+                    draftToHtml(selectedConference?.refundDescription)
+                  )}
+                ></div>
+              </div>
+            )}
         </div>
-        <div className="side-card">
-          <BookingCard data={data} reload={() => setAction(!action)} />
+        <div className="cd-2nd-col">
+          <BookingCard
+            title={selectedConference?.title}
+            organizer={selectedConference?.host}
+            reload={() => setAction(!action)}
+            startDate={selectedConference?.startDate}
+            endDate={selectedConference?.endDate}
+            timezone={selectedConference?.timezone}
+            mode={selectedConference?.mode}
+            city={selectedConference?.city}
+            credits={selectedConference?.credits}
+            currency={selectedConference?.currency}
+            basePrice={selectedConference?.basePrice}
+          />
         </div>
       </div>
     </div>

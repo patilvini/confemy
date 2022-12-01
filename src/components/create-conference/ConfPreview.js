@@ -182,7 +182,9 @@ export default function ConfPreview() {
               }}
             >
               <div className="text-align-center">
-                <h4>Add Banner to improve visibility through Details 2 step</h4>
+                <p className="body-bold mb-32">
+                  Add Banner to improve visibility through Details 2 step
+                </p>
               </div>
             </div>
           )}

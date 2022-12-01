@@ -59,8 +59,13 @@ h3 {
 // h4 = Subheading in zeplin project
 
 h4 {
+  font-family: Avenir-Heavy;
   font-size: 20px;
   font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
 }
 
 .body-bold {
@@ -149,4 +154,9 @@ h4 {
   line-height: 2.4rem;
   letter-spacing: 0.2px;
   color: $gray-3;
+}
+
+.editor-text {
+  font-size: medium;
+  line-height: normal;
 }

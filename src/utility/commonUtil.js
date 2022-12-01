@@ -1,3 +1,43 @@
+import { utcToZonedTime, format } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
+
+export const getFormattedDateInTz = (date, timezone) => {
+  let dateInTz;
+  let formattedDate;
+
+  if (date && timezone) {
+    dateInTz = utcToZonedTime(date, timezone);
+    formattedDate = format(dateInTz, "MMM-dd-yyyy, HH:mm aa", {
+      timeZone: timezone,
+      locale: enGB,
+    });
+  } else {
+    formattedDate = null;
+  }
+  return formattedDate;
+};
+
+export const getLocationString = (mode, city) => {
+  let locationStrig = "Location";
+  if (mode?.length > 0) {
+    if (mode?.includes("venue") && city) {
+      locationStrig = city;
+      // console.log("venue", locationStrig);
+    }
+
+    if (mode?.includes("onlineConf")) {
+      locationStrig = "Online";
+      // console.log("online", locationStrig);
+    }
+
+    if (mode?.includes("venue") && mode?.includes("onlineConf")) {
+      locationStrig = `${city} & Online`;
+      // console.log("both", locationStrig);
+    }
+  }
+  return locationStrig;
+};
+
 export const capitalize = (word) => {
   return word[0]?.toUpperCase() + word.slice(1).toLowerCase();
 };

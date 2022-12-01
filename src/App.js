@@ -57,6 +57,7 @@ import ListConferencesPage from "./pages/track-credit-page/ListConferencesPage";
 import MyConfsPage from "./pages/my-confs-page/MyConfsPage";
 
 import PNavbar from "./components/navbar/PNavbar";
+import EditorContainer from "./components/create-conference/EditorContainer";
 
 const App = () => {
   useEffect(() => {
@@ -111,7 +112,7 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
-              <Route path="test" element={<OrganizerConfDashPage />} />
+              <Route path="test" element={<EditorContainer />} />
               {/* <Route path="test2" element={<SearchSpeaker />} /> */}
               <Route
                 path="create-conference"

@@ -77,7 +77,6 @@ export default function ConfCard({
     <div className="conf-card">
       <div
         onClick={() => {
-          console.log("confcard clicked");
           navigate(`/search-conference/${confId}`);
         }}
         className="cc-img-container"

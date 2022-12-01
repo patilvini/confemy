@@ -20,14 +20,16 @@ export default function CreateTickets({ formik, setFormikFieldValue }) {
   return (
     <div>
       <div className="mb-72">
-        <h4 className="mb-32">
+        <p className="body-regular-gray3 mb-32">
           First ticket will be created at base price or regular price. For free
           conferences, set baseprice as zero. Base price will be used as price
-          of the conference for search criteria. Conference with base price set
-          at zero is considered as a free conference. After base price ticket is
-          created, one can add additional tickets at different prices with
-          quantities as needed.
-        </h4>
+          of the conference for search criteria.
+        </p>
+        <p className="body-regular-gray3 mb-32">
+          Conference with base price set at zero is considered as a free
+          conference. After base price ticket is created, one can add additional
+          tickets at different prices with quantities as needed.
+        </p>
 
         <div>
           {newConference?.tickets?.length > 0 && (

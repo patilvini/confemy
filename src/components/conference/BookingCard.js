@@ -9,45 +9,33 @@ import ShareIcon from "../icons/ShareIcon";
 
 import LikeBlueIcon from "../icons/LikeBlueIcon";
 import LikeRedIcon from "../icons/LikeRedIcon";
-import { DateTime } from "luxon";
 
 import api from "../../utility/api";
+import { getFormattedDateInTz } from "../../utility/commonUtil";
+import { getLocationString } from "../../utility/commonUtil";
 
-export default function BookingCard({ data, reload }) {
-  console.log(data);
-
+export default function BookingCard({
+  title,
+  organizer,
+  startDate,
+  timezone,
+  endDate,
+  mode,
+  city,
+  currency,
+  basePrice,
+  credits,
+  data,
+  reload,
+}) {
   const navigate = useNavigate();
-
-  const date1 = DateTime.fromISO(data?.startDate);
-  let startDate = date1.toLocaleString({
-    ...DateTime.DATE_MED_WITH_WEEKDAY,
-    weekday: "short",
-  });
-
-  const startTime = DateTime.fromISO(data?.startTime);
-
-  console.log(startTime.toLocaleString(DateTime.DATETIME_MED));
-
-  const endTime = DateTime.fromISO(data?.endTime);
-
-  console.log(startTime.toFormat("h:mm a"));
-
-  const date2 = DateTime.fromISO(data?.endDate);
-  let endDate = date2.toLocaleString({
-    ...DateTime.DATE_MED_WITH_WEEKDAY,
-    weekday: "short",
-  });
-
   const confID = useParams().confID;
-
   const userID = useSelector((state) => state.auth.user?._id);
 
   const like = async () => {
     const likedConferenceDetails = { conferenceId: confID, userId: userID };
     try {
       const r = await api.post("/conferences/like", { likedConferenceDetails });
-
-      console.log(r);
       reload();
     } catch (err) {
       console.log(err);
@@ -69,42 +57,50 @@ export default function BookingCard({ data, reload }) {
   return (
     <div className="conf-details-card">
       <div>
-        <h4>Lorem Ipsum Lorem ipsum dolor, laudantium est repellat nam?</h4>
-        <div>
-          <p className="caption-1-regular-gray3 mt-14">
-            by Harvard School of Medicine
-          </p>
-          <button
-            style={{
-              marginTop: ".5rem",
-              padding: ".2rem 1rem",
-              color: "#08415c",
-              border: "2px solid #08415c",
-              backgroundColor: "white",
-              borderRadius: "4px",
-              fontWeight: "bold",
-            }}
-          >
-            Follow
-          </button>
-        </div>
+        <h4 className="mb-14">{title}</h4>
+        <p className="caption-1-regular-gray3 mb-10">by {organizer}</p>
+        <button className="cd-follow-button mb-48">Follow</button>
         <div className="icon-grid-card ">
-          <div>
-            <DateIcon className="icon-sm" />
+          <div className="flex-vc mb-12">
+            <DateIcon className="icon-sm mr-16" />
+            <p className="body-regular-gray3">
+              {getFormattedDateInTz(startDate, timezone)} -{" "}
+              {getFormattedDateInTz(endDate, timezone)}
+            </p>
           </div>
-          <div>Wed, May 23, 11:00 AM - Fri, May 25, 12:30 PM</div>
-          <div>
-            <LocationIcon className="icon-sm" />{" "}
+          <div className="flex-vc mb-12">
+            <LocationIcon className="icon-sm mr-16" />
+            <p className="body-regular-gray3">
+              {getLocationString(mode, city)}
+            </p>
           </div>
-          <div>Norwich, Online Event dsasa dsada asdsa </div>
-          <div>
-            <CreditsIcon className="icon-sm" />
+          <div className="flex-vc mb-12">
+            <CreditsIcon className="icon-sm mr-16" />
+            <p className="body-regular-gray3">
+              {" "}
+              {credits?.length > 0
+                ? `${credits[0].creditId?.name} - ${credits[0].quantity}`
+                : "Credits not added"}
+            </p>
           </div>
-          <div>AMA cat1 - 20 credits</div>
-          <div>
-            <PriceIcon className="icon-sm" />
+          <div className="flex-vc mb-12">
+            <PriceIcon className="icon-sm mr-16" />
+            <p
+              className="avenir-roman-18"
+              style={{
+                fontWeight: 900,
+                lineHeight: 1.33,
+                letterSpacing: 0.2,
+              }}
+            >
+              {currency && basePrice > 0
+                ? `${currency} -  
+                    ${basePrice} Onwards`
+                : currency && basePrice === 0
+                ? "Free"
+                : "Price not availabe"}
+            </p>
           </div>
-          <div style={{ fontWeight: "900" }}>$20 onwards</div>
         </div>
       </div>
       <div>

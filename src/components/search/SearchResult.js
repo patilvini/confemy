@@ -34,10 +34,11 @@ export default function SearchResult({ result, isLoading }) {
           ))}
 
           <div
-            style={{
-              ...(isLoading && result.length > 0 && { opacity: 0.7 }),
-            }}
-            className="sr-container-overlay"
+            className={
+              isLoading && result.length > 0
+                ? "sr-container-overlay"
+                : "display-none"
+            }
           ></div>
         </div>
       )}

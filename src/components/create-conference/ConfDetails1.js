@@ -209,7 +209,7 @@ export default function ConfDetails1() {
                 <TextError>{formik.errors.professions}</TextError>
               )}
           </div>
-          <h4>specialties</h4>
+          <h4>Specialties</h4>
           <SelectFormType1
             options={subspecialties}
             label="specialities"

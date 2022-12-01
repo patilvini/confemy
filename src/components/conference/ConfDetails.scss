@@ -1,28 +1,24 @@
 @import "../../utility/utility.styles.scss";
 
-.conference-component {
+// cd = conference details
+
+.cd-container {
   display: flex;
   justify-content: center;
 }
 
-.conf-details-grid {
-  padding-top: 12.8rem;
-
-  width: 111.4rem;
-  height: 100%;
+.cd-grid {
+  padding-top: 6.4rem;
+  // width: 111.4rem;
+  // height: 100%;
   display: grid;
   grid-template-columns: 66rem 40.8rem;
   column-gap: 4.6rem;
 }
 
-.conf-details-item {
+.cd-1st-col {
   h2 {
     color: $primary;
-    margin-top: 4rem;
-  }
-
-  p {
-    margin-top: 1.6rem;
   }
 
   h3 {
@@ -30,49 +26,53 @@
   }
 }
 
-.venue-section-heading {
-  margin: 6rem 0 3.2rem 0;
+.cd-banner-container {
+  width: 66rem;
+  height: 37.125rem;
+  overflow: hidden;
+  border-radius: 4px;
 }
 
-.icon-text {
+.cd-banner {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.cd-no-banner {
   display: flex;
-  margin-left: 2.8rem;
-  margin-bottom: 2.4rem;
-
-  span {
-    margin-left: 6px;
-    font-size: 16px;
-    line-height: 16px;
-    letter-spacing: 0.01px;
-    color: $confemy-black;
-    font-weight: 500;
-  }
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 40;
+  background-color: #ecf0f2;
 }
 
-.amenities-section {
-  margin-left: 2.8rem;
-  margin-right: 4.6rem;
-  padding-bottom: 2.9rem;
+.cd-amenities {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-
-  div {
-    margin-right: 4.6rem;
-    font-size: 16px;
-    line-height: 16px;
-    letter-spacing: 0.01px;
-    color: $confemy-black;
-    font-weight: 600;
-  }
 }
 
-.venuecard {
-  background-color: #fff;
+.cd-venuecard {
+  width: 66rem;
+  overflow: hidden;
+  border-radius: 8px;
+}
 
-  h4 {
-    margin: 3.4rem 0 1.5rem 2.8rem;
-  }
+.cd-carousel-wrap {
+  width: 66rem;
+  height: 37.125rem;
+  overflow: hidden;
+}
+
+.cd-venuecard-content {
+  padding: 3.2rem;
+  border: solid 1px $shade-1;
+  background-color: $colour-white;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .course-outline-heading {
@@ -112,34 +112,38 @@
 
 .conf-details-card {
   background-color: #fff;
-  height: 53.8rem;
+  min-height: 53.8rem;
+  width: 40.8rem;
   padding: 2.4rem;
+  border-radius: 4px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08), 0 4px 8px 0 rgba(8, 65, 92, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
+
+  h4 {
+    line-height: 1.2;
+    color: $confemy-black;
+  }
+}
+
+.cd-follow-button {
+  margin-top: 0.5rem;
+  padding: 0.2rem 1rem;
+  color: #08415c;
+  border: 2px solid #08415c;
+  background-color: white;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .added-docs {
   margin: 4.1rem 0 8rem 0;
 }
 
-.file {
-  display: flex;
-  align-items: center;
-  padding: 1rem 0.5rem;
-
-  span {
-    margin-left: 6px;
-    font-size: 16px;
-    line-height: 16px;
-    letter-spacing: 0.01px;
-    color: $primary;
-    font-weight: 600;
-  }
-}
-
-.conference-details-speakers {
+.cd-speakers-grid {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -171,24 +175,8 @@
   border-radius: 50%;
 }
 
-.photo-card {
+.cd-1stcol-cardwrap {
   display: none;
-}
-
-.icon-grid-card {
-  margin-top: 4.2rem;
-  display: grid;
-  grid-template-columns: 0.1fr 2fr;
-  column-gap: 1.8rem;
-  row-gap: 1.2rem;
-  align-items: center;
-
-  div {
-    font-family: Avenir-Roman;
-    font-size: 18px;
-    line-height: 1.33;
-    color: $gray-3;
-  }
 }
 
 .bottom-bar {
@@ -213,7 +201,7 @@
 }
 
 @media screen and (max-width: 1156px) {
-  .conf-details-grid {
+  .cd-grid {
     width: 100.6rem;
     grid-template-columns: 60rem 38rem;
     column-gap: 2.6rem;
@@ -221,7 +209,7 @@
 }
 
 @media screen and (max-width: 1124px) {
-  .conf-details-grid {
+  .cd-grid {
     width: 92.6rem;
     grid-template-columns: 56rem 36rem;
     column-gap: 2.6rem;
@@ -235,7 +223,7 @@
 }
 
 @media screen and (max-width: 1000px) {
-  .conf-details-grid {
+  .cd-grid {
     width: 86.6rem;
     grid-template-columns: 50rem 34rem;
     column-gap: 2.6rem;
@@ -249,16 +237,16 @@
 }
 
 @media screen and (max-width: 887px) {
-  .conf-details-grid {
+  .cd-grid {
     width: 90%;
     grid-template-columns: 100%;
   }
 
-  .side-card {
+  .cd-2nd-col {
     display: none;
   }
 
-  .photo-card {
+  .cd-1stcol-cardwrap {
     display: inline;
   }
 
@@ -274,7 +262,7 @@
 }
 
 @media screen and (max-width: 628px) {
-  .conf-details-grid {
+  .cd-grid {
     padding-top: 8rem;
   }
 
@@ -296,7 +284,7 @@
     }
   }
 
-  .conference-details-speakers {
+  .cd-speakers-grid {
     grid-template-columns: 1fr;
   }
 }
