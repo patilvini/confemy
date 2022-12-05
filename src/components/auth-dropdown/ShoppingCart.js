@@ -5,15 +5,11 @@ import BookingCart from "../booking/BookingCart";
 import CartIcon from "../icons/CartIcon";
 import DropdownIcon from "../icons/DropdownIcon";
 
-
 export default function ShoppingCart() {
-const [openCart, setOpenCart] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
   const onDropdownClick = () => setOpenCart(!openCart);
 
-
-
   const ref = useRef();
-
 
   useEffect(() => {
     const onBodyClick = (event) => {
@@ -31,29 +27,29 @@ const [openCart, setOpenCart] = useState(false);
     };
   }, []);
 
-  
-
   return (
-    <div  ref={ref}>
+    <div ref={ref}>
       <div
         className="user-name-wrapper mr-10"
         onClick={onDropdownClick}
         // onMouseEnter={() => setOpenCart(true)}
         // onMouseLeave={() => setOpenCart(false)}
       >
-       
-        <span><CartIcon className="icon-sm mr-2"/></span>
+        <span>
+          <CartIcon className="icon-sm mr-2" />
+        </span>
         <p className="signin cart-text-res">Cart</p>
-        <div><DropdownIcon  className="icon-size mr-10" /></div>
-        
+        <div>
+          <DropdownIcon className="icon-size mr-10" />
+        </div>
       </div>
       <div
         className={openCart ? "" : "display-none"}
         // onMouseEnter={() => setOpenCart(true)}
         // onMouseLeave={() => setOpenCart(false)}
       >
-        <BookingCart className="cart"/>
+        <BookingCart className="cart" />
       </div>
-    </div>)
-
-  }
+    </div>
+  );
+}

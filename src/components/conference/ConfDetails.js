@@ -251,6 +251,8 @@ export default function ConfDetails() {
             credits={selectedConference?.credits}
             currency={selectedConference?.currency}
             basePrice={selectedConference?.basePrice}
+            confId={selectedConference?._id}
+            bookingTickets={selectedConference?.bookingTickets}
           />
         </div>
       </div>

@@ -58,6 +58,8 @@ import MyConfsPage from "./pages/my-confs-page/MyConfsPage";
 
 import PNavbar from "./components/navbar/PNavbar";
 import EditorContainer from "./components/create-conference/EditorContainer";
+import BookingPage from "./pages/booking-page/BookingPage";
+import CartPage from "./pages/cart-page/CartPage";
 
 const App = () => {
   useEffect(() => {
@@ -104,6 +106,22 @@ const App = () => {
               element={<OrganizerConfPreviewFinishedPage />}
             ></Route>
             <Route path="/message" element={<MessagePage />}></Route>
+            <Route
+              path="book-conference/:confId"
+              element={
+                <MyPrivateRoute>
+                  <BookingPage />
+                </MyPrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="cart"
+              element={
+                <MyPrivateRoute>
+                  <CartPage />
+                </MyPrivateRoute>
+              }
+            ></Route>
             <Route
               path="dashboard"
               element={

@@ -25,6 +25,8 @@ export default function BookingCard({
   currency,
   basePrice,
   credits,
+  confId,
+  bookingTickets,
   data,
   reload,
 }) {
@@ -126,7 +128,9 @@ export default function BookingCard({
           <div>
             <button
               onClick={() => {
-                navigate("/booking-step1/" + data?._id);
+                navigate(`/book-conference/${confId}`, {
+                  state: bookingTickets,
+                });
               }}
               type="button"
               className="button button-green"
