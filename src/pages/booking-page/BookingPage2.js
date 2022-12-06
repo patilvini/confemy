@@ -1,18 +1,26 @@
 import { useSelector } from "react-redux";
 import DeleteIcon from "../../components/icons/DeleteIcon";
 import GuestDetails from "./GuestDetails";
+import Switch from "../../components/switch/Switch";
+
 export default function BookingPage2({
   backPage,
   cart,
   setCart,
-  data,
-  setData,
+  onFormSubmit,
+  user,
 }) {
-  const user = useSelector((state) => state.auth.user);
-  const onFormSubmit = (e) => {
-    e.preventDefault();
-    console.log("form Submitted");
-  };
+  // function to change the cart based on guest inputs
+
+  function handleSetCart(guest, key, value) {
+    setCart((prevState) => {
+      const updatedCart = prevState.map((item) =>
+        item.guestId === guest.guestId ? { ...item, [key]: value } : item
+      );
+      return updatedCart;
+    });
+  }
+
   return (
     <>
       <div className="text-align-center mb-72">
@@ -56,16 +64,18 @@ export default function BookingPage2({
           <table>
             <thead>
               <tr>
-                <th>ITEM</th>
+                <th>Guest</th>
+                <th>Ticket</th>
                 <th>QTY</th>
                 <th>Price</th>
-                <th>Subtotal</th>
+
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {cart?.map((item) => (
-                <tr key={item._id}>
+              {cart?.map((item, indx) => (
+                <tr key={item.guestId}>
+                  <td>Guest {indx + 1}</td>
                   <td>{item.name}</td>
                   <td>{item.quantity}</td>
                   <td>
@@ -73,13 +83,11 @@ export default function BookingPage2({
                     <span>{item.price}</span>
                   </td>
                   <td>
-                    <span>{item.currency} - </span>
-                    <span>{item.quantity * item.price}</span>
-                  </td>
-                  <td>
                     <i
                       onClick={() =>
-                        setCart(cart.filter((tkt) => tkt._id !== item._id))
+                        setCart(
+                          cart.filter((guest) => guest.guestId !== item.guestId)
+                        )
                       }
                     >
                       <DeleteIcon fill="#08415c" />
@@ -91,43 +99,30 @@ export default function BookingPage2({
           </table>
         </div>
       </div>
-      <form onSubmit={onFormSubmit}>
+      <form onSubmit={onFormSubmit} autoComplete="off">
         <div className="mb-80">
           <h3 className="color-primary mb-40">Guest Details</h3>
-          {cart.map((item) => (
-            <div className="mb-60">
-              <GuestDetails ticket={item} data={data} setData={setData} />
+          {cart.map((guest, indx) => (
+            <div key={guest.guestId} className="mb-60">
+              <GuestDetails
+                indx={indx}
+                guest={guest}
+                cart={cart}
+                setCart={setCart}
+                onInputChange={(e, guest) => {
+                  //   const value = e.target.value;
+                  const key = e.target.name;
+                  const value =
+                    e.target.type === "checkbox"
+                      ? e.target.checked
+                      : e.target.value;
+                  handleSetCart(guest, key, value);
+                }}
+              />
             </div>
           ))}
         </div>
-        <div className="mb-40">
-          <h3 className="mb-32 color-primary">Ticket Details</h3>
-          <div
-            style={{ width: "83.2rem", columnGap: 24 }}
-            className="grid-col-2 "
-          >
-            <div className="grid-1st-col">
-              <div className="form-type-3">
-                <input type="text" placeholder="Mobile" />
-              </div>
-            </div>
-            <div className="grid-2nd-col flex-vc">
-              <p className="caption-2-bold-cblack">
-                Send e-tickets on whatsapp on this Mobile
-              </p>
-            </div>
-            <div className="grid-1st-col">
-              <div className="form-type-3">
-                <input type="text" placeholder="Email" />
-              </div>
-            </div>
-            <div className="grid-2nd-col flex-vc">
-              <p className="caption-2-bold-cblack">
-                Send e-tickets to this email address
-              </p>
-            </div>
-          </div>
-        </div>
+
         <div className="flex-vc">
           <button type="submit" className="button button-primary mr-16">
             Continue

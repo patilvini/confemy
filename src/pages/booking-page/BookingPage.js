@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
-import "./bookingPage.styles.scss";
 import BookingPage1 from "./BookingPage1";
 import BookingPage2 from "./BookingPage2";
+import api from "../../utility/api";
+import "./bookingPage.styles.scss";
+
+import { alertAction } from "../../redux/alert/alertAction";
 
 const pages = ["BookingPage1", "BookingPage2"];
 
@@ -12,11 +16,35 @@ export default function BookingPage() {
 
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
-  const [data, setData] = useState([]);
-  const [ticketsCart, setTicketsCart] = useState([]);
 
   const { state } = useLocation();
   const { confId } = useParams();
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+
+  const onFormSubmit = async (e) => {
+    e.preventDefault();
+    const url = "conferences/bookings/step2";
+
+    const formData = {
+      ticketDetails: {
+        bookedBy: user?._id,
+        guests: cart,
+      },
+    };
+
+    console.log("formData", formData);
+
+    try {
+      const response = await api.post(url, formData);
+      if (response) {
+        console.log("booking step2 response", response.data.data);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
 
   function renderPageContent(page) {
     switch (page) {
@@ -37,8 +65,8 @@ export default function BookingPage() {
             backPage={backPage}
             cart={cart}
             setCart={setCart}
-            data={data}
-            setData={setData}
+            onFormSubmit={onFormSubmit}
+            user={user}
           />
         );
       default:
@@ -49,15 +77,6 @@ export default function BookingPage() {
   function backPage() {
     setcurrentPage(currentPage - 1);
   }
-
-  const desiredTicketsCart = [
-    {
-      id: "95959559",
-      ticketsIs: "9399399iri",
-      ticketsName: "base ticket",
-      quantity: 1,
-    },
-  ];
 
   useEffect(() => {
     setTotal(
@@ -70,7 +89,6 @@ export default function BookingPage() {
   }, [cart]);
 
   console.log("cart", cart);
-  console.log("data", data);
 
   return (
     <div className="container pt-64">

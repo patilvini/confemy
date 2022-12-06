@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import SelectTickets from "./SelectTickets";
 
 export default function BookingPage1({

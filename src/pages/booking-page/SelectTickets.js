@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
+import { v4 as uuid } from "uuid";
 
 const ticketAmounts = [
   { label: "1", value: 1 },
@@ -74,7 +75,21 @@ export default function SelectTickets({ ticket, cart, setCart }) {
   const [ticketsNumber, setTicketsNumber] = useState(0);
 
   const onTicketsSelect = (amt) => {
-    let newCart = [{ ...ticket, quantity: amt?.value }];
+    let newCart = [];
+    for (let i = 0; i < amt?.value; i++) {
+      newCart.push({
+        ...ticket,
+        quantity: 1,
+        guestId: uuid().slice(0, 8),
+        firstName: "",
+        lastName: "",
+        email: "",
+        countryCode: "",
+        mobile: "",
+        whatsApp: false,
+      });
+    }
+    // let newCart = [{ ...ticket, quantity: amt?.value }];
     let remainingCart = cart.filter((item) => item._id !== ticket._id);
     if (amt?.value > 0) {
       setCart([...newCart, ...remainingCart]);
@@ -85,7 +100,7 @@ export default function SelectTickets({ ticket, cart, setCart }) {
   };
 
   useEffect(() => {
-    const ticketQty = cart?.find((item) => item._id === ticket._id)?.quantity;
+    const ticketQty = cart?.filter((item) => item._id === ticket._id)?.length;
     setTicketsNumber(ticketQty);
   }, []);
 
