@@ -8,6 +8,8 @@ export default function BookingPage2({
   cart,
   setCart,
   onFormSubmit,
+  total,
+  tickets,
 }) {
   // function to change the cart based on guest inputs
   const user = useSelector((state) => state.auth.user);
@@ -61,14 +63,13 @@ export default function BookingPage2({
           </button>
         </div>
         <div className="bp-tickets-table-wrap">
-          <table>
+          <table className="mb-24">
             <thead>
               <tr>
                 <th>Guest</th>
                 <th>Ticket</th>
                 <th>QTY</th>
                 <th>Price</th>
-
                 <th>Action</th>
               </tr>
             </thead>
@@ -95,9 +96,25 @@ export default function BookingPage2({
                   </td>
                 </tr>
               ))}
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <i className="caption-1-heavy-cblack mr-60">
+                    Total: {tickets?.[0].currency} - {total}
+                  </i>
+                </td>
+                <td></td>
+              </tr>
             </tbody>
           </table>
         </div>
+        {/* <div className="bp-total">
+          <i className="caption-1-heavy-cblack mr-60">
+            Total: {tickets?.[0].currency} - {total}
+          </i>
+        </div> */}
       </div>
       <form onSubmit={onFormSubmit} autoComplete="off">
         <div className="mb-80">

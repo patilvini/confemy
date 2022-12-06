@@ -94,6 +94,8 @@ export default function BookingPage() {
             cart={cart}
             setCart={setCart}
             onFormSubmit={onFormSubmit}
+            tickets={state}
+            total={total}
           />
         );
       default:
