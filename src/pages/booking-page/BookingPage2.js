@@ -8,9 +8,9 @@ export default function BookingPage2({
   cart,
   setCart,
   onFormSubmit,
-  user,
 }) {
   // function to change the cart based on guest inputs
+  const user = useSelector((state) => state.auth.user);
 
   function handleSetCart(guest, key, value) {
     setCart((prevState) => {
@@ -125,7 +125,7 @@ export default function BookingPage2({
 
         <div className="flex-vc">
           <button type="submit" className="button button-primary mr-16">
-            Continue
+            Submit
           </button>
           <button
             type="button"

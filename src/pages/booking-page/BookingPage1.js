@@ -1,4 +1,6 @@
+import { useDispatch } from "react-redux";
 import SelectTickets from "./SelectTickets";
+import { alertAction } from "../../redux/alert/alertAction";
 
 export default function BookingPage1({
   setcurrentPage,
@@ -7,6 +9,8 @@ export default function BookingPage1({
   cart,
   setCart,
 }) {
+  const dispatch = useDispatch();
+
   return (
     <>
       <div className="text-align-center">
@@ -34,7 +38,14 @@ export default function BookingPage1({
           </div>
           <div>
             <button
-              onClick={() => setcurrentPage(1)}
+              onClick={() => {
+                if (!cart.length > 0) {
+                  return dispatch(
+                    alertAction("Pick at least one ticket", "danger")
+                  );
+                }
+                setcurrentPage(1);
+              }}
               className="button button-green"
             >
               Buy Now

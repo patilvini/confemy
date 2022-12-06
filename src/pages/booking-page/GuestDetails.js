@@ -11,6 +11,7 @@ export default function GuestDetails({ indx, guest, onInputChange }) {
         <div className="grid-1st-col">
           <div className="form-type-3">
             <input
+              required={true}
               type="text"
               placeholder="First name*"
               name="firstName"
@@ -22,6 +23,7 @@ export default function GuestDetails({ indx, guest, onInputChange }) {
         <div className="grid-2nd-col">
           <div className="form-type-3">
             <input
+              required={true}
               type="text"
               placeholder="Last name*"
               name="lastName"
@@ -33,6 +35,7 @@ export default function GuestDetails({ indx, guest, onInputChange }) {
         <div style={{ gridColumn: "1/-1" }}>
           <div className="form-type-3">
             <input
+              required={true}
               type="email"
               placeholder="Email*"
               name="email"

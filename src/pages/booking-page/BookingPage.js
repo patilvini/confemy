@@ -12,7 +12,6 @@ const pages = ["BookingPage1", "BookingPage2"];
 
 export default function BookingPage() {
   const [currentPage, setcurrentPage] = useState(0);
-  const isLastpage = currentPage === pages.length - 1;
 
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
@@ -23,8 +22,37 @@ export default function BookingPage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
+  // validate email
+  const emailRegex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  // const emailValidation = emailRegex.test(email.toLowerCase());
+
   const onFormSubmit = async (e) => {
     e.preventDefault();
+
+    let errMsg = "";
+    const err = cart.find(
+      (item) =>
+        item.firstName === "" ||
+        item.lastName === "" ||
+        !emailRegex.test(item.email.toLowerCase())
+    );
+
+    if (!err.firstName) {
+      errMsg = "First name not provided  ";
+      return dispatch(alertAction(errMsg, "danger"));
+    }
+    if (!err.lastName) {
+      errMsg = "Last name not provided ";
+      return dispatch(alertAction(errMsg, "danger"));
+    }
+    if (!emailRegex.test(err.email.toLowerCase())) {
+      errMsg = "Provide valid email";
+      return dispatch(alertAction(errMsg, "danger"));
+    }
+
+    console.log("err", err);
+
     const url = "conferences/bookings/step2";
 
     const formData = {
@@ -66,7 +94,6 @@ export default function BookingPage() {
             cart={cart}
             setCart={setCart}
             onFormSubmit={onFormSubmit}
-            user={user}
           />
         );
       default:
