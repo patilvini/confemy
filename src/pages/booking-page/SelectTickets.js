@@ -80,6 +80,7 @@ export default function SelectTickets({ ticket, cart, setCart }) {
       newCart.push({
         ...ticket,
         quantity: 1,
+
         guestId: uuid().slice(0, 8),
         firstName: "",
         lastName: "",
@@ -91,6 +92,7 @@ export default function SelectTickets({ ticket, cart, setCart }) {
     }
     // let newCart = [{ ...ticket, quantity: amt?.value }];
     let remainingCart = cart.filter((item) => item._id !== ticket._id);
+
     if (amt?.value > 0) {
       setCart([...newCart, ...remainingCart]);
     } else {

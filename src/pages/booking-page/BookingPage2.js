@@ -85,11 +85,11 @@ export default function BookingPage2({
                   </td>
                   <td>
                     <i
-                      onClick={() =>
+                      onClick={() => {
                         setCart(
                           cart.filter((guest) => guest.guestId !== item.guestId)
-                        )
-                      }
+                        );
+                      }}
                     >
                       <DeleteIcon fill="#08415c" />
                     </i>

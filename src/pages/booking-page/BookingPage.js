@@ -14,6 +14,7 @@ export default function BookingPage() {
   const [currentPage, setcurrentPage] = useState(0);
 
   const [cart, setCart] = useState([]);
+  // const [quantCart, setQuantCart] = useState([]);
   const [total, setTotal] = useState(0);
 
   const { state } = useLocation();
@@ -30,7 +31,20 @@ export default function BookingPage() {
   const onFormSubmit = async (e) => {
     e.preventDefault();
 
-    let errMsg = "";
+    const countedCart = cart.reduce((accumulator, item) => {
+      const currCount = accumulator[item._id] ?? 0;
+      return {
+        ...accumulator,
+        [item._id]: currCount + 1,
+      };
+    }, {});
+
+    // convert counteCart to array
+    const bookingTickets = Object.keys(countedCart).map((ticketId) => ({
+      _id: ticketId,
+      quantity: countedCart[ticketId],
+    }));
+
     const err = cart.find(
       (item) =>
         item.firstName === "" ||
@@ -38,40 +52,31 @@ export default function BookingPage() {
         !emailRegex.test(item.email.toLowerCase())
     );
 
-    if (!err.firstName) {
-      errMsg = "First name not provided  ";
-      return dispatch(alertAction(errMsg, "danger"));
+    if (err) {
+      return dispatch(alertAction("Provide Valid Email", "danger"));
     }
-    if (!err.lastName) {
-      errMsg = "Last name not provided ";
-      return dispatch(alertAction(errMsg, "danger"));
-    }
-    if (!emailRegex.test(err.email.toLowerCase())) {
-      errMsg = "Provide valid email";
-      return dispatch(alertAction(errMsg, "danger"));
-    }
-
-    console.log("err", err);
 
     const url = "conferences/bookings/step2";
 
     const formData = {
       ticketDetails: {
+        conference: confId,
         bookedBy: user?._id,
         guests: cart,
+        bookingTickets: bookingTickets,
       },
     };
 
     console.log("formData", formData);
 
-    try {
-      const response = await api.post(url, formData);
-      if (response) {
-        console.log("booking step2 response", response.data.data);
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
+    // try {
+    //   const response = await api.post(url, formData);
+    //   if (response) {
+    //     console.log("booking step2 response", response.data.data);
+    //   }
+    // } catch (err) {
+    //   dispatch(alertAction(err.response.data.message, "danger"));
+    // }
   };
 
   function renderPageContent(page) {
