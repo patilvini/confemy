@@ -45,18 +45,13 @@ export default function BookingPage() {
       quantity: countedCart[ticketId],
     }));
 
-    const err = cart.find(
-      (item) =>
-        item.firstName === "" ||
-        item.lastName === "" ||
-        !emailRegex.test(item.email.toLowerCase())
-    );
+    const err = cart.find((item) => !emailRegex.test(item.email.toLowerCase()));
 
     if (err) {
       return dispatch(alertAction("Provide Valid Email", "danger"));
     }
 
-    const url = "conferences/bookings/step2";
+    const url = "conferences/bookings";
 
     const formData = {
       ticketDetails: {
@@ -123,6 +118,7 @@ export default function BookingPage() {
   }, [cart]);
 
   console.log("cart", cart);
+  console.log("state", state);
 
   return (
     <div className="container pt-64">
