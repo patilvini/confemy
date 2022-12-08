@@ -69,14 +69,14 @@ export default function BookingPage() {
 
     console.log("formData", formData);
 
-    // try {
-    //   const response = await api.post(url, formData);
-    //   if (response) {
-    //     console.log("booking step2 response", response.data.data);
-    //   }
-    // } catch (err) {
-    //   dispatch(alertAction(err.response.data.message, "danger"));
-    // }
+    try {
+      const response = await api.post(url, formData);
+      if (response) {
+        console.log("booking step2 response", response.data.data);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
   };
 
   function renderPageContent(page) {
