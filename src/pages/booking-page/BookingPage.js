@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useParams,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
+
 import BookingPage1 from "./BookingPage1";
 import BookingPage2 from "./BookingPage2";
 import api from "../../utility/api";
@@ -20,6 +26,7 @@ export default function BookingPage() {
   const { state } = useLocation();
   const { confId } = useParams();
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
@@ -68,9 +75,15 @@ export default function BookingPage() {
       const response = await api.post(url, formData);
       if (response) {
         console.log("booking step2 response", response.data.data);
+        if (!response.data.data.bookingStatus) {
+          console.log("payment path triggered");
+          const paymentUrl = response.data.data.orderResponseObj.paymentLink;
+          window.location.assign(paymentUrl);
+        }
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      console.log("err happened");
+      dispatch(alertAction(err.response.data?.message, "danger"));
     }
   };
 
