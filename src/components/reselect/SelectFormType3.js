@@ -1,6 +1,5 @@
 import Select, { components } from "react-select";
 import PropTypes from "prop-types";
-import { formatRelative } from "date-fns";
 
 const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";

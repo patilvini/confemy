@@ -131,7 +131,6 @@ export default function BookingPage() {
   }, [cart]);
 
   console.log("cart", cart);
-  console.log("state", state);
 
   return (
     <div className="container pt-64">

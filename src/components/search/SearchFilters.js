@@ -127,7 +127,7 @@ export default function SearchFilters({
   // load credit types from backend
   async function getCreditTypes() {
     try {
-      const response = await api.get("conferences/credits");
+      const response = await api.get("common/conferences/credits");
       if (response) {
         setCreditOptions(response.data.data.credits);
       }

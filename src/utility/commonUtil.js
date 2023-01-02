@@ -1,5 +1,6 @@
 import { utcToZonedTime, format } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
+import api from "./api";
 
 export const getFormattedDateInTz = (date, timezone) => {
   let dateInTz;
@@ -56,6 +57,20 @@ export const getIndex = (myArray, valueOfKey) => {
 export const getOption = (myArray, valueOfKey) => {
   return myArray?.find((option) => option?.value === valueOfKey);
 };
+
+export const getValue = (options, value, isMulti) => {
+  if (isMulti) {
+    return value;
+  } else {
+    return options ? options?.find((option) => option.value === value) : "";
+  }
+};
+
+export const loadLocations = async (searchText, callback) => {
+  const response = await api.get(`venues/search?venue=${searchText}`);
+  callback(response.data.data.venue);
+};
+
 export const professions = [
   { value: "physician", label: "Physician" },
   { value: "physicianAssistant", label: "Physician Assistant" },

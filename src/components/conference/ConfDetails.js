@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Editor, EditorState, convertFromRaw } from "draft-js";
+import { convertFromRaw } from "draft-js";
 import DOMPurify from "dompurify";
 import draftToHtml from "draftjs-to-html";
 import { convertToHTML } from "draft-convert";
@@ -29,26 +29,21 @@ export default function ConfDetails() {
     },
   };
 
-  // console.log(confId)
-
-  const addRecentlyViewed = async (Id) => {
-    console.log(selectedConference);
+  const addRecentlyViewed = (Id) => {
+    const data = {
+      recentlyViewedConferenceDetails: {
+        conferenceId: Id,
+      },
+    };
     try {
-      const response = await api.post("/homePage/recentlyviewed", {
-        recentlyViewedConferenceDetails: {
-          conferenceId: Id,
-        },
-      });
-      // console.log(response.selectedConference.selectedConference);
-    } catch (err) {
-      console.error(err);
-    }
+      api.post("homePage/recentlyviewed", data);
+    } catch (err) {}
   };
 
   const loadConferenceDetails = async (Id) => {
     try {
-      const response = await api.get(`conferences/${Id}`);
-      console.log(response.data.data);
+      const response = await api.get(`common/conferences/${Id}`);
+      console.log("conf Details:", response.data.data);
       setSelectedConference(response.data.data.conferences);
       // if (response.data.data.conferences.completedAllMandatorySteps) {
       //   addRecentlyViewed(Id);
@@ -78,6 +73,7 @@ export default function ConfDetails() {
 
   useEffect(() => {
     loadConferenceDetails(confId);
+    addRecentlyViewed(confId);
   }, [confId]);
 
   return (
@@ -253,6 +249,8 @@ export default function ConfDetails() {
             basePrice={selectedConference?.basePrice}
             confId={selectedConference?._id}
             bookingTickets={selectedConference?.bookingTickets}
+            isLiked={selectedConference?.isLiked}
+            setSelectedConference={setSelectedConference}
           />
         </div>
       </div>

@@ -27,30 +27,38 @@ export default function BookingCard({
   credits,
   confId,
   bookingTickets,
-  data,
-  reload,
+  isLiked,
+  setSelectedConference,
 }) {
   const navigate = useNavigate();
-  const confID = useParams().confID;
-  const userID = useSelector((state) => state.auth.user?._id);
+  const user = useSelector((state) => state.auth.user);
 
-  const like = async () => {
-    const likedConferenceDetails = { conferenceId: confID, userId: userID };
+  const like = async (confId, userId) => {
+    const data = {
+      likedConferenceDetails: {
+        conferenceId: confId,
+        userId: userId,
+      },
+    };
     try {
-      const r = await api.post("/conferences/like", { likedConferenceDetails });
-      reload();
+      const response = await api.post("/conferences/like", data);
+      if (response) {
+        console.log("like res", response);
+        setSelectedConference(response.data.data.conference);
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const unLike = async (id) => {
+  const unLike = async (confId, userId) => {
+    const url = `conferences/like/${confId}/users/${userId}`;
     try {
-      const r = await api.delete("/conferences/like/" + userID, {
-        data: { conferenceIds: [id] },
-      });
-
-      reload();
+      const response = await api.delete(url);
+      if (response) {
+        console.log("unlike res", response);
+        setSelectedConference(response.data.data.conference);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -61,13 +69,21 @@ export default function BookingCard({
       <div>
         <h4 className="mb-14">{title}</h4>
         <p className="caption-1-regular-gray3 mb-10">by {organizer}</p>
-        <button className="cd-follow-button mb-48">Follow</button>
-        <div className="icon-grid-card ">
+        {/* <button className="cd-follow-button mb-48">Follow</button> */}
+        <div className="icon-grid-card mt-48">
           <div className="flex-vc mb-12">
             <DateIcon className="icon-sm mr-16" />
             <p className="body-regular-gray3">
-              {getFormattedDateInTz(startDate, timezone)} -{" "}
-              {getFormattedDateInTz(endDate, timezone)}
+              <span>Start:</span>{" "}
+              <span>{getFormattedDateInTz(startDate, timezone)}</span>
+              {/* {getFormattedDateInTz(endDate, timezone)} */}
+            </p>
+          </div>
+          <div className="flex-vc mb-12">
+            <DateIcon className="icon-sm mr-16" />
+            <p className="body-regular-gray3">
+              <span>End: </span>
+              <span>{getFormattedDateInTz(endDate, timezone)}</span>
             </p>
           </div>
           <div className="flex-vc mb-12">
@@ -111,16 +127,18 @@ export default function BookingCard({
             <ShareIcon className="icon-sm" />
           </div>
           <div>
-            {data?.isLiked && (
+            {isLiked ? (
               <i
                 className="conference-card-buttons"
-                onClick={() => unLike(data._id)}
+                onClick={() => unLike(confId, user?._id)}
               >
                 <LikeRedIcon className="icon-sm" />
               </i>
-            )}
-            {!data?.isLiked && (
-              <i className="conference-card-buttons" onClick={() => like()}>
+            ) : (
+              <i
+                className="conference-card-buttons"
+                onClick={() => like(confId, user?._id)}
+              >
                 <LikeBlueIcon className="icon-sm" />
               </i>
             )}

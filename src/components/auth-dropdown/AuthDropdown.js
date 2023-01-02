@@ -12,20 +12,20 @@ import SettingsIcon from "../icons/SettingsIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import DropdownIcon from "../icons/DropdownIcon";
 
-import "./AuthDropdown.styles.scss"; 
+import "./AuthDropdown.styles.scss";
 import api from "../../utility/api";
 // import { capitalize } from "../../utility/commonUtil";
 
 const authDropdownOptions = [
   {
     icon: <ExploreIcon className="icon-size" />,
-    name: "Browse Conference",
-    path: "#!",
+    name: "Browse Conferences",
+    path: "search-conference",
   },
   {
     icon: <ODashboardIcon className="icon-size" />,
     name: "Organizer's Dashboard",
-    path: "/dashboard/my-conferences",
+    path: "dashboard",
   },
   {
     icon: <ProfileIcon className="icon-size" />,
@@ -42,11 +42,11 @@ const authDropdownOptions = [
     name: "Saved Conference",
     path: "#!",
   },
-  {
-    icon: <HelpIcon className="icon-size" />,
-    name: "Help",
-    path: "#!",
-  },
+  // {
+  //   icon: <HelpIcon className="icon-size" />,
+  //   name: "Help",
+  //   path: "#!",
+  // },
   {
     icon: <SettingsIcon className="icon-size" />,
     name: "Account Settings",
@@ -54,7 +54,7 @@ const authDropdownOptions = [
   },
 ];
 
-export default function AuthDropdown({className}) {
+export default function AuthDropdown({ className }) {
   const [openAuthDropdown, setOpenAuthDropdown] = useState(false);
   const onDropdownClick = () => setOpenAuthDropdown(!openAuthDropdown);
 
@@ -94,7 +94,7 @@ export default function AuthDropdown({className}) {
   };
 
   return (
-    <div  ref={ref}>
+    <div ref={ref}>
       <div
         className="user-name-wrapper mr-15 mt-6"
         onClick={onDropdownClick}
@@ -109,13 +109,12 @@ export default function AuthDropdown({className}) {
         // onMouseEnter={() => setOpenAuthDropdown(true)}
         // onMouseLeave={() => setOpenAuthDropdown(false)}
       >
-        <div  className={className}>
+        <div className={className}>
           <ul>
             {authDropdownOptions.map((e) => (
               <li
                 key={e.name}
                 onClick={() => {
-                  
                   navigate(e.path);
                   setOpenAuthDropdown(false);
                 }}

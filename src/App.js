@@ -42,8 +42,7 @@ import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDeta
 // import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
 import SearchPage from "./pages/search-page/SearchPage";
 import ConfDetailsPage from "./pages/conference-page/ConfDetailsPage";
-import BookingStep1Page from "./pages/booking-page/BookingStep1Page";
-import BookingStep2Page from "./pages/booking-page/BookingStep2Page";
+
 import UserProfilePage from "./pages/user-profile-page/UserProfilePage";
 import OrganizerConfDashPage from "./pages/organizer-conf-dashboard-page/OrganizerConfDashPage";
 import OrganizerConfPreviewPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewPage";
@@ -59,7 +58,6 @@ import MyConfsPage from "./pages/my-confs-page/MyConfsPage";
 import PNavbar from "./components/navbar/PNavbar";
 import EditorContainer from "./components/create-conference/EditorContainer";
 import BookingPage from "./pages/booking-page/BookingPage";
-import CartPage from "./pages/cart-page/CartPage";
 
 const App = () => {
   useEffect(() => {
@@ -85,15 +83,6 @@ const App = () => {
               path="search-conference/:confId"
               element={<ConfDetailsPage />}
             ></Route>
-
-            <Route
-              path="booking-step1/:confID"
-              element={<BookingStep1Page />}
-            ></Route>
-            <Route
-              path="booking-step2/:bookingID"
-              element={<BookingStep2Page />}
-            ></Route>
             <Route path="user-profile" element={<UserProfilePage />}></Route>
             <Route path="track-credits" element={<TrackCreditPage />}></Route>
             <Route
@@ -114,14 +103,7 @@ const App = () => {
                 </MyPrivateRoute>
               }
             ></Route>
-            <Route
-              path="cart"
-              element={
-                <MyPrivateRoute>
-                  <CartPage />
-                </MyPrivateRoute>
-              }
-            ></Route>
+
             <Route
               path="dashboard"
               element={
