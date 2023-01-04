@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import { zonedTimeToUtc } from "date-fns-tz";
 import SearchFilters from "../../components/search/SearchFilters";
 import api from "../../utility/api";
@@ -15,6 +16,8 @@ import { alertAction } from "../../redux/alert/alertAction";
 import "./searchPage.styles.scss";
 
 export default function SearchPage() {
+  const [searchParams] = useSearchParams();
+  let searchQuery = searchParams.get("sort");
   const [query, setQuery] = useState("");
   const [location, setLocation] = useState("");
   const [profession, setProfession] = useState("");
@@ -34,6 +37,9 @@ export default function SearchPage() {
   const dispatch = useDispatch();
   const search = useSelector((state) => state.conference.search);
 
+  useEffect(() => {
+    setLocation(searchQuery);
+  }, [searchQuery]);
   //  get utc date for location timezone
   let timezone;
   if (location) {
@@ -43,7 +49,7 @@ export default function SearchPage() {
   }
 
   // const timezone = location?.timezone;
-  const locationValue = location?.value;
+  const locationValue = location;
   let utcStartDate;
   let utcEndDate;
   if (startDate && timezone) {

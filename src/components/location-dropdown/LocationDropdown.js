@@ -129,6 +129,14 @@ export default function LocationDropdown({ className }) {
   const onSearchChange = (e) => {
     setSearchText(e.target.value);
   };
+  function handleDropdownClick(city) {
+    // setFilteredTopCities(city);
+    setSearchText(city.label);
+    navigate({
+      pathname: "/search-conference",
+      search: `?sort=${city.label}`,
+    });
+  }
 
   useEffect(() => {
     const onBodyClick = (event) => {
@@ -190,7 +198,11 @@ export default function LocationDropdown({ className }) {
             city.label.toLowerCase().includes(searchText.toLowerCase())
           )
           .map((city) => (
-            <div className="location-item" key={city._id}>
+            <div
+              className="location-item"
+              key={city._id}
+              onClick={handleDropdownClick.bind(this, city)}
+            >
               {city.label}
             </div>
           ))}
