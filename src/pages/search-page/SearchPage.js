@@ -16,7 +16,7 @@ import { alertAction } from "../../redux/alert/alertAction";
 import "./searchPage.styles.scss";
 
 export default function SearchPage() {
-  const locationQuery = useLocation();
+  const { state } = useLocation();
   const [query, setQuery] = useState("");
   const [location, setLocation] = useState("");
   const [profession, setProfession] = useState("");
@@ -193,11 +193,10 @@ export default function SearchPage() {
         return null;
     }
   }
-
   useEffect(() => {
     loadSearchResults();
-    if (locationQuery.state.value) {
-      setLocation(locationQuery.state.label);
+    if (state.label) {
+      // setLocation(state.label);
     }
   }, [
     location,
@@ -210,6 +209,7 @@ export default function SearchPage() {
     currency,
     maxPrice,
     minPrice,
+    state,
   ]);
 
   // console.log("timezone", timezone);

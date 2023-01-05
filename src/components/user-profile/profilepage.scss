@@ -252,8 +252,11 @@
   padding: 2rem;
 }
 
-.conf-schedule {
-  grid {
-    grid-gap: 8px;
+.as-pd-icons{
+  display: flex;
   }
+
+.as-footer{
+  height: 100px;
+  box-shadow: 25px 20px 15px 15px gray;
 }
