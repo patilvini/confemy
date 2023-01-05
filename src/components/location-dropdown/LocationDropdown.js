@@ -130,12 +130,7 @@ export default function LocationDropdown({ className }) {
     setSearchText(e.target.value);
   };
   function handleDropdownClick(city) {
-    // setFilteredTopCities(city);
-    setSearchText(city.label);
-    navigate({
-      pathname: "/search-conference",
-      search: `?sort=${city.label}`,
-    });
+    navigate("/search-conference", { state: { label: `${city.label}` } });
   }
 
   useEffect(() => {

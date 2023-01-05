@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { zonedTimeToUtc } from "date-fns-tz";
 import SearchFilters from "../../components/search/SearchFilters";
 import api from "../../utility/api";
@@ -16,8 +16,7 @@ import { alertAction } from "../../redux/alert/alertAction";
 import "./searchPage.styles.scss";
 
 export default function SearchPage() {
-  const [searchParams] = useSearchParams();
-  let searchQuery = searchParams.get("sort");
+  const locationQuery = useLocation();
   const [query, setQuery] = useState("");
   const [location, setLocation] = useState("");
   const [profession, setProfession] = useState("");
@@ -37,9 +36,6 @@ export default function SearchPage() {
   const dispatch = useDispatch();
   const search = useSelector((state) => state.conference.search);
 
-  useEffect(() => {
-    setLocation(searchQuery);
-  }, [searchQuery]);
   //  get utc date for location timezone
   let timezone;
   if (location) {
@@ -47,9 +43,8 @@ export default function SearchPage() {
   } else {
     timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
-
   // const timezone = location?.timezone;
-  const locationValue = location;
+  const locationValue = location?.value;
   let utcStartDate;
   let utcEndDate;
   if (startDate && timezone) {
@@ -103,7 +98,6 @@ export default function SearchPage() {
     try {
       const response = await api.post(url, { filters });
       if (response) {
-        console.log("search response", response);
         dispatch(searchConfsAction(response.data.data));
       }
     } catch (err) {
@@ -202,6 +196,9 @@ export default function SearchPage() {
 
   useEffect(() => {
     loadSearchResults();
+    if (locationQuery.state.value) {
+      setLocation(locationQuery.state.label);
+    }
   }, [
     location,
     profession,
