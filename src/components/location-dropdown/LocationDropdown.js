@@ -190,7 +190,14 @@ export default function LocationDropdown({ className }) {
             city.label.toLowerCase().includes(searchText.toLowerCase())
           )
           .map((city) => (
-            <div className="location-item" key={city._id}>
+            <div
+              onClick={() => {
+                setOpenLocationDropdown(false);
+                navigate("/search-conference", { state: city });
+              }}
+              className="location-item"
+              key={city._id}
+            >
               {city.label}
             </div>
           ))}

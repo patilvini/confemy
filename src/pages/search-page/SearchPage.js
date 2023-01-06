@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { zonedTimeToUtc } from "date-fns-tz";
 import SearchFilters from "../../components/search/SearchFilters";
 import api from "../../utility/api";
@@ -33,6 +34,7 @@ export default function SearchPage() {
 
   const dispatch = useDispatch();
   const search = useSelector((state) => state.conference.search);
+  const { state } = useLocation();
 
   //  get utc date for location timezone
   let timezone;
@@ -209,13 +211,11 @@ export default function SearchPage() {
     minPrice,
   ]);
 
-  // console.log("timezone", timezone);
-  // console.log("Int", Intl.DateTimeFormat().resolvedOptions().timeZone);
-  // console.log("start Date", startDate);
-  // console.log("end Date", endDate);
-  console.log("filters", filters);
-  // console.log("mode", mode);
-  // console.log("loading", search.isLoading);
+  useEffect(() => {
+    setLocation(state);
+  }, [state]);
+
+  // console.log("filters", filters);
 
   return (
     <div className="container pt-64">
