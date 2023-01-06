@@ -45,7 +45,7 @@ export default function UserProfileNav() {
               Credits
             </button>
             <button
-              onClick={() => setComponent(<AccountSettings />)}
+              onClick={() => setComponent(<AccountSettings id={user._id} />)}
               className="button-text"
             >
               Account Settings

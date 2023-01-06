@@ -129,9 +129,6 @@ export default function LocationDropdown({ className }) {
   const onSearchChange = (e) => {
     setSearchText(e.target.value);
   };
-  function handleDropdownClick(city) {
-    navigate("/search-conference", { state: { label: city.label } });
-  }
 
   useEffect(() => {
     const onBodyClick = (event) => {
@@ -194,9 +191,12 @@ export default function LocationDropdown({ className }) {
           )
           .map((city) => (
             <div
+              onClick={() => {
+                setOpenLocationDropdown(false);
+                navigate("/search-conference", { state: city });
+              }}
               className="location-item"
               key={city._id}
-              onClick={handleDropdownClick.bind(this, city)}
             >
               {city.label}
             </div>

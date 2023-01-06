@@ -1,13 +1,32 @@
-import facebookIcon from "../../assets/f_logo_RGB-Blue_58.png";
-import linkedInIcon from "../../assets/LI-In-Bug.png";
-import twitterIcon from "../../assets/2021 Twitter logo - blue.png";
-import instagramIcon from "../../assets/Instagram_Glyph_Gradient_RGB.png";
 import AddIcon from "../icons/AddIcon";
 import EditIcon from "../icons/EditIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 import SelectFormType1 from "../reselect/SelectFormType1";
+import SaveInput from "../organization/SaveInput";
+import SocialMedia from "../organization/SocialMedia";
+import FacebookBlueCircle from "../icons/FacebookBlueCircle";
+import LinkedinBlueIcon from "../icons/LinkedinBlueIcon";
+import TwitterBlueIcon from "../icons/TwitterBlueIcon";
+import InstagramGradientIcon from "../icons/InstagramGradientIcon";
+import api from "../../utility/api";
+import { useEffect, useState } from "react";
 
-export default function AccountSettings() {
+export default function AccountSettings({ id }) {
+  const [userData, setUserData] = useState("");
+
+  const fetchSingleUser = async () => {
+    try {
+      let { data } = await api.get(`/users/${id}`);
+      setUserData(data.data.user[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSingleUser();
+  }, [userData]);
+
   return (
     <>
       <div className="as-form-wrap">
@@ -15,119 +34,29 @@ export default function AccountSettings() {
           <h1 className="mb-24">Basic information</h1>
           <div className="grid-col-2">
             <div className="grid-1st-col">
-              <form autocomplete="off" class="form-type-1">
-                <div class="material-textfield">
-                  <input
-                    autocomplete="false"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
-                  <input
-                    id="firstName"
-                    type="text"
-                    name="firstName"
-                    placeholder=" "
-                    value=""
-                    fdprocessedid="jvzwqa"
-                    style={{
-                      paddingBottom: "6px",
-                      border: "2px solid rgb(206, 217, 222)",
-                    }}
-                  />
-                  <label>First name*</label>
-                </div>
-                <div class="saveinput-error"></div>
-                <div class="mb-20">
-                  <div class="saveinput-buttons-wrap">
-                    <button type="submit" class="button button-primary">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      class="button-text button-text-primary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <SaveInput
+                label="First name*"
+                inputName="name"
+                inputApiValue={userData?.firstName}
+                organizationId=""
+              />
             </div>
             <div className="grid-2nd-col">
-              <form autocomplete="off" class="form-type-1">
-                <div class="material-textfield">
-                  <input
-                    autocomplete="false"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
-                  <input
-                    id="lastName"
-                    type="text"
-                    name="lastName"
-                    placeholder=" "
-                    value=""
-                    fdprocessedid="jvzwqa"
-                    style={{
-                      paddingBottom: "6px",
-                      border: "2px solid rgb(206, 217, 222)",
-                    }}
-                  />
-                  <label>Last name*</label>
-                </div>
-                <div class="saveinput-error"></div>
-                <div class="mb-20">
-                  <div class="saveinput-buttons-wrap">
-                    <button type="submit" class="button button-primary">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      class="button-text button-text-primary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <SaveInput
+                label="Last name*"
+                inputName="name"
+                inputApiValue={userData?.lastName}
+                organizationId=""
+              />
             </div>
           </div>
           <div>
-            <form autocomplete="off" class="form-type-1">
-              <div class="material-textfield">
-                <input
-                  autocomplete="false"
-                  name="hidden"
-                  type="text"
-                  style={{ display: "none" }}
-                />
-                <input
-                  id="profession"
-                  type="text"
-                  name="profession"
-                  placeholder=" "
-                  value=""
-                  fdprocessedid="jvzwqa"
-                  style={{
-                    paddingBottom: "6px",
-                    border: "2px solid rgb(206, 217, 222)",
-                  }}
-                />
-                <label>Profession*</label>
-              </div>
-              <div class="saveinput-error"></div>
-              <div class="mb-20">
-                <div class="saveinput-buttons-wrap">
-                  <button type="submit" class="button button-primary">
-                    Save
-                  </button>
-                  <button type="button" class="button-text button-text-primary">
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </form>
+            <SaveInput
+              label="Profession*"
+              inputName="name"
+              inputApiValue={userData?.profession}
+              organizationId=""
+            />
           </div>
           <div className="grid-col-2 mb-24">
             <div className="grid-1st-col">
@@ -156,76 +85,20 @@ export default function AccountSettings() {
             </div>
           </div>
           <div>
-            <form autocomplete="off" class="form-type-1">
-              <div class="material-textfield">
-                <input
-                  autocomplete="false"
-                  name="hidden"
-                  type="text"
-                  style={{ display: "none" }}
-                />
-                <input
-                  id="mobile"
-                  type="text"
-                  name="mobile"
-                  placeholder=" "
-                  value=""
-                  fdprocessedid="jvzwqa"
-                  style={{
-                    paddingBottom: "6px",
-                    border: "2px solid rgb(206, 217, 222)",
-                  }}
-                />
-                <label>Mobile*</label>
-              </div>
-              <div class="saveinput-error"></div>
-              <div class="mb-20">
-                <div class="saveinput-buttons-wrap">
-                  <button type="submit" class="button button-primary">
-                    Save
-                  </button>
-                  <button type="button" class="button-text button-text-primary">
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </form>
+            <SaveInput
+              label="Mobile*"
+              inputName="name"
+              inputApiValue={userData?.mobile}
+              organizationId=""
+            />
           </div>
           <div>
-            <form autocomplete="off" class="form-type-1">
-              <div class="material-textfield">
-                <input
-                  autocomplete="false"
-                  name="hidden"
-                  type="text"
-                  style={{ display: "none" }}
-                />
-                <input
-                  id="email"
-                  type="text"
-                  name="email"
-                  placeholder=" "
-                  value=""
-                  fdprocessedid="jvzwqa"
-                  style={{
-                    paddingBottom: "6px",
-                    border: "2px solid rgb(206, 217, 222)",
-                  }}
-                />
-                <label>Email*</label>
-              </div>
-              <div class="saveinput-error"></div>
-              <div class="mb-20">
-                <div class="saveinput-buttons-wrap">
-                  <button type="submit" class="button button-primary">
-                    Save
-                  </button>
-                  <button type="button" class="button-text button-text-primary">
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </form>
+            <SaveInput
+              label="Email*"
+              inputName="name"
+              inputApiValue={userData?.email}
+              organizationId=""
+            />
           </div>
           <div className="my-24">
             <div style={{ alignSelf: "center" }}>
@@ -247,203 +120,48 @@ export default function AccountSettings() {
           <h2 className="mb-24">Practice Address</h2>
           <div className="grid-col-2">
             <div className="grid-1st-col">
-              <form autocomplete="off" class="form-type-1">
-                <div class="material-textfield">
-                  <input
-                    autocomplete="false"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
-                  <input
-                    id="addess-line-1"
-                    type="text"
-                    name="addess-line-1"
-                    placeholder=" "
-                    value=""
-                    fdprocessedid="jvzwqa"
-                    style={{
-                      paddingBottom: "6px",
-                      border: "2px solid rgb(206, 217, 222)",
-                    }}
-                  />
-                  <label>Addess line 1*</label>
-                </div>
-                <div class="saveinput-error"></div>
-                <div class="mb-20">
-                  <div class="saveinput-buttons-wrap">
-                    <button type="submit" class="button button-primary">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      class="button-text button-text-primary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <SaveInput
+                label="Address line 1*"
+                inputName="name"
+                inputApiValue={userData.practiceAddress[0]?.addressLine1}
+                organizationId=""
+              />
             </div>
             <div className="grid-2nd-col">
-              <form autocomplete="off" class="form-type-1">
-                <div class="material-textfield">
-                  <input
-                    autocomplete="false"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
-                  <input
-                    id="addess-line-2"
-                    type="text"
-                    name="addess-line-2"
-                    placeholder=" "
-                    value=""
-                    fdprocessedid="jvzwqa"
-                    style={{
-                      paddingBottom: "6px",
-                      border: "2px solid rgb(206, 217, 222)",
-                    }}
-                  />
-                  <label>Addess line 2*</label>
-                </div>
-                <div class="saveinput-error"></div>
-                <div class="mb-20">
-                  <div class="saveinput-buttons-wrap">
-                    <button type="submit" class="button button-primary">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      class="button-text button-text-primary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <SaveInput
+                label="Address line 2*"
+                inputName="name"
+                inputApiValue={userData.practiceAddress[0]?.addressLine2}
+                organizationId=""
+              />
             </div>
           </div>
           <div className="grid-col-2">
             <div className="grid-1st-col">
-              <form autocomplete="off" class="form-type-1">
-                <div class="material-textfield">
-                  <input
-                    autocomplete="false"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
-                  <input
-                    id="city"
-                    type="text"
-                    name="city"
-                    placeholder=" "
-                    value=""
-                    fdprocessedid="jvzwqa"
-                    style={{
-                      paddingBottom: "6px",
-                      border: "2px solid rgb(206, 217, 222)",
-                    }}
-                  />
-                  <label>City*</label>
-                </div>
-                <div class="saveinput-error"></div>
-                <div class="mb-20">
-                  <div class="saveinput-buttons-wrap">
-                    <button type="submit" class="button button-primary">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      class="button-text button-text-primary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <SaveInput
+                label="City*"
+                inputName="name"
+                inputApiValue={userData.practiceAddress[0]?.city}
+                organizationId=""
+              />
             </div>
             <div className="grid-2nd-col">
-              <form autocomplete="off" class="form-type-1">
-                <div class="material-textfield">
-                  <input
-                    autocomplete="false"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
-                  <input
-                    id="state/provience"
-                    type="text"
-                    name="state/provience"
-                    placeholder=" "
-                    value=""
-                    fdprocessedid="jvzwqa"
-                    style={{
-                      paddingBottom: "6px",
-                      border: "2px solid rgb(206, 217, 222)",
-                    }}
-                  />
-                  <label>State/Provience*</label>
-                </div>
-                <div class="saveinput-error"></div>
-                <div class="mb-20">
-                  <div class="saveinput-buttons-wrap">
-                    <button type="submit" class="button button-primary">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      class="button-text button-text-primary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <SaveInput
+                label="State/Provience*"
+                inputName="name"
+                inputApiValue={userData.practiceAddress[0]?.state}
+                organizationId=""
+              />
             </div>
           </div>
           <div className="grid-col-2">
             <div className="grid-1st-col">
-              <form autocomplete="off" class="form-type-1">
-                <div class="material-textfield">
-                  <input
-                    autocomplete="false"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
-                  <input
-                    id="zip/postal-code"
-                    type="text"
-                    name="zip/postal-code"
-                    placeholder=" "
-                    value=""
-                    fdprocessedid="jvzwqa"
-                    style={{
-                      paddingBottom: "6px",
-                      border: "2px solid rgb(206, 217, 222)",
-                    }}
-                  />
-                  <label>Zip/Postal Code*</label>
-                </div>
-                <div class="saveinput-error"></div>
-                <div class="mb-20">
-                  <div class="saveinput-buttons-wrap">
-                    <button type="submit" class="button button-primary">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      class="button-text button-text-primary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <SaveInput
+                label="Zip/Postal Code*"
+                inputName="name"
+                inputApiValue={userData.practiceAddress[0]?.zipcode}
+                organizationId=""
+              />
             </div>
             <div className="grid-2nd-col">
               <div className="grid-1st-col">
@@ -473,24 +191,28 @@ export default function AccountSettings() {
             <p>
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                Address line 1
+                {userData.practiceAddress[0]?.addressLine1}
               </span>
             </p>
             <p>
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                Address line 2
+                {userData.practiceAddress[0]?.addressLine2}
               </span>
             </p>
             <p>
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                City,State,Zip/Postal code
+                {`${userData.practiceAddress[0]?.city},${userData.practiceAddress[0]?.state},${userData.practiceAddress[0]?.zipcode}
+
+`}
               </span>
             </p>
             <p>
               {" "}
-              <span className="caption-2-regular-gray3 mr-4">City </span>
+              <span className="caption-2-regular-gray3 mr-4">
+                {userData.practiceAddress[0].country}
+              </span>
             </p>
           </div>
         </div>
@@ -557,136 +279,50 @@ export default function AccountSettings() {
               </div>
             </div>
             <div>
-              <form autocomplete="off" class="form-type-1">
-                <div class="material-textfield">
-                  <input
-                    autocomplete="false"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
-                  <input
-                    id="license-num"
-                    type="text"
-                    name="license-num"
-                    placeholder=" "
-                    value=""
-                    fdprocessedid="jvzwqa"
-                    style={{
-                      paddingBottom: "6px",
-                      border: "2px solid rgb(206, 217, 222)",
-                    }}
-                  />
-                  <label>Type license number*</label>
-                </div>
-                <div class="saveinput-error"></div>
-                <div class="mb-20">
-                  <div class="saveinput-buttons-wrap">
-                    <button type="submit" class="button button-primary">
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      class="button-text button-text-primary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </form>
+              <SaveInput
+                label="Type license number*"
+                inputName="name"
+                inputApiValue={userData.licenses[0].licenseNumber}
+                organizationId=""
+              />
             </div>
           </div>
         </div>
         <div>
           <h1>Social Media</h1>
-          <div className="social-display-grid">
-            <div className="grid-1st-col flex-vc">
-              <i className="mr-16">
-                <img
-                  className="icon-lg"
-                  src={facebookIcon}
-                  alt="facebook logo"
-                />
-              </i>
-              <p className="body-bold">Facebook</p>
-            </div>
-            <div class="grid-2nd-col">
-              <div class="ellipsis-text">
-                <span class="body-bold">facebook url</span>
-              </div>
-            </div>
-            <div class="grid-3rd-col">
-              <button type="button" class="social-delete-button">
-                X
-              </button>
-            </div>
-          </div>
-          <div className="social-display-grid">
-            <div className="grid-1st-col flex-vc">
-              <i className="mr-16">
-                <img
-                  className="icon-lg"
-                  src={linkedInIcon}
-                  alt="linkedIn logo"
-                />
-              </i>
-              <p className="body-bold">LinkedIn</p>
-            </div>
-            <div class="grid-2nd-col">
-              <div class="ellipsis-text">
-                <span class="body-bold">LinkedIn url</span>
-              </div>
-            </div>
-            <div class="grid-3rd-col">
-              <button type="button" class="social-delete-button">
-                X
-              </button>
-            </div>
-          </div>
-          <div className="social-display-grid">
-            <div className="grid-1st-col flex-vc">
-              <i className="mr-16">
-                <img
-                  className="icon-lg"
-                  src={twitterIcon}
-                  alt="facebook logo"
-                />
-              </i>
-              <p className="body-bold">Twitter</p>
-            </div>
-            <div class="grid-2nd-col">
-              <div class="ellipsis-text">
-                <span class="body-bold">Twitter url</span>
-              </div>
-            </div>
-            <div class="grid-3rd-col">
-              <button type="button" class="social-delete-button">
-                X
-              </button>
-            </div>
-          </div>
-          <div className="social-display-grid">
-            <div className="grid-1st-col flex-vc">
-              <i className="mr-16">
-                <img
-                  className="icon-lg"
-                  src={instagramIcon}
-                  alt="facebook logo"
-                />
-              </i>
-              <p className="body-bold">Instagram</p>
-            </div>
-            <div class="grid-2nd-col">
-              <div class="ellipsis-text">
-                <span class="body-bold">Instagram url</span>
-              </div>
-            </div>
-            <div class="grid-3rd-col">
-              <button type="button" class="social-delete-button">
-                X
-              </button>
-            </div>
-          </div>
+
+          <SocialMedia
+            socialMediaIcon={<FacebookBlueCircle className="icon-lg" />}
+            name="facebook"
+            removeName="removeFacebook"
+            label="Facebook link"
+            socialMediaApiValue=""
+            organizationId=""
+          />
+          <SocialMedia
+            socialMediaIcon={<LinkedinBlueIcon className="icon-lg" />}
+            name="linkedin"
+            removeName="removeLinkedin"
+            label="Linkedin link"
+            socialMediaApiValue=""
+            organizationId=""
+          />
+          <SocialMedia
+            socialMediaIcon={<TwitterBlueIcon className="icon-lg" />}
+            name="twitter"
+            removeName="removeTwitter"
+            label="Twitter link"
+            socialMediaApiValue=""
+            organizationId=""
+          />
+          <SocialMedia
+            socialMediaIcon={<InstagramGradientIcon className="icon-lg" />}
+            name="instagram"
+            removeName="removeInstagram"
+            label="Instagram link"
+            socialMediaApiValue=""
+            organizationId=""
+          />
         </div>
       </div>
       <div className="as-footer">
