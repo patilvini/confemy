@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import Select from "react-select";
 import SelectFormType3 from "../reselect/SelectFormType3";
 import ThreeDotsVIcon from "../icons/ThreeDotsVIcon";
 
@@ -22,16 +21,13 @@ const options1 = [
 ];
 
 const options2 = [
-  { value: "all", label: "All" },
+  { value: "self", label: "User" },
   { value: "umn", label: "UMN" },
   { value: "mayo", label: "Mayo" },
 ];
 
 export default function MyConfs() {
-  const [formData, setFormData] = useState({
-    searchText: "",
-  });
-
+  const [searchText, setSearchText] = useState("");
   const [filterText1, setFilterText1] = useState("");
   const [filterText2, setFilterText2] = useState("");
 
@@ -40,14 +36,16 @@ export default function MyConfs() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { searchText } = formData;
+  const onInputChange = (e) => setSearchText(e.target.value);
 
-  const onInputChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const keys = ["title", "city"];
 
-  const onFormSubmit = (e) => {
-    e.preventDefault();
-    const formData = { searchText, filterText1 };
+  const filter = (data) => {
+    let filteredConfs = data.filter((item) =>
+      keys.some((key) => item[key]?.toLowerCase()?.includes(searchText))
+    );
+
+    return filteredConfs;
   };
 
   const getMyConfs = async (userId) => {
@@ -63,9 +61,17 @@ export default function MyConfs() {
     }
   };
 
+  // const myFilteredConfs = search(myConfs);
+
   useEffect(() => {
     getMyConfs(user._id);
   }, [user._id]);
+
+  // console.log("myFilteredConfs", myFilteredConfs);
+
+  // console.log("searchText", searchText);
+  console.log("searchText1", filterText1);
+  console.log("searchText2", filterText2);
 
   return (
     <div>
@@ -83,6 +89,7 @@ export default function MyConfs() {
               name="searchText"
               value={searchText}
               onChange={onInputChange}
+              autoComplete="off"
             />
             <i
               className={
@@ -137,7 +144,7 @@ export default function MyConfs() {
             </tr>
           </thead>
           <tbody>
-            {myConfs?.map((conf) => (
+            {filter(myConfs)?.map((conf) => (
               <tr key={conf._id}>
                 <td>
                   <MyConfsCard

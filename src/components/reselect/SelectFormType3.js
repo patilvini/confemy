@@ -67,7 +67,6 @@ export default function SelectFormType3(props) {
     }),
 
     option: (provided, state) => {
-      console.log(provided);
       return {
         ...provided,
         color: confemyBlac,
