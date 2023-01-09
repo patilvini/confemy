@@ -2,30 +2,114 @@ import AddIcon from "../icons/AddIcon";
 import EditIcon from "../icons/EditIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 import SelectFormType1 from "../reselect/SelectFormType1";
-import SaveInput from "../organization/SaveInput";
+import SaveInput from "./SaveInput";
 import SocialMedia from "../organization/SocialMedia";
 import FacebookBlueCircle from "../icons/FacebookBlueCircle";
 import LinkedinBlueIcon from "../icons/LinkedinBlueIcon";
 import TwitterBlueIcon from "../icons/TwitterBlueIcon";
 import InstagramGradientIcon from "../icons/InstagramGradientIcon";
 import api from "../../utility/api";
+import { useFormik } from "formik";
+import { alertAction } from "../../redux/alert/alertAction";
+
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AccountSettings({ id }) {
+  const [countryList, setCountryList] = useState([]);
+  const [stateList, setStateList] = useState([]);
+  const [cityList, setCityList] = useState([]);
+  const dispatch = useDispatch();
   const [userData, setUserData] = useState("");
+
+  const conference = useSelector((state) => state.conference);
+  const { newConference } = conference;
+  const formik = useFormik({
+    initialValues: {
+      subSpeciality: "",
+      profession: userData?.profession,
+      country: newConference?.country || "",
+    },
+  });
+
+  const loadCountryList = async () => {
+    const url = `venues/countryList`;
+    try {
+      const response = await api.get(url);
+      if (response) {
+        setCountryList(response.data.data.countries);
+        if (countryList) {
+          loadStateList(
+            countryList?.find(
+              (country) => country.label === newConference?.country
+            )?.countryId
+          );
+        }
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
+
+  const loadStateList = async (countryId) => {
+    const url = `venues/stateList?countryId=${countryId}`;
+    try {
+      const response = await api.get(url);
+      if (response) {
+        setStateList(response.data.data.states);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
+
+  const loadCityList = async (stateId) => {
+    const url = `venues/cityList?stateId=${stateId}`;
+    try {
+      const response = await api.get(url);
+      if (response) {
+        setCityList(response.data.data.cities);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
 
   const fetchSingleUser = async () => {
     try {
       let { data } = await api.get(`/users/${id}`);
       setUserData(data.data.user[0]);
+      console.log("=======", data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
+    loadCountryList();
+  }, [userData._id]);
+
+  useEffect(() => {
+    if (countryList.length > 0) {
+      const myCountryId = countryList.find(
+        (country) => country.value === newConference?.country
+      )?.countryId;
+      loadStateList(myCountryId);
+    }
+  }, [countryList]);
+
+  useEffect(() => {
+    if (stateList.length > 0) {
+      const myStateId = stateList.find(
+        (state) => state.value === newConference?.state
+      )?.stateId;
+      loadCityList(myStateId);
+    }
+  }, [stateList]);
+
+  useEffect(() => {
     fetchSingleUser();
-  }, [userData]);
+  }, []);
 
   return (
     <>
@@ -36,68 +120,73 @@ export default function AccountSettings({ id }) {
             <div className="grid-1st-col">
               <SaveInput
                 label="First name*"
-                inputName="name"
+                inputName="firstname"
                 inputApiValue={userData?.firstName}
-                organizationId=""
+                userId={userData._id}
+                disabled="disabled"
               />
             </div>
             <div className="grid-2nd-col">
               <SaveInput
                 label="Last name*"
-                inputName="name"
+                inputName="lastname"
                 inputApiValue={userData?.lastName}
-                organizationId=""
+                organizationId={userData._id}
+                disabled="disabled"
               />
             </div>
           </div>
           <div>
             <SaveInput
               label="Profession*"
-              inputName="name"
+              inputName="profession"
               inputApiValue={userData?.profession}
-              organizationId=""
+              organizationId={userData._id}
+              disabled="disabled"
             />
           </div>
           <div className="grid-col-2 mb-24">
             <div className="grid-1st-col">
               <SelectFormType1
                 label="speciality"
-                options=""
+                // options={userData.profession}
                 name="speciality"
-                // onChange={(value) =>
-                //   formik.setFieldValue("timezone", value?.value)
-                // }
+                onChange={(value) =>
+                  formik.setFieldValue("speciality", value?.value)
+                }
                 placeholder="speciality"
-                value="speciality"
+                value={formik.values.profession}
               />
             </div>
             <div className="grid-2nd-col">
               <SelectFormType1
-                label="speciality"
-                options=""
-                name="speciality"
-                // onChange={(value) =>
-                //   formik.setFieldValue("timezone", value?.value)
-                // }
-                placeholder="speciality"
-                value="speciality"
+                label="sub-speciality"
+                options={userData.specialities}
+                name="subSpeciality"
+                onChange={(value) =>
+                  formik.setFieldValue("subSpeciality", value?.value)
+                }
+                placeholder="Sub-speciality"
+                value={formik.values.subSpeciality}
               />
             </div>
           </div>
           <div>
             <SaveInput
               label="Mobile*"
-              inputName="name"
+              inputName="mobile"
               inputApiValue={userData?.mobile}
-              organizationId=""
+              organizationId={userData._id}
+              disabled="disabled"
             />
           </div>
           <div>
             <SaveInput
               label="Email*"
-              inputName="name"
+              inputName="email"
               inputApiValue={userData?.email}
-              organizationId=""
+              organizationId={userData._id}
+              disabled="disabled"
             />
           </div>
           <div className="my-24">
@@ -122,17 +211,21 @@ export default function AccountSettings({ id }) {
             <div className="grid-1st-col">
               <SaveInput
                 label="Address line 1*"
-                inputName="name"
-                inputApiValue={userData.practiceAddress[0]?.addressLine1}
-                organizationId=""
+                inputName="addressLine1"
+                inputApiValue={
+                  userData ? userData?.practiceAddress[0]?.addressLine1 : null
+                }
+                userId={userData?._id}
               />
             </div>
             <div className="grid-2nd-col">
               <SaveInput
                 label="Address line 2*"
-                inputName="name"
-                inputApiValue={userData.practiceAddress[0]?.addressLine2}
-                organizationId=""
+                inputName="addressLine2"
+                inputApiValue={
+                  userData ? userData?.practiceAddress[0]?.addressLine2 : null
+                }
+                userId={userData?._id}
               />
             </div>
           </div>
@@ -140,17 +233,21 @@ export default function AccountSettings({ id }) {
             <div className="grid-1st-col">
               <SaveInput
                 label="City*"
-                inputName="name"
-                inputApiValue={userData.practiceAddress[0]?.city}
-                organizationId=""
+                inputName="city"
+                inputApiValue={
+                  userData ? userData.practiceAddress[0]?.city : null
+                }
+                userId={userData._id}
               />
             </div>
             <div className="grid-2nd-col">
               <SaveInput
                 label="State/Provience*"
-                inputName="name"
-                inputApiValue={userData.practiceAddress[0]?.state}
-                organizationId=""
+                inputName="state/provience"
+                inputApiValue={
+                  userData ? userData.practiceAddress[0]?.state : null
+                }
+                userId={userData._id}
               />
             </div>
           </div>
@@ -159,15 +256,17 @@ export default function AccountSettings({ id }) {
               <SaveInput
                 label="Zip/Postal Code*"
                 inputName="name"
-                inputApiValue={userData.practiceAddress[0]?.zipcode}
-                organizationId=""
+                inputApiValue={
+                  userData ? userData.practiceAddress[0]?.zipcode : null
+                }
+                userId={userData._id}
               />
             </div>
             <div className="grid-2nd-col">
               <div className="grid-1st-col">
                 <SelectFormType1
                   label="country"
-                  options=""
+                  options={userData.country}
                   name="country"
                   // onChange={(value) =>
                   //   formik.setFieldValue("timezone", value?.value)
@@ -188,37 +287,39 @@ export default function AccountSettings({ id }) {
                 <DeleteIcon />
               </span>
             </div>
-            <p>
+            <p className="mt-20 mb-4">
               {" "}
-              <span className="caption-2-regular-gray3 mr-4">
-                {userData.practiceAddress[0]?.addressLine1}
+              <span className="caption-2-regular-gray3 ">
+                Address line 1 :
+                {userData ? userData?.practiceAddress[0]?.addressLine1 : null}
               </span>
             </p>
             <p>
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                {userData.practiceAddress[0]?.addressLine2}
+                Address line 2 :{" "}
+                {userData ? userData.practiceAddress[0]?.addressLine2 : null}
               </span>
             </p>
-            <p>
+            <p className="my-4">
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                {`${userData.practiceAddress[0]?.city},${userData.practiceAddress[0]?.state},${userData.practiceAddress[0]?.zipcode}
-
-`}
+                {userData
+                  ? `${userData.practiceAddress[0]?.city},${userData.practiceAddress[0]?.state},${userData.practiceAddress[0]?.zipcode}`
+                  : null}
               </span>
             </p>
-            <p>
+            <p className="my-4">
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                {userData.practiceAddress[0].country}
+                {userData ? userData.practiceAddress[0].country : null}
               </span>
             </p>
           </div>
         </div>
         <div className="my-24">
           <h1>License information</h1>
-          <div className="">
+          <div className="mt-20">
             <div className="as-pd-icons">
               <h2>License 1</h2>
               <span style={{ marginRight: "8px", marginLeft: "12px" }}>
@@ -228,15 +329,19 @@ export default function AccountSettings({ id }) {
                 <DeleteIcon />
               </span>
             </div>
-            <p>
+            <p className="mt-16 mb-4">
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                License no: 3r3iwrhekjfn
+                License no:{" "}
+                {userData ? userData?.licenses[0]?.licenseNumber : null}
               </span>
             </p>
             <p className="mb-24">
               {" "}
-              <span className="caption-2-regular-gray3 mr-4">Texas, USA</span>
+              <span className="caption-2-regular-gray3 mr-4">
+                {userData ? userData?.licenses[0]?.state : null},{" "}
+                {userData ? userData?.licenses[0]?.country : null}
+              </span>
             </p>
             <div style={{ alignSelf: "center" }}>
               <button
@@ -257,10 +362,14 @@ export default function AccountSettings({ id }) {
                 <SelectFormType1
                   label="country"
                   options=""
-                  name="country"
-                  // onChange={(value) =>
-                  //   formik.setFieldValue("timezone", value?.value)
-                  // }
+                  onChange={(value) => {
+                    if (formik.values.country !== value?.value) {
+                      formik.setFieldValue("state", "");
+                      formik.setFieldValue("city", "");
+                    }
+                    formik.setFieldValue("country", value?.value);
+                    loadStateList(value?.countryId);
+                  }}
                   placeholder="country"
                   value="country"
                 />
@@ -282,8 +391,10 @@ export default function AccountSettings({ id }) {
               <SaveInput
                 label="Type license number*"
                 inputName="name"
-                inputApiValue={userData.licenses[0].licenseNumber}
-                organizationId=""
+                inputApiValue={
+                  userData ? userData?.licenses[0]?.licenseNumber : null
+                }
+                userId={userData._id}
               />
             </div>
           </div>
@@ -296,16 +407,16 @@ export default function AccountSettings({ id }) {
             name="facebook"
             removeName="removeFacebook"
             label="Facebook link"
-            socialMediaApiValue=""
-            organizationId=""
+            socialMediaApiValue={userData.facebook}
+            organizationId={userData._id}
           />
           <SocialMedia
             socialMediaIcon={<LinkedinBlueIcon className="icon-lg" />}
             name="linkedin"
             removeName="removeLinkedin"
             label="Linkedin link"
-            socialMediaApiValue=""
-            organizationId=""
+            socialMediaApiValue={userData.linkedin}
+            organizationId={userData._id}
           />
           <SocialMedia
             socialMediaIcon={<TwitterBlueIcon className="icon-lg" />}
@@ -313,15 +424,15 @@ export default function AccountSettings({ id }) {
             removeName="removeTwitter"
             label="Twitter link"
             socialMediaApiValue=""
-            organizationId=""
+            organizationId={userData._id}
           />
           <SocialMedia
             socialMediaIcon={<InstagramGradientIcon className="icon-lg" />}
             name="instagram"
             removeName="removeInstagram"
             label="Instagram link"
-            socialMediaApiValue=""
-            organizationId=""
+            socialMediaApiValue={userData.instagram}
+            organizationId={userData._id}
           />
         </div>
       </div>
