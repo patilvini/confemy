@@ -21,6 +21,23 @@ export default function AccountSettings({ id }) {
   const [cityList, setCityList] = useState([]);
   const dispatch = useDispatch();
   const [userData, setUserData] = useState("");
+  const [addressForm, setAdressForm] = useState(false);
+  const [licenseForm, setLicenseForm] = useState(false);
+  const [editAddress, setEditAddress] = useState(false);
+  const [editLicense, setEditLicense] = useState(false);
+  const [addPracticeAddress, setAddPracticeAddress] = useState({
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    country: "",
+    state: "",
+    zipcode: "",
+  });
+  const [addLicense, setAddLicense] = useState({
+    country: "",
+    state: "",
+    licenseNumber: "",
+  });
 
   const conference = useSelector((state) => state.conference);
   const { newConference } = conference;
@@ -31,7 +48,7 @@ export default function AccountSettings({ id }) {
       country: newConference?.country || "",
     },
   });
-
+  // console.log("userData=====", userData.practiceAddress);
   const loadCountryList = async () => {
     const url = `venues/countryList`;
     try {
@@ -78,11 +95,34 @@ export default function AccountSettings({ id }) {
   const fetchSingleUser = async () => {
     try {
       let { data } = await api.get(`/users/${id}`);
-      setUserData(data.data.user[0]);
-      console.log("=======", data);
+      setUserData(data.data.user);
+      console.log("data------", data);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const addUserData = async (data) => {
+    try {
+      let responce = api.patch(`/users/${id}`, data);
+      console.log("---------", responce);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAdsressSubmit = (e) => {
+    e.preventDefault();
+    let newUserData = {
+      ...userData,
+      practiceAddress: Object.assign(),
+    };
+    setAdressForm(false);
+  };
+
+  const handleLicenseSubmit = (e) => {
+    e.preventDefault();
+    setLicenseForm(false);
   };
 
   useEffect(() => {
@@ -113,7 +153,7 @@ export default function AccountSettings({ id }) {
 
   return (
     <>
-      <div className="as-form-wrap">
+      <div className="container pt-64">
         <div>
           <h1 className="mb-24">Basic information</h1>
           <div className="grid-col-2">
@@ -123,7 +163,6 @@ export default function AccountSettings({ id }) {
                 inputName="firstname"
                 inputApiValue={userData?.firstName}
                 userId={userData._id}
-                disabled="disabled"
               />
             </div>
             <div className="grid-2nd-col">
@@ -131,8 +170,7 @@ export default function AccountSettings({ id }) {
                 label="Last name*"
                 inputName="lastname"
                 inputApiValue={userData?.lastName}
-                organizationId={userData._id}
-                disabled="disabled"
+                userId={userData._id}
               />
             </div>
           </div>
@@ -141,8 +179,7 @@ export default function AccountSettings({ id }) {
               label="Profession*"
               inputName="profession"
               inputApiValue={userData?.profession}
-              organizationId={userData._id}
-              disabled="disabled"
+              userId={userData._id}
             />
           </div>
           <div className="grid-col-2 mb-24">
@@ -176,8 +213,7 @@ export default function AccountSettings({ id }) {
               label="Mobile*"
               inputName="mobile"
               inputApiValue={userData?.mobile}
-              organizationId={userData._id}
-              disabled="disabled"
+              userId={userData._id}
             />
           </div>
           <div>
@@ -185,102 +221,228 @@ export default function AccountSettings({ id }) {
               label="Email*"
               inputName="email"
               inputApiValue={userData?.email}
-              organizationId={userData._id}
+              userId={userData._id}
               disabled="disabled"
             />
           </div>
+
+          <h2 className="mb-24">Practice Address</h2>
           <div className="my-24">
-            <div style={{ alignSelf: "center" }}>
+            <div style={{ alignSelf: "center", alignContent: "center" }}>
               <button
-                // onClick={() => {
-                //   setExternalOpen(true);
-                // }}
+                onClick={() => {
+                  setAdressForm(!addressForm);
+                }}
                 className="circle-button"
               >
                 <AddIcon />
               </button>
 
               <span className="caption-2-regular-gray3 ml-5">
-                Add external credits
+                Add practice address
               </span>
             </div>
           </div>
-
-          <h2 className="mb-24">Practice Address</h2>
-          <div className="grid-col-2">
-            <div className="grid-1st-col">
-              <SaveInput
-                label="Address line 1*"
-                inputName="addressLine1"
-                inputApiValue={
-                  userData ? userData?.practiceAddress[0]?.addressLine1 : null
-                }
-                userId={userData?._id}
-              />
-            </div>
-            <div className="grid-2nd-col">
-              <SaveInput
-                label="Address line 2*"
-                inputName="addressLine2"
-                inputApiValue={
-                  userData ? userData?.practiceAddress[0]?.addressLine2 : null
-                }
-                userId={userData?._id}
-              />
-            </div>
-          </div>
-          <div className="grid-col-2">
-            <div className="grid-1st-col">
-              <SaveInput
-                label="City*"
-                inputName="city"
-                inputApiValue={
-                  userData ? userData.practiceAddress[0]?.city : null
-                }
-                userId={userData._id}
-              />
-            </div>
-            <div className="grid-2nd-col">
-              <SaveInput
-                label="State/Provience*"
-                inputName="state/provience"
-                inputApiValue={
-                  userData ? userData.practiceAddress[0]?.state : null
-                }
-                userId={userData._id}
-              />
-            </div>
-          </div>
-          <div className="grid-col-2">
-            <div className="grid-1st-col">
-              <SaveInput
-                label="Zip/Postal Code*"
-                inputName="name"
-                inputApiValue={
-                  userData ? userData.practiceAddress[0]?.zipcode : null
-                }
-                userId={userData._id}
-              />
-            </div>
-            <div className="grid-2nd-col">
-              <div className="grid-1st-col">
-                <SelectFormType1
-                  label="country"
-                  options={userData.country}
-                  name="country"
-                  // onChange={(value) =>
-                  //   formik.setFieldValue("timezone", value?.value)
-                  // }
-                  placeholder="Country"
-                  value="country"
-                />
+          {addressForm || editAddress ? (
+            <form
+              className="form-type-1 mb-20"
+              autoComplete="off"
+              onSubmit={handleAdsressSubmit}
+            >
+              <div className="grid-col-2">
+                <div className="grid-1st-col">
+                  <div className="material-textfield">
+                    <input
+                      id="adressLine1"
+                      type="text"
+                      name="adressLine1"
+                      value={
+                        editAddress
+                          ? userData
+                            ? userData?.practiceAddress?.addressLine1
+                            : null
+                          : null
+                      }
+                      onChange={(e) =>
+                        setAddPracticeAddress({
+                          ...addPracticeAddress,
+                          addressLine1: e.target.value,
+                        })
+                      }
+                      placeholder=" "
+                      // disabled={!formik.values.mode.includes("venue")}
+                    />
+                    <label>Address line 1*</label>
+                  </div>
+                  <div className="mb-24">
+                    {/* {formik.touched.street1 &&
+                        Boolean(formik.errors.street1) && (
+                          <TextError>{formik.errors.street1}</TextError>
+                        )} */}
+                  </div>
+                </div>
+                <div className="grid-2nd-col">
+                  <div className="material-textfield">
+                    <input
+                      id="adressLine2"
+                      type="text"
+                      name="adressLine2"
+                      value={
+                        editAddress
+                          ? userData
+                            ? userData?.practiceAddress?.addressLine2
+                            : null
+                          : null
+                      }
+                      onChange={(e) =>
+                        setAddPracticeAddress({
+                          ...addPracticeAddress,
+                          addressLine2: e.target.value,
+                        })
+                      }
+                      placeholder=" "
+                      // disabled={!formik.values.mode.includes("venue")}
+                    />
+                    <label>Address line 2*</label>
+                  </div>
+                  <div className="mb-24">
+                    {/* {formik.touched.street1 &&
+                        Boolean(formik.errors.street1) && (
+                          <TextError>{formik.errors.street1}</TextError>
+                        )} */}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+              <div className="grid-col-2">
+                <div className="grid-1st-col">
+                  <div className="material-textfield">
+                    <input
+                      id="city"
+                      type="text"
+                      name="city"
+                      value={
+                        editAddress
+                          ? userData
+                            ? userData?.practiceAddress?.city
+                            : null
+                          : null
+                      }
+                      onChange={(e) =>
+                        setAddPracticeAddress({
+                          ...addPracticeAddress,
+                          city: e.target.value,
+                        })
+                      }
+                      placeholder=" "
+                      // disabled={!formik.values.mode.includes("venue")}
+                    />
+                    <label>City*</label>
+                  </div>
+                  <div className="mb-24">
+                    {/* {formik.touched.street1 &&
+                        Boolean(formik.errors.street1) && (
+                          <TextError>{formik.errors.street1}</TextError>
+                        )} */}
+                  </div>
+                </div>
+                <div className="grid-2nd-col">
+                  <div className="material-textfield">
+                    <input
+                      id="state/provience"
+                      type="text"
+                      name="state/provience"
+                      value={
+                        editAddress
+                          ? userData
+                            ? userData?.practiceAddress?.state
+                            : null
+                          : null
+                      }
+                      onChange={(e) =>
+                        setAddPracticeAddress({
+                          ...addPracticeAddress,
+                          state: e.target.value,
+                        })
+                      }
+                      placeholder=" "
+                      // disabled={!formik.values.mode.includes("venue")}
+                    />
+                    <label>State/Provience*</label>
+                  </div>
+                  <div className="mb-24">
+                    {/* {formik.touched.street1 &&
+                        Boolean(formik.errors.street1) && (
+                          <TextError>{formik.errors.street1}</TextError>
+                        )} */}
+                  </div>
+                </div>
+              </div>
+              <div className="grid-col-2">
+                <div className="grid-1st-col">
+                  <div className="material-textfield">
+                    <input
+                      id="zip/postalcode"
+                      type="text"
+                      name="zip/postalcode"
+                      value={
+                        editAddress
+                          ? userData
+                            ? userData?.practiceAddress?.zipcode
+                            : null
+                          : null
+                      }
+                      onChange={(e) =>
+                        setAddPracticeAddress({
+                          ...addPracticeAddress,
+                          zipcode: e.target.value,
+                        })
+                      }
+                      placeholder=" "
+                      // disabled={!formik.values.mode.includes("venue")}
+                    />
+                    <label>Zip/Postal code*</label>
+                  </div>
+                  <div className="mb-24">
+                    {/* {formik.touched.street1 &&
+                        Boolean(formik.errors.street1) && (
+                          <TextError>{formik.errors.street1}</TextError>
+                        )} */}
+                  </div>
+                </div>
+                <div className="grid-2nd-col">
+                  <div className="grid-1st-col">
+                    <SelectFormType1
+                      label="country"
+                      options={userData.country}
+                      name="country"
+                      onChange={(value) =>
+                        formik.setFieldValue("country", value?.value)
+                      }
+                      placeholder="Country"
+                      value="country"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button className="button button-primary" type="submit">
+                  Save
+                </button>
+              </div>
+            </form>
+          ) : (
+            ""
+          )}
           <div>
             <div className="as-pd-icons">
-              <h2>Practice Address</h2>
-              <span style={{ marginRight: "8px", marginLeft: "12px" }}>
+              <h4>Practice Address</h4>
+              <span
+                style={{ marginRight: "8px", marginLeft: "12px" }}
+                onClick={() => {
+                  setEditAddress(!editAddress);
+                  console.log("edit icon is clicked");
+                }}
+              >
                 <EditIcon />
               </span>
               <span>
@@ -290,29 +452,27 @@ export default function AccountSettings({ id }) {
             <p className="mt-20 mb-4">
               {" "}
               <span className="caption-2-regular-gray3 ">
-                Address line 1 :
-                {userData ? userData?.practiceAddress[0]?.addressLine1 : null}
+                {userData ? userData?.practiceAddress?.addressLine1 : null}
               </span>
             </p>
             <p>
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                Address line 2 :{" "}
-                {userData ? userData.practiceAddress[0]?.addressLine2 : null}
+                {userData ? userData.practiceAddress?.addressLine2 : null}
               </span>
             </p>
             <p className="my-4">
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
                 {userData
-                  ? `${userData.practiceAddress[0]?.city},${userData.practiceAddress[0]?.state},${userData.practiceAddress[0]?.zipcode}`
+                  ? `${userData.practiceAddress?.city},${userData.practiceAddress?.state},${userData.practiceAddress?.zipcode}`
                   : null}
               </span>
             </p>
             <p className="my-4">
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                {userData ? userData.practiceAddress[0].country : null}
+                {userData ? userData?.practiceAddress?.country : null}
               </span>
             </p>
           </div>
@@ -321,8 +481,13 @@ export default function AccountSettings({ id }) {
           <h1>License information</h1>
           <div className="mt-20">
             <div className="as-pd-icons">
-              <h2>License 1</h2>
-              <span style={{ marginRight: "8px", marginLeft: "12px" }}>
+              <h4>License 1</h4>
+              <span
+                style={{ marginRight: "8px", marginLeft: "12px" }}
+                onClick={() => {
+                  setEditLicense(!editLicense);
+                }}
+              >
                 <EditIcon />
               </span>
               <span>
@@ -332,22 +497,21 @@ export default function AccountSettings({ id }) {
             <p className="mt-16 mb-4">
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                License no:{" "}
-                {userData ? userData?.licenses[0]?.licenseNumber : null}
+                {userData ? userData?.licenses?.licenseNumber : null}
               </span>
             </p>
             <p className="mb-24">
               {" "}
               <span className="caption-2-regular-gray3 mr-4">
-                {userData ? userData?.licenses[0]?.state : null},{" "}
-                {userData ? userData?.licenses[0]?.country : null}
+                {userData ? userData?.licenses?.state : null},{" "}
+                {userData ? userData?.licenses?.country : null}
               </span>
             </p>
             <div style={{ alignSelf: "center" }}>
               <button
-                // onClick={() => {
-                //   setExternalOpen(true);
-                // }}
+                onClick={() => {
+                  setLicenseForm(!licenseForm);
+                }}
                 className="circle-button"
               >
                 <AddIcon />
@@ -357,46 +521,82 @@ export default function AccountSettings({ id }) {
                 Add external credits
               </span>
             </div>
-            <div className="grid-col-2 mb-24 mt-24">
-              <div className="grid-1st-col">
-                <SelectFormType1
-                  label="country"
-                  options=""
-                  onChange={(value) => {
-                    if (formik.values.country !== value?.value) {
-                      formik.setFieldValue("state", "");
-                      formik.setFieldValue("city", "");
-                    }
-                    formik.setFieldValue("country", value?.value);
-                    loadStateList(value?.countryId);
-                  }}
-                  placeholder="country"
-                  value="country"
-                />
-              </div>
-              <div className="grid-2nd-col">
-                <SelectFormType1
-                  label="state"
-                  options=""
-                  name="state"
-                  // onChange={(value) =>
-                  //   formik.setFieldValue("timezone", value?.value)
-                  // }
-                  placeholder="state"
-                  value="state"
-                />
-              </div>
-            </div>
-            <div>
-              <SaveInput
-                label="Type license number*"
-                inputName="name"
-                inputApiValue={
-                  userData ? userData?.licenses[0]?.licenseNumber : null
-                }
-                userId={userData._id}
-              />
-            </div>
+            {licenseForm || editLicense ? (
+              <form
+                className="form-type-1"
+                autoComplete="off"
+                onSubmit={handleLicenseSubmit}
+              >
+                <div className="grid-col-2 mb-24 mt-24">
+                  <div className="grid-1st-col">
+                    <SelectFormType1
+                      label="country"
+                      options=""
+                      onChange={(value) => {
+                        if (formik.values.country !== value?.value) {
+                          formik.setFieldValue("state", "");
+                          formik.setFieldValue("city", "");
+                        }
+                        formik.setFieldValue("country", value?.value);
+                        loadStateList(value?.countryId);
+                      }}
+                      placeholder="country"
+                      value="country"
+                    />
+                  </div>
+                  <div className="grid-2nd-col">
+                    <SelectFormType1
+                      label="state"
+                      options=""
+                      name="state"
+                      // onChange={(value) =>
+                      //   formik.setFieldValue("timezone", value?.value)
+                      // }
+                      placeholder="state"
+                      value="state"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="material-textfield">
+                    <input
+                      id="licensenumber"
+                      type="text"
+                      name="licensenumber"
+                      value={
+                        editLicense
+                          ? userData
+                            ? userData?.license[0]?.licenseNumber
+                            : null
+                          : null
+                      }
+                      onChange={(e) => {
+                        setAddLicense({
+                          ...addLicense,
+                          licenseNumber: e.target.value,
+                        });
+                      }}
+                      placeholder=" "
+                      // disabled={!formik.values.mode.includes("venue")}
+                    />
+                    <label>Type license number*</label>
+                  </div>
+                  <div className="mb-24">
+                    {/* {formik.touched.street1 &&
+                      Boolean(formik.errors.street1) && (
+                        <TextError>{formik.errors.street1}</TextError>
+                      )} */}
+                  </div>
+                </div>
+                <div>
+                  <button className="button button-primary" type="submit">
+                    Save
+                  </button>
+                </div>
+              </form>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div>
@@ -434,11 +634,6 @@ export default function AccountSettings({ id }) {
             socialMediaApiValue={userData.instagram}
             organizationId={userData._id}
           />
-        </div>
-      </div>
-      <div className="as-footer">
-        <div className="as-form-wrap social-display-grid">
-          <button className="button button-primary">Save</button>
         </div>
       </div>
     </>
