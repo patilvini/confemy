@@ -1,15 +1,12 @@
 import AddIcon from "../icons/AddIcon";
 import EditIcon from "../icons/EditIcon";
 import DeleteIcon from "../icons/DeleteIcon";
-import SelectFormType1 from "../reselect/SelectFormType1";
-import SaveInput from "./SaveInput";
-import SocialMedia from "../organization/SocialMedia";
+import SocialMedia from "./SocilaMedia";
 import FacebookBlueCircle from "../icons/FacebookBlueCircle";
 import LinkedinBlueIcon from "../icons/LinkedinBlueIcon";
 import TwitterBlueIcon from "../icons/TwitterBlueIcon";
 import InstagramGradientIcon from "../icons/InstagramGradientIcon";
 import api from "../../utility/api";
-import { useFormik } from "formik";
 import { alertAction } from "../../redux/alert/alertAction";
 
 import { useEffect, useState } from "react";
@@ -17,12 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
 import BasicProfileInfo from "./BasicProfileInfo";
-// import PracticeAddressForm from "./PracticeAddressForm";
+import PracticeAddressForm from "./PracticeAddressForm";
 
 export default function AccountSettings({ id }) {
-  const [countryList, setCountryList] = useState([]);
-  const [stateList, setStateList] = useState([]);
-  const [cityList, setCityList] = useState([]);
   const dispatch = useDispatch();
   const [userData, setUserData] = useState("");
   const [addressForm, setAdressForm] = useState(false);
@@ -330,7 +324,7 @@ export default function AccountSettings({ id }) {
             removeName="removeFacebook"
             label="Facebook link"
             socialMediaApiValue={userData.facebook}
-            organizationId={userData._id}
+            userId={userData._id}
           />
           <SocialMedia
             socialMediaIcon={<LinkedinBlueIcon className="icon-lg" />}
@@ -338,7 +332,7 @@ export default function AccountSettings({ id }) {
             removeName="removeLinkedin"
             label="Linkedin link"
             socialMediaApiValue={userData.linkedin}
-            organizationId={userData._id}
+            userId={userData._id}
           />
           <SocialMedia
             socialMediaIcon={<TwitterBlueIcon className="icon-lg" />}
@@ -346,7 +340,7 @@ export default function AccountSettings({ id }) {
             removeName="removeTwitter"
             label="Twitter link"
             socialMediaApiValue=""
-            organizationId={userData._id}
+            userId={userData._id}
           />
           <SocialMedia
             socialMediaIcon={<InstagramGradientIcon className="icon-lg" />}
@@ -354,7 +348,7 @@ export default function AccountSettings({ id }) {
             removeName="removeInstagram"
             label="Instagram link"
             socialMediaApiValue={userData.instagram}
-            organizationId={userData._id}
+            userId={userData._id}
           />
         </div>
       </div>

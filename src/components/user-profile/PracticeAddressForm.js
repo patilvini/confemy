@@ -1,23 +1,38 @@
-import AddIcon from "../icons/AddIcon";
+import { useState } from "react";
 import EditIcon from "../icons/EditIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 import SelectFormType1 from "../reselect/SelectFormType1";
-import SaveInput from "./SaveInput";
-import SocialMedia from "../organization/SocialMedia";
-import FacebookBlueCircle from "../icons/FacebookBlueCircle";
-import LinkedinBlueIcon from "../icons/LinkedinBlueIcon";
-import TwitterBlueIcon from "../icons/TwitterBlueIcon";
-import InstagramGradientIcon from "../icons/InstagramGradientIcon";
-import api from "../../utility/api";
 import { useFormik } from "formik";
-import { alertAction } from "../../redux/alert/alertAction";
-
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
 
 export default function PracticeAddressForm() {
+  const [userData, setUserData] = useState("");
+  const [addressForm, setAdressForm] = useState(false);
+  const [editAddress, setEditAddress] = useState(false);
+
+  const [addPracticeAddress, setAddPracticeAddress] = useState({
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    country: "",
+    state: "",
+    zipcode: "",
+  });
+
+  const onPracticeAdressChange = (event) => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+    setAddPracticeAddress({ ...addPracticeAddress, [name]: value });
+  };
+
+  const handleAdsressSubmit = async (e) => {
+    e.preventDefault();
+    let address = [addPracticeAddress];
+    if (userData?.practiceAddress?.length > 0) {
+      address = [...userData?.practiceAddress, ...address];
+    }
+  };
+
   return (
     <>
       {addressForm || editAddress ? (
@@ -167,9 +182,9 @@ export default function PracticeAddressForm() {
                   label="country"
                   options={userData.country}
                   name="country"
-                  onChange={(value) =>
-                    formik.setFieldValue("country", value?.value)
-                  }
+                  // onChange={(value) =>
+                  //   formik.setFieldValue("country", value?.value)
+                  // }
                   placeholder="Country"
                   value="country"
                 />
