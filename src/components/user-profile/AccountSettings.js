@@ -102,13 +102,50 @@ export default function AccountSettings({ id }) {
     }
   };
 
-  const addUserAdress = async (formData) => {
-    try {
-      let { data } = api.patch(`/users/${id}`, { formData });
-      console.log("---------", data);
-    } catch (error) {
-      console.log(error);
-    }
+  // const addUserAdress = async (formData) => {
+  //   try {
+  //     let { data } = api.patch(`/users/${id}`, { formData });
+  //     console.log("---------", data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const userDataFormat = {
+    user: {
+      firstName: "confemy",
+      lastName: "House",
+      instagram: "www.instagram.com",
+      facebook: "www.facebook.com",
+      removeTwitter: true,
+      linkedin: "www.linkedin.com",
+      profession: "profession",
+      mobile: 8210380847,
+      countryCode: 91,
+      specialities: [
+        { value: "physician", label: "Physician" },
+        { value: "physicianAssistant", label: "Physician Assistant" },
+      ],
+      licenses: [{ licenseNumber: "12345", country: "India", state: "Bihar" }],
+      practiceAddress: [
+        {
+          addressLine1: "12345",
+          addressLine2: "pune",
+          state: "Bihar",
+          country: "India",
+          city: "purnia",
+          zipcode: 78909,
+        },
+        {
+          addressLine1: "jg,jg",
+          addressLine2: "pune",
+          state: "Bihar",
+          country: "India",
+          city: "purnia",
+          zipcode: 8979,
+        },
+      ],
+    },
   };
 
   const onPracticeAdressChange = (event) => {
@@ -117,14 +154,26 @@ export default function AccountSettings({ id }) {
     const name = target.name;
     setAddPracticeAddress({ ...addPracticeAddress, [name]: value });
   };
-  const handleAdsressSubmit = (e) => {
+  const handleAdsressSubmit = async (e) => {
     e.preventDefault();
     let address = [addPracticeAddress];
     if (userData?.practiceAddress?.length > 0) {
       address = [...userData?.practiceAddress, ...address];
     }
-    addUserAdress(address);
-    setAdressForm(false);
+
+    const formData = {
+      user: {
+        practiceAddress: address,
+      },
+    };
+    try {
+      const response = await api.patch(`/users/${id}`, formData);
+      console.log("address submit response", response);
+      setAdressForm(false);
+      setUserData(response.data.data.user);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleLicenseSubmit = (e) => {
