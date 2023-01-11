@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import api from "../../utility/api";
 
-import { loadUserSettingsAction } from "../../redux/user-profile/userProfileAction";
+import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
+import { alertAction } from "../../redux/alert/alertAction";
 import "../organization/saveInput.styles.scss";
 
 export default function SaveInput({
@@ -18,7 +19,6 @@ export default function SaveInput({
   const [inputValue, setInputValue] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const textInputRef = useRef();
 
@@ -31,22 +31,19 @@ export default function SaveInput({
     const key = inputName;
     const formData = {
       user: {
-        // user: user._id,
         [key]: inputValue,
       },
     };
     const url = `users/${userId}`;
-
     try {
       const response = await api.patch(url, formData);
-      console.log("respoce", response);
       if (response) {
-        dispatch(loadUserSettingsAction(response.data.user));
+        dispatch(loadUserProfileAction(response.data.data.user));
         setShowButtons(false);
         textInputRef.current.style.paddingBottom = "1.6rem";
       }
     } catch (err) {
-      console.log(err);
+      setErrorMsg(alertAction(err.response.data.message));
     }
   };
 
@@ -125,5 +122,6 @@ SaveInput.propTypes = {
   label: PropTypes.string,
   inputName: PropTypes.string.isRequired,
   inputApiValue: PropTypes.string,
-  organizationId: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
 };

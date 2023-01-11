@@ -15,6 +15,10 @@ import { alertAction } from "../../redux/alert/alertAction";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
+import BasicProfileInfo from "./BasicProfileInfo";
+// import PracticeAddressForm from "./PracticeAddressForm";
+
 export default function AccountSettings({ id }) {
   const [countryList, setCountryList] = useState([]);
   const [stateList, setStateList] = useState([]);
@@ -39,66 +43,63 @@ export default function AccountSettings({ id }) {
     licenseNumber: "",
   });
 
-  const conference = useSelector((state) => state.conference);
-  const { newConference } = conference;
-  const formik = useFormik({
-    initialValues: {
-      subSpeciality: "",
-      profession: userData?.profession,
-      country: newConference?.country || "",
-    },
-  });
-  // console.log("userData=====", userData.practiceAddress);
-  const loadCountryList = async () => {
-    const url = `venues/countryList`;
+  const {
+    auth: { user },
+    conference,
+  } = useSelector((state) => state);
+
+  // const loadCountryList = async () => {
+  //   const url = `venues/countryList`;
+  //   try {
+  //     const response = await api.get(url);
+  //     if (response) {
+  //       setCountryList(response.data.data.countries);
+  //       if (countryList) {
+  //         loadStateList(
+  //           countryList?.find(
+  //             (country) => country.label === newConference?.country
+  //           )?.countryId
+  //         );
+  //       }
+  //     }
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
+
+  // const loadStateList = async (countryId) => {
+  //   const url = `venues/stateList?countryId=${countryId}`;
+  //   try {
+  //     const response = await api.get(url);
+  //     if (response) {
+  //       setStateList(response.data.data.states);
+  //     }
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
+
+  // const loadCityList = async (stateId) => {
+  //   const url = `venues/cityList?stateId=${stateId}`;
+  //   try {
+  //     const response = await api.get(url);
+  //     if (response) {
+  //       setCityList(response.data.data.cities);
+  //     }
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
+
+  const fetchUserProfile = async (userId) => {
     try {
-      const response = await api.get(url);
+      const response = await api.get(`/users/${userId}`);
       if (response) {
-        setCountryList(response.data.data.countries);
-        if (countryList) {
-          loadStateList(
-            countryList?.find(
-              (country) => country.label === newConference?.country
-            )?.countryId
-          );
-        }
+        dispatch(loadUserProfileAction(response.data.data.user));
       }
+      // setUserData(data.data.user);
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
-
-  const loadStateList = async (countryId) => {
-    const url = `venues/stateList?countryId=${countryId}`;
-    try {
-      const response = await api.get(url);
-      if (response) {
-        setStateList(response.data.data.states);
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
-
-  const loadCityList = async (stateId) => {
-    const url = `venues/cityList?stateId=${stateId}`;
-    try {
-      const response = await api.get(url);
-      if (response) {
-        setCityList(response.data.data.cities);
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
-
-  const fetchSingleUser = async () => {
-    try {
-      let { data } = await api.get(`/users/${id}`);
-      setUserData(data.data.user);
-      console.log("data------", data);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -181,107 +182,37 @@ export default function AccountSettings({ id }) {
     setLicenseForm(false);
   };
 
-  useEffect(() => {
-    loadCountryList();
-  }, [userData._id]);
+  // useEffect(() => {
+  //   loadCountryList();
+  // }, [userData._id]);
+
+  // useEffect(() => {
+  //   if (countryList.length > 0) {
+  //     const myCountryId = countryList.find(
+  //       (country) => country.value === newConference?.country
+  //     )?.countryId;
+  //     loadStateList(myCountryId);
+  //   }
+  // }, [countryList]);
+
+  // useEffect(() => {
+  //   if (stateList.length > 0) {
+  //     const myStateId = stateList.find(
+  //       (state) => state.value === newConference?.state
+  //     )?.stateId;
+  //     loadCityList(myStateId);
+  //   }
+  // }, [stateList]);
 
   useEffect(() => {
-    if (countryList.length > 0) {
-      const myCountryId = countryList.find(
-        (country) => country.value === newConference?.country
-      )?.countryId;
-      loadStateList(myCountryId);
-    }
-  }, [countryList]);
-
-  useEffect(() => {
-    if (stateList.length > 0) {
-      const myStateId = stateList.find(
-        (state) => state.value === newConference?.state
-      )?.stateId;
-      loadCityList(myStateId);
-    }
-  }, [stateList]);
-
-  useEffect(() => {
-    fetchSingleUser();
-  }, []);
+    fetchUserProfile(user._id);
+  }, [user._id]);
 
   return (
     <>
       <div className="container pt-64">
         <div>
-          <h1 className="mb-24">Basic information</h1>
-          <div className="grid-col-2">
-            <div className="grid-1st-col">
-              <SaveInput
-                label="First name*"
-                inputName="firstname"
-                inputApiValue={userData?.firstName}
-                userId={userData._id}
-              />
-            </div>
-            <div className="grid-2nd-col">
-              <SaveInput
-                label="Last name*"
-                inputName="lastname"
-                inputApiValue={userData?.lastName}
-                userId={userData._id}
-              />
-            </div>
-          </div>
-          <div>
-            <SaveInput
-              label="Profession*"
-              inputName="profession"
-              inputApiValue={userData?.profession}
-              userId={userData._id}
-            />
-          </div>
-          <div className="grid-col-2 mb-24">
-            <div className="grid-1st-col">
-              <SelectFormType1
-                label="speciality"
-                // options={userData.profession}
-                name="speciality"
-                onChange={(value) =>
-                  formik.setFieldValue("speciality", value?.value)
-                }
-                placeholder="speciality"
-                value={formik.values.profession}
-              />
-            </div>
-            <div className="grid-2nd-col">
-              <SelectFormType1
-                label="sub-speciality"
-                options={userData.specialities}
-                name="subSpeciality"
-                onChange={(value) =>
-                  formik.setFieldValue("subSpeciality", value?.value)
-                }
-                placeholder="Sub-speciality"
-                value={formik.values.subSpeciality}
-              />
-            </div>
-          </div>
-          <div>
-            <SaveInput
-              label="Mobile*"
-              inputName="mobile"
-              inputApiValue={userData?.mobile}
-              userId={userData._id}
-            />
-          </div>
-          <div>
-            <SaveInput
-              label="Email*"
-              inputName="email"
-              inputApiValue={userData?.email}
-              userId={userData._id}
-              disabled="disabled"
-            />
-          </div>
-
+          <BasicProfileInfo />
           <h2 className="mb-24">Practice Address</h2>
           <div className="my-24">
             <div style={{ alignSelf: "center", alignContent: "center" }}>
@@ -299,171 +230,7 @@ export default function AccountSettings({ id }) {
               </span>
             </div>
           </div>
-          {addressForm || editAddress ? (
-            <form
-              className="form-type-1 mb-20"
-              autoComplete="off"
-              onSubmit={handleAdsressSubmit}
-            >
-              <div className="grid-col-2">
-                <div className="grid-1st-col">
-                  <div className="material-textfield">
-                    <input
-                      id="adressLine1"
-                      type="text"
-                      name="adressLine1"
-                      value={
-                        editAddress
-                          ? userData
-                            ? userData?.practiceAddress?.addressLine1
-                            : null
-                          : null
-                      }
-                      onChange={onPracticeAdressChange}
-                      placeholder=" "
-                      // disabled={!formik.values.mode.includes("venue")}
-                    />
-                    <label>Address line 1*</label>
-                  </div>
-                  <div className="mb-24">
-                    {/* {formik.touched.street1 &&
-                        Boolean(formik.errors.street1) && (
-                          <TextError>{formik.errors.street1}</TextError>
-                        )} */}
-                  </div>
-                </div>
-                <div className="grid-2nd-col">
-                  <div className="material-textfield">
-                    <input
-                      id="adressLine2"
-                      type="text"
-                      name="adressLine2"
-                      value={
-                        editAddress
-                          ? userData
-                            ? userData?.practiceAddress?.addressLine2
-                            : null
-                          : null
-                      }
-                      onChange={onPracticeAdressChange}
-                      placeholder=" "
-                      // disabled={!formik.values.mode.includes("venue")}
-                    />
-                    <label>Address line 2*</label>
-                  </div>
-                  <div className="mb-24">
-                    {/* {formik.touched.street1 &&
-                        Boolean(formik.errors.street1) && (
-                          <TextError>{formik.errors.street1}</TextError>
-                        )} */}
-                  </div>
-                </div>
-              </div>
-              <div className="grid-col-2">
-                <div className="grid-1st-col">
-                  <div className="material-textfield">
-                    <input
-                      id="city"
-                      type="text"
-                      name="city"
-                      value={
-                        editAddress
-                          ? userData
-                            ? userData?.practiceAddress?.city
-                            : null
-                          : null
-                      }
-                      onChange={onPracticeAdressChange}
-                      placeholder=" "
-                      // disabled={!formik.values.mode.includes("venue")}
-                    />
-                    <label>City*</label>
-                  </div>
-                  <div className="mb-24">
-                    {/* {formik.touched.street1 &&
-                        Boolean(formik.errors.street1) && (
-                          <TextError>{formik.errors.street1}</TextError>
-                        )} */}
-                  </div>
-                </div>
-                <div className="grid-2nd-col">
-                  <div className="material-textfield">
-                    <input
-                      id="state/provience"
-                      type="text"
-                      name="state/provience"
-                      value={
-                        editAddress
-                          ? userData
-                            ? userData?.practiceAddress?.state
-                            : null
-                          : null
-                      }
-                      onChange={onPracticeAdressChange}
-                      placeholder=" "
-                      // disabled={!formik.values.mode.includes("venue")}
-                    />
-                    <label>State/Provience*</label>
-                  </div>
-                  <div className="mb-24">
-                    {/* {formik.touched.street1 &&
-                        Boolean(formik.errors.street1) && (
-                          <TextError>{formik.errors.street1}</TextError>
-                        )} */}
-                  </div>
-                </div>
-              </div>
-              <div className="grid-col-2">
-                <div className="grid-1st-col">
-                  <div className="material-textfield">
-                    <input
-                      id="zip/postalcode"
-                      type="text"
-                      name="zip/postalcode"
-                      value={
-                        editAddress
-                          ? userData
-                            ? userData?.practiceAddress?.zipcode
-                            : null
-                          : null
-                      }
-                      onChange={onPracticeAdressChange}
-                      placeholder=" "
-                      // disabled={!formik.values.mode.includes("venue")}
-                    />
-                    <label>Zip/Postal code*</label>
-                  </div>
-                  <div className="mb-24">
-                    {/* {formik.touched.street1 &&
-                        Boolean(formik.errors.street1) && (
-                          <TextError>{formik.errors.street1}</TextError>
-                        )} */}
-                  </div>
-                </div>
-                <div className="grid-2nd-col">
-                  <div className="grid-1st-col">
-                    <SelectFormType1
-                      label="country"
-                      options={userData.country}
-                      name="country"
-                      onChange={(value) =>
-                        formik.setFieldValue("country", value?.value)
-                      }
-                      placeholder="Country"
-                      value="country"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <button className="button button-primary" type="submit">
-                  Save
-                </button>
-              </div>
-            </form>
-          ) : (
-            ""
-          )}
+          <PracticeAddressForm />
           <div>
             <div className="as-pd-icons">
               <h4>Practice Address</h4>
@@ -552,82 +319,6 @@ export default function AccountSettings({ id }) {
                 Add external credits
               </span>
             </div>
-            {licenseForm || editLicense ? (
-              <form
-                className="form-type-1"
-                autoComplete="off"
-                onSubmit={handleLicenseSubmit}
-              >
-                <div className="grid-col-2 mb-24 mt-24">
-                  <div className="grid-1st-col">
-                    <SelectFormType1
-                      label="country"
-                      options=""
-                      onChange={(value) => {
-                        if (formik.values.country !== value?.value) {
-                          formik.setFieldValue("state", "");
-                          formik.setFieldValue("city", "");
-                        }
-                        formik.setFieldValue("country", value?.value);
-                        loadStateList(value?.countryId);
-                      }}
-                      placeholder="country"
-                      value="country"
-                    />
-                  </div>
-                  <div className="grid-2nd-col">
-                    <SelectFormType1
-                      label="state"
-                      options=""
-                      name="state"
-                      // onChange={(value) =>
-                      //   formik.setFieldValue("timezone", value?.value)
-                      // }
-                      placeholder="state"
-                      value="state"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="material-textfield">
-                    <input
-                      id="licensenumber"
-                      type="text"
-                      name="licensenumber"
-                      value={
-                        editLicense
-                          ? userData
-                            ? userData?.license[0]?.licenseNumber
-                            : null
-                          : null
-                      }
-                      onChange={(e) => {
-                        setAddLicense({
-                          ...addLicense,
-                          licenseNumber: e.target.value,
-                        });
-                      }}
-                      placeholder=" "
-                      // disabled={!formik.values.mode.includes("venue")}
-                    />
-                    <label>Type license number*</label>
-                  </div>
-                  <div className="mb-24">
-                    {/* {formik.touched.street1 &&
-                      Boolean(formik.errors.street1) && (
-                        <TextError>{formik.errors.street1}</TextError>
-                      )} */}
-                  </div>
-                </div>
-                <div>
-                  <button className="button button-primary" type="submit">
-                    Save
-                  </button>
-                </div>
-              </form>
-            ) : (
-              ""
-            )}
           </div>
         </div>
         <div>

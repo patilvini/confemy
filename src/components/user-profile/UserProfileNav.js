@@ -8,7 +8,6 @@ import AccountSettings from "./AccountSettings";
 
 export default function UserProfileNav() {
   const user = useSelector((state) => state.auth?.user);
-
   const [component, setComponent] = useState(<Passes />);
 
   return (

@@ -1,8 +1,8 @@
-import { USER_SETTINGS_LOADED } from "./userProfileTypes";
+import { USER_PROFILE_LOADED } from "./userProfileTypes";
 
-export const loadUserSettingsAction = (data) => (dispatch) => {
+export const loadUserProfileAction = (data) => (dispatch) => {
   dispatch({
-    type: USER_SETTINGS_LOADED,
+    type: USER_PROFILE_LOADED,
     payload: data,
   });
 };

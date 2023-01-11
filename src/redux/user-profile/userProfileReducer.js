@@ -1,4 +1,4 @@
-import { USER_SETTINGS_LOADED } from "./userProfileTypes";
+import { USER_PROFILE_LOADED } from "./userProfileTypes";
 
 const initialState = {
   isLoading: true,
@@ -6,10 +6,10 @@ const initialState = {
   userProfile: null,
 };
 
-export default function userReducer(state = initialState, action) {
+export default function userProfileReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case USER_SETTINGS_LOADED:
+    case USER_PROFILE_LOADED:
       return {
         ...state,
         isLoading: false,
