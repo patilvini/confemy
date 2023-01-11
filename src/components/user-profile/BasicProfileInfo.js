@@ -21,11 +21,14 @@ const validationSchema = yup.object().shape({
 });
 
 export default function BasicProfileInfo() {
+  const [displayButton, setDisplayButton] = useState(false);
+
   const userProfile = useSelector((state) => state.userProfile.userProfile);
 
   const onSubmit = (values, action) => {
     console.log("onsubmit clicked");
     console.log(values);
+    setDisplayButton(false);
   };
 
   const formik = useFormik({
@@ -42,6 +45,11 @@ export default function BasicProfileInfo() {
     enableReinitialize: true,
   });
 
+  const onInputChange = (e) => {
+    setDisplayButton(true);
+    formik.handleChange(e);
+  };
+
   return (
     <form
       className="form-type-1"
@@ -57,7 +65,7 @@ export default function BasicProfileInfo() {
               type="text"
               name="firstName"
               value={formik.values.firstName}
-              onChange={formik.handleChange}
+              onChange={onInputChange}
               placeholder=" "
             />
             <label>First Name</label>
@@ -75,7 +83,7 @@ export default function BasicProfileInfo() {
               type="text"
               name="lastName"
               value={formik.values.lastName}
-              onChange={formik.handleChange}
+              onChange={onInputChange}
               placeholder=" "
             />
             <label>Last Name</label>
@@ -93,9 +101,10 @@ export default function BasicProfileInfo() {
             label="profession"
             // options={userProfile.profession}
             name="profession"
-            onChange={(value) =>
-              formik.setFieldValue("profession", value?.value)
-            }
+            onChange={(value) => {
+              formik.setFieldValue("profession", value?.value);
+              setDisplayButton(true);
+            }}
             placeholder="profession"
             value={formik.values.profession}
           />
@@ -105,9 +114,10 @@ export default function BasicProfileInfo() {
             label="specialty"
             // options={userProfile?.specialities}
             name="specialty"
-            onChange={(value) =>
-              formik.setFieldValue("specialty", value?.value)
-            }
+            onChange={(value) => {
+              formik.setFieldValue("specialty", value?.value);
+              setDisplayButton(true);
+            }}
             placeholder="Specialty"
             value={formik.values.specialty}
           />
@@ -119,9 +129,10 @@ export default function BasicProfileInfo() {
             label="countryCode"
             // options={userProfile.countryCode}
             name="countryCode"
-            onChange={(value) =>
-              formik.setFieldValue("countryCode", value?.value)
-            }
+            onChange={(value) => {
+              formik.setFieldValue("countryCode", value?.value);
+              setDisplayButton(true);
+            }}
             placeholder="countryCode"
             value={formik.values.countryCode}
           />
@@ -133,7 +144,7 @@ export default function BasicProfileInfo() {
               type="text"
               name="mobile"
               value={formik.values.mobile}
-              onChange={formik.handleChange}
+              onChange={onInputChange}
               placeholder=" "
             />
             <label>Mobile</label>
@@ -145,7 +156,10 @@ export default function BasicProfileInfo() {
           </div>
         </div>
       </div>
-      <button className="button button-primary" type="submit">
+      <button
+        className={displayButton ? "button button-primary" : "display-none"}
+        type="submit"
+      >
         Save
       </button>
     </form>

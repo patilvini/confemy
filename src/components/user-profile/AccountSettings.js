@@ -19,6 +19,7 @@ import PracticeAddressForm from "./PracticeAddressForm";
 export default function AccountSettings({ id }) {
   const dispatch = useDispatch();
   const [userData, setUserData] = useState("");
+  const [showAddressForm, setShowAddressForm] = useState(false);
   const [addressForm, setAdressForm] = useState(false);
   const [licenseForm, setLicenseForm] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
@@ -106,43 +107,6 @@ export default function AccountSettings({ id }) {
   //   }
   // };
 
-  const userDataFormat = {
-    user: {
-      firstName: "confemy",
-      lastName: "House",
-      instagram: "www.instagram.com",
-      facebook: "www.facebook.com",
-      removeTwitter: true,
-      linkedin: "www.linkedin.com",
-      profession: "profession",
-      mobile: 8210380847,
-      countryCode: 91,
-      specialities: [
-        { value: "physician", label: "Physician" },
-        { value: "physicianAssistant", label: "Physician Assistant" },
-      ],
-      licenses: [{ licenseNumber: "12345", country: "India", state: "Bihar" }],
-      practiceAddress: [
-        {
-          addressLine1: "12345",
-          addressLine2: "pune",
-          state: "Bihar",
-          country: "India",
-          city: "purnia",
-          zipcode: 78909,
-        },
-        {
-          addressLine1: "jg,jg",
-          addressLine2: "pune",
-          state: "Bihar",
-          country: "India",
-          city: "purnia",
-          zipcode: 8979,
-        },
-      ],
-    },
-  };
-
   const onPracticeAdressChange = (event) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -208,23 +172,24 @@ export default function AccountSettings({ id }) {
         <div>
           <BasicProfileInfo />
           <h2 className="mb-24">Practice Address</h2>
-          <div className="my-24">
+          <div className={showAddressForm ? "display-none" : "my-24"}>
             <div style={{ alignSelf: "center", alignContent: "center" }}>
               <button
                 onClick={() => {
-                  setAdressForm(!addressForm);
+                  setShowAddressForm(true);
                 }}
                 className="circle-button"
               >
                 <AddIcon />
               </button>
-
               <span className="caption-2-regular-gray3 ml-5">
                 Add practice address
               </span>
             </div>
           </div>
-          <PracticeAddressForm />
+          {showAddressForm && (
+            <PracticeAddressForm setShowAddressForm={setShowAddressForm} />
+          )}
           <div>
             <div className="as-pd-icons">
               <h4>Practice Address</h4>
@@ -241,32 +206,6 @@ export default function AccountSettings({ id }) {
                 <DeleteIcon />
               </span>
             </div>
-            <p className="mt-20 mb-4">
-              {" "}
-              <span className="caption-2-regular-gray3 ">
-                {userData ? userData?.practiceAddress?.addressLine1 : null}
-              </span>
-            </p>
-            <p>
-              {" "}
-              <span className="caption-2-regular-gray3 mr-4">
-                {userData ? userData.practiceAddress?.addressLine2 : null}
-              </span>
-            </p>
-            <p className="my-4">
-              {" "}
-              <span className="caption-2-regular-gray3 mr-4">
-                {userData
-                  ? `${userData.practiceAddress?.city},${userData.practiceAddress?.state},${userData.practiceAddress?.zipcode}`
-                  : null}
-              </span>
-            </p>
-            <p className="my-4">
-              {" "}
-              <span className="caption-2-regular-gray3 mr-4">
-                {userData ? userData?.practiceAddress?.country : null}
-              </span>
-            </p>
           </div>
         </div>
         <div className="my-24">
