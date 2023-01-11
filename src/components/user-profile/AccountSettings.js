@@ -102,21 +102,28 @@ export default function AccountSettings({ id }) {
     }
   };
 
-  const addUserData = async (data) => {
+  const addUserAdress = async (formData) => {
     try {
-      let responce = api.patch(`/users/${id}`, data);
-      console.log("---------", responce);
+      let { data } = api.patch(`/users/${id}`, { formData });
+      console.log("---------", data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const onPracticeAdressChange = (event) => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+    setAddPracticeAddress({ ...addPracticeAddress, [name]: value });
+  };
   const handleAdsressSubmit = (e) => {
     e.preventDefault();
-    let newUserData = {
-      ...userData,
-      practiceAddress: Object.assign(),
-    };
+    let address = [addPracticeAddress];
+    if (userData?.practiceAddress?.length > 0) {
+      address = [...userData?.practiceAddress, ...address];
+    }
+    addUserAdress(address);
     setAdressForm(false);
   };
 
@@ -263,12 +270,7 @@ export default function AccountSettings({ id }) {
                             : null
                           : null
                       }
-                      onChange={(e) =>
-                        setAddPracticeAddress({
-                          ...addPracticeAddress,
-                          addressLine1: e.target.value,
-                        })
-                      }
+                      onChange={onPracticeAdressChange}
                       placeholder=" "
                       // disabled={!formik.values.mode.includes("venue")}
                     />
@@ -294,12 +296,7 @@ export default function AccountSettings({ id }) {
                             : null
                           : null
                       }
-                      onChange={(e) =>
-                        setAddPracticeAddress({
-                          ...addPracticeAddress,
-                          addressLine2: e.target.value,
-                        })
-                      }
+                      onChange={onPracticeAdressChange}
                       placeholder=" "
                       // disabled={!formik.values.mode.includes("venue")}
                     />
@@ -327,12 +324,7 @@ export default function AccountSettings({ id }) {
                             : null
                           : null
                       }
-                      onChange={(e) =>
-                        setAddPracticeAddress({
-                          ...addPracticeAddress,
-                          city: e.target.value,
-                        })
-                      }
+                      onChange={onPracticeAdressChange}
                       placeholder=" "
                       // disabled={!formik.values.mode.includes("venue")}
                     />
@@ -358,12 +350,7 @@ export default function AccountSettings({ id }) {
                             : null
                           : null
                       }
-                      onChange={(e) =>
-                        setAddPracticeAddress({
-                          ...addPracticeAddress,
-                          state: e.target.value,
-                        })
-                      }
+                      onChange={onPracticeAdressChange}
                       placeholder=" "
                       // disabled={!formik.values.mode.includes("venue")}
                     />
@@ -391,12 +378,7 @@ export default function AccountSettings({ id }) {
                             : null
                           : null
                       }
-                      onChange={(e) =>
-                        setAddPracticeAddress({
-                          ...addPracticeAddress,
-                          zipcode: e.target.value,
-                        })
-                      }
+                      onChange={onPracticeAdressChange}
                       placeholder=" "
                       // disabled={!formik.values.mode.includes("venue")}
                     />
