@@ -1,33 +1,33 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import PracticeAddressForm from "./PracticeAddressForm";
+
+import LicenseForm from "./LicenseForm";
 import EditIcon from "../icons/EditIcon";
 import DeleteIcon from "../icons/DeleteIcon";
-
 import api from "../../utility/api";
 
 import { alertAction } from "../../redux/alert/alertAction";
 import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
 
-export default function PracticeAddress({ practice, indx }) {
+export default function License({ license, indx }) {
   const [editMode, setEditMode] = useState(false);
 
   const userProfile = useSelector((state) => state.userProfile.userProfile);
   const dispatch = useDispatch();
 
-  const handleDelete = async (practiceId) => {
-    const newAddresses = userProfile?.practiceAddress?.filter(
-      (address) => address._id !== practiceId
+  const handleDelete = async (licenseId) => {
+    const newLicenses = userProfile?.licenses?.filter(
+      (license) => license._id !== licenseId
     );
     const formData = {
       user: {
-        practiceAddress: newAddresses,
+        licenses: newLicenses,
       },
     };
     try {
       const response = await api.patch(`/users/${userProfile._id}`, formData);
       if (response) {
-        console.log("delete practice res", response);
+        console.log("delete license res", response);
         dispatch(loadUserProfileAction(response.data.data.user));
       }
     } catch (err) {
@@ -36,35 +36,38 @@ export default function PracticeAddress({ practice, indx }) {
   };
 
   return (
-    <div className="mb-40">
-      <div className="flex-vc mb-13">
-        <h4>{practice?.name || `Practice Name`}</h4>
+    <div>
+      <div className="flex-vc">
+        <h4>License</h4>
         <span
-          className="mr-8 ml-12"
+          className="mr-4 ml-12"
           onClick={() => {
             setEditMode(!editMode);
           }}
         >
           <EditIcon />
         </span>
-        <span onClick={() => handleDelete(practice._id)}>
+        <span
+          className="ml-12"
+          onClick={() => {
+            handleDelete(license?._id);
+          }}
+        >
           <DeleteIcon />
         </span>
       </div>
       {editMode ? (
-        <PracticeAddressForm
-          practice={practice}
+        <LicenseForm
+          license={license}
           indx={indx}
           editMode={editMode}
           setEditMode={setEditMode}
         />
       ) : (
-        <div className="body-regular-gray3">
-          <p>{practice?.addressLine1}</p>
-          <p>{practice?.addressLine2}</p>
-          <p>{(practice?.city, practice?.state)}</p>
+        <div className="mb-34 body-regular-gray3">
+          <p>{license?.licenseNumber}</p>
           <p>
-            {practice?.country} - {practice?.zipcode}
+            {license?.state}, {license?.country}
           </p>
         </div>
       )}

@@ -48,10 +48,15 @@ export default function PracticeAddressForm({
     let addresses = [];
     if (editMode) {
       addresses = userProfile?.practiceAddress.map((item, index) =>
-        index == indx ? formAddress : item
+        index === indx ? formAddress : item
       );
-    } else {
+    }
+
+    if (!editMode && userProfile?.practiceAddress?.length > 0) {
       addresses = [formAddress, ...userProfile?.practiceAddress];
+    }
+    if (!editMode && !userProfile?.practiceAddress?.length > 0) {
+      addresses = [formAddress];
     }
     const formData = {
       user: {
@@ -59,18 +64,20 @@ export default function PracticeAddressForm({
       },
     };
 
-    console.log("formData", formData);
-
     try {
       const response = await api.patch(`/users/${userProfile._id}`, formData);
       if (response) {
+        console.log("submit res", response);
         dispatch(loadUserProfileAction(response.data.data.user));
-        setEditMode(false);
+        if (editMode) {
+          setEditMode(false);
+        } else {
+          setShowAddressForm(false);
+        }
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
-    setShowAddressForm(false);
   };
 
   const formik = useFormik({
@@ -151,8 +158,6 @@ export default function PracticeAddressForm({
       loadCityList(myStateId);
     }
   }, [stateList]);
-
-  console.log("country list", countryList);
 
   return (
     <>

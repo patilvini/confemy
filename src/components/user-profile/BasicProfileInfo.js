@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 import SelectFormType1 from "../reselect/SelectFormType1";
 import { useFormik } from "formik";
 import TextError from "../formik/TextError";
 
 import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
+import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
 
 import { professions, subspecialties } from "../../utility/commonUtil";
 
@@ -17,9 +19,26 @@ export default function BasicProfileInfo() {
 
   const userProfile = useSelector((state) => state.userProfile.userProfile);
 
-  const onSubmit = (values, action) => {
-    console.log(values);
-    setDisplayButton(false);
+  const onSubmit = async (values, action) => {
+    const formData = {
+      user: {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        profession: values.profession,
+        mobile: values.mobile,
+        countryCode: values.countryCode,
+        speciality: values.specialty,
+      },
+    };
+    try {
+      const response = await api.patch(`/users/${userProfile._id}`, formData);
+      if (response) {
+        dispatch(loadUserProfileAction(response.data.data.user));
+        setDisplayButton(false);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
   };
 
   const formik = useFormik({
@@ -27,7 +46,7 @@ export default function BasicProfileInfo() {
       firstName: userProfile?.firstName || "",
       lastName: userProfile?.lastName || "",
       profession: userProfile?.profession || "",
-      specialty: "",
+      specialty: userProfile?.speciality || "",
       countryCode: userProfile?.countryCode || "",
       mobile: userProfile?.mobile || "",
     },
@@ -108,7 +127,7 @@ export default function BasicProfileInfo() {
             label="profession"
             value={formik.values.profession}
             onChange={(value) => {
-              return formik.setFieldValue("profession", value);
+              formik.setFieldValue("profession", value?.value);
               setDisplayButton(true);
             }}
             placeholder="Choose Profession"
@@ -128,7 +147,7 @@ export default function BasicProfileInfo() {
             placeholder="Choose specialty"
             value={formik.values.specialty}
             onChange={(value) => {
-              formik.setFieldValue("specialty", value);
+              formik.setFieldValue("specialty", value?.value);
               setDisplayButton(true);
             }}
             isMulti={false}
@@ -142,16 +161,18 @@ export default function BasicProfileInfo() {
       </div>
       <div className="grid-col-2 mb-18">
         <div className="grid-1st-col mr-24">
-          <SelectFormType1
+          <ReloadableSelectFormType1
             label="countryCode"
-            options={countryCodeList}
             name="countryCode"
+            options={countryCodeList}
+            value={formik.values.countryCode}
+            isMulti={false}
             onChange={(value) => {
               formik.setFieldValue("countryCode", value?.value);
               setDisplayButton(true);
             }}
-            placeholder="countryCode"
-            value={formik.values.countryCode}
+            placeholder="Country Code"
+            isDisabled={false}
           />
         </div>
         <div className="grid-2nd-col">

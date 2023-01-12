@@ -90,7 +90,7 @@ export default function ReloadableSelectFormType1(props) {
   //  Setting key equal to default value. renders a new component when default value changes
 
   // console.log("get Value", getValue(props.options, props.value, props.isMulti));
-  // console.log(props.isMulti);
+  // console.log("reloadable select props", props);
 
   return (
     <div>

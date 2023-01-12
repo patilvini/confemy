@@ -36,11 +36,10 @@ export default function SocialMedia({
       const key = name;
       const formData = {
         user: {
-          user: user._id,
           [key]: inputValue,
         },
       };
-      const url = `organizations/${userId}`;
+      const url = `/users/${userId}`;
       const response = await api.patch(url, formData);
       if (response) {
         setInputValue("");
@@ -71,11 +70,10 @@ export default function SocialMedia({
       const key = removeName;
       const formData = {
         user: {
-          user: user._id,
           [key]: true,
         },
       };
-      const url = `organizations/${userId}`;
+      const url = `/users/${userId}`;
       const response = await api.patch(url, formData);
       if (response) {
         setInputValue(" ");

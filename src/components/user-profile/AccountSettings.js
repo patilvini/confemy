@@ -12,7 +12,7 @@ import BasicProfileInfo from "./BasicProfileInfo";
 import PracticeAddressForm from "./PracticeAddressForm";
 import PracticeAddress from "./PracticeAddress";
 import LicenseForm from "./LicenseForm";
-import LicenseList from "./LicenseList";
+import License from "./License";
 
 import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
@@ -69,14 +69,15 @@ export default function AccountSettings() {
             >
               <AddIcon />
             </button>
-            <p className="caption-2-regular-gray3 ml-5">Add practice address</p>
+            <p className="caption-1-regular-gray3 ml-5">Add practice address</p>
           </div>
         )}
         {userProfile?.userProfile?.practiceAddress?.map((practice, indx) => (
-          <PracticeAddress practice={practice} indx={indx} />
+          <div key={practice.name}>
+            <PracticeAddress practice={practice} indx={indx} />
+          </div>
         ))}
       </div>
-
       {/* License */}
       <div>
         <h2 className="mb-24">License Information</h2>
@@ -95,11 +96,13 @@ export default function AccountSettings() {
             >
               <AddIcon />
             </button>
-            <p className="caption-2-regular-gray3 ml-5">Add another license</p>
+            <p className="caption-1-regular-gray3 ml-5">Add another license</p>
           </div>
         )}
         {userProfile?.userProfile?.licenses?.map((license, indx) => (
-          <LicenseList license={license} indx={indx} />
+          <div key={license.licenseNumber}>
+            <License license={license} indx={indx} />
+          </div>
         ))}
       </div>
       {/* social media */}
@@ -111,32 +114,32 @@ export default function AccountSettings() {
           name="facebook"
           removeName="removeFacebook"
           label="Facebook link"
-          socialMediaApiValue={userData.facebook}
-          userId={userData._id}
+          socialMediaApiValue={userProfile?.userProfile?.facebook}
+          userId={userProfile?.userProfile?._id}
         />
         <SocialMedia
           socialMediaIcon={<LinkedinBlueIcon className="icon-lg" />}
           name="linkedin"
           removeName="removeLinkedin"
           label="Linkedin link"
-          socialMediaApiValue={userData.linkedin}
-          userId={userData._id}
+          socialMediaApiValue={userProfile?.userProfile?.linkedin}
+          userId={userProfile?.userProfile?._id}
         />
         <SocialMedia
           socialMediaIcon={<TwitterBlueIcon className="icon-lg" />}
           name="twitter"
           removeName="removeTwitter"
           label="Twitter link"
-          socialMediaApiValue=""
-          userId={userData._id}
+          socialMediaApiValue={userProfile?.userProfile?.twitter}
+          userId={userProfile?.userProfile?._id}
         />
         <SocialMedia
           socialMediaIcon={<InstagramGradientIcon className="icon-lg" />}
           name="instagram"
           removeName="removeInstagram"
           label="Instagram link"
-          socialMediaApiValue={userData.instagram}
-          userId={userData._id}
+          socialMediaApiValue={userProfile?.userProfile?.instagram}
+          userId={userProfile?.userProfile?._id}
         />
       </div>
     </div>

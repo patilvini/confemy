@@ -26,13 +26,13 @@ export default function LicenseForm({
 }) {
   const [countryList, setCountryList] = useState([]);
   const [stateList, setStateList] = useState([]);
-  const [cityList, setCityList] = useState([]);
 
   const userProfile = useSelector((state) => state.userProfile.userProfile);
 
   const dispatch = useDispatch();
 
   const onSubmit = async (values, action) => {
+    console.log("edit mode", editMode);
     const formLicense = {
       licenseNumber: values.licenseNumber,
       country: values.country,
@@ -43,25 +43,38 @@ export default function LicenseForm({
       licenseData = userProfile?.licenses.map((item, index) =>
         index == indx ? formLicense : item
       );
-    } else {
+    }
+
+    if (!editMode && userProfile?.licenses?.length > 0) {
       licenseData = [formLicense, ...userProfile?.licenses];
     }
+
+    if (!editMode && !userProfile?.licenses?.length > 0) {
+      licenseData = [formLicense];
+    }
+
     const formData = {
       user: {
         licenses: licenseData,
       },
     };
 
+    console.log("formData", formData);
+
     try {
       const response = await api.patch(`/users/${userProfile._id}`, formData);
       if (response) {
+        console.log("submit res", response);
         dispatch(loadUserProfileAction(response.data.data.user));
-        setEditMode(false);
+        if (editMode) {
+          setEditMode(false);
+        } else {
+          setShowLicenseForm(false);
+        }
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
-    setShowLicenseForm(false);
   };
 
   const formik = useFormik({
@@ -105,18 +118,6 @@ export default function LicenseForm({
     }
   };
 
-  const loadCityList = async (stateId) => {
-    const url = `venues/cityList?stateId=${stateId}`;
-    try {
-      const response = await api.get(url);
-      if (response) {
-        setCityList(response.data.data.cities);
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
-
   useEffect(() => {
     loadCountryList();
   }, []);
@@ -129,15 +130,6 @@ export default function LicenseForm({
       loadStateList(myCountryId);
     }
   }, [countryList]);
-
-  useEffect(() => {
-    if (stateList.length > 0) {
-      const myStateId = stateList.find(
-        (state) => state.value === license?.state
-      )?.stateId;
-      loadCityList(myStateId);
-    }
-  }, [stateList]);
 
   return (
     <>
@@ -184,7 +176,6 @@ export default function LicenseForm({
                       formik.setFieldValue("city", "");
                     }
                     formik.setFieldValue("state", value?.value);
-                    loadCityList(value?.stateId);
                   }}
                   placeholder="Select state"
                   isDisabled={false}
@@ -208,7 +199,7 @@ export default function LicenseForm({
                     placeholder=" "
                     disabled={false}
                   />
-                  <label>Type licnse number*</label>
+                  <label>Type license number*</label>
                 </div>
                 <div className="mb-24">
                   {formik.touched.licenseNumber &&
