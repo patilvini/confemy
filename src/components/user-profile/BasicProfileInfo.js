@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
+import { professions, subspecialties } from "../../utility/commonUtil";
 
 const validationSchema = yup.object().shape({
   firstName: yup.string().required("Required"),
@@ -26,7 +27,6 @@ export default function BasicProfileInfo() {
   const userProfile = useSelector((state) => state.userProfile.userProfile);
 
   const onSubmit = (values, action) => {
-    console.log("onsubmit clicked");
     console.log(values);
     setDisplayButton(false);
   };
@@ -98,29 +98,40 @@ export default function BasicProfileInfo() {
       <div className="grid-col-2 mb-24">
         <div className="grid-1st-col">
           <SelectFormType1
+            options={professions}
             label="profession"
-            // options={userProfile.profession}
-            name="profession"
+            value={formik.values.profession}
             onChange={(value) => {
-              formik.setFieldValue("profession", value?.value);
+              return formik.setFieldValue("profession", value);
               setDisplayButton(true);
             }}
-            placeholder="profession"
-            value={formik.values.profession}
+            placeholder="Choose Profession"
+            isMulti={false}
           />
+          <div className="mb-24">
+            {formik.touched.profession && Boolean(formik.errors.profession) && (
+              <TextError>{formik.errors.profession}</TextError>
+            )}
+          </div>
         </div>
         <div className="grid-2nd-col">
           <SelectFormType1
+            options={subspecialties}
             label="specialty"
-            // options={userProfile?.specialities}
             name="specialty"
+            placeholder="Choose specialty"
+            value={formik.values.specialty}
             onChange={(value) => {
-              formik.setFieldValue("specialty", value?.value);
+              formik.setFieldValue("specialty", value);
               setDisplayButton(true);
             }}
-            placeholder="Specialty"
-            value={formik.values.specialty}
+            isMulti={false}
           />
+          <div className="mb-24">
+            {formik.touched.specialty && Boolean(formik.errors.specialty) && (
+              <TextError>{formik.errors.specialty}</TextError>
+            )}
+          </div>
         </div>
       </div>
       <div className="grid-col-2 mb-24">
