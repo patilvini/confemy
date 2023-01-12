@@ -8,7 +8,7 @@ export default function PracticeAddress({ practice, indx }) {
 
   return (
     <div>
-      <div className="as-pd-icons">
+      <div className="flex">
         <h4>{practice?.name || `Practice Name`}</h4>
         <span
           className="mr-8 ml-12"

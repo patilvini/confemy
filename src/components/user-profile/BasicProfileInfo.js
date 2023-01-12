@@ -1,28 +1,19 @@
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import SelectFormType1 from "../reselect/SelectFormType1";
-import api from "../../utility/api";
 import { useFormik } from "formik";
-import * as yup from "yup";
 import TextError from "../formik/TextError";
 
+import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
 
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
 import { professions, subspecialties } from "../../utility/commonUtil";
-
-const validationSchema = yup.object().shape({
-  firstName: yup.string().required("Required"),
-  lastName: yup.string().required("Required"),
-  profession: yup.string().required("Required"),
-  specialty: yup.string().required("Required"),
-  countryCode: yup.string().required("Required"),
-  mobile: yup.string().required("Required"),
-});
 
 export default function BasicProfileInfo() {
   const [displayButton, setDisplayButton] = useState(false);
+  const [countryCodeList, setCountryCodeList] = useState([]);
+  const dispatch = useDispatch();
 
   const userProfile = useSelector((state) => state.userProfile.userProfile);
 
@@ -41,14 +32,29 @@ export default function BasicProfileInfo() {
       mobile: userProfile?.mobile || "",
     },
     onSubmit: onSubmit,
-    // validationSchema: validationSchema,
     enableReinitialize: true,
   });
+
+  const loadCountryCode = async () => {
+    const url = `venues/countryListUserAccount`;
+    try {
+      const response = await api.get(url);
+      if (response) {
+        setCountryCodeList(response.data.data.countries);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
 
   const onInputChange = (e) => {
     setDisplayButton(true);
     formik.handleChange(e);
   };
+
+  useEffect(() => {
+    loadCountryCode();
+  }, []);
 
   return (
     <form
@@ -58,7 +64,7 @@ export default function BasicProfileInfo() {
     >
       <h1 className="mb-24">Basic information</h1>
       <div className="grid-col-2">
-        <div className="grid-1st-col">
+        <div className="grid-1st-col mr-24">
           <div className="material-textfield">
             <input
               id="firstName"
@@ -95,8 +101,8 @@ export default function BasicProfileInfo() {
           </div>
         </div>
       </div>
-      <div className="grid-col-2 mb-24">
-        <div className="grid-1st-col">
+      <div className="grid-col-2 my-10">
+        <div className="grid-1st-col mr-24">
           <SelectFormType1
             options={professions}
             label="profession"
@@ -134,11 +140,11 @@ export default function BasicProfileInfo() {
           </div>
         </div>
       </div>
-      <div className="grid-col-2 mb-24">
-        <div className="grid-1st-col">
+      <div className="grid-col-2 mb-18">
+        <div className="grid-1st-col mr-24">
           <SelectFormType1
             label="countryCode"
-            // options={userProfile.countryCode}
+            options={countryCodeList}
             name="countryCode"
             onChange={(value) => {
               formik.setFieldValue("countryCode", value?.value);
@@ -160,7 +166,7 @@ export default function BasicProfileInfo() {
             />
             <label>Mobile</label>
           </div>
-          <div className="mb-24">
+          <div className="mb-12">
             {formik.touched.mobile && Boolean(formik.errors.mobile) && (
               <TextError>{formik.errors.mobile}</TextError>
             )}

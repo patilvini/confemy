@@ -70,6 +70,7 @@ export default function PracticeAddressForm({
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
+    setShowAddressForm(false);
   };
 
   const formik = useFormik({
@@ -183,7 +184,7 @@ export default function PracticeAddressForm({
                     )}
                 </div>
               </div>
-              <div className="grid-1st-col">
+              <div className="grid-1st-col mr-24">
                 <div className="material-textfield">
                   <input
                     id="street1"
@@ -221,7 +222,7 @@ export default function PracticeAddressForm({
                   )}
                 </div>
               </div>
-              <div className="grid-1st-col">
+              <div className="grid-1st-col mr-24">
                 <SelectFormType1
                   options={countryList}
                   value={formik.values.country}
@@ -269,7 +270,7 @@ export default function PracticeAddressForm({
                   )}
                 </div>
               </div>
-              <div className="grid-1st-col">
+              <div className="grid-1st-col mr-24">
                 <ReloadableSelectFormType1
                   options={cityList}
                   value={formik.values.city}
@@ -310,7 +311,7 @@ export default function PracticeAddressForm({
           </div>
         </div>
         <div>
-          <button className="button button-primary" type="submit">
+          <button className="button button-primary mr-24" type="submit">
             Save
           </button>
           <button
