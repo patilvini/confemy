@@ -38,7 +38,7 @@ export default function License({ license, indx }) {
   return (
     <div>
       <div className="flex-vc">
-        <h4>License</h4>
+        <h4>License {indx + 1}</h4>
         <span
           className="mr-4 ml-12"
           onClick={() => {

@@ -81,9 +81,9 @@ export default function BasicProfileInfo() {
       onSubmit={formik.handleSubmit}
       autoComplete="off"
     >
-      <h1 className="mb-24">Basic information</h1>
-      <div className="grid-col-2">
-        <div className="grid-1st-col mr-24">
+      <h1 className="mb-30">Basic information</h1>
+      <div className="grid-col-2" style={{ gap: 24 }}>
+        <div className="grid-1st-col">
           <div className="material-textfield">
             <input
               id="firstName"
