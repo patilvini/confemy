@@ -45,7 +45,7 @@ export default function License({ license, indx }) {
             setEditMode(!editMode);
           }}
         >
-          <EditIcon />
+          <EditIcon className="icon-size" />
         </span>
         <span
           className="ml-12"
@@ -53,7 +53,7 @@ export default function License({ license, indx }) {
             handleDelete(license?._id);
           }}
         >
-          <DeleteIcon />
+          <DeleteIcon className="icon-size" />
         </span>
       </div>
       {editMode ? (

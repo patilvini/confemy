@@ -77,12 +77,12 @@ export default function BasicProfileInfo() {
 
   return (
     <form
-      className="form-type-1"
+      className="form-type-1 as-basicinfo-wrap"
       onSubmit={formik.handleSubmit}
       autoComplete="off"
     >
       <h1 className="mb-30">Basic information</h1>
-      <div className="grid-col-2" style={{ gap: 24 }}>
+      <div className="grid-col-2">
         <div className="grid-1st-col">
           <div className="material-textfield">
             <input
@@ -119,9 +119,8 @@ export default function BasicProfileInfo() {
             )}
           </div>
         </div>
-      </div>
-      <div className="grid-col-2 my-10">
-        <div className="grid-1st-col mr-24">
+
+        <div className="grid-1st-col">
           <SelectFormType1
             options={professions}
             label="profession"
@@ -158,9 +157,8 @@ export default function BasicProfileInfo() {
             )}
           </div>
         </div>
-      </div>
-      <div className="grid-col-2 mb-18">
-        <div className="grid-1st-col mr-24">
+
+        <div className="grid-1st-col">
           <ReloadableSelectFormType1
             label="countryCode"
             name="countryCode"
@@ -187,7 +185,7 @@ export default function BasicProfileInfo() {
             />
             <label>Mobile</label>
           </div>
-          <div className="mb-12">
+          <div className="mb-24">
             {formik.touched.mobile && Boolean(formik.errors.mobile) && (
               <TextError>{formik.errors.mobile}</TextError>
             )}
