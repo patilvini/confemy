@@ -81,35 +81,19 @@ function UserProfileLayoutPage() {
   const tabs = {
     passes: {
       title: "Passes",
-      content: (
-        <div>
-          <Passes />
-        </div>
-      ),
+      content: <Passes />,
     },
     savedConference: {
       title: "Saved Conference",
-      content: (
-        <div>
-          <SavedConfs />
-        </div>
-      ),
+      content: <SavedConfs />,
     },
     credits: {
       title: "Credits",
-      content: (
-        <div>
-          <Credits />
-        </div>
-      ),
+      content: <Credits />,
     },
     accountSetting: {
       title: "Account Settings",
-      content: (
-        <div>
-          <AccountSettings />
-        </div>
-      ),
+      content: <AccountSettings />,
     },
   };
 
@@ -124,7 +108,7 @@ function UserProfileLayoutPage() {
 
   const toggle = (tab) => {
     if (active_tab !== tab) {
-      navigate(`/${tab}`);
+      navigate(`/user-profile/${tab}`);
     }
   };
 
@@ -141,23 +125,27 @@ function UserProfileLayoutPage() {
           {user?.email}, {user?.profession}
         </span>
 
-        <nav tabs>
+        <div className="flex-vchc my-40">
           {Object.entries(tabs).map((tab) => (
-            <NavLink
+            <div
               key={tab[0]}
-              className={active_tab === tab[0] ? "active" : ""}
+              className={active_tab === tab[0] ? "active-tab mx-8" : "mx-8"}
               onClick={() => {
                 toggle(tab[0]);
               }}
-              role="button"
             >
               <h4> {tab[1].title}</h4>
-            </NavLink>
+            </div>
           ))}
-        </nav>
-        <TabContent tabs={tabs} />
+        </div>
+        <div>
+          {Object.entries(tabs).map((tab) =>
+            active_tab === tab[0] ? (
+              <div key={tab[0]}>{tab[1].content}</div>
+            ) : null
+          )}
+        </div>
       </div>
-      <Outlet />
     </div>
   );
 }

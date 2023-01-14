@@ -59,6 +59,10 @@ import PNavbar from "./components/navbar/PNavbar";
 import EditorContainer from "./components/create-conference/EditorContainer";
 import BookingPage from "./pages/booking-page/BookingPage";
 import Tabs from "./components/tabs-demo/Tabs";
+import TabsDemo2 from "./components/tabs-demo/TabsDemo2";
+import TabsDemoPage1 from "./components/tabs-demo/TabsDemoPage1";
+import TabsDemoPage2 from "./components/tabs-demo/TabsDemoPage2";
+import Page1Subpage from "./components/tabs-demo/Page1Subpage";
 import Passes from "./components/user-profile/Passes";
 import SavedConfs from "./components/user-profile/SavedConfs";
 import Credits from "./components/user-profile/Credits";
@@ -90,7 +94,7 @@ const App = () => {
               element={<ConfDetailsPage />}
             ></Route>
             <Route
-              path="user-profile/:active_tab?"
+              path="user-profile/:active_tab"
               element={<UserProfileLayoutPage />}
             >
               {/* <Route path="passes" element={<Passes />} />
@@ -98,6 +102,11 @@ const App = () => {
               <Route path="credits" element={<Credits />} />
               <Route path="account-settings" element={<AccountSettings />} /> */}
             </Route>
+            <Route
+              path="user-profile"
+              element={<Navigate to="/user-profile/passes" replace />}
+            ></Route>
+
             <Route path="track-credits" element={<TrackCreditPage />}></Route>
             <Route
               path="list-conferences"
@@ -126,7 +135,15 @@ const App = () => {
               }
             >
               <Route path="test/:active_tab" element={<Tabs />} />
-              {/* <Route path="test" element={<Tabs />} /> */}
+              <Route path="test2" element={<TabsDemo2 />}>
+                <Route path="page1" element={<TabsDemoPage1 />} />
+                <Route path="page1/:pageId" element={<Page1Subpage />} />
+                <Route path="page2" element={<TabsDemoPage2 />} />
+                <Route
+                  index={true}
+                  element={<Navigate to="./page1" replace />}
+                ></Route>
+              </Route>
               <Route
                 path="create-conference"
                 element={<CreateConfLandingPage />}
