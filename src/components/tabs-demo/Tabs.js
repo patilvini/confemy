@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Passes from "../user-profile/Passes";
 import SavedConfs from "../user-profile/SavedConfs";
 import Credits from "../user-profile/Credits";
-import AccountSettings from "../user-profile/AccountSettings";
+import AccountSettings from "../user-settings/AccountSettings";
 
 import "./tabs.styles.scss";
 

@@ -25,11 +25,8 @@ export default function SavedConfs() {
     }
   };
 
-  
-
   useEffect(() => {
-    console.log(called)
-  
+    console.log(called);
 
     getSaved();
   }, [userID, called]);
@@ -37,7 +34,7 @@ export default function SavedConfs() {
   const navigate = useNavigate();
 
   const noSaved = (
-    <div style={{textAlign: "center"}}>
+    <div style={{ textAlign: "center" }}>
       <NoSavedConfs className="icon-plshld" />
       <div className="passes-list">
         <h2>You haven't saved any conference</h2>
@@ -59,12 +56,8 @@ export default function SavedConfs() {
         return (
           <div key={index}>
             <SavedCard
-            
               unliked={() => {
-               
-                
                 setCalled(!called);
-                
               }}
               data={data[index]}
             />
@@ -80,5 +73,5 @@ export default function SavedConfs() {
     component = savedConfs;
   }
 
-  return <div>{component}</div>;
+  return <div className="container">{component}</div>;
 }

@@ -28,7 +28,6 @@ export default function License({ license, indx }) {
     try {
       const response = await api.patch(`/users/${userProfile._id}`, formData);
       if (response) {
-        console.log("delete license res", response);
         dispatch(loadUserProfileAction(response.data.data.user));
       }
     } catch (err) {

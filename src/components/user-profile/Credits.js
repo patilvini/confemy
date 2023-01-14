@@ -24,8 +24,7 @@ export default function Credits() {
   const userID = useSelector((state) => state.auth.user?._id);
   const [confs, setConfs] = useState();
   const [externalCreds, setExternalCreds] = useState([]);
-  const [req, setReq] = useState(0)
-
+  const [req, setReq] = useState(0);
 
   // console.log(userID)
 
@@ -38,31 +37,26 @@ export default function Credits() {
   };
 
   const requestCredit = async (item, credit) => {
-
-
-    
-
     if (!credit) {
-      return 
+      return;
     }
 
     const atteendeeDetails = {
-      creditRequest:true,
+      creditRequest: true,
       creditId: credit.value.creditId._id,
-      creditQuantity: credit.value.quantity
+      creditQuantity: credit.value.quantity,
+    };
 
+    try {
+      const r = await api.patch("/attendees/credits/users/" + item._id, {
+        atteendeeDetails,
+      });
+      console.log(r);
+      setReq();
+    } catch (err) {
+      console.log(err);
     }
-
-    try{
-        const r = await api.patch("/attendees/credits/users/"+ item._id, {atteendeeDetails})
-        console.log(r)
-        setReq()
-
-    } catch (err){
-        console.log(err)
-    }
-
-}
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -181,7 +175,7 @@ export default function Credits() {
           <div className="credit-table-item">To Goal</div>
         </div>
         {data?.map((item, index) => {
-          console.log(item)
+          console.log(item);
           return (
             <div key={index}>
               <div className="credits-table">
@@ -249,7 +243,6 @@ export default function Credits() {
           let credits = [];
 
           for (let i = 0; i < item.conference.credits.length; i++) {
-
             credits[i] = {
               label: item.conference.credits[i].creditId?.name,
               value: item.conference.credits[i],
@@ -265,10 +258,12 @@ export default function Credits() {
 
           return (
             <div key={index}>
-              
-                <ConfRow item={item} booking={booking} credits={credits} requestCredit={requestCredit}/>
-                
-              
+              <ConfRow
+                item={item}
+                booking={booking}
+                credits={credits}
+                requestCredit={requestCredit}
+              />
             </div>
           );
         })}
@@ -301,19 +296,17 @@ export default function Credits() {
                 <div className="credit-table-item">
                   {item.creditCertificateUploaded && (
                     <button
-                    style={{
-                      backgroundColor: "#fafbfc",
-                      border: "2px solid lightGrey",
-                      fontWeight: "bold",
-                      padding: ".5rem .5rem",
-                      borderRadius: "4px",
-                    }}
+                      style={{
+                        backgroundColor: "#fafbfc",
+                        border: "2px solid lightGrey",
+                        fontWeight: "bold",
+                        padding: ".5rem .5rem",
+                        borderRadius: "4px",
+                      }}
                       onClick={() => downloadCertificate(item.certificate)}
                       className="credits-button"
                     >
-                     
-                    <DocumentIcon /> View Certificate
-                  
+                      <DocumentIcon /> View Certificate
                     </button>
                   )}
                 </div>
@@ -353,5 +346,5 @@ export default function Credits() {
   } else {
     component = credits;
   }
-  return <div>{component}</div>;
+  return <div className="container">{component}</div>;
 }

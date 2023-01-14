@@ -68,6 +68,7 @@ import SavedConfs from "./components/user-profile/SavedConfs";
 import Credits from "./components/user-profile/Credits";
 import AccountSettings from "./components/user-settings/AccountSettings";
 import UserProfileLayoutPage from "./pages/layout-pages/UserProfileLayoutPage";
+import UserProfileNav from "./pages/layout-pages/UserProfileNav";
 
 const App = () => {
   useEffect(() => {
@@ -93,19 +94,25 @@ const App = () => {
               path="search-conference/:confId"
               element={<ConfDetailsPage />}
             ></Route>
+
             <Route
               path="user-profile/:active_tab"
               element={<UserProfileLayoutPage />}
-            >
-              {/* <Route path="passes" element={<Passes />} />
+            />
+            <Route path="user-profile" element={<UserProfileNav />}>
+              <Route path="tickets" element={<Passes />} />
               <Route path="saved-conference" element={<SavedConfs />} />
               <Route path="credits" element={<Credits />} />
-              <Route path="account-settings" element={<AccountSettings />} /> */}
+              <Route path="account-settings" element={<AccountSettings />} />
+              <Route
+                index={true}
+                element={<Navigate to="./tickets" replace />}
+              ></Route>
             </Route>
-            <Route
+            {/* <Route
               path="user-profile"
               element={<Navigate to="/user-profile/passes" replace />}
-            ></Route>
+            ></Route> */}
 
             <Route path="track-credits" element={<TrackCreditPage />}></Route>
             <Route
