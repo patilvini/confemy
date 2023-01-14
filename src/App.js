@@ -58,6 +58,11 @@ import MyConfsPage from "./pages/my-confs-page/MyConfsPage";
 import PNavbar from "./components/navbar/PNavbar";
 import EditorContainer from "./components/create-conference/EditorContainer";
 import BookingPage from "./pages/booking-page/BookingPage";
+import Passes from "./components/user-profile/Passes";
+import SavedConfs from "./components/user-profile/SavedConfs";
+import Credits from "./components/user-profile/Credits";
+import AccountSettings from "./components/user-settings/AccountSettings";
+import UserProfileLayoutPage from "./pages/layout-pages/UserProfileLayoutPage";
 
 const App = () => {
   useEffect(() => {
@@ -83,7 +88,15 @@ const App = () => {
               path="search-conference/:confId"
               element={<ConfDetailsPage />}
             ></Route>
-            <Route path="user-profile" element={<UserProfilePage />}></Route>
+            <Route
+              path="user-profile/:active_tab?"
+              element={<UserProfileLayoutPage />}
+            >
+              {/* <Route path="passes" element={<Passes />} />
+              <Route path="saved-conference" element={<SavedConfs />} />
+              <Route path="credits" element={<Credits />} />
+              <Route path="account-settings" element={<AccountSettings />} /> */}
+            </Route>
             <Route path="track-credits" element={<TrackCreditPage />}></Route>
             <Route
               path="list-conferences"

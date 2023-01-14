@@ -1,14 +1,67 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { NavLink, Link } from "react-router-dom";
 import "./profilepage.scss";
 import Passes from "./Passes";
 import SavedConfs from "./SavedConfs";
 import Credits from "./Credits";
-import AccountSettings from "./AccountSettings";
+import AccountSettings from "../user-settings/AccountSettings";
 
 export default function UserProfileNav() {
   const user = useSelector((state) => state.auth?.user);
   const [component, setComponent] = useState(<Passes />);
+  // const [activeTab, setActiveTab] = useState("passes");
+
+  // const toggle = (tab) => {
+  //   if (activeTab !== tab) setActiveTab(tab);
+  // };
+
+  // const tabs = {
+  //   passes: {
+  //     title: "Passes",
+  //     content: (
+  //       <button
+  //         onClick={() => setComponent(<Passes />)}
+  //         className="button-text"
+  //       >
+  //         Passes
+  //       </button>
+  //     ),
+  //   },
+  //   savedConference: {
+  //     title: "Saved Conference",
+  //     content: (
+  //       <button
+  //         onClick={() => setComponent(<SavedConfs />)}
+  //         className="button-text"
+  //       >
+  //         Saved Conference
+  //       </button>
+  //     ),
+  //   },
+  //   credits: {
+  //     title: "Credits",
+  //     content: (
+  //       <button
+  //         onClick={() => setComponent(<Credits />)}
+  //         className="button-text"
+  //       >
+  //         Credits
+  //       </button>
+  //     ),
+  //   },
+  //   accountSettings: {
+  //     title: "Account Settings",
+  //     content: (
+  //       <button
+  //         onClick={() => setComponent(<AccountSettings />)}
+  //         className="button-text"
+  //       >
+  //         Account Settings
+  //       </button>
+  //     ),
+  //   },
+  // };
 
   return (
     <div>
@@ -49,6 +102,19 @@ export default function UserProfileNav() {
             >
               Account Settings
             </button>
+            {/* {Object.entries(tabs).map((tab) => (
+              <NavLink key={tab[0]}>
+                <Link
+                  className={activeTab === tab[0] ? "active" : ""}
+                  onClick={() => {
+                    toggle(tab[0]);
+                  }}
+                  role="button"
+                >
+                  {tab[1].title}
+                </Link>
+              </NavLink>
+            ))} */}
           </div>
         </div>
       </div>
