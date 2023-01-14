@@ -10,19 +10,18 @@
   text-align: center;
 }
 
-.buttons-profile {
-  button {
+.link-profile {
+  a {
     margin-right: 5rem;
     background-color: white;
-    padding: 12.5rem 0 1rem 0;
-    border: none;
+    border: red;
     color: $gray-2;
     border-bottom: solid 0.5rem white;
   }
 }
 
-.buttons-profile {
-  button:focus {
+.link-text {
+  a:focus {
     color: $primary;
     border-bottom: solid 0.5rem $primary;
   }

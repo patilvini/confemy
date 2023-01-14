@@ -30,7 +30,7 @@ const authDropdownOptions = [
   {
     icon: <ProfileIcon className="icon-size" />,
     name: "Profile",
-    path: "/user-profile",
+    path: "/user-profile/passes",
   },
   {
     icon: <PassesIcon className="icon-size" />,
@@ -40,7 +40,7 @@ const authDropdownOptions = [
   {
     icon: <LikeBlueIcon className="icon-size" />,
     name: "Saved Conference",
-    path: "#!",
+    path: "/user-profile/saved-conference",
   },
   // {
   //   icon: <HelpIcon className="icon-size" />,
@@ -50,7 +50,7 @@ const authDropdownOptions = [
   {
     icon: <SettingsIcon className="icon-size" />,
     name: "Account Settings",
-    path: "#!",
+    path: "/user-profile/account-settings",
   },
 ];
 
