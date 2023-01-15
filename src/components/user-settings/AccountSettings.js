@@ -21,7 +21,6 @@ import "./userSettings.scss";
 import UpdatePassword from "./UpdatePassword";
 
 export default function AccountSettings() {
-  const dispatch = useDispatch();
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [showLicenseForm, setShowLicenseForm] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
@@ -30,6 +29,7 @@ export default function AccountSettings() {
     auth: { user },
     userProfile,
   } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const fetchUserProfile = async (userId) => {
     try {
@@ -54,8 +54,8 @@ export default function AccountSettings() {
           <BasicProfileInfo />
         </div>
         {/* practice address */}
-        <div>
-          <h2 className="my-24">Practice Address</h2>
+        <div className="mb-48">
+          <h2 className="my-24 color-primary">Practice Address</h2>
           {showAddressForm ? (
             <PracticeAddressForm
               setShowAddressForm={setShowAddressForm}
@@ -83,8 +83,8 @@ export default function AccountSettings() {
           ))}
         </div>
         {/* License */}
-        <div>
-          <h2 className="mb-24">License Information</h2>
+        <div className="mb-48">
+          <h2 className="mb-24 color-primary">License Information</h2>
           {showLicenseForm ? (
             <LicenseForm
               setShowLicenseForm={setShowLicenseForm}
@@ -100,9 +100,7 @@ export default function AccountSettings() {
               >
                 <AddIcon />
               </button>
-              <p className="caption-1-regular-gray3 ml-5">
-                Add another license
-              </p>
+              <p className="caption-1-regular-gray3 ml-5">Add license</p>
             </div>
           )}
           {userProfile?.userProfile?.licenses?.map((license, indx) => (
@@ -112,8 +110,8 @@ export default function AccountSettings() {
           ))}
         </div>
         {/*Password*/}
-        <div className="mb-40">
-          <h1 className="my-24">Update Password</h1>
+        <div className="mb-48">
+          <h2 className="my-24 color-primary">Update Password</h2>
           {showPasswordForm ? (
             <UpdatePassword setShowPasswordForm={setShowPasswordForm} />
           ) : (
@@ -136,8 +134,8 @@ export default function AccountSettings() {
           ))} */}
         </div>
         {/* social media */}
-        <div>
-          <h1>Social Media</h1>
+        <div className="mb-48">
+          <h2 className="color-primary">Add Users Social Media</h2>
 
           <SocialMedia
             socialMediaIcon={<FacebookBlueCircle className="icon-lg" />}

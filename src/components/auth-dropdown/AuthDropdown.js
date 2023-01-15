@@ -30,12 +30,12 @@ const authDropdownOptions = [
   {
     icon: <ProfileIcon className="icon-size" />,
     name: "Profile",
-    path: "/user-profile/tickets",
+    path: "/user-profile/account-settings",
   },
   {
     icon: <PassesIcon className="icon-size" />,
     name: "Tickets",
-    path: "#!",
+    path: "/user-profile/tickets",
   },
   {
     icon: <LikeBlueIcon className="icon-size" />,
@@ -47,6 +47,11 @@ const authDropdownOptions = [
   //   name: "Help",
   //   path: "#!",
   // },
+  {
+    icon: <SettingsIcon className="icon-size" />,
+    name: "Credits",
+    path: "/user-profile/credits",
+  },
   {
     icon: <SettingsIcon className="icon-size" />,
     name: "Account Settings",
