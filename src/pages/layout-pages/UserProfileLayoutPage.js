@@ -14,7 +14,7 @@ export default function UserProfileLayoutPage() {
 
   return (
     <div className="container">
-      <div className="bg-white" style={{ paddingTop: "16rem" }}>
+      <div className="up-tabs-wrap bg-white">
         <div className="text-align-center mb-68">
           <h1 className="mb-24">
             {user?.firstName} {user?.lastName}
