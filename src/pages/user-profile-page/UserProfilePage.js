@@ -1,7 +1,9 @@
+import UserProfileLayoutPage from "../layout-pages/UserProfileLayoutPage";
 
-import UserProfileNav from "../../components/user-profile/UserProfileNav";
-
-
-export default function UserProfilePage(){
-    return (<div><UserProfileNav/></div>)
+export default function UserProfilePage() {
+  return (
+    <div>
+      <UserProfileLayoutPage />
+    </div>
+  );
 }

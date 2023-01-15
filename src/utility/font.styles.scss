@@ -86,6 +86,11 @@ h4 {
   color: $gray-3;
 }
 
+.caption-1-regular-gray2 {
+  @include caption-1-regular;
+  color: $gray-2;
+}
+
 .caption-1-regular-cblack {
   @include caption-1-regular;
   color: $confemy-black;
@@ -114,6 +119,11 @@ h4 {
 .caption-1-heavy-gray3 {
   @include caption-1-heavy;
   color: $gray-3;
+}
+
+.caption-1-heavy-gray2 {
+  @include caption-1-heavy;
+  color: $gray-2;
 }
 
 .caption-2-bold-cblack {

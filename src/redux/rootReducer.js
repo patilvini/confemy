@@ -10,6 +10,7 @@ import profileReducer from "./profile/profileReducer";
 import myOrganizationsReducer from "./organization/myOrganizationsReducer";
 import organizationReducer from "./organization/organizationReducer";
 import conferenceReducer from "./conference/conferenceReducer";
+import userProfileReducer from "./user-profile/userProfileReducer";
 
 const persistConfig = {
   key: "root",
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   myOrganizations: myOrganizationsReducer,
   organization: organizationReducer,
   conference: conferenceReducer,
+  userProfile: userProfileReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

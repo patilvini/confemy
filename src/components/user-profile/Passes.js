@@ -62,7 +62,7 @@ export default function Passes() {
   }, [searchValue]);
 
   const noPasses = (
-    <div style={{textAlign: "center"}}>
+    <div style={{ textAlign: "center" }}>
       <NoPasses className="icon-plshld" />
       <div className="passes-list">
         <h2>You haven't booked any conference</h2>
@@ -118,7 +118,7 @@ export default function Passes() {
   }
 
   return (
-    <div>
+    <div className="container">
       {component}
 
       {modalOpen && (

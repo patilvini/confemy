@@ -43,7 +43,6 @@ export default function SearchPage() {
   } else {
     timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
-
   // const timezone = location?.timezone;
   const locationValue = location?.value;
   let utcStartDate;
@@ -99,7 +98,6 @@ export default function SearchPage() {
     try {
       const response = await api.post(url, { filters });
       if (response) {
-        console.log("search response", response);
         dispatch(searchConfsAction(response.data.data));
       }
     } catch (err) {
@@ -195,7 +193,6 @@ export default function SearchPage() {
         return null;
     }
   }
-
   useEffect(() => {
     loadSearchResults();
   }, [

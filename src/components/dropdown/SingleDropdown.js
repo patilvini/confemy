@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 const options = [
-  { label: 'Browse Conferences', value: 'browseConfs' },
-  { label: 'Organize Conferences', value: 'organizeConfs' },
-  { label: 'Profile', value: 'profile' },
-  { label: 'Saved Conferences', value: 'savedConfs' },
-  { label: 'Passes', value: 'passes' },
-  { label: 'Help', value: 'help' },
-  { label: 'Account Settings', value: 'setting' },
-  { label: 'Logout', value: 'logout' },
+  { label: "Browse Conferences", value: "browseConfs" },
+  { label: "Organize Conferences", value: "organizeConfs" },
+  { label: "Profile", value: "profile" },
+  { label: "Saved Conferences", value: "savedConfs" },
+  { label: "Passes", value: "passes" },
+  { label: "Help", value: "help" },
+  { label: "Account Settings", value: "setting" },
+  { label: "Logout", value: "logout" },
 ];
 
 function SingleDropdown() {
@@ -23,9 +23,9 @@ function SingleDropdown() {
       setOpenDropdown(false);
     };
 
-    document.body.addEventListener('click', onBodyClick, { capture: true });
+    document.body.addEventListener("click", onBodyClick, { capture: true });
     return () => {
-      document.body.removeEventListener('click', onBodyClick, {
+      document.body.removeEventListener("click", onBodyClick, {
         capture: true,
       });
     };
@@ -35,13 +35,13 @@ function SingleDropdown() {
     <div
       onClick={() => setSelected(option)}
       key={option.value}
-      className='item'
+      className="item"
     >
       {option.label}
     </div>
   ));
   return (
-    <div className='container'>
+    <div className="container">
       <div ref={ref}>
         <label>Main label</label>
         <div onClick={() => setOpenDropdown(!openDropdown)}>
@@ -50,7 +50,7 @@ function SingleDropdown() {
           </div>
           <div
             // onClick={(e) => e.stopPropagation()}
-            className={openDropdown ? '' : 'display-none'}
+            className={openDropdown ? "" : "display-none"}
           >
             {renderOptions}
           </div>

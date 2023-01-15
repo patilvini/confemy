@@ -149,8 +149,8 @@ export default function LocationDropdown({ className }) {
     getGeoInfo();
   }, []);
 
-  console.log("top cities", topCities);
-  console.log("filtered cities:", filteredTopCities);
+  // console.log("top cities", topCities);
+  // console.log("filtered cities:", filteredTopCities);
 
   return (
     <div ref={ref}>

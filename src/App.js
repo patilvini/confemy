@@ -58,6 +58,16 @@ import MyConfsPage from "./pages/my-confs-page/MyConfsPage";
 import PNavbar from "./components/navbar/PNavbar";
 import EditorContainer from "./components/create-conference/EditorContainer";
 import BookingPage from "./pages/booking-page/BookingPage";
+import Tabs from "./components/tabs-demo/Tabs";
+import TabsDemo2 from "./components/tabs-demo/TabsDemo2";
+import TabsDemoPage1 from "./components/tabs-demo/TabsDemoPage1";
+import TabsDemoPage2 from "./components/tabs-demo/TabsDemoPage2";
+import Page1Subpage from "./components/tabs-demo/Page1Subpage";
+import Passes from "./components/user-profile/Passes";
+import SavedConfs from "./components/user-profile/SavedConfs";
+import Credits from "./components/user-profile/Credits";
+import AccountSettings from "./components/user-settings/AccountSettings";
+import UserProfileLayoutPage from "./pages/layout-pages/UserProfileLayoutPage";
 
 const App = () => {
   useEffect(() => {
@@ -83,7 +93,25 @@ const App = () => {
               path="search-conference/:confId"
               element={<ConfDetailsPage />}
             ></Route>
-            <Route path="user-profile" element={<UserProfilePage />}></Route>
+
+            <Route
+              path="user-profile"
+              element={
+                <MyPrivateRoute>
+                  <UserProfileLayoutPage />
+                </MyPrivateRoute>
+              }
+            >
+              <Route path="tickets" element={<Passes />} />
+              <Route path="saved-conference" element={<SavedConfs />} />
+              <Route path="credits" element={<Credits />} />
+              <Route path="account-settings" element={<AccountSettings />} />
+              <Route
+                index={true}
+                element={<Navigate to="./tickets" replace />}
+              ></Route>
+            </Route>
+
             <Route path="track-credits" element={<TrackCreditPage />}></Route>
             <Route
               path="list-conferences"
@@ -103,7 +131,6 @@ const App = () => {
                 </MyPrivateRoute>
               }
             ></Route>
-
             <Route
               path="dashboard"
               element={
@@ -112,8 +139,16 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
-              <Route path="test" element={<EditorContainer />} />
-              {/* <Route path="test2" element={<SearchSpeaker />} /> */}
+              <Route path="test/:active_tab" element={<Tabs />} />
+              <Route path="test2" element={<TabsDemo2 />}>
+                <Route path="page1" element={<TabsDemoPage1 />} />
+                <Route path="page1/:pageId" element={<Page1Subpage />} />
+                <Route path="page2" element={<TabsDemoPage2 />} />
+                <Route
+                  index={true}
+                  element={<Navigate to="./page1" replace />}
+                ></Route>
+              </Route>
               <Route
                 path="create-conference"
                 element={<CreateConfLandingPage />}
@@ -161,39 +196,6 @@ const App = () => {
               ></Route>
             </Route>
             <Route path="/verify/:token" element={<VerifyManagerPage />} />
-
-            {/* <PrivateAttendeeRoute
-              path="/attendee-dashboard"
-              element={AttendeeDashboardPage}
-            />
-            <PrivateAttendeeRoute
-              path="/attendee-dashboard/profile"
-              element={AttendeeProfilePage}
-            />
-            <PrivateAttendeeRoute
-              path="/attendee-dashboard/create-attendee-profile"
-              element={CreateAttendeeProfilePage}
-            />
-            <PrivateAttendeeRoute
-              path="/attendee-dashboard/edit-attendee-profile"
-              element={EditAttendeeProfilePage}
-            />
-            <PrivateOrganizerRoute
-              path="/organizer-dashboard"
-              element={OrganizerDashboardPage}
-            />
-            <PrivateOrganizerRoute
-              path="/organizer-dashboard/profile"
-              element={OrganizerProfilePage}
-            />
-            <PrivateOrganizerRoute
-              path="/organizer-dashboard/create-organizer-profile"
-              element={CreateOrganizerProfilePage}
-            />
-            <PrivateOrganizerRoute
-              path="/organizer-dashboard/edit-organizer-profile"
-              element={EditOrganizerProfilePage}
-            />*/}
           </Routes>
           <Footer />
         </BrowserRouter>
