@@ -1,71 +1,47 @@
-import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-
-import Passes from "../../components/user-profile/Passes";
-import SavedConfs from "../../components/user-profile/SavedConfs";
-import Credits from "../../components/user-profile/Credits";
-import AccountSettings from "../../components/user-settings/AccountSettings";
-
+import { useSelector } from "react-redux";
+import { NavLink, Outlet } from "react-router-dom";
 import "./userProfileLayout.scss";
 
-export default function Tabs() {
-  const DEFAULT_ACTIVE_TAB = "tickets";
-  const tabs = {
-    tickets: {
-      title: "Tickets",
-      content: <Passes />,
-    },
-    saved_conferences: {
-      title: "Saved Conferences",
-      content: <SavedConfs />,
-    },
-    credits: {
-      title: "Credits",
-      content: <Credits />,
-    },
-    account_settings: {
-      title: "Account Settings",
-      content: <AccountSettings />,
-    },
-  };
+export default function UserProfileLayoutPage() {
+  const user = useSelector((state) => state.auth?.user);
 
-  const { active_tab } = useParams();
-  const navigate = useNavigate();
-
-  const toggle = (tab) => {
-    if (active_tab !== tab) {
-      navigate(`/user-profile/${tab}`);
-    }
-  };
-
-  useEffect(() => {
-    if (!active_tab) {
-      navigate(`/user-profile/${DEFAULT_ACTIVE_TAB}`);
-    }
-  }, []);
+  const tabs = [
+    { path: "tickets", label: "Tickets" },
+    { path: "saved-conference", label: "Saved Conference" },
+    { path: "credits", label: "Credits" },
+    { path: "account-settings", label: "Account Settings" },
+  ];
 
   return (
-    <div>
-      <div className="flex mb-40">
-        {Object.entries(tabs).map((tab) => (
-          <div key={tab[0]} className="demo-tabs">
-            <div
-              className={active_tab === tab[0] ? "active-tab mr-40" : "mr-40"}
-              onClick={() => {
-                toggle(tab[0]);
-              }}
-            >
-              {tab[1].title}
-            </div>
+    <div className="container">
+      <div className="bg-white" style={{ paddingTop: "16rem" }}>
+        <div className="text-align-center mb-68">
+          <h1 className="mb-24">
+            {user?.firstName} {user?.lastName}
+          </h1>
+          <div className="caption-2-regular-gray3">
+            <p className="mb-6">{user?.email}</p>
+            <p>{user?.profession}</p>
           </div>
-        ))}
+        </div>
+        <div className="flex-vchc">
+          {tabs.map((tab) => (
+            <NavLink key={tab.label} to={tab.path}>
+              {({ isActive }) => (
+                <div
+                  className={`up-tab mx-16 caption-1-heavy-gray2 ${
+                    isActive ? "up-active-tab" : " "
+                  }`}
+                >
+                  {tab.label}
+                </div>
+              )}
+            </NavLink>
+          ))}
+        </div>
       </div>
       <div>
-        {Object.entries(tabs).map((tab) =>
-          active_tab === tab[0] ? (
-            <div key={tab[0]}>{tab[1].content}</div>
-          ) : null
-        )}
+        <Outlet />
       </div>
     </div>
   );

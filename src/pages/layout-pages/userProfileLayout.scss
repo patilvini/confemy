@@ -1,26 +1,13 @@
 @import "../../utility/utility.styles.scss";
- 
-    .in-active {
-      margin-right: 5rem;
-      background-color: white;
-      color: $gray-2;
-      padding: 2rem 2rem 2rem 2rem;
-      border: none;
-      margin-right: 5rem;
-    }
 
-    .active{
-      background-color: white;
-      border: none;
-      padding: 2rem 2rem 0 2rem;
-      border-bottom: solid 0.5rem $primary;
-      border-radius: 5px;
-      margin-right: 5rem;
-    }
-  
+.up-tab {
+  background-color: $colour-white;
+  padding-bottom: 1.6rem;
+  border-bottom: solid 0.4rem $colour-white;
+}
 
-
-
-
-
-
+.up-active-tab {
+  border-bottom-color: $primary;
+  color: $primary;
+  font-weight: 900;
+}
