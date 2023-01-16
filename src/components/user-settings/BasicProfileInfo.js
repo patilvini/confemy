@@ -4,7 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 import SelectFormType1 from "../reselect/SelectFormType1";
 import { useFormik } from "formik";
+import * as yup from "yup";
 import TextError from "../formik/TextError";
+import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 
 import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
@@ -12,26 +14,51 @@ import { loadUserProfileAction } from "../../redux/user-profile/userProfileActio
 
 import { professions, subspecialties } from "../../utility/commonUtil";
 
+const validationSchema = yup.object({
+  firstName: yup
+    .string()
+    .max(15, "Must be 15 characters or less")
+    .required("Required"),
+  lastName: yup
+    .string()
+    .max(20, "Must be 20 characters or less")
+    .required("Required"),
+  profession: yup.string().required("Required"),
+});
+
 export default function BasicProfileInfo() {
   const [displayButton, setDisplayButton] = useState(false);
   const [countryCodeList, setCountryCodeList] = useState([]);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.userProfile.userProfile);
 
   const onSubmit = async (values, action) => {
-    const formData = {
-      user: {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        profession: values.profession,
-        mobile: values.mobile,
-        countryCode: values.countryCode,
-        speciality: values.specialty,
-      },
+    const userData = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      profession: values.profession,
+      speciality: values.specialty,
+      countryCode: values.countryCode,
+      mobile: values.mobile,
     };
+
+    // if (values.specialty) {
+    //   userData.speciality = values.specialty;
+    // }
+    // if (values.countryCode) {
+    //   userData.countryCode = values.countryCode;
+    // }
+    // if (values.mobile) {
+    //   userData.mobile = values.mobile;
+    // }
+
+    console.log("userData", userData);
+
     try {
-      const response = await api.patch(`/users/${userProfile._id}`, formData);
+      const response = await api.patch(`/users/${userProfile._id}`, {
+        user: userData,
+      });
       if (response) {
         dispatch(loadUserProfileAction(response.data.data.user));
         setDisplayButton(false);
@@ -41,16 +68,18 @@ export default function BasicProfileInfo() {
     }
   };
 
+  const initialValues = {
+    firstName: userProfile?.firstName || "",
+    lastName: userProfile?.lastName || "",
+    profession: userProfile?.profession || "",
+    specialty: userProfile?.speciality || "",
+    countryCode: userProfile?.countryCode || "",
+    mobile: userProfile?.mobile || "",
+  };
   const formik = useFormik({
-    initialValues: {
-      firstName: userProfile?.firstName || "",
-      lastName: userProfile?.lastName || "",
-      profession: userProfile?.profession || "",
-      specialty: userProfile?.speciality || "",
-      countryCode: userProfile?.countryCode || "",
-      mobile: userProfile?.mobile || "",
-    },
+    initialValues: initialValues,
     onSubmit: onSubmit,
+    validationSchema: validationSchema,
     enableReinitialize: true,
   });
 
@@ -71,9 +100,16 @@ export default function BasicProfileInfo() {
     formik.handleChange(e);
   };
 
+  const onCancel = () => {
+    formik.resetForm({ values: initialValues });
+    setDisplayButton(false);
+  };
+
   useEffect(() => {
     loadCountryCode();
   }, []);
+
+  console.log("formik", formik);
 
   return (
     <form
@@ -96,7 +132,7 @@ export default function BasicProfileInfo() {
             <label>First Name</label>
           </div>
           <div className="mb-24">
-            {formik.touched.firstName && Boolean(formik.errors.firstName) && (
+            {Boolean(formik.errors.firstName) && (
               <TextError>{formik.errors.firstName}</TextError>
             )}
           </div>
@@ -114,7 +150,7 @@ export default function BasicProfileInfo() {
             <label>Last Name</label>
           </div>
           <div className="mb-24">
-            {formik.touched.lastName && Boolean(formik.errors.lastName) && (
+            {Boolean(formik.errors.lastName) && (
               <TextError>{formik.errors.lastName}</TextError>
             )}
           </div>
@@ -124,16 +160,16 @@ export default function BasicProfileInfo() {
           <SelectFormType1
             options={professions}
             label="profession"
+            name="profession"
+            placeholder="Choose Profession"
             value={formik.values.profession}
             onChange={(value) => {
               formik.setFieldValue("profession", value?.value);
               setDisplayButton(true);
             }}
-            placeholder="Choose Profession"
-            isMulti={false}
           />
           <div className="mb-24">
-            {formik.touched.profession && Boolean(formik.errors.profession) && (
+            {Boolean(formik.errors.profession) && (
               <TextError>{formik.errors.profession}</TextError>
             )}
           </div>
@@ -149,10 +185,9 @@ export default function BasicProfileInfo() {
               formik.setFieldValue("specialty", value?.value);
               setDisplayButton(true);
             }}
-            isMulti={false}
           />
           <div className="mb-24">
-            {formik.touched.specialty && Boolean(formik.errors.specialty) && (
+            {Boolean(formik.errors.specialty) && (
               <TextError>{formik.errors.specialty}</TextError>
             )}
           </div>
@@ -170,7 +205,6 @@ export default function BasicProfileInfo() {
               setDisplayButton(true);
             }}
             placeholder="Country Code"
-            isDisabled={false}
           />
         </div>
         <div className="grid-2nd-col">
@@ -186,18 +220,27 @@ export default function BasicProfileInfo() {
             <label>Mobile</label>
           </div>
           <div className="mb-24">
-            {formik.touched.mobile && Boolean(formik.errors.mobile) && (
+            {Boolean(formik.errors.mobile) && (
               <TextError>{formik.errors.mobile}</TextError>
             )}
           </div>
         </div>
       </div>
-      <button
+      {/* <button
         className={displayButton ? "button button-primary" : "display-none"}
         type="submit"
+        disabled={formik.isSubmitting}
       >
         Save
-      </button>
+      </button> */}
+      <div className={displayButton ? "" : "display-none"}>
+        <SubmitCancelButtonWithLoader
+          isSubmitting={formik.isSubmitting}
+          onCancel={onCancel}
+          cancelButtonClass="button-text button-text-red"
+          isValid={formik.isValid}
+        />
+      </div>
     </form>
   );
 }

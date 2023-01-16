@@ -41,10 +41,9 @@ export default function MyConfs() {
   const keys = ["title", "city"];
 
   const filter = (data) => {
-    let filteredConfs = data.filter((item) =>
+    let filteredConfs = data?.filter((item) =>
       keys.some((key) => item[key]?.toLowerCase()?.includes(searchText))
     );
-
     return filteredConfs;
   };
 

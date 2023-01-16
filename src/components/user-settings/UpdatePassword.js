@@ -116,7 +116,6 @@ export default function UpdatePassword({ setShowPasswordForm }) {
             <TextError>{formik.errors.oldPassword}</TextError>
           )}
         </div>
-
         <div className="material-textfield">
           <input
             id="password"
@@ -146,7 +145,6 @@ export default function UpdatePassword({ setShowPasswordForm }) {
             <TextError>{formik.errors.password}</TextError>
           )}
         </div>
-
         <div className="material-textfield">
           <input
             id="confirmPassword"
