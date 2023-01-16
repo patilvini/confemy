@@ -1,33 +1,5 @@
 @import "../../utility/utility.styles.scss";
 
-.profile-page-wrapper {
-  text-align: center;
-  background-color: white;
-  padding: 9.6rem 0 0rem 0;
-}
-
-.passes-list {
-  text-align: center;
-}
-
-.buttons-profile {
-  button {
-    margin-right: 5rem;
-    background-color: white;
-    // padding: 12.5rem 0 1rem 0;
-    border: none;
-    color: $gray-2;
-    border-bottom: solid 0.5rem white;
-  }
-}
-
-.buttons-profile {
-  button {
-    color: $primary;
-    border-bottom: solid 0.5rem $primary;
-  }
-}
-
 .search-bar {
   margin-left: 30%;
   margin-top: 3.75rem;
@@ -47,44 +19,21 @@
   top: 1rem;
 }
 
-.icon-plshld {
-  height: 30rem;
-  margin: 6rem 0;
+
+.confcard-title {
+  width: 100%;
+  max-height: 5rem;
+  overflow: hidden;
+  font-family: Avenir-Heavy;
+  font-size: 2rem;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: 0.22px;
+  color: $confemy-black;
 }
 
-.icon-button {
-  height: 1.5rem;
-  align-self: center;
-  margin: 0rem 0.5rem 0 0;
-}
-
-.conf-card-passes {
-  background-color: #fff;
-  border-radius: 0.4rem;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
-  height: auto;
-
-  width: 55.8rem;
-  margin-left: 29%;
-}
-
-.ticket-details {
-  padding: 2.5rem 2.5rem 0 2.5rem;
-}
-
-.ticket-grid-item {
-  padding: 2rem;
-}
-
-.ticket-details-grid {
-  display: grid;
-  grid-template-columns: 10% 90%;
-  padding-top: 2rem;
-}
-
-.ticket-details-text {
-  padding-top: 0.7rem;
-}
 
 .opposite-grid {
   display: grid;
@@ -126,20 +75,61 @@
 }
 
 .saved-card {
-  margin: 0rem 0 0 12.2rem;
-  background-color: #fff;
-  width: 102.3rem;
-  // height: 21.1rem;
-  display: grid;
-  grid-template-columns: 30% 50% 20%;
+  max-width: 102.3rem;
+  height: 21.1rem;
+  margin: 2.5rem 5rem 0rem 12.2rem;
+  background-color: $shade-2;
   border-radius: 0.5rem;
+  padding: 2.5rem;
+}
+img {
+  width: 28.2rem;
+  height: 16.3;
+  border-radius: 1rem;
+  
+}
 
-  img {
-    width: 28.2rem;
-    border-radius: 1rem;
-    padding: 2.4rem;
+.saved-card-icon{
+  position: absolute;
+  top:10;
+  right: 0;
+}
+.sc-padding{
+  padding-left: 280px;
+}
+
+.preview-img-wrap {
+  width: 282px;
+  height: 163px;
+  background-color: $shade-2;
+  overflow: hidden;
+}
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sc-conf-card {
+  display: flex;
+  flex-direction: column;
+  width: 382px;
+  height: 163px;
+  padding: 0px 16px 12px;
+  background-color: $shade-2;
+  border-radius: 4px;
+}
+
+.preview-label-wrap {
+  label {
+    display: inline-block;
   }
 }
+
+// .publish-date-wrap {
+//   max-width: 300px;
+// }
+
 
 .credits-wrapper {
   margin: 0rem 0 0 12.2rem;

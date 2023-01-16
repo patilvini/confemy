@@ -1,7 +1,4 @@
 import { useState, useEffect } from "react";
-import SearchIcon from "../icons/SearchIcon";
-import CloseIcon from "../icons/CloseIcon";
-import GlobeSketch from "../icons/GlobeSketch";
 
 import { useNavigate } from "react-router";
 import api from "../../utility/api";
@@ -19,7 +16,6 @@ export default function Passes() {
   const userID = useSelector((state) => state.auth.user?._id);
   const [data, setData] = useState();
   const [pass, setPass] = useState(0);
-  const [display, setDisplay] = useState();
   const [filtered, setFiltered] = useState([]);
 
   let component;
@@ -29,7 +25,6 @@ export default function Passes() {
     const getData = async () => {
       try {
         const r = await api.get("/conferences/bookings/passes/users/" + userID);
-        // console.log(r.data.data)
         setData(r.data.data.bookingDetails);
         setFiltered(r.data.data.bookingDetails);
       } catch (err) {

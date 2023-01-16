@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux/es/exports";
 import api from "../../utility/api";
-import GlobeSketch from "../icons/GlobeSketch";
 import SavedCard from "./SavedCard";
 import NoSavedConfs from "../SVG-assets/NoSavedConfs";
 
@@ -14,21 +13,19 @@ export default function SavedConfs() {
   const [data, setData] = useState();
   const userID = useSelector((state) => state.auth.user?._id);
 
-  const getSaved = async () => {
+  const getSaved = async (id) => {
     try {
-      const r = await api.get("/conferences/like/" + userID);
-      console.log(r.data.data.conferences);
+      const responce = await api.get("/conferences/like/" + id);
+      console.log(responce.data.data.conferences);
 
-      setData(r.data.data.conferences);
+      setData(responce.data.data.conferences);
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    console.log(called);
-
-    getSaved();
+    getSaved(userID);
   }, [userID, called]);
 
   const navigate = useNavigate();
@@ -60,6 +57,7 @@ export default function SavedConfs() {
                 setCalled(!called);
               }}
               data={data[index]}
+              getSaved={getSaved}
             />
           </div>
         );
@@ -73,5 +71,5 @@ export default function SavedConfs() {
     component = savedConfs;
   }
 
-  return <div className="container">{component}</div>;
+  return <div>{component}</div>;
 }

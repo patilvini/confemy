@@ -43,7 +43,7 @@ export default function ConfDetails() {
   const loadConferenceDetails = async (Id) => {
     try {
       const response = await api.get(`common/conferences/${Id}`);
-      console.log("conf Details:", response.data.data);
+      console.log("conf Details:", response.data.data.conferences);
       setSelectedConference(response.data.data.conferences);
       // if (response.data.data.conferences.completedAllMandatorySteps) {
       //   addRecentlyViewed(Id);
