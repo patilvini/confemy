@@ -55,14 +55,12 @@ export default function UpdatePassword({ setShowPasswordForm }) {
     try {
       const response = await api.patch(`/users/${userProfile?._id}`, formData);
       if (response) {
-        console.log("gggggggg", response);
-        // dispatch(loadUserProfileAction(response.data.data.user));
         setShowPasswordForm(false);
-        dispatch(alertAction(response.message, "danger"));
+        dispatch(alertAction(response.data.message, "success"));
       }
     } catch (err) {
-      console.log("error", err);
-      // dispatch(alertAction(err.response.data.message, "danger"));
+      // console.log("error", err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
