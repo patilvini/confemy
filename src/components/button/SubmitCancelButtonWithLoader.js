@@ -45,5 +45,5 @@ SubmitCancelButtonWithLoader.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   cancelButtonClass: PropTypes.string,
-  isValid: PropTypes.bool,
+  isValid: PropTypes.bool.isRequired,
 };
