@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import SavedCard from "./SavedCard";
+import SavedConfCard from "./SavedConfCard";
 import BannerWithGirlSketch from "../SVG-assets/BannerWithGirlSketch";
 
 import api from "../../utility/api";
@@ -13,7 +12,6 @@ export default function SavedConfs() {
 
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const getSaved = async (userID) => {
     try {
@@ -30,9 +28,9 @@ export default function SavedConfs() {
   }, [user?._id]);
 
   const noSavedConfs = (
-    <div className="text-align-center">
+    <div className="text-align-center mt-92">
       <BannerWithGirlSketch className="icon-plshld" />
-      <div className="passes-list">
+      <div className="passes-list my-28">
         <h2>You haven't saved any conference</h2>
         <button
           style={{ margin: "2rem 0 6rem 0" }}
@@ -46,11 +44,11 @@ export default function SavedConfs() {
 
   const savedConfs = (
     <div>
-      <h1>Saved Conferences</h1>
+      <h1 className="sc-conf-title">Saved Conferences</h1>
       {data?.map((item) => {
         return (
           <div key={item.conference._id}>
-            <SavedCard data={item} getSaved={getSaved} />
+            <SavedConfCard data={item} getSaved={getSaved} />
           </div>
         );
       })}

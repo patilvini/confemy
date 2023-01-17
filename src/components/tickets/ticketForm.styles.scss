@@ -39,3 +39,18 @@
     height: 24px;
   }
 }
+
+.user-ticket-card{
+  width: 55.8rem;
+  height: 27.3rem;
+  margin: 2.5rem 44.1rem 5.9rem;
+  border-radius: 0.8rem;
+  padding: 2.5rem;
+  box-shadow:  0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.08);
+}
+
+.user-ticket-details{
+  display: flex;
+  flex-direction: column;
+ 
+}
