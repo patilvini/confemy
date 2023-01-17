@@ -365,6 +365,29 @@ a {
   overflow: auto;
 }
 
+.modalx-body {
+  display: flex;
+  max-width: 80%;
+  max-height: 80%;
+  flex-direction: column;
+  overflow: scroll;
+  background-color: white;
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
+}
+
+.modalx-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1.2rem;
+}
+
+.modalx-content {
+  width: 100%;
+  height: auto;
+}
+
 .white-modal {
   position: relative;
   border-radius: 16px;
@@ -375,7 +398,7 @@ a {
 .modal-form-wrapper {
   width: 80%;
   margin: 0 auto;
-  padding: 56px 0 48px;
+  padding-bottom: 4.8rem;
 
   h2 {
     text-align: center;

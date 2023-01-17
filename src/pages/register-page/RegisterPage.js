@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Register from "../../components/register/Register";
 import Modal from "../../components/modal/Modal";
+import ModalX from "../../components/modal/ModalX";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -9,9 +10,12 @@ const RegisterPage = () => {
   const onDismiss = () => navigate("/");
   return (
     <section className="container">
-      <Modal onDismiss={onDismiss}>
+      {/* <Modal onDismiss={onDismiss}>
         <Register />
-      </Modal>
+      </Modal> */}
+      <ModalX onDismiss={onDismiss}>
+        <Register />
+      </ModalX>
     </section>
   );
 };
