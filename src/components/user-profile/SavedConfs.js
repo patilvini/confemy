@@ -1,38 +1,37 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux/es/exports";
-import api from "../../utility/api";
+import { useSelector, useDispatch } from "react-redux";
+
 import SavedCard from "./SavedCard";
-import NoSavedConfs from "../SVG-assets/NoSavedConfs";
+import BannerWithGirlSketch from "../SVG-assets/BannerWithGirlSketch";
+
+import api from "../../utility/api";
+import { alertAction } from "../../redux/alert/alertAction";
 
 export default function SavedConfs() {
-  let component;
+  const [data, setData] = useState(null);
 
-  const [called, setCalled] = useState(true);
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [data, setData] = useState();
-  const userID = useSelector((state) => state.auth.user?._id);
-
-  const getSaved = async (id) => {
+  const getSaved = async (userID) => {
     try {
-      const responce = await api.get("/conferences/like/" + id);
+      const responce = await api.get("/conferences/like/" + userID);
       console.log(responce.data.data.conferences);
-
       setData(responce.data.data.conferences);
     } catch (err) {
-      console.log(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
   useEffect(() => {
-    getSaved(userID);
-  }, [userID, called]);
+    getSaved(user?._id);
+  }, [user?._id]);
 
-  const navigate = useNavigate();
-
-  const noSaved = (
-    <div style={{ textAlign: "center" }}>
-      <NoSavedConfs className="icon-plshld" />
+  const noSavedConfs = (
+    <div className="text-align-center">
+      <BannerWithGirlSketch className="icon-plshld" />
       <div className="passes-list">
         <h2>You haven't saved any conference</h2>
         <button
@@ -47,29 +46,16 @@ export default function SavedConfs() {
 
   const savedConfs = (
     <div>
-      <h1 style={{ margin: "2rem 0 3rem 12.2rem" }}>Saved Conferences</h1>
-
-      {data?.map((item, index) => {
+      <h1>Saved Conferences</h1>
+      {data?.map((item) => {
         return (
-          <div key={index}>
-            <SavedCard
-              unliked={() => {
-                setCalled(!called);
-              }}
-              data={data[index]}
-              getSaved={getSaved}
-            />
+          <div key={item.conference._id}>
+            <SavedCard data={item} getSaved={getSaved} />
           </div>
         );
       })}
     </div>
   );
 
-  if (data?.length === 0) {
-    component = noSaved;
-  } else {
-    component = savedConfs;
-  }
-
-  return <div>{component}</div>;
+  return data?.length > 0 ? savedConfs : noSavedConfs;
 }

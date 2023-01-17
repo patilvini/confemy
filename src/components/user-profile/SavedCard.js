@@ -1,5 +1,5 @@
-import { DateTime } from "luxon";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 
 import DateIcon from "../icons/DateIcon";
 import CreditsIcon from "../icons/CreditsIcon";
@@ -7,31 +7,24 @@ import LocationIcon from "../icons/LocationIcon";
 import LikeRedIcon from "../icons/LikeRedIcon";
 import ShareIcon from "../icons/ShareIcon";
 
-import PropTypes from "prop-types";
-
 import api from "../../utility/api";
+import { alertAction } from "../../redux/alert/alertAction";
 
-export default function SavedCard({ data, unliked, getSaved }) {
-  const date = DateTime.fromISO(data.conference.startDate);
-
+export default function SavedCard({ data, getSaved }) {
   console.log("data", data);
 
   const user = useSelector((state) => state.auth.user);
-  let scheduleDate = date.toLocaleString({
-    ...DateTime.DATE_MED_WITH_WEEKDAY,
-    weekday: "short",
-  });
+  const dispatch = useDispatch();
 
   const unLike = async (confId, userId) => {
     const url = `conferences/like/${confId}/users/${userId}`;
     try {
       const response = await api.delete(url);
       if (response) {
-        console.log("unlike res", response);
         getSaved(userId);
       }
     } catch (err) {
-      console.log(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
@@ -58,9 +51,10 @@ export default function SavedCard({ data, unliked, getSaved }) {
             <div className="flex-vc  mb-12">
               <DateIcon className="icon-xxs mr-12" />
               <span className="caption-2-regular-gray3">
-                {scheduleDate
+                {/* {scheduleDate
                   ? `${scheduleDate}, ${data.conference.startTime} GMT+4`
-                  : "Date"}
+                  : "Date"} */}
+                "Date"
               </span>
             </div>
             <div className="flex-vc  mb-12">
@@ -114,5 +108,4 @@ export default function SavedCard({ data, unliked, getSaved }) {
 
 SavedCard.propTypes = {
   data: PropTypes.object.isRequired,
-  unliked: PropTypes.func,
 };
