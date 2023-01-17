@@ -67,6 +67,7 @@ import SavedConfs from "./components/user-profile/SavedConfs";
 import Credits from "./components/user-profile/Credits";
 import AccountSettings from "./components/user-settings/AccountSettings";
 import UserProfileLayoutPage from "./pages/layout-pages/UserProfileLayoutPage";
+import UserTickets from "./components/tickets/UserTickets";
 
 const App = () => {
   useEffect(() => {
@@ -101,7 +102,7 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
-              <Route path="tickets" element={<Passes />} />
+              <Route path="tickets" element={<UserTickets />} />
               <Route path="saved-conference" element={<SavedConfs />} />
               <Route path="credits" element={<Credits />} />
               <Route path="account-settings" element={<AccountSettings />} />

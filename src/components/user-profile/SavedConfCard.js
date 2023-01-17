@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+import { formatInTimeZone } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
 
 import DateIcon from "../icons/DateIcon";
 import CreditsIcon from "../icons/CreditsIcon";
@@ -16,6 +18,14 @@ export default function SavedCard({ data, getSaved }) {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
+  const startDateObj = new Date(data?.conference?.startDate);
+  const formattedStartDate = formatInTimeZone(
+    startDateObj,
+    data?.conference?.timezone,
+    "MMM-dd-yyyy, HH:mm aa",
+    { locale: enGB }
+  );
+
   const unLike = async (confId, userId) => {
     const url = `conferences/like/${confId}/users/${userId}`;
     try {
@@ -28,17 +38,58 @@ export default function SavedCard({ data, getSaved }) {
     }
   };
 
+  const getLocationString = () => {
+    let locationStrig = "Location";
+    if (data?.conference?.mode?.length > 0) {
+      if (
+        data?.conference?.mode?.includes("venue") &&
+        data?.conference?.location
+      ) {
+        locationStrig = data?.conference?.location;
+      }
+
+      if (data?.conference?.mode?.includes("onlineConf")) {
+        locationStrig = "Online";
+      }
+
+      if (
+        data?.conference?.mode?.includes("venue") &&
+        data?.conference?.mode?.includes("onlineConf")
+      ) {
+        locationStrig = `${data?.conference?.location} & Online`;
+      }
+    }
+    return locationStrig;
+  };
+
   return (
     <div className="flex saved-card mb-24">
-      <div className="preview-img-wrap">
-        <img
-          className="preview-img"
-          alt="preview"
-          src={data?.conference?.banner[0]?.Location}
-        />
-        ;
+      <div className="sc-conf-img-wrap">
+        {data?.conference?.banner[0] ? (
+          <img
+            className="sc-conf-img"
+            alt="preview"
+            src={data?.conference?.banner[0]?.Location}
+          />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "100%",
+              padding: 40,
+              backgroundColor: "#ecf0f2",
+            }}
+          >
+            <div className="text-align-center">
+              <p className="body-bold">Banner is comming soon</p>
+            </div>
+          </div>
+        )}
       </div>
-      <div className="sc-conf-card">
+      <div className="sc-conf-card ">
         <div style={{ flex: 1, textOverflow: "ellipsis" }}>
           <div className="confcard-title">
             <p>
@@ -51,30 +102,21 @@ export default function SavedCard({ data, getSaved }) {
             <div className="flex-vc  mb-12">
               <DateIcon className="icon-xxs mr-12" />
               <span className="caption-2-regular-gray3">
-                {/* {scheduleDate
-                  ? `${scheduleDate}, ${data.conference.startTime} GMT+4`
-                  : "Date"} */}
-                "Date"
+                {`${formattedStartDate} GMT+4`}
               </span>
             </div>
             <div className="flex-vc  mb-12">
               <LocationIcon className="icon-xxs mr-12" />
               <span className="caption-2-regular-gray3">
-                {data?.conference?.mode?.map((item, index) => {
-                  return <span key={index}>{item}</span>;
-                })}
+                {getLocationString()}
               </span>
             </div>
             <div className="flex-vc  mb-12">
               <CreditsIcon className="icon-xxs mr-12" />
               <span className="caption-2-regular-gray3">
-                {data.conference.credits.map((item, index) => {
-                  return (
-                    <span key={index}>
-                      {item.creditType} {item.quantity}
-                    </span>
-                  );
-                })}
+                {data?.conference?.credits?.length > 0
+                  ? `${data?.conference?.credits[0]?.quantity} credits`
+                  : "Credits not added"}
               </span>
             </div>
             <div className="flex-vc mt-20">
