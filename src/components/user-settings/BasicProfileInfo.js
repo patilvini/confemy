@@ -14,16 +14,45 @@ import { loadUserProfileAction } from "../../redux/user-profile/userProfileActio
 
 import { professions, subspecialties } from "../../utility/commonUtil";
 
-const validationSchema = yup.object({
-  firstName: yup
-    .string()
-    .max(15, "Must be 15 characters or less")
-    .required("Required"),
-  lastName: yup
-    .string()
-    .max(20, "Must be 20 characters or less")
-    .required("Required"),
-  profession: yup.string().required("Required"),
+const validationSchema = yup.object().shape(
+  {
+    firstName: yup
+      .string()
+      .max(15, "Must be 15 characters or less")
+      .required("Required"),
+    lastName: yup
+      .string()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+    profession: yup.string().required("Required"),
+    countryCode: yup.string().when("mobile", {
+      is: (v) => v?.length > 0,
+      then: yup.string().required("Required"),
+    }),
+    mobile: yup.string().when("countryCode", {
+      is: (v) => v?.length > 0,
+      then: yup.string().required("Required"),
+    }),
+  },
+  ["countryCode", "mobile"]
+);
+
+yup.object().shape({
+  location: yup.object().shape(
+    {
+      state: yup.string().when("county", {
+        is: "",
+        then: yup.string().required(),
+        otherwise: yup.string(),
+      }),
+      county: yup.string().when("state", {
+        is: "",
+        then: yup.string().required(),
+        otherwise: yup.string(),
+      }),
+    },
+    ["county", "state"]
+  ),
 });
 
 export default function BasicProfileInfo() {
@@ -38,9 +67,9 @@ export default function BasicProfileInfo() {
       firstName: values.firstName,
       lastName: values.lastName,
       profession: values.profession,
-      speciality: values.specialty,
-      countryCode: values.countryCode,
-      mobile: values.mobile,
+      speciality: values.specialty || "",
+      countryCode: values.countryCode || "",
+      mobile: values.mobile || "",
     };
 
     // if (values.specialty) {
@@ -206,6 +235,11 @@ export default function BasicProfileInfo() {
             }}
             placeholder="Country Code"
           />
+          <div className="mb-24">
+            {Boolean(formik.errors.countryCode) && (
+              <TextError>{formik.errors.countryCode}</TextError>
+            )}
+          </div>
         </div>
         <div className="grid-2nd-col">
           <div className="material-textfield">
