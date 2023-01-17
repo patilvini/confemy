@@ -348,6 +348,6 @@ PracticeAddressForm.propTypes = {
   practice: PropTypes.object,
   indx: PropTypes.number,
   editMode: PropTypes.bool.isRequired,
-  setEditMode: PropTypes.bool,
+  setEditMode: PropTypes.func,
   setShowAddressForm: PropTypes.bool,
 };
