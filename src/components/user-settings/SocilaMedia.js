@@ -9,6 +9,7 @@ import { capitalize } from "../../utility/commonUtil";
 
 import "../organization/socialmedia.styles.scss";
 import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
+import { alertAction } from "../../redux/alert/alertAction";
 
 export default function SocialMedia({
   socialMediaIcon,
@@ -32,6 +33,10 @@ export default function SocialMedia({
 
   const handleInputSubmit = async (e) => {
     e.preventDefault();
+    if (!inputValue?.length > 0) {
+      dispatch(alertAction("Social link can not be empty", "danger"));
+      return;
+    }
     try {
       const key = name;
       const formData = {
@@ -49,7 +54,7 @@ export default function SocialMedia({
         socialInputRef.current.style.paddingBottom = "1.6rem";
       }
     } catch (err) {
-      console.log("logo error", err.response?.data.message);
+      dispatch(alertAction(err.response?.data.message, "danger"));
     }
   };
 
