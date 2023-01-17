@@ -185,22 +185,24 @@ export default function LocationDropdown({ className }) {
             />
           </div>
         </div>
-        {topCities
-          .filter((city) =>
-            city.label.toLowerCase().includes(searchText.toLowerCase())
-          )
-          .map((city) => (
-            <div
-              onClick={() => {
-                setOpenLocationDropdown(false);
-                navigate("/search-conference", { state: city });
-              }}
-              className="location-item"
-              key={city._id}
-            >
-              {city.label}
-            </div>
-          ))}
+        <div className="ld-citieswrap">
+          {topCities
+            .filter((city) =>
+              city.label.toLowerCase().includes(searchText.toLowerCase())
+            )
+            .map((city) => (
+              <div
+                onClick={() => {
+                  setOpenLocationDropdown(false);
+                  navigate("/search-conference", { state: city });
+                }}
+                className="location-item"
+                key={city._id}
+              >
+                {city.label}
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

@@ -243,5 +243,5 @@ LicenseForm.propTypes = {
   indx: PropTypes.number,
   editMode: PropTypes.bool.isRequired,
   setEditMode: PropTypes.func,
-  setShowLicenseForm: PropTypes.bool,
+  setShowLicenseForm: PropTypes.func,
 };

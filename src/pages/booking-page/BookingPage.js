@@ -79,6 +79,8 @@ export default function BookingPage() {
           console.log("payment path triggered");
           const paymentUrl = response.data.data.orderResponseObj.paymentLink;
           window.location.assign(paymentUrl);
+        } else {
+          console.log("redirect to payment success for free ticket");
         }
       }
     } catch (err) {
