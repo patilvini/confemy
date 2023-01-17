@@ -19,7 +19,6 @@
   top: 1rem;
 }
 
-
 .confcard-title {
   width: 100%;
   max-height: 5rem;
@@ -33,7 +32,6 @@
   letter-spacing: 0.22px;
   color: $confemy-black;
 }
-
 
 .opposite-grid {
   display: grid;
@@ -74,27 +72,18 @@
   border-radius: 0.4rem;
 }
 
-.saved-card {
-  max-width: 102.3rem;
-  height: 21.1rem;
-  margin: 2.5rem 5rem 2.5rem 12.2rem;
-  background-color: $shade-2;
-  border-radius: 0.5rem;
-  padding: 2.5rem;
-}
 .sc-conf-img {
   width: 28.2rem;
   height: 16.3;
   border-radius: 1rem;
-  
 }
 
-.saved-card-icon{
+.saved-card-icon {
   position: absolute;
-  top:10;
+  top: 10;
   right: 0;
 }
-.sc-padding{
+.sc-padding {
   padding-left: 280px;
 }
 
@@ -124,9 +113,6 @@
   label {
     display: inline-block;
   }
-}
-.sc-conf-title{
-  margin: 6rem 0rem 0rem 12.2rem;
 }
 
 .credits-wrapper {
@@ -204,5 +190,3 @@
   border-radius: 1rem;
   padding: 8rem 4.2rem;
 }
-
-

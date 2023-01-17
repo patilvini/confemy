@@ -3,12 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 
 import SavedConfCard from "./SavedConfCard";
 import BannerWithGirlSketch from "../SVG-assets/BannerWithGirlSketch";
+import Loader from "../loader/Loader";
 
 import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
 
+import "./savedconfs.styles.scss";
+
 export default function SavedConfs() {
   const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
@@ -18,6 +22,7 @@ export default function SavedConfs() {
       const responce = await api.get("/conferences/like/" + userID);
       console.log(responce.data.data.conferences);
       setData(responce.data.data.conferences);
+      setIsLoading(false);
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -28,7 +33,7 @@ export default function SavedConfs() {
   }, [user?._id]);
 
   const noSavedConfs = (
-    <div className="text-align-center mt-92">
+    <div>
       <BannerWithGirlSketch className="icon-plshld" />
       <div className="passes-list my-28">
         <h2>You haven't saved any conference</h2>
@@ -43,17 +48,21 @@ export default function SavedConfs() {
   );
 
   const savedConfs = (
-    <div>
-      <h1 className="sc-conf-title">Saved Conferences</h1>
+    <>
+      <h1 className="mb-40">Saved Conferences</h1>
       {data?.map((item) => {
         return (
-          <div key={item.conference._id}>
+          <div className="mb-12" key={item.conference._id}>
             <SavedConfCard data={item} getSaved={getSaved} />
           </div>
         );
       })}
-    </div>
+    </>
   );
 
-  return data?.length > 0 ? savedConfs : noSavedConfs;
+  return (
+    <div className="savedconfs-container">
+      {isLoading ? <Loader /> : data?.length > 0 ? savedConfs : noSavedConfs}
+    </div>
+  );
 }
