@@ -133,6 +133,7 @@ export default function LicenseForm({
     }
   }, [countryList]);
 
+  console.log("formik", formik);
   return (
     <>
       <form
@@ -161,7 +162,7 @@ export default function LicenseForm({
               />
 
               <div className="mb-24">
-                {formik.touched.country && Boolean(formik.errors.country) && (
+                {Boolean(formik.errors.country) && (
                   <TextError>{formik.errors.country}</TextError>
                 )}
               </div>
@@ -184,7 +185,7 @@ export default function LicenseForm({
               />
 
               <div className="mb-24">
-                {formik.touched.state && Boolean(formik.errors.state) && (
+                {Boolean(formik.errors.state) && (
                   <TextError>{formik.errors.state}</TextError>
                 )}
               </div>
@@ -203,16 +204,19 @@ export default function LicenseForm({
                 <label>Type license number*</label>
               </div>
               <div className="mb-24">
-                {formik.touched.licenseNumber &&
-                  Boolean(formik.errors.licenseNumber) && (
-                    <TextError>{formik.errors.licenseNumber}</TextError>
-                  )}
+                {Boolean(formik.errors.licenseNumber) && (
+                  <TextError>{formik.errors.licenseNumber}</TextError>
+                )}
               </div>
             </div>
           </div>
         </div>
         <div>
-          <button className="button button-primary mr-24" type="submit">
+          <button
+            className="button button-primary mr-24"
+            type="submit"
+            disabled={!formik.isValid || formik.isSubmitting}
+          >
             Save
           </button>
           <button
@@ -237,7 +241,7 @@ export default function LicenseForm({
 LicenseForm.propTypes = {
   license: PropTypes.object,
   indx: PropTypes.number,
-  editMode: PropTypes.bool,
-  setEditMode: PropTypes.bool,
+  editMode: PropTypes.bool.isRequired,
+  setEditMode: PropTypes.func,
   setShowLicenseForm: PropTypes.bool,
 };

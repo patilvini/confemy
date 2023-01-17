@@ -41,7 +41,7 @@ export default function PracticeAddressForm({
     const formAddress = {
       name: values.practiceName,
       addressLine1: values.street1,
-      addressLine2: values.street2,
+      addressLine2: values.street2 || "",
       state: values.state,
       country: values.country,
       city: values.city,
@@ -188,10 +188,9 @@ export default function PracticeAddressForm({
               <label>Practice Name*</label>
             </div>
             <div className="mb-24">
-              {formik.touched.practiceName &&
-                Boolean(formik.errors.practiceName) && (
-                  <TextError>{formik.errors.practiceName}</TextError>
-                )}
+              {Boolean(formik.errors.practiceName) && (
+                <TextError>{formik.errors.practiceName}</TextError>
+              )}
             </div>
           </div>
           <div className="grid-1st-col">
@@ -208,7 +207,7 @@ export default function PracticeAddressForm({
               <label>Address line 1</label>
             </div>
             <div className="mb-24">
-              {formik.touched.street1 && Boolean(formik.errors.street1) && (
+              {Boolean(formik.errors.street1) && (
                 <TextError>{formik.errors.street1}</TextError>
               )}
             </div>
@@ -227,7 +226,7 @@ export default function PracticeAddressForm({
               <label>Address line 2</label>
             </div>
             <div className="mb-24">
-              {formik.touched.street2 && Boolean(formik.errors.street2) && (
+              {Boolean(formik.errors.street2) && (
                 <TextError>{formik.errors.street2}</TextError>
               )}
             </div>
@@ -251,7 +250,7 @@ export default function PracticeAddressForm({
             />
 
             <div className="mb-24">
-              {formik.touched.country && Boolean(formik.errors.country) && (
+              {Boolean(formik.errors.country) && (
                 <TextError>{formik.errors.country}</TextError>
               )}
             </div>
@@ -275,7 +274,7 @@ export default function PracticeAddressForm({
             />
 
             <div className="mb-24">
-              {formik.touched.state && Boolean(formik.errors.state) && (
+              {Boolean(formik.errors.state) && (
                 <TextError>{formik.errors.state}</TextError>
               )}
             </div>
@@ -293,7 +292,7 @@ export default function PracticeAddressForm({
               name="city"
             />
             <div className="mb-24">
-              {formik.touched.city && Boolean(formik.errors.city) && (
+              {Boolean(formik.errors.city) && (
                 <TextError>{formik.errors.city}</TextError>
               )}
             </div>
@@ -312,14 +311,18 @@ export default function PracticeAddressForm({
               <label>Zip Code*</label>
             </div>
             <div className="mb-24">
-              {formik.touched.zipcode && Boolean(formik.errors.zipcode) && (
+              {Boolean(formik.errors.zipcode) && (
                 <TextError>{formik.errors.zipcode}</TextError>
               )}
             </div>
           </div>
         </div>
         <div>
-          <button className="button button-primary mr-24" type="submit">
+          <button
+            className="button button-primary mr-24"
+            type="submit"
+            disabled={!formik.isValid || formik.isSubmitting}
+          >
             Save
           </button>
           <button
