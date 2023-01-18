@@ -12,6 +12,11 @@ import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
 import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
+import {
+  loadCountryListAction,
+  loadStateListAction,
+  loadCityListAction,
+} from "../../redux/list/listAction";
 
 const validationSchema = yup.object().shape({
   practiceName: yup.string().required("Required"),
@@ -29,11 +34,10 @@ export default function PracticeAddressForm({
   setEditMode,
   setShowAddressForm,
 }) {
-  const [countryList, setCountryList] = useState([]);
-  const [stateList, setStateList] = useState([]);
-  const [cityList, setCityList] = useState([]);
-
   const userProfile = useSelector((state) => state.userProfile.userProfile);
+  const { countryList, stateList, cityList } = useSelector(
+    (state) => state.list
+  );
 
   const dispatch = useDispatch();
 
@@ -87,16 +91,17 @@ export default function PracticeAddressForm({
     }
   };
 
+  const initialValues = {
+    practiceName: practice?.name || "",
+    street1: practice?.addressLine1 || "",
+    street2: practice?.addressLine2 || "",
+    state: practice?.state || "",
+    country: practice?.country || "",
+    city: practice?.city || "",
+    zipcode: practice?.zipcode || "",
+  };
   const formik = useFormik({
-    initialValues: {
-      practiceName: practice?.name || "",
-      street1: practice?.addressLine1 || "",
-      street2: practice?.addressLine2 || "",
-      state: practice?.state || "",
-      country: practice?.country || "",
-      city: practice?.city || "",
-      zipcode: practice?.zipcode || "",
-    },
+    initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: onSubmit,
     enableReinitialize: true,
@@ -107,12 +112,13 @@ export default function PracticeAddressForm({
     try {
       const response = await api.get(url);
       if (response) {
-        setCountryList(response.data.data.countries);
-        if (countryList) {
-          loadStateList(
-            countryList?.find((country) => country.label === practice?.country)
-              ?.countryId
-          );
+        dispatch(loadCountryListAction(response.data.data.countries));
+        const { countries } = response.data.data;
+        if (editMode && practice?.country) {
+          const Id = countries.find(
+            (country) => country.label === practice?.country
+          )?.countryId;
+          loadStateList(Id);
         }
       }
     } catch (err) {
@@ -125,7 +131,14 @@ export default function PracticeAddressForm({
     try {
       const response = await api.get(url);
       if (response) {
-        setStateList(response.data.data.states);
+        dispatch(loadStateListAction(response.data.data.states));
+        // const { states } = response.data.data;
+        // if (editMode && practice?.state) {
+        //   const stateId = states.find(
+        //     (state) => state.label === practice?.state
+        //   )?.stateId;
+        //   loadCityList(stateId);
+        // }
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -137,7 +150,7 @@ export default function PracticeAddressForm({
     try {
       const response = await api.get(url);
       if (response) {
-        setCityList(response.data.data.cities);
+        dispatch(loadCityListAction(response.data.data.cities));
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -145,23 +158,49 @@ export default function PracticeAddressForm({
   };
 
   useEffect(() => {
-    loadCountryList();
+    if (!countryList.length > 0) {
+      loadCountryList();
+    }
   }, []);
 
-  useEffect(() => {
-    if (countryList.length > 0) {
-      const myCountryId = countryList.find(
-        (country) => country.value === practice?.country
-      )?.countryId;
-      loadStateList(myCountryId);
-    }
-  }, [countryList]);
+  // useEffect(() => {
+  //   if (countryList.length > 0) {
+  //     const myCountryId = countryList.find(
+  //       (country) => country.value === practice?.country
+  //     )?.countryId;
+  //     loadStateList(myCountryId);
+  //   }
+  // }, [countryList]);
 
   useEffect(() => {
+    let myCountryId;
+    if (countryList.length > 0) {
+      myCountryId = countryList.find(
+        (country) => country.value === practice?.country
+      )?.countryId;
+    }
+    if (myCountryId) {
+      loadStateList(myCountryId);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   if (stateList.length > 0) {
+  //     const myStateId = stateList.find(
+  //       (state) => state.value === practice?.state
+  //     )?.stateId;
+  //     loadCityList(myStateId);
+  //   }
+  // }, [stateList]);
+
+  useEffect(() => {
+    let myStateId;
     if (stateList.length > 0) {
-      const myStateId = stateList.find(
+      myStateId = stateList.find(
         (state) => state.value === practice?.state
       )?.stateId;
+    }
+    if (myStateId) {
       loadCityList(myStateId);
     }
   }, [stateList]);
@@ -328,6 +367,7 @@ export default function PracticeAddressForm({
           <button
             onClick={() => {
               if (editMode) {
+                formik.resetForm({ values: initialValues });
                 setEditMode(false);
               } else {
                 setShowAddressForm(false);

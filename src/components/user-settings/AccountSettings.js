@@ -7,6 +7,7 @@ import FacebookBlueCircle from "../icons/FacebookBlueCircle";
 import LinkedinBlueIcon from "../icons/LinkedinBlueIcon";
 import TwitterBlueIcon from "../icons/TwitterBlueIcon";
 import InstagramGradientIcon from "../icons/InstagramGradientIcon";
+import ModalX from "../modal/ModalX";
 
 import BasicProfileInfo from "./BasicProfileInfo";
 import PracticeAddressForm from "./PracticeAddressForm";

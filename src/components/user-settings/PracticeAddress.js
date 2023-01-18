@@ -64,7 +64,9 @@ export default function PracticeAddress({ practice, indx }) {
         <div className="body-regular-gray3">
           <p>{practice?.addressLine1}</p>
           <p>{practice?.addressLine2}</p>
-          <p>{(practice?.city, practice?.state)}</p>
+          <p>
+            {practice?.city}, {practice?.state}
+          </p>
           <p>
             {practice?.country} - {practice?.zipcode}
           </p>

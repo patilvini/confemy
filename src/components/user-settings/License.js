@@ -6,6 +6,7 @@ import LicenseForm from "./LicenseForm";
 import EditIcon from "../icons/EditIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 import api from "../../utility/api";
+import ModalX from "../modal/ModalX";
 
 import { alertAction } from "../../redux/alert/alertAction";
 import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";

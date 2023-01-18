@@ -138,7 +138,7 @@ export default function BasicProfileInfo() {
     loadCountryCode();
   }, []);
 
-  console.log("formik", formik);
+  // console.log("formik", formik);
 
   return (
     <form
