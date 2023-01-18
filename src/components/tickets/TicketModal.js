@@ -1,13 +1,20 @@
+import { useEffect, useState } from "react";
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 
-import DateIcon from "../icons/DateIcon";
+import Modal from "../modal/Modal";
+
 import CreditsIcon from "../icons/CreditsIcon";
+import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
+import RedirectIcon from "../icons/RedirectIcon";
 import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
 
-export default function UserTicket({ data }) {
+import api from "../../utility/api";
+
+export default function TicketModal({ onDismiss, data }) {
+  console.log("data tickets", data);
   const startDateObj = new Date(data?.conference?.startDate);
   const formattedStartDate = formatInTimeZone(
     startDateObj,
@@ -40,16 +47,43 @@ export default function UserTicket({ data }) {
     return locationStrig;
   };
 
+  // useEffect(() => {
+  //   const getBooking = async () => {
+  //     try {
+  //       const r = await api.get("/conferences/bookings/" + data._id);
+  //       setDetails(r.data.data.bookingDetails.attendees);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+
+  //   getBooking();
+  // }, []);
+
   return (
-    <div className="user-ticket-card">
-      <div className="pt-20 pl-25 mb-11">
-        <h4>
-          {data.conference?.title ? data.conference?.title : "Ticket title"}
+    <Modal onDismiss={onDismiss}>
+      <div className="user-ticket-modal">
+        <div className="flex-vc">
+          <RedirectIcon />{" "}
+          <span
+            style={{
+              fontSize: "2rem",
+              color: "#55A0FA",
+            }}
+            className="ml-10"
+          >
+            Preview
+          </span>
+        </div>
+        <h4 className="mt-21">
+          {data?.conference ? data?.conference?.title : "Ticket title"}
         </h4>
         <div className="pt-16">
           <div className="flex-vc  mb-12">
             <DateIcon className="icon-sm mr-12" />
-            <span className="caption-2-regular-gray3">{`${formattedStartDate} GMT+4`}</span>
+            <span className="caption-2-regular-gray3">
+              {`${formattedStartDate} GMT+4`}
+            </span>
           </div>
           <div className="flex-vc  mb-12">
             <LocationIcon className="icon-sm mr-12" />
@@ -67,28 +101,18 @@ export default function UserTicket({ data }) {
             </span>
           </div>
         </div>
-        <div className="flex-vc-sb mt-30">
-          <div>
-            <h5 className="caption-1-regular-gray2 mb-4">Items</h5>
-            <h4 className="body-bold"> 2 x Regular Tickets</h4>
-          </div>
-          <div className="user-ticket-status">
-            <h6 className="caption-1-regular-gray2 mb-4 mr-28">Status</h6>
-            <h4 className="body-bold mr-20">{data.paymentStatus}</h4>
-          </div>
-        </div>
-      </div>
 
-      <div className="flex-vc-sb">
-        <div className="user-ticket-resend flex-vchc">
-          <ResendIcon className="icon-button" fill="#fff" />
-          <p className="ml-4 avenir-roman-18 ">Resend Passes</p>
-        </div>
-        <div className="user-ticket-print flex-vchc ">
-          <ReceiptIcon className="icon-button" fill="#fff" />
-          <p className="ml-4 avenir-roman-18 ">Print Receipt</p>
+        <div style={{ marginTop: "9rem" }} className="opposite-grid">
+          <button className="button-left button button-primary">
+            <ResendIcon className="icon-button" fill="#fff" />
+            Resend Passes
+          </button>
+          <button className="button-right button button-primary">
+            <ReceiptIcon className="icon-button" fill="#fff" />
+            Print Receipt
+          </button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }

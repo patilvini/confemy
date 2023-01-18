@@ -40,17 +40,47 @@
   }
 }
 
-.user-ticket-card{
+.user-ticket-list{
   width: 55.8rem;
+  margin: 0 auto;
+}
+#searchtickets {
+  padding-left: 5.2rem;
+}
+.user-ticket-card{
   height: 27.3rem;
-  margin: 2.5rem 44.1rem 5.9rem;
   border-radius: 0.8rem;
-  padding: 2.5rem;
-  box-shadow:  0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.08);
+  margin-bottom:2.8rem ;
+  box-shadow:  0 0.2rem 0.8rem 0 rgba(52, 40, 40, 0.08);
+}
+.user-ticket-title{
+  color: $primary;
+}
+.user-ticket-status{
+  text-align: right;
+}
+.user-ticket-resend{
+  background: $primary;
+  color: white;
+  height: 4.8rem;
+   border-radius: 0 0rem 0rem 0.8rem;
+   width: 49.9%;
+}
+.user-ticket-print{
+  background: $primary;
+  color: white;
+  height: 4.8rem;
+  border-radius: 0 0rem 0.8rem 0rem;
+  width: 49.9%;
 }
 
-.user-ticket-details{
-  display: flex;
-  flex-direction: column;
- 
+.user-ticket-modal {
+  width: 62.4rem;
+  max-height: 86.4rem;
+  padding: 3.3rem 2.6rem 0rem;
+  margin: 10.4rem auto 5.6rem;
+  background-color: #ffffff;
+  border-radius: 0.4rem;
 }
+
+

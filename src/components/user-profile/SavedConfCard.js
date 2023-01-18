@@ -13,8 +13,6 @@ import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
 
 export default function SavedCard({ data, getSaved }) {
-  console.log("data", data);
-
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
