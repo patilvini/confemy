@@ -18,7 +18,7 @@ import {
 } from "../../redux/list/listAction";
 
 const validationSchema = yup.object().shape({
-  licenseNumber: yup.number().required("Required"),
+  licenseNumber: yup.string().required("Required"),
   country: yup.string().required("Required"),
   state: yup.string().required("Required"),
 });
@@ -141,6 +141,7 @@ export default function LicenseForm({
     }
   }, []);
 
+  console.log("formik:", formik);
   return (
     <>
       <form
