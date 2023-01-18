@@ -22,9 +22,7 @@ export default function SocialMedia({
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-
   const socialInputRef = useRef();
 
   function handleInputChange(e) {
@@ -86,7 +84,7 @@ export default function SocialMedia({
         dispatch(loadUserProfileAction(response.data.data.user));
       }
     } catch (err) {
-      console.log(err.response?.data.message);
+      dispatch(alertAction(err.response?.data.message, "danger"));
     }
   };
 

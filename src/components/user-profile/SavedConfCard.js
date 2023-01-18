@@ -61,7 +61,7 @@ export default function SavedCard({ data, getSaved }) {
   };
 
   return (
-    <div className="flex saved-card mb-24">
+    <div className="savedconfs-card">
       <div className="sc-conf-img-wrap">
         {data?.conference?.banner[0] ? (
           <img
@@ -87,57 +87,52 @@ export default function SavedCard({ data, getSaved }) {
           </div>
         )}
       </div>
-      <div className="sc-conf-card ">
-        <div style={{ flex: 1, textOverflow: "ellipsis" }}>
-          <div className="confcard-title">
-            <p>
-              {data.conference?.title
-                ? data.conference?.title
-                : "Conference title"}
-            </p>
-          </div>
-          <div className="pt-16">
-            <div className="flex-vc  mb-12">
-              <DateIcon className="icon-xxs mr-12" />
-              <span className="caption-2-regular-gray3">
-                {`${formattedStartDate} GMT+4`}
-              </span>
-            </div>
-            <div className="flex-vc  mb-12">
-              <LocationIcon className="icon-xxs mr-12" />
-              <span className="caption-2-regular-gray3">
-                {getLocationString()}
-              </span>
-            </div>
-            <div className="flex-vc  mb-12">
-              <CreditsIcon className="icon-xxs mr-12" />
-              <span className="caption-2-regular-gray3">
-                {data?.conference?.credits?.length > 0
-                  ? `${data?.conference?.credits[0]?.quantity} credits`
-                  : "Credits not added"}
-              </span>
-            </div>
-            <div className="flex-vc mt-20">
-              <span className="caption-2-regular-gray3">
-                ${data.conference.basePrice} onwords
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="position-relative sc-padding">
-        <div className="flex saved-card-icon">
-          <span className="mr-12">
-            <ShareIcon className="icon-size" />
-          </span>
-          <div>
-            <span
-              className="conference-card-buttons ml-12"
+      <div className="ml-24" style={{ flexGrow: 1 }}>
+        <div className="savedconfs-title">
+          <p>
+            {data.conference?.title
+              ? data.conference?.title
+              : "Conference title"}
+          </p>
+          <div className="flex-vc ml-24">
+            <i className="mr-12">
+              <ShareIcon className="icon-size" />
+            </i>
+
+            <i
               onClick={() => {
                 unLike(data?.conference?._id, user?._id);
               }}
+              style={{ position: "relative", paddingTop: 5 }}
             >
               <LikeRedIcon className="icon-size" />
+            </i>
+          </div>
+        </div>
+        <div className="pt-16">
+          <div className="flex-vc  mb-12">
+            <DateIcon className="icon-xxs mr-12" />
+            <span className="caption-2-regular-gray3">
+              {`${formattedStartDate} GMT+4`}
+            </span>
+          </div>
+          <div className="flex-vc  mb-12">
+            <LocationIcon className="icon-xxs mr-12" />
+            <span className="caption-2-regular-gray3">
+              {getLocationString()}
+            </span>
+          </div>
+          <div className="flex-vc  mb-12">
+            <CreditsIcon className="icon-xxs mr-12" />
+            <span className="caption-2-regular-gray3">
+              {data?.conference?.credits?.length > 0
+                ? `${data?.conference?.credits[0]?.quantity} credits`
+                : "Credits not added"}
+            </span>
+          </div>
+          <div className="flex-vc mt-20">
+            <span className="caption-2-regular-gray3">
+              ${data.conference.basePrice} onwords
             </span>
           </div>
         </div>

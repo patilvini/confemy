@@ -11,6 +11,7 @@ import { alertAction } from "../../redux/alert/alertAction";
 import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
 import ClosedEyeIcon from "../icons/ClosedEyeIcon";
 import OpenEyeIcon from "../icons/OpenEyeIcon";
+import Loader from "../loader/Loader";
 
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
@@ -55,14 +56,12 @@ export default function UpdatePassword({ setShowPasswordForm }) {
     try {
       const response = await api.patch(`/users/${userProfile?._id}`, formData);
       if (response) {
-        console.log("gggggggg", response);
-        // dispatch(loadUserProfileAction(response.data.data.user));
         setShowPasswordForm(false);
-        dispatch(alertAction(response.message, "danger"));
+        dispatch(alertAction(response.data.message, "success"));
       }
     } catch (err) {
-      console.log("error", err);
-      // dispatch(alertAction(err.response.data.message, "danger"));
+      // console.log("error", err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
@@ -118,7 +117,6 @@ export default function UpdatePassword({ setShowPasswordForm }) {
             <TextError>{formik.errors.oldPassword}</TextError>
           )}
         </div>
-
         <div className="material-textfield">
           <input
             id="password"
@@ -148,7 +146,6 @@ export default function UpdatePassword({ setShowPasswordForm }) {
             <TextError>{formik.errors.password}</TextError>
           )}
         </div>
-
         <div className="material-textfield">
           <input
             id="confirmPassword"
@@ -185,7 +182,11 @@ export default function UpdatePassword({ setShowPasswordForm }) {
         </div>
 
         <div>
-          <button className="button button-primary mr-24" type="submit">
+          <button
+            className="button button-primary mr-24"
+            type="submit"
+            disabled={!formik.isValid || formik.isSubmitting}
+          >
             Save
           </button>
           <button

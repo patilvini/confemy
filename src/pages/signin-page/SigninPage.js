@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Signin from "../../components/signin/Signin";
 import Modal from "../../components/modal/Modal";
+import ModalX from "../../components/modal/ModalX";
 
 const SigninPage = () => {
   const navigate = useNavigate();
@@ -9,9 +10,12 @@ const SigninPage = () => {
   const onDismiss = () => navigate("/");
   return (
     <section className="container">
-      <Modal onDismiss={onDismiss}>
+      {/* <Modal onDismiss={onDismiss}>
         <Signin />
-      </Modal>
+      </Modal> */}
+      <ModalX onDismiss={onDismiss}>
+        <Signin />
+      </ModalX>
     </section>
   );
 };

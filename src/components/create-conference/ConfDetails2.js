@@ -534,7 +534,10 @@ export default function ConfDetails2() {
         )}
 
         <div className="mb-72">
-          <SubmitCancelButtonWithLoader isSubmitting={formik.isSubmitting} />
+          <SubmitCancelButtonWithLoader
+            isSubmitting={formik.isSubmitting}
+            isValid={formik.isValid}
+          />
         </div>
       </form>
     </main>

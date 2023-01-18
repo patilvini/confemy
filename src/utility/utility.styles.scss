@@ -117,3 +117,14 @@ $mrContainerOffSidemenu: 20px;
   line-height: 1;
   letter-spacing: 0.01px;
 }
+
+@mixin avenir-heavy-20 {
+  font-family: Avenir-Heavy;
+  font-size: 2rem;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: 0.22px;
+  color: $confemy-black;
+}

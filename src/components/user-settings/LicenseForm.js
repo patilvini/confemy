@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
@@ -12,9 +12,13 @@ import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
 import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
+import {
+  loadCountryListAction,
+  loadStateListAction,
+} from "../../redux/list/listAction";
 
 const validationSchema = yup.object().shape({
-  licenseNumber: yup.number().required("Required"),
+  licenseNumber: yup.string().required("Required"),
   country: yup.string().required("Required"),
   state: yup.string().required("Required"),
 });
@@ -26,15 +30,12 @@ export default function LicenseForm({
   setEditMode,
   setShowLicenseForm,
 }) {
-  const [countryList, setCountryList] = useState([]);
-  const [stateList, setStateList] = useState([]);
-
   const userProfile = useSelector((state) => state.userProfile.userProfile);
+  const { countryList, stateList } = useSelector((state) => state.list);
 
   const dispatch = useDispatch();
 
   const onSubmit = async (values, action) => {
-    console.log("edit mode", editMode);
     const formLicense = {
       licenseNumber: values.licenseNumber,
       country: values.country,
@@ -43,7 +44,7 @@ export default function LicenseForm({
     let licenseData = [];
     if (editMode) {
       licenseData = userProfile?.licenses.map((item, index) =>
-        index == indx ? formLicense : item
+        index === indx ? formLicense : item
       );
     }
 
@@ -79,12 +80,13 @@ export default function LicenseForm({
     }
   };
 
+  const initialValues = {
+    country: license?.country || "",
+    state: license?.state || "",
+    licenseNumber: license?.licenseNumber || "",
+  };
   const formik = useFormik({
-    initialValues: {
-      country: license?.country || "",
-      state: license?.state || "",
-      licenseNumber: license?.licenseNumber || "",
-    },
+    initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: onSubmit,
     enableReinitialize: true,
@@ -95,12 +97,13 @@ export default function LicenseForm({
     try {
       const response = await api.get(url);
       if (response) {
-        setCountryList(response.data.data.countries);
-        if (countryList) {
-          loadStateList(
-            countryList?.find((country) => country.label === license?.country)
-              ?.countryId
-          );
+        dispatch(loadCountryListAction(response.data.data.countries));
+        const { countries } = response.data.data;
+        if (editMode && license?.country) {
+          const Id = countries.find(
+            (country) => country.label === license?.country
+          )?.countryId;
+          loadStateList(Id);
         }
       }
     } catch (err) {
@@ -113,7 +116,7 @@ export default function LicenseForm({
     try {
       const response = await api.get(url);
       if (response) {
-        setStateList(response.data.data.states);
+        dispatch(loadStateListAction(response.data.data.states));
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -121,18 +124,24 @@ export default function LicenseForm({
   };
 
   useEffect(() => {
-    loadCountryList();
+    if (!countryList.length > 0) {
+      loadCountryList();
+    }
   }, []);
 
   useEffect(() => {
+    let myCountryId;
     if (countryList.length > 0) {
-      const myCountryId = countryList.find(
+      myCountryId = countryList.find(
         (country) => country.value === license?.country
       )?.countryId;
+    }
+    if (myCountryId) {
       loadStateList(myCountryId);
     }
-  }, [countryList]);
+  }, []);
 
+  console.log("formik:", formik);
   return (
     <>
       <form
@@ -156,12 +165,11 @@ export default function LicenseForm({
                   loadStateList(value?.countryId);
                 }}
                 placeholder="Select country"
-                isDisabled={false}
                 name="country"
               />
 
               <div className="mb-24">
-                {formik.touched.country && Boolean(formik.errors.country) && (
+                {Boolean(formik.errors.country) && (
                   <TextError>{formik.errors.country}</TextError>
                 )}
               </div>
@@ -171,7 +179,6 @@ export default function LicenseForm({
               <ReloadableSelectFormType1
                 options={stateList}
                 value={formik.values.state}
-                isMulti={false}
                 onChange={(value) => {
                   if (formik.values.state !== value?.value) {
                     formik.setFieldValue("city", "");
@@ -184,7 +191,7 @@ export default function LicenseForm({
               />
 
               <div className="mb-24">
-                {formik.touched.state && Boolean(formik.errors.state) && (
+                {Boolean(formik.errors.state) && (
                   <TextError>{formik.errors.state}</TextError>
                 )}
               </div>
@@ -203,21 +210,25 @@ export default function LicenseForm({
                 <label>Type license number*</label>
               </div>
               <div className="mb-24">
-                {formik.touched.licenseNumber &&
-                  Boolean(formik.errors.licenseNumber) && (
-                    <TextError>{formik.errors.licenseNumber}</TextError>
-                  )}
+                {Boolean(formik.errors.licenseNumber) && (
+                  <TextError>{formik.errors.licenseNumber}</TextError>
+                )}
               </div>
             </div>
           </div>
         </div>
         <div>
-          <button className="button button-primary mr-24" type="submit">
+          <button
+            className="button button-primary mr-24"
+            type="submit"
+            disabled={!formik.isValid || formik.isSubmitting}
+          >
             Save
           </button>
           <button
             onClick={() => {
               if (editMode) {
+                formik.resetForm({ values: initialValues });
                 setEditMode(false);
               } else {
                 setShowLicenseForm(false);
@@ -237,7 +248,7 @@ export default function LicenseForm({
 LicenseForm.propTypes = {
   license: PropTypes.object,
   indx: PropTypes.number,
-  editMode: PropTypes.bool,
-  setEditMode: PropTypes.bool,
-  setShowLicenseForm: PropTypes.bool,
+  editMode: PropTypes.bool.isRequired,
+  setEditMode: PropTypes.func,
+  setShowLicenseForm: PropTypes.func,
 };

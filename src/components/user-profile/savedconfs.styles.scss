@@ -1,0 +1,27 @@
+@import "../../utility/utility.styles.scss";
+
+.savedconfs-container {
+  max-width: 102.3rem;
+  margin: 0 2.4rem 0 12.4rem;
+  padding-top: 7.6rem;
+}
+
+.savedconfs-card {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 102.3rem;
+  //   height: 21.1rem;
+  background-color: $shade-2;
+  border-radius: 0.5rem;
+  padding: 2.4rem;
+}
+
+.savedconfs-title {
+  @include avenir-heavy-20;
+  height: 5rem;
+  max-height: 5rem;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

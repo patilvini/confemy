@@ -12,8 +12,6 @@ import RegisterWGoogle from "../register-w-google/RegisterWGoogle";
 import { loginAction } from "../../redux/auth/authAction";
 import api from "../../utility/api";
 
-import "./signin.styles.scss";
-
 const initialValues = {
   email: "",
   password: "",
@@ -62,73 +60,71 @@ export default function Signin() {
   // if (isAuthenticated) return <Navigate to='/dashboard' replace={true}  />;
 
   return (
-    <div className="signin-modal white-modal">
-      <div className="modal-form-wrapper">
-        <h2>Sign in</h2>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-        >
-          <Form className="form-type-1" autoComplete="off">
-            <div className="material-textfield">
-              <Field
-                id="email"
-                type="text"
-                placeholder=" "
-                name="email"
-                autoComplete="username"
-              />
-              <label>Email</label>
-            </div>
-            <div className="mb-24">
-              <ErrorMessage name="email" component={TextError} />
-            </div>
+    <div className="modal-form-wrapper">
+      <h2 className="mb-32">Sign in</h2>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        <Form className="form-type-1" autoComplete="off">
+          <div className="material-textfield">
+            <Field
+              id="email"
+              type="text"
+              placeholder=" "
+              name="email"
+              autoComplete="username"
+            />
+            <label>Email</label>
+          </div>
+          <div className="mb-24">
+            <ErrorMessage name="email" component={TextError} />
+          </div>
 
-            <div className="material-textfield">
-              <Field
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder=" "
-                name="password"
-                autoComplete="current-password"
-              />
-              <label>Password</label>
-              <i
-                onClick={togglePassword}
-                className={showPassword ? "display-none" : "right-input-icon"}
-              >
-                <ClosedEyeIcon className="icon-lg" />
-              </i>
-              <i
-                onClick={togglePassword}
-                className={showPassword ? "right-input-icon" : "display-none"}
-              >
-                <OpenEyeIcon className="icon-lg" />
-              </i>
-            </div>
-            <div className="mb-24">
-              <ErrorMessage name="password" component={TextError} />
-            </div>
+          <div className="material-textfield">
+            <Field
+              id="password"
+              type={showPassword ? "text" : "password"}
+              placeholder=" "
+              name="password"
+              autoComplete="current-password"
+            />
+            <label>Password</label>
+            <i
+              onClick={togglePassword}
+              className={showPassword ? "display-none" : "right-input-icon"}
+            >
+              <ClosedEyeIcon className="icon-lg" />
+            </i>
+            <i
+              onClick={togglePassword}
+              className={showPassword ? "right-input-icon" : "display-none"}
+            >
+              <OpenEyeIcon className="icon-lg" />
+            </i>
+          </div>
+          <div className="mb-24">
+            <ErrorMessage name="password" component={TextError} />
+          </div>
 
-            <button className="button button-primary mb-34" type="submit">
-              Sign in
-            </button>
-          </Form>
-        </Formik>
-        <p>
-          <span className="caption-2-regular-gray3">Forgot password?</span>{" "}
-          <Link className="caption-2-bold-gray3" to="#!">
-            Reset Password
-          </Link>
-        </p>
-        <RegisterWGoogle label="Sign in with Google" />
-        <div className="modal-footer">
-          <span className="caption-1-medium-primary">New User? </span>{" "}
-          <Link className="caption-1-heavy-primary" to="/register">
-            Create an account
-          </Link>
-        </div>
+          <button className="button button-primary mb-34" type="submit">
+            Sign in
+          </button>
+        </Form>
+      </Formik>
+      <p>
+        <span className="caption-2-regular-gray3">Forgot password?</span>{" "}
+        <Link className="caption-2-bold-gray3" to="#!">
+          Reset Password
+        </Link>
+      </p>
+      <RegisterWGoogle label="Sign in with Google" />
+      <div className="modal-footer">
+        <span className="caption-1-medium-primary">New User? </span>{" "}
+        <Link className="caption-1-heavy-primary" to="/register">
+          Create an account
+        </Link>
       </div>
     </div>
   );

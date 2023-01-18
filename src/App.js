@@ -43,7 +43,6 @@ import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDeta
 import SearchPage from "./pages/search-page/SearchPage";
 import ConfDetailsPage from "./pages/conference-page/ConfDetailsPage";
 
-import UserProfilePage from "./pages/user-profile-page/UserProfilePage";
 import OrganizerConfDashPage from "./pages/organizer-conf-dashboard-page/OrganizerConfDashPage";
 import OrganizerConfPreviewPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewPage";
 import CreditRequestsPage from "./pages/organizer-conf-dashboard-page/CreditRequestsPage";
