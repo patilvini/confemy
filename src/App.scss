@@ -367,6 +367,7 @@ a {
 
 .modalx-body {
   display: flex;
+  min-width: 36rem;
   max-width: 80%;
   max-height: 80%;
   flex-direction: column;

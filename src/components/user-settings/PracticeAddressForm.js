@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
@@ -29,7 +29,6 @@ const validationSchema = yup.object().shape({
 
 export default function PracticeAddressForm({
   practice,
-  indx,
   editMode,
   setEditMode,
   setShowAddressForm,
@@ -52,11 +51,7 @@ export default function PracticeAddressForm({
       zipcode: values.zipcode,
     };
     let addresses = [];
-    // if (editMode) {
-    //   addresses = userProfile?.practiceAddress.map((item, index) =>
-    //     index === indx ? formAddress : item
-    //   );
-    // }
+
     if (editMode) {
       addresses = userProfile?.practiceAddress.map((item) =>
         item._id === practice._id ? formAddress : item
@@ -132,13 +127,6 @@ export default function PracticeAddressForm({
       const response = await api.get(url);
       if (response) {
         dispatch(loadStateListAction(response.data.data.states));
-        // const { states } = response.data.data;
-        // if (editMode && practice?.state) {
-        //   const stateId = states.find(
-        //     (state) => state.label === practice?.state
-        //   )?.stateId;
-        //   loadCityList(stateId);
-        // }
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -163,15 +151,6 @@ export default function PracticeAddressForm({
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (countryList.length > 0) {
-  //     const myCountryId = countryList.find(
-  //       (country) => country.value === practice?.country
-  //     )?.countryId;
-  //     loadStateList(myCountryId);
-  //   }
-  // }, [countryList]);
-
   useEffect(() => {
     let myCountryId;
     if (countryList.length > 0) {
@@ -184,15 +163,6 @@ export default function PracticeAddressForm({
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (stateList.length > 0) {
-  //     const myStateId = stateList.find(
-  //       (state) => state.value === practice?.state
-  //     )?.stateId;
-  //     loadCityList(myStateId);
-  //   }
-  // }, [stateList]);
-
   useEffect(() => {
     let myStateId;
     if (stateList.length > 0) {
@@ -204,6 +174,8 @@ export default function PracticeAddressForm({
       loadCityList(myStateId);
     }
   }, [stateList]);
+
+  console.log("formik:", formik);
 
   return (
     <>
@@ -283,6 +255,7 @@ export default function PracticeAddressForm({
                 formik.setFieldValue("country", value?.value);
                 loadStateList(value?.countryId);
               }}
+              // onBlur={() => formik.setFieldTouched("country")}
               placeholder="Select country"
               isDisabled={false}
               name="country"
@@ -386,7 +359,6 @@ export default function PracticeAddressForm({
 
 PracticeAddressForm.propTypes = {
   practice: PropTypes.object,
-  indx: PropTypes.number,
   editMode: PropTypes.bool.isRequired,
   setEditMode: PropTypes.func,
   setShowAddressForm: PropTypes.bool,

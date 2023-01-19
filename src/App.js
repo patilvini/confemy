@@ -68,6 +68,8 @@ import Credits from "./components/user-profile/Credits";
 import AccountSettings from "./components/user-settings/AccountSettings";
 import UserProfileLayoutPage from "./pages/layout-pages/UserProfileLayoutPage";
 import UserTickets from "./components/tickets/UserTickets";
+import SelectTest2 from "./components/reselect/SelectTest2";
+import SelectTest from "./components/reselect/SelectTest";
 
 const App = () => {
   useEffect(() => {
@@ -139,8 +141,8 @@ const App = () => {
                 </MyPrivateRoute>
               }
             >
-              <Route path="test/:active_tab" element={<Tabs />} />
-              <Route path="test2" element={<TabsDemo2 />}>
+              <Route path="test" element={<SelectTest />} />
+              <Route path="test2" element={<SelectTest2 />}>
                 <Route path="page1" element={<TabsDemoPage1 />} />
                 <Route path="page1/:pageId" element={<Page1Subpage />} />
                 <Route path="page2" element={<TabsDemoPage2 />} />

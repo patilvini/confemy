@@ -1,5 +1,7 @@
 import Loader from "../loader/Loader";
 import "./button.styles.scss";
+import PropTypes from "prop-types";
+
 export default function SubmitButtonWithLoader({
   isSubmitting,
   text,
@@ -24,3 +26,9 @@ export default function SubmitButtonWithLoader({
     </div>
   );
 }
+
+SubmitButtonWithLoader.propTypes = {
+  isSubmitting: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
+};

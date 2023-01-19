@@ -12,6 +12,7 @@ import { loadUserProfileAction } from "../../redux/user-profile/userProfileActio
 import ClosedEyeIcon from "../icons/ClosedEyeIcon";
 import OpenEyeIcon from "../icons/OpenEyeIcon";
 import Loader from "../loader/Loader";
+import SubmitButtonWithLoader from "../button/SubmitButtonWithLoader";
 
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
@@ -182,13 +183,18 @@ export default function UpdatePassword({ setShowPasswordForm }) {
         </div>
 
         <div>
-          <button
+          {/* <button
             className="button button-primary mr-24"
             type="submit"
-            disabled={!formik.isValid || formik.isSubmitting}
+            disabled={formik.isSubmitting}
           >
             Save
-          </button>
+          </button> */}
+          <SubmitButtonWithLoader
+            isSubmitting={formik.isSubmitting}
+            text="Save"
+            className="button button-primary"
+          />
           <button
             onClick={() => {
               setShowPasswordForm(false);

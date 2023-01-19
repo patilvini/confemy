@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
+import TextError from "../formik/TextError";
 import api from "../../utility/api";
 import CloseIcon from "../icons/CloseIcon";
 
@@ -21,18 +22,23 @@ export default function SocialMedia({
 }) {
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [errMsg, setErrMsg] = useState("");
 
   const dispatch = useDispatch();
   const socialInputRef = useRef();
 
   function handleInputChange(e) {
     setInputValue(e.target.value);
+    if (e.target.value) {
+      setErrMsg("");
+    }
   }
 
   const handleInputSubmit = async (e) => {
     e.preventDefault();
-    if (!inputValue?.length > 0) {
-      dispatch(alertAction("Social link can not be empty", "danger"));
+    if (!inputValue?.trim()?.length > 0) {
+      // dispatch(alertAction("Social link can not be empty", "danger"));
+      setErrMsg("Social link can not be empty");
       return;
     }
     try {
@@ -66,6 +72,7 @@ export default function SocialMedia({
     setInputValue("");
     setShowInput(false);
     socialInputRef.current.style.paddingBottom = "1.6rem";
+    setErrMsg("");
   };
 
   const deleteSocialMediaLink = async () => {
@@ -79,7 +86,7 @@ export default function SocialMedia({
       const url = `/users/${userId}`;
       const response = await api.patch(url, formData);
       if (response) {
-        setInputValue(" ");
+        setInputValue("");
         socialInputRef.current.value = "";
         dispatch(loadUserProfileAction(response.data.data.user));
       }
@@ -146,6 +153,7 @@ export default function SocialMedia({
           />
           <label>{label}</label>
         </div>
+        <TextError>{errMsg}</TextError>
         <div className="mb-20">
           <div className="saveinput-buttons-wrap">
             <button type="submit" className="button button-primary">
@@ -171,5 +179,5 @@ SocialMedia.propTypes = {
   name: PropTypes.string.isRequired,
   removeName: PropTypes.string.isRequired,
   socialMediaApiValue: PropTypes.string,
-  userId: PropTypes.string.isRequired,
+  userId: PropTypes.string,
 };
