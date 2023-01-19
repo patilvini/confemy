@@ -27,18 +27,12 @@ export default function SetGoalModal({ onDismiss }) {
     const getCredits = async () => {
       try {
         const r = await api.get("/conferences/credits");
-        console.log(r.data.data)
-        
-
         setCredits(r.data.data.credits);
       } catch (err) {
         console.log(err);
       }
     };
-
     getCredits();
-
-   
   }, []);
 
   credits?.forEach((item) => {
@@ -48,21 +42,16 @@ export default function SetGoalModal({ onDismiss }) {
   });
 
   const onSubmit = async (values, actions) => {
-    console.log("form values form onSubmit", values);
-
     let creditDetails = {
       creditId: values.creditType,
       endDate: values.endDate,
       quantity: values.totalCredits,
       userId: userID,
     };
-    console.log(creditDetails);
-
     try {
       const r = await api.post("/attendees/credits/creditGoals", {
         creditDetails,
       });
-      console.log(r);
     } catch (err) {
       console.log(err);
     }

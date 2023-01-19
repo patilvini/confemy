@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import DeleteIcon from "../../components/icons/DeleteIcon";
 import GuestDetails from "./GuestDetails";
-import Switch from "../../components/switch/Switch";
 
 export default function BookingPage2({
   backPage,

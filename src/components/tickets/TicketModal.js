@@ -72,7 +72,7 @@ export default function TicketModal({ onDismiss, userData }) {
 
   return (
     <ModalX onDismiss={onDismiss}>
-      <div className="user-ticket-modal">
+      <div className="ut-modal-wrap">
         <div className="flex-vc">
           <RedirectIcon />{" "}
           <span
@@ -138,16 +138,15 @@ export default function TicketModal({ onDismiss, userData }) {
             );
           })}
         </div>
-
-        <div className="flex-vc-sb mt-16">
-          <div className="user-ticket-resend flex-vchc">
-            <ResendIcon className="icon-button" fill="#fff" />
-            <p className="ml-4 avenir-roman-18 ">Resend Tickets</p>
-          </div>
-          <div className="user-ticket-print flex-vchc ">
-            <ReceiptIcon className="icon-button" fill="#fff" />
-            <p className="ml-4 avenir-roman-18 ">Print Receipt</p>
-          </div>
+      </div>
+      <div className="flex-vc-sb mt-16">
+        <div className="user-ticket-resend flex-vchc">
+          <ResendIcon className="icon-button" fill="#fff" />
+          <p className="ml-4 avenir-roman-18 ">Resend Tickets</p>
+        </div>
+        <div className="user-ticket-print flex-vchc ">
+          <ReceiptIcon className="icon-button" fill="#fff" />
+          <p className="ml-4 avenir-roman-18 ">Print Receipt</p>
         </div>
       </div>
     </ModalX>

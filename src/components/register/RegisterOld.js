@@ -1,9 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
-import GoogleIcon from "../icons/GoogleIcon";
 import ClosedEyeIcon from "../icons/ClosedEyeIcon";
 import OpenEyeIcon from "../icons/OpenEyeIcon";
 
@@ -30,9 +29,7 @@ const validateEmail = (value) => {
   return error;
 };
 
-const onSubmit = (values) => {
-  console.log("form values: ", values);
-};
+const onSubmit = (values) => {};
 
 function Register() {
   const [showPassword, setShowPassword] = useState(false);

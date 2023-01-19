@@ -1,5 +1,4 @@
 import Select, { components } from "react-select";
-// import SearchAndAdd from "../reselect/SearchAndAdd";
 import AddIcon from "../icons/AddIcon";
 import "./searchSpeaker.styles.scss";
 import "../reselect/searchAndAdd.styles.scss";

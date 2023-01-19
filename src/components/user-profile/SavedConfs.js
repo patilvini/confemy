@@ -20,7 +20,6 @@ export default function SavedConfs() {
   const getSaved = async (userID) => {
     try {
       const responce = await api.get("/conferences/like/" + userID);
-      console.log(responce.data.data.conferences);
       setData(responce.data.data.conferences);
       setIsLoading(false);
     } catch (err) {

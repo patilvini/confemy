@@ -42,15 +42,11 @@ export default function UpdateGoalModal({ onDismiss, creditData }) {
   });
 
   const onSubmit = async (values, actions) => {
-    console.log("form values form onSubmit", values);
-
     let creditDetails = {
       creditId: values.creditType,
       endDate: values.endDate,
       quantity: values.totalCredits,
     };
-    console.log(creditDetails);
-
     try {
       const r = await api.patch(
         "/attendees/credits/creditGoals/" + creditData.creditGoalId,
@@ -58,7 +54,6 @@ export default function UpdateGoalModal({ onDismiss, creditData }) {
           creditDetails,
         }
       );
-      console.log(r);
     } catch (err) {
       console.log(err);
     }

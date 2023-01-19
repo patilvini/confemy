@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "../../utility/api";
 import ConfCard from "../conf-card/ConfCard";
-import Select from "react-select";
 
 import "./searchComponent.scss";
 import "../../utility/utility.styles.scss";
-import DropdownIcon from "../icons/DropdownIcon";
 
 import NextIcon from "../icons/NextIcon";
 import BackIcon from "../icons/BackIcon";
 
-import SearchIcon from "../icons/SearchIcon";
 import DateSelect from "./DateSelect";
 import TabButton from "./TabButton";
 import LocationSelect from "./LocationSelect";
@@ -19,7 +16,6 @@ import CreditsSelect from "./CreditsSelect";
 import PriceSelect from "./PriceSelect";
 import MultiTabButton from "./MultiTabButton";
 
-import DisabledTab from "./DisabledTab";
 import SpecialitySelect from "./SpecialitySelect";
 import SearchBar from "./SearchBar";
 
@@ -45,13 +41,11 @@ export default function SearchComponent() {
 
   const [page, setPage] = useState(1);
 
-
   const loadData = async () => {
     try {
       const r = await api.post(
         "homePage/conferences/text=page=" + page + "&limit=10"
       );
-      console.log(r);
       setData(r.data.data.conferences);
     } catch (err) {
       console.log(err);
@@ -61,14 +55,10 @@ export default function SearchComponent() {
   useEffect(() => {
     setPage(1);
 
-    
-
     loadData();
   }, []);
 
   useEffect(() => {
-    console.log(filters);
-
     setPage(1);
 
     const call = async () => {
@@ -79,7 +69,6 @@ export default function SearchComponent() {
             filters: filters,
           }
         );
-        console.log(r);
         setData(r.data.data.conferences);
       } catch (err) {
         console.log(err);
@@ -91,14 +80,10 @@ export default function SearchComponent() {
 
   const submit = async () => {
     setPage(1);
-
-  
-
     try {
       const r = await api.post(
         "homePage/conferences/search?page=" + page + "&limit=10&text=" + search
       );
-      console.log(r);
       setData(r.data.data.conferences);
     } catch (err) {
       console.log(err);
@@ -110,9 +95,11 @@ export default function SearchComponent() {
       if (search?.length > 0) {
         try {
           const r = await api.post(
-            "homePage/conferences/search?page=" + page + "&limit=10&text=" + search
+            "homePage/conferences/search?page=" +
+              page +
+              "&limit=10&text=" +
+              search
           );
-          console.log(r);
           setData(r.data.data.conferences);
         } catch (err) {
           console.log(err);
@@ -123,7 +110,6 @@ export default function SearchComponent() {
             "homePage/conferences/search?page=" + page + "&limit=10&text=",
             { filters }
           );
-          console.log(r);
           setData(r.data.data.conferences);
         } catch (err) {
           console.log(err);
@@ -133,7 +119,6 @@ export default function SearchComponent() {
           const r = await api.post(
             "homePage/conferences/search?page=" + page + "&limit=10&text="
           );
-          console.log(r);
           setData(r.data.data.conferences);
         } catch (err) {
           console.log(err);
@@ -457,7 +442,11 @@ export default function SearchComponent() {
             />
           </div>
           <div className="search-grid-item">
-            <button style={{margin:"1.6rem 2rem"}} onClick={submit} className="button button-secondary">
+            <button
+              style={{ margin: "1.6rem 2rem" }}
+              onClick={submit}
+              className="button button-secondary"
+            >
               Search
             </button>
           </div>
@@ -482,8 +471,8 @@ export default function SearchComponent() {
           })}
         </div>
 
-        {data.length > 0  && (
-          <div style={{textAlign:"center", margin:"4rem"}}>
+        {data.length > 0 && (
+          <div style={{ textAlign: "center", margin: "4rem" }}>
             <button
               onClick={() => {
                 if (page === 1) {
@@ -509,17 +498,29 @@ export default function SearchComponent() {
           </div>
         )}
 
-
-{data.length === 0  && (
+        {data.length === 0 && (
           <div className="empty">
             <h1>Nothing Here...</h1>
-            <button onClick={()=>{setPage(1)}} style={{margin:"2rem"}} className="button button-green">Back to search</button>
+            <button
+              onClick={() => {
+                setPage(1);
+              }}
+              style={{ margin: "2rem" }}
+              className="button button-green"
+            >
+              Back to search
+            </button>
 
-            <button onClick={()=>{
-              setPage(1)
-              loadData()            
-            }} style={{margin:"2rem"}} className="button button-green">New Search</button>
-           
+            <button
+              onClick={() => {
+                setPage(1);
+                loadData();
+              }}
+              style={{ margin: "2rem" }}
+              className="button button-green"
+            >
+              New Search
+            </button>
           </div>
         )}
       </div>

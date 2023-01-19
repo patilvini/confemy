@@ -31,10 +31,10 @@ export default function UserTickets() {
 
   const navigate = useNavigate();
 
-  const getData = async () => {
+  const getData = async (userID) => {
     try {
       const { data } = await api.get(
-        `/conferences/bookings/passes/users/${user?._id}`
+        `/conferences/bookings/passes/users/${userID}`
       );
       setData(data?.data?.bookingDetails);
       setFiltered(data?.data?.bookingDetails);
@@ -45,8 +45,9 @@ export default function UserTickets() {
   };
 
   useEffect(() => {
-    getData();
-  }, [user]);
+    console.log("use-effect ran");
+    getData(user?._id);
+  }, [user?._id]);
 
   useEffect(() => {
     if (data) {

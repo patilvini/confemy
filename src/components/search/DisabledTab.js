@@ -9,30 +9,24 @@ export default function DisabledTab({
   clear,
   prerequisite,
 }) {
-
-
-  // console.log(prerequisite)
-
   if (prerequisite === undefined) {
     return (
       <>
-      {!visibility && (
+        {!visibility && (
           <div className="title-grid tab-button">
             <div className="title-grid-item">
-              <h4  style={{color:"#c4c4c4"}} className="item-tab">{name}</h4>
+              <h4 style={{ color: "#c4c4c4" }} className="item-tab">
+                {name}
+              </h4>
             </div>
             <div className="title-grid-item">
-              <NextIcon fill={'#c4c4c4'} className="item-icon" />
+              <NextIcon fill={"#c4c4c4"} className="item-icon" />
             </div>
           </div>
         )}
-      
       </>
-    )
-      
-
-  }
-   else if (prerequisite && selected === undefined) {
+    );
+  } else if (prerequisite && selected === undefined) {
     return (
       <>
         {!visibility && (
@@ -63,5 +57,5 @@ export default function DisabledTab({
         )}
       </>
     );
-  } 
+  }
 }

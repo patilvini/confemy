@@ -51,7 +51,6 @@ export default function TicketForm({ onClose }) {
     try {
       const url = "conferences/step5/tickets";
       const response = await api.post(url, formData);
-      console.log("ticket submit response", response);
       dispatch(createConferenceAction(response.data.data.conference));
       dispatch(alertAction(response.data.message, "success"));
       onClose();
@@ -74,8 +73,6 @@ export default function TicketForm({ onClose }) {
     onSubmit: onSubmit,
     enableReinitialize: true,
   });
-
-  console.log("Ticket Form", formik);
 
   const todaysDate = new Date();
 

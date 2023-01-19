@@ -20,7 +20,6 @@ export default function TextEditor(props) {
   useEffect(() => {
     let blocks;
     if (props.apiRawContent && Object.keys(props.apiRawContent).length > 0) {
-      // console.log("refund Description", newConference.refundDescription);
       blocks = convertFromRaw(props.apiRawContent);
       // setEditorState(EditorState.createWithContent(blocks));
       setEditorState(
@@ -31,9 +30,6 @@ export default function TextEditor(props) {
       setEditorState(EditorState.createEmpty());
     }
   }, [props.apiRawContent]);
-
-  // console.log(props.apiRawContent)
-  // console.log(convertToRaw(editorState.getCurrentContent()))
 
   return (
     <>

@@ -370,7 +370,7 @@ a {
   max-width: 80%;
   max-height: 80%;
   flex-direction: column;
-  overflow: scroll;
+  overflow: auto;
   background-color: white;
   border-radius: 0.8rem;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
@@ -380,7 +380,7 @@ a {
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  padding: 1.2rem;
+  padding: 1.2rem 1.2rem 0rem;
 }
 
 .modalx-content {

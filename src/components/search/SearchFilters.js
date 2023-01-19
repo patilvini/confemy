@@ -16,7 +16,6 @@ import {
   currencylist,
 } from "../../utility/commonUtil";
 import { alertAction } from "../../redux/alert/alertAction";
-import { hover } from "@testing-library/user-event/dist/hover";
 
 const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";
