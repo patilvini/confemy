@@ -2,12 +2,10 @@ import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import AsyncSelect from "react-select/async";
 import LocationIcon from "../icons/LocationIcon";
 import WorldIcon from "../icons/WorldIcon";
 
 import api from "../../utility/api";
-import { loadLocations } from "../../utility/commonUtil";
 import "./locationDropdown.styles.scss";
 
 const confemyWhite = "#ffffff";
@@ -23,7 +21,6 @@ export default function LocationDropdown({ className }) {
   const [topCities, setTopCities] = useState([]);
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [filteredTopCities, setFilteredTopCities] = useState([]);
 
   const onDropdownClick = () => {
     setOpenLocationDropdown(!openLocationDropdown);
@@ -32,13 +29,11 @@ export default function LocationDropdown({ className }) {
   const getGeoInfo = async () => {
     try {
       const response = await axios.get("https://ipapi.co/json/");
-      console.log("get geolocation", response);
       if (response) {
         try {
           const res = await api.get(
             `venues/locations?country=${response.data.country_name}`
           );
-          console.log("citiesRes", res);
           if (res) {
             setTopCities(res.data.data.venues);
           }
@@ -68,7 +63,6 @@ export default function LocationDropdown({ className }) {
 
   const customStyles = {
     control: (styles, state) => {
-      console.log("async state", state);
       if (state.isFocused) {
         setSearchFocused(true);
       } else {

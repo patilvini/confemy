@@ -92,13 +92,10 @@ export default function AddVideoResource() {
         }
       }
 
-      console.log("formData", formData);
-
       try {
         const url = "/conferences/step4/resources?resourceStatus=videos";
         const response = await api.post(url, formData);
         if (response) {
-          console.log("Videoupload response", response);
           setFiles([]);
           dispatch(createConferenceAction(response?.data?.data?.conference));
           dispatch(alertAction(response.data.message, "success"));
@@ -120,7 +117,6 @@ export default function AddVideoResource() {
     };
     try {
       const response = await api.delete(url, formData);
-      console.log("deleted files", response);
       dispatch(createConferenceAction(response.data.data.conference));
       dispatch(alertAction("Document deleted successfully", "success"));
     } catch (err) {

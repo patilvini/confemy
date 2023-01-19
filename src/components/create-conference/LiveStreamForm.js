@@ -57,7 +57,6 @@ export default function LiveStreamForm({ tabName, tabIcon, tabValue }) {
     try {
       const response = await api.post("/conferences/step4", formData);
       if (response) {
-        console.log("Livestream Submit response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         dispatch(alertAction("Saved successfully", "success"));
       }

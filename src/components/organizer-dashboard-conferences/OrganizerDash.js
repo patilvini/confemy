@@ -7,9 +7,6 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "../search/SearchBar";
 import Select from "react-select";
 import { DateTime } from "luxon";
-import OrganizersNavbar from "../navbar/OrganizersNavbar";
-import DashMenuIcon from "../icons/DashMenuIcon";
-import ExploreIcon from "../icons/ExploreIcon";
 import ThreeDotsVIcon from "../icons/ThreeDotsVIcon";
 
 const confemyWhite = "#ffffff";
@@ -21,19 +18,14 @@ const shade4 = "#aabdc7";
 
 export default function OrganizerDash() {
   const user = useSelector((state) => state.auth.user);
-  // console.log(user);
   const [data, setData] = useState();
   const [filtered, setFiltered] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [dashOpen, setDashOpen] = useState(false);
-  const ref = useRef(null);
   const [optionsOpen, setOptionsOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const getSaved = async (args) => {
-    console.log(args);
-
     // if (user.hasOrganization) {
     //   try {
     //     const r = await api.get(
@@ -52,8 +44,6 @@ export default function OrganizerDash() {
       const r = await api.get(
         "/conferences/users/" + user._id + "?getAllOrganizationConferences=true"
       );
-      console.log(r.data.data.conferences);
-
       setData(r.data.data.conferences);
     } catch (err) {
       console.log(err);
@@ -70,8 +60,6 @@ export default function OrganizerDash() {
   }, [user._id]);
 
   useEffect(() => {
-    console.log("searchValue:", searchValue);
-
     if (data) {
       const dataSet = data.filter((item, index) => {
         if (
@@ -81,7 +69,6 @@ export default function OrganizerDash() {
         }
       });
 
-      console.log("dataset:", dataSet);
       setFiltered(dataSet);
     }
     if (searchValue.length === 0) {
@@ -219,9 +206,6 @@ export default function OrganizerDash() {
             <div key={index} className="dash-table">
               <div
                 onClick={() => {
-                  console.log(DateTime.fromISO(item.endDate));
-                  console.log(DateTime.now());
-
                   if (DateTime.fromISO(item.endDate) < DateTime.now()) {
                     navigate("/dashboard/my-conferences/finished/" + item._id);
                   } else {

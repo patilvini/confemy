@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import SelectFormType3 from "../reselect/SelectFormType3";
-import ThreeDotsVIcon from "../icons/ThreeDotsVIcon";
 
 import MyConfsCard from "./MyConfsCard";
 import EditIcon from "../icons/EditIcon";
@@ -34,7 +33,6 @@ export default function MyConfs() {
   const user = useSelector((state) => state.auth.user);
   const myConfs = useSelector((state) => state.conference.myConfs);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const onInputChange = (e) => setSearchText(e.target.value);
 
@@ -51,7 +49,6 @@ export default function MyConfs() {
     const url = `/conferences/users/${userId}?getAllOrganizationConferences=true`;
     try {
       const response = await api.get(url);
-      console.log("myconfs", response);
       if (response) {
         dispatch(loadAllMyConfsAction(response.data.data.conferences));
       }
@@ -65,12 +62,6 @@ export default function MyConfs() {
   useEffect(() => {
     getMyConfs(user._id);
   }, [user._id]);
-
-  // console.log("myFilteredConfs", myFilteredConfs);
-
-  // console.log("searchText", searchText);
-  console.log("searchText1", filterText1);
-  console.log("searchText2", filterText2);
 
   return (
     <div>

@@ -80,7 +80,6 @@ export default function ConfPreview() {
     try {
       const response = await api.post("conferences/step6", formData);
       if (response) {
-        console.log("submit step1 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         navigate("/dashboard/my-conferences");
         dispatch(alertAction(response.data.message, "success"));
@@ -103,12 +102,10 @@ export default function ConfPreview() {
     if (newConference?.mode?.length > 0) {
       if (newConference?.mode?.includes("venue") && newConference?.city) {
         locationStrig = newConference?.city;
-        console.log("venue", locationStrig);
       }
 
       if (newConference?.mode?.includes("onlineConf")) {
         locationStrig = "Online";
-        console.log("online", locationStrig);
       }
 
       if (
@@ -116,7 +113,6 @@ export default function ConfPreview() {
         newConference?.mode?.includes("onlineConf")
       ) {
         locationStrig = `${newConference?.city} & Online`;
-        console.log("both", locationStrig);
       }
     }
     return locationStrig;

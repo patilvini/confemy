@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import Select, { components } from "react-select";
-
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
@@ -14,7 +12,7 @@ import api from "../../utility/api";
 import SelectFormType1 from "../reselect/SelectFormType1";
 import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
-import { timezones, currencylist } from "../../utility/commonUtil";
+import { timezones } from "../../utility/commonUtil";
 import "./createConference.styles.scss";
 import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
 import { alertAction } from "../../redux/alert/alertAction";
@@ -139,12 +137,10 @@ export default function ConfBasicInfo() {
         zipcode,
       },
     };
-    console.log("formData", formData);
 
     try {
       const response = await api.post("conferences/step1", formData);
       if (response) {
-        console.log("submit step1 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         navigate("/dashboard/create-conf/step-2");
         dispatch(alertAction(response.data.message, "success"));

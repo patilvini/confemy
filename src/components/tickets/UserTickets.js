@@ -112,11 +112,11 @@ export default function UserTickets() {
           </i>
         </div>
       </div>
-      <h4 className="my-26 color-primary">Upcoming Conferences</h4>
+      <h3 className="my-26 color-primary">Upcoming Conferences</h3>
       {isLoading ? <Loader /> : data?.length > 0 ? tickets : noTickets}
       {modalOpen && (
         <TicketModal
-          data={modalData}
+          userData={modalData}
           onDismiss={() => {
             onDismiss();
           }}

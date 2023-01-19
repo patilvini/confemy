@@ -17,13 +17,10 @@ export default function CreditRequests() {
   const [modalOpen, setModalOpen] = useState(false);
   const [attendee, setAttendee] = useState();
   const [data, setData] = useState();
-  const [filtered, setFiltered] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
   const customStyles = {
     control: (styles, state) => {
-      // console.log("styles from control", styles);
-      // console.log("control state", state);
       return {
         ...styles,
         height: "4.8rem",
@@ -83,7 +80,6 @@ export default function CreditRequests() {
   const downloadCertificate = async (id) => {
     try {
       const r = await api.get("/attendees/credits/certificates/users/" + id);
-      console.log(r);
       const pdfRaw = r.data;
       const file = new Blob([pdfRaw], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
@@ -94,8 +90,6 @@ export default function CreditRequests() {
   };
 
   const getData = async (e) => {
-    console.log(e.value);
-
     let url = "";
     if (!e) {
       url = "organizers/conferences/credits/users/6305be9942434c682442a724";
@@ -106,7 +100,6 @@ export default function CreditRequests() {
     }
     try {
       const r = await api.get(url);
-      console.log(r.data.data.allCredits);
       setData(r.data.data.allCredits);
     } catch (err) {
       console.log(err);
@@ -114,7 +107,7 @@ export default function CreditRequests() {
   };
 
   useEffect(() => {
-    getData({ label: "All", value: "" },);
+    getData({ label: "All", value: "" });
   }, []);
 
   return (

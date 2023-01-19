@@ -8,6 +8,8 @@ import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
 
 export default function UserTicket({ data }) {
+  console.log("data", data);
+
   const startDateObj = new Date(data?.conference?.startDate);
   const formattedStartDate = formatInTimeZone(
     startDateObj,
@@ -70,11 +72,21 @@ export default function UserTicket({ data }) {
         <div className="flex-vc-sb mt-30">
           <div>
             <h5 className="caption-1-regular-gray2 mb-4">Items</h5>
-            <h4 className="body-bold"> 2 x Regular Tickets</h4>
+            <h4 className="body-bold">
+              {data?.tickets?.map((item) => {
+                return `${item.quantity} x ${item.ticket?.name}`;
+              })}
+            </h4>
           </div>
           <div className="user-ticket-status">
             <h6 className="caption-1-regular-gray2 mb-4 mr-28">Status</h6>
-            <h4 className="body-bold mr-20">{data.paymentStatus}</h4>
+            <h4 className="body-bold mr-20">
+              {data?.status === 1
+                ? "Success"
+                : data?.status === 2
+                ? "Pending"
+                : "Canceled"}
+            </h4>
           </div>
         </div>
       </div>
@@ -82,7 +94,7 @@ export default function UserTicket({ data }) {
       <div className="flex-vc-sb">
         <div className="user-ticket-resend flex-vchc">
           <ResendIcon className="icon-button" fill="#fff" />
-          <p className="ml-4 avenir-roman-18 ">Resend Passes</p>
+          <p className="ml-4 avenir-roman-18 ">Resend Tickets</p>
         </div>
         <div className="user-ticket-print flex-vchc ">
           <ReceiptIcon className="icon-button" fill="#fff" />

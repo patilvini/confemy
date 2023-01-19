@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 
-import Modal from "../modal/Modal";
+import ModalX from "../modal/ModalX";
 
 import CreditsIcon from "../icons/CreditsIcon";
 import DateIcon from "../icons/DateIcon";
@@ -12,56 +12,66 @@ import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
 
 import api from "../../utility/api";
+import PriceIcon from "../icons/PriceIcon";
 
-export default function TicketModal({ onDismiss, data }) {
-  console.log("data tickets", data);
-  const startDateObj = new Date(data?.conference?.startDate);
+export default function TicketModal({ onDismiss, userData }) {
+  console.log("user", userData);
+  const [ticketDetails, setTicketDetails] = useState();
+  const startDateObj = new Date(userData?.conference?.startDate);
   const formattedStartDate = formatInTimeZone(
     startDateObj,
-    data?.conference?.timezone,
+    userData?.conference?.timezone,
+    "MMM-dd-yyyy, HH:mm aa",
+    { locale: enGB }
+  );
+  const bookingDateObj = new Date(userData?.bookingDate);
+  const formattedBookingDate = formatInTimeZone(
+    bookingDateObj,
+    userData?.conference?.timezone,
     "MMM-dd-yyyy, HH:mm aa",
     { locale: enGB }
   );
 
   const getLocationString = () => {
     let locationStrig = "Location";
-    if (data?.conference?.mode?.length > 0) {
+    if (userData?.conference?.mode?.length > 0) {
       if (
-        data?.conference?.mode?.includes("venue") &&
-        data?.conference?.location
+        userData?.conference?.mode?.includes("venue") &&
+        userData?.conference?.location
       ) {
-        locationStrig = data?.conference?.location;
+        locationStrig = userData?.conference?.location;
       }
 
-      if (data?.conference?.mode?.includes("onlineConf")) {
+      if (userData?.conference?.mode?.includes("onlineConf")) {
         locationStrig = "Online";
       }
 
       if (
-        data?.conference?.mode?.includes("venue") &&
-        data?.conference?.mode?.includes("onlineConf")
+        userData?.conference?.mode?.includes("venue") &&
+        userData?.conference?.mode?.includes("onlineConf")
       ) {
-        locationStrig = `${data?.conference?.location} & Online`;
+        locationStrig = `${userData?.conference?.location} & Online`;
       }
     }
     return locationStrig;
   };
 
-  // useEffect(() => {
-  //   const getBooking = async () => {
-  //     try {
-  //       const r = await api.get("/conferences/bookings/" + data._id);
-  //       setDetails(r.data.data.bookingDetails.attendees);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
+  const getBookingDetails = async () => {
+    try {
+      let { data } = await api.get(`/conferences/bookings/${userData._id}`);
+      console.log("response from t-modal", data);
+      setTicketDetails(data.data);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
-  //   getBooking();
-  // }, []);
+  useEffect(() => {
+    getBookingDetails();
+  }, []);
 
   return (
-    <Modal onDismiss={onDismiss}>
+    <ModalX onDismiss={onDismiss}>
       <div className="user-ticket-modal">
         <div className="flex-vc">
           <RedirectIcon />{" "}
@@ -75,9 +85,10 @@ export default function TicketModal({ onDismiss, data }) {
             Preview
           </span>
         </div>
-        <h4 className="mt-21">
-          {data?.conference ? data?.conference?.title : "Ticket title"}
+        <h4 className="mt-21 mb-12">
+          {userData?.conference ? userData?.conference?.title : "Ticket title"}
         </h4>
+        <span className="caption-2-regular-gray3">{`Booking number : #${ticketDetails?.bookingDetails?.bookingNumber} on ${formattedBookingDate}`}</span>
         <div className="pt-16">
           <div className="flex-vc  mb-12">
             <DateIcon className="icon-sm mr-12" />
@@ -95,24 +106,50 @@ export default function TicketModal({ onDismiss, data }) {
           <div className="flex-vc  mb-12">
             <CreditsIcon className="icon-sm mr-12" />
             <span className="caption-2-regular-gray3">
-              {data?.conference?.credits?.length > 0
-                ? `${data?.conference?.credits[0]?.quantity} credits`
+              {userData?.conference?.credits?.length > 0
+                ? `${userData?.conference?.credits[0]?.quantity} credits`
                 : "Credits not added"}
             </span>
           </div>
+          <div className="flex-vc  mb-12">
+            <PriceIcon className="icon-sm mr-12" />
+            <span className="caption-2-regular-gray3">
+              {userData?.totalPrice} /-
+            </span>
+          </div>
+        </div>
+        <div>
+          {ticketDetails?.bookingDetails?.attendees?.map((guest, idx) => {
+            console.log("object,", ticketDetails?.bookingDetails?.attendees);
+            return (
+              <>
+                <h4 className="mb-10 mt-24">{`Guest ${idx + 1}`}</h4>
+                <div className="caption-2-regular-gray3">
+                  <div className="flex-vc">
+                    <p className="caption-1-heavy-cblack my-6">{`First Name : `}</p>
+                    <p className="ml-10">{guest.firstName}</p>
+                  </div>
+                  <div className="flex-vc">
+                    <p className="caption-1-heavy-cblack ">{`Last Name : `}</p>
+                    <p className="ml-10">{guest.lastName}</p>
+                  </div>
+                </div>
+              </>
+            );
+          })}
         </div>
 
-        <div style={{ marginTop: "9rem" }} className="opposite-grid">
-          <button className="button-left button button-primary">
+        <div className="flex-vc-sb mt-16">
+          <div className="user-ticket-resend flex-vchc">
             <ResendIcon className="icon-button" fill="#fff" />
-            Resend Passes
-          </button>
-          <button className="button-right button button-primary">
+            <p className="ml-4 avenir-roman-18 ">Resend Tickets</p>
+          </div>
+          <div className="user-ticket-print flex-vchc ">
             <ReceiptIcon className="icon-button" fill="#fff" />
-            Print Receipt
-          </button>
+            <p className="ml-4 avenir-roman-18 ">Print Receipt</p>
+          </div>
         </div>
       </div>
-    </Modal>
+    </ModalX>
   );
 }

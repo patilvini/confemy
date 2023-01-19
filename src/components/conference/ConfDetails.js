@@ -10,7 +10,6 @@ import BookingCard from "./BookingCard";
 import SpeakerCard from "../booking/SpeakerCard";
 
 import LocationIcon from "../icons/LocationIcon";
-import DocumentIcon from "../icons/DocumentIcon";
 import Carousel from "react-multi-carousel";
 
 import "./ConfDetails.scss";
@@ -43,7 +42,6 @@ export default function ConfDetails() {
   const loadConferenceDetails = async (Id) => {
     try {
       const response = await api.get(`common/conferences/${Id}`);
-      console.log("conf Details:", response.data.data.conferences);
       setSelectedConference(response.data.data.conferences);
       // if (response.data.data.conferences.completedAllMandatorySteps) {
       //   addRecentlyViewed(Id);

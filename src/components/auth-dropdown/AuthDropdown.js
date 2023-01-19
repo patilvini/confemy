@@ -7,14 +7,12 @@ import ODashboardIcon from "../icons/ODashboardIcon";
 import ProfileIcon from "../icons/ProfileIcon";
 import PassesIcon from "../icons/PassesIcon";
 import LikeBlueIcon from "../icons/LikeBlueIcon";
-import HelpIcon from "../icons/HelpIcon";
 import SettingsIcon from "../icons/SettingsIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import DropdownIcon from "../icons/DropdownIcon";
 
 import "./AuthDropdown.styles.scss";
 import api from "../../utility/api";
-// import { capitalize } from "../../utility/commonUtil";
 
 const authDropdownOptions = [
   {

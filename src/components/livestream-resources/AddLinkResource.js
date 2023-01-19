@@ -49,9 +49,6 @@ export default function AddLinkResource({ source, active }) {
   };
 
   const onSubmit = async (values, actions) => {
-    console.log("form on submit", values);
-    console.log(actions);
-
     const url = "/conferences/step4/resources?resourceStatus=links";
     const formData = {
       resourceLinks: {
@@ -62,7 +59,6 @@ export default function AddLinkResource({ source, active }) {
 
     try {
       const response = await api.post(url, formData);
-      console.log("added links", response);
       dispatch(createConferenceAction(response.data.data.conference));
       dispatch(alertAction(response.data.message, "success"));
       actions.resetForm({ values: initialValues });

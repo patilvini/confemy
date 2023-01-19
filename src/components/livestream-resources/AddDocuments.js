@@ -49,7 +49,6 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
   );
 
   const handleSubmit = async (e) => {
-    console.log("save clicked");
     e.preventDefault();
     if (!newConference?.completedStep1) {
       dispatch(alertAction("Complete step-1 first", "danger"));
@@ -93,13 +92,10 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
         }
       }
 
-      console.log("formData", formData);
-
       try {
         const url = "/conferences/step4/resources?resourceStatus=documents";
         const response = await api.post(url, formData);
         if (response) {
-          console.log("Fileupload response", response);
           setFiles([]);
           dispatch(createConferenceAction(response?.data?.data?.conference));
           dispatch(alertAction(response.data.message, "success"));
@@ -121,7 +117,6 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
     };
     try {
       const response = await api.delete(url, formData);
-      console.log("deleted files", response);
       dispatch(createConferenceAction(response.data.data.conference));
       dispatch(alertAction("Document deleted successfully", "success"));
     } catch (err) {

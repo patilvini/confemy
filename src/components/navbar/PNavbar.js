@@ -15,7 +15,6 @@ export default function PNavbar({ onClickOutside }) {
   const auth = useSelector((state) => state.auth);
   const { isAuthenticated, user } = auth;
   const [showLocations, setShowLocations] = useState(false);
-  const [authShow, setAuthShow] = useState(false);
 
   const ref = useRef(null);
 
