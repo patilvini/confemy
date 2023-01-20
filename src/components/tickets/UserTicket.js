@@ -57,8 +57,6 @@ export default function UserTicket({ ticketData, setOpenModal }) {
 
   const getBookingDetails = async (bookingId) => {
     try {
-      setOpenModalX(true);
-      setIsLoading(true);
       let { data } = await api.get(`/conferences/bookings/${bookingId}`);
       console.log("booking details", data);
       setBookingDetails(data.data.bookingDetails);
@@ -70,9 +68,11 @@ export default function UserTicket({ ticketData, setOpenModal }) {
   };
 
   return (
-    <div className="user-ticket-card" style={{ position: "relative" }}>
+    <div className="user-ticket-card position-relative">
       <div
         onClick={() => {
+          setOpenModalX(true);
+          setIsLoading(true);
           getBookingDetails(ticketData?._id);
         }}
         className="pt-20 pl-25 mb-11"
