@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 
 import api from "../../utility/api";
 import UserTicket from "./UserTicket";
-import TicketModal from "./TicketModal";
 import Loader from "../loader/Loader";
 import NoPasses from "../SVG-assets/NoPasses";
 
@@ -16,7 +15,7 @@ export default function UserTickets() {
     searchText: "",
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
+
   const [modalData, setModalData] = useState();
   const [data, setData] = useState(null);
   const [filtered, setFiltered] = useState([]);
@@ -26,8 +25,6 @@ export default function UserTickets() {
 
   const onInputChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onDismiss = () => navigate("/user-profile");
 
   const navigate = useNavigate();
 
@@ -65,7 +62,7 @@ export default function UserTickets() {
   }, [searchText]);
 
   const noTickets = (
-    <div style={{ textAlign: "center" }}>
+    <div className="text-align-center">
       <NoPasses className="icon-plshld" />
       <div className="passes-list">
         <h2>You haven't booked any conference</h2>
@@ -79,18 +76,22 @@ export default function UserTickets() {
     </div>
   );
 
-  const tickets = filtered?.map((item) => {
-    return (
-      <div
-        onClick={() => {
-          setModalOpen(true);
-          setModalData(item);
-        }}
-      >
-        <UserTicket key={item._id} data={item} />
-      </div>
-    );
-  });
+  const tickets = filtered?.map((item) => (
+    <div key={item._id}>
+      <UserTicket ticketData={item} />
+    </div>
+  ));
+
+  // const tickets = filtered?.map((item) => (
+  //   <div
+  //     onClick={() => {
+  //       setModalOpen(true);
+  //       setModalData(item);
+  //     }}
+  //   >
+  //     <UserTicket key={item._id} data={item} />
+  //   </div>
+  // ));
 
   return (
     <div className="user-ticket-list">
@@ -115,14 +116,6 @@ export default function UserTickets() {
       </div>
       <h3 className="my-26 color-primary">Upcoming Conferences</h3>
       {isLoading ? <Loader /> : data?.length > 0 ? tickets : noTickets}
-      {modalOpen && (
-        <TicketModal
-          userData={modalData}
-          onDismiss={() => {
-            onDismiss();
-          }}
-        />
-      )}
     </div>
   );
 }

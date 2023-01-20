@@ -35,6 +35,11 @@ $mrContainerOffSidemenu: 20px;
   letter-spacing: 0.2px;
 }
 
+@mixin body-regular-gray3 {
+  @include body-regular;
+  color: $gray-3;
+}
+
 @mixin body-regular-a {
   font-family: Avenir;
   font-size: 18px;
@@ -44,11 +49,6 @@ $mrContainerOffSidemenu: 20px;
 
 @mixin body-regular-a-gray3 {
   @include body-regular-a;
-  color: $gray-3;
-}
-
-@mixin body-regular-gray3 {
-  @include body-regular;
   color: $gray-3;
 }
 

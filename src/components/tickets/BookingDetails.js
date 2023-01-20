@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
-
-import ModalX from "../modal/ModalX";
 
 import CreditsIcon from "../icons/CreditsIcon";
 import DateIcon from "../icons/DateIcon";
@@ -10,71 +8,60 @@ import LocationIcon from "../icons/LocationIcon";
 import RedirectIcon from "../icons/RedirectIcon";
 import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
-
-import api from "../../utility/api";
 import PriceIcon from "../icons/PriceIcon";
 
-export default function TicketModal({ onDismiss, userData }) {
-  console.log("user", userData);
-  const [ticketDetails, setTicketDetails] = useState();
-  const startDateObj = new Date(userData?.conference?.startDate);
-  const formattedStartDate = formatInTimeZone(
-    startDateObj,
-    userData?.conference?.timezone,
-    "MMM-dd-yyyy, HH:mm aa",
-    { locale: enGB }
-  );
-  const bookingDateObj = new Date(userData?.bookingDate);
-  const formattedBookingDate = formatInTimeZone(
-    bookingDateObj,
-    userData?.conference?.timezone,
-    "MMM-dd-yyyy, HH:mm aa",
-    { locale: enGB }
-  );
+export default function BookingDetails({ bookingDetails }) {
+  const startDateObj = new Date(bookingDetails?.conference?.startDate);
+  let formattedStartDate;
+  if (startDateObj && bookingDetails?.conference?.timezone) {
+    formattedStartDate = formatInTimeZone(
+      startDateObj,
+      bookingDetails?.conference?.timezone,
+      "MMM-dd-yyyy, HH:mm aa",
+      { locale: enGB }
+    );
+  }
+
+  let formattedBookingDate;
+  const bookingDateObj = new Date(bookingDetails?.bookingDate);
+  if (bookingDateObj && bookingDetails?.conference?.timezone) {
+    formattedBookingDate = formatInTimeZone(
+      bookingDateObj,
+      bookingDetails?.conference?.timezone,
+      "MMM-dd-yyyy, HH:mm aa",
+      { locale: enGB }
+    );
+  }
 
   const getLocationString = () => {
     let locationStrig = "Location";
-    if (userData?.conference?.mode?.length > 0) {
+    if (bookingDetails?.conference?.mode?.length > 0) {
       if (
-        userData?.conference?.mode?.includes("venue") &&
-        userData?.conference?.location
+        bookingDetails?.conference?.mode?.includes("venue") &&
+        bookingDetails?.conference?.location
       ) {
-        locationStrig = userData?.conference?.location;
+        locationStrig = bookingDetails?.conference?.location;
       }
 
-      if (userData?.conference?.mode?.includes("onlineConf")) {
+      if (bookingDetails?.conference?.mode?.includes("onlineConf")) {
         locationStrig = "Online";
       }
 
       if (
-        userData?.conference?.mode?.includes("venue") &&
-        userData?.conference?.mode?.includes("onlineConf")
+        bookingDetails?.conference?.mode?.includes("venue") &&
+        bookingDetails?.conference?.mode?.includes("onlineConf")
       ) {
-        locationStrig = `${userData?.conference?.location} & Online`;
+        locationStrig = `${bookingDetails?.conference?.location} & Online`;
       }
     }
     return locationStrig;
   };
 
-  const getBookingDetails = async () => {
-    try {
-      let { data } = await api.get(`/conferences/bookings/${userData._id}`);
-      console.log("response from t-modal", data);
-      setTicketDetails(data.data);
-    } catch (error) {
-      console.log("Error", error);
-    }
-  };
-
-  useEffect(() => {
-    getBookingDetails();
-  }, []);
-
   return (
-    <ModalX onDismiss={onDismiss}>
+    <>
       <div className="ut-modal-wrap">
         <div className="flex-vc">
-          <RedirectIcon />{" "}
+          <RedirectIcon />
           <span
             style={{
               fontSize: "2rem",
@@ -86,9 +73,14 @@ export default function TicketModal({ onDismiss, userData }) {
           </span>
         </div>
         <h4 className="mt-21 mb-12">
-          {userData?.conference ? userData?.conference?.title : "Ticket title"}
+          {bookingDetails?.conference
+            ? bookingDetails?.conference?.title
+            : "Ticket title"}
         </h4>
-        <span className="caption-2-regular-gray3">{`Booking number : #${ticketDetails?.bookingDetails?.bookingNumber} on ${formattedBookingDate}`}</span>
+        <span className="caption-2-regular-gray3">
+          {`Booking number : #${bookingDetails?.bookingNumber} on  ${formattedBookingDate} `}
+        </span>
+
         <div className="pt-16">
           <div className="flex-vc  mb-12">
             <DateIcon className="icon-sm mr-12" />
@@ -106,23 +98,23 @@ export default function TicketModal({ onDismiss, userData }) {
           <div className="flex-vc  mb-12">
             <CreditsIcon className="icon-sm mr-12" />
             <span className="caption-2-regular-gray3">
-              {userData?.conference?.credits?.length > 0
-                ? `${userData?.conference?.credits[0]?.quantity} credits`
+              {bookingDetails?.conference?.credits?.length > 0
+                ? `${bookingDetails?.conference?.credits[0]?.quantity} credits`
                 : "Credits not added"}
             </span>
           </div>
           <div className="flex-vc  mb-12">
             <PriceIcon className="icon-sm mr-12" />
             <span className="caption-2-regular-gray3">
-              {userData?.totalPrice} /-
+              {bookingDetails?.totalPrice} /-
             </span>
           </div>
         </div>
         <div>
-          {ticketDetails?.bookingDetails?.attendees?.map((guest, idx) => {
-            console.log("object,", ticketDetails?.bookingDetails?.attendees);
+          {bookingDetails?.attendees?.map((guest, idx) => {
+            console.log("object,", bookingDetails?.attendees);
             return (
-              <>
+              <div key={guest._id}>
                 <h4 className="mb-10 mt-24">{`Guest ${idx + 1}`}</h4>
                 <div className="caption-2-regular-gray3">
                   <div className="flex-vc">
@@ -134,7 +126,7 @@ export default function TicketModal({ onDismiss, userData }) {
                     <p className="ml-10">{guest.lastName}</p>
                   </div>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
@@ -144,11 +136,11 @@ export default function TicketModal({ onDismiss, userData }) {
           <ResendIcon className="icon-button" fill="#fff" />
           <p className="ml-4 avenir-roman-18 ">Resend Tickets</p>
         </div>
-        <div className="user-ticket-print flex-vchc ">
+        <div className="user-ticket-resend user-ticket-print flex-vchc ">
           <ReceiptIcon className="icon-button" fill="#fff" />
           <p className="ml-4 avenir-roman-18 ">Print Receipt</p>
         </div>
       </div>
-    </ModalX>
+    </>
   );
 }

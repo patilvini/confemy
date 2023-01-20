@@ -32,7 +32,6 @@ export default function SearchResult({ result, isLoading }) {
               />
             </div>
           ))}
-
           <div
             className={
               isLoading && result.length > 0
