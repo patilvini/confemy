@@ -106,7 +106,7 @@ export default function SelectFormType1(props) {
         components={{ Placeholder }}
         placeholder={props.placeholder}
         // defaultValue={props.defaultValue}
-        isClearable
+        // isClearable
         isSearchable
         isDisabled={props.isDisabled}
         name={props.name}

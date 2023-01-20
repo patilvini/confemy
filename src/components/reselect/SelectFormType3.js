@@ -122,7 +122,7 @@ export default function SelectFormType3(props) {
         placeholder={props.placeholder}
         // defaultValue={props.defaultValue}
 
-        isClearable
+        // isClearable
         isSearchable
         isDisabled={props.isDisabled}
         name={props.name}

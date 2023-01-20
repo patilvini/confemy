@@ -100,7 +100,7 @@ export default function SearchAndAdd(props) {
         placeholder={props.placeholder}
         // defaultValue={props.defaultValue}
 
-        isClearable
+        // isClearable
         isSearchable
         isDisabled={props.isDisabled}
         name={props.name}
