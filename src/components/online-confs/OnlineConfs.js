@@ -4,9 +4,8 @@ import "./onlineConfs.styles.scss";
 import { useState, useEffect } from "react";
 import api from "../../utility/api";
 import Carousel from "react-multi-carousel";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "react-multi-carousel/lib/styles.css";
-
 
 const responsive = {
   desktop: {
@@ -14,11 +13,10 @@ const responsive = {
     items: 4,
     slidesToSlide: 1, // optional, default to 1.
   },
-  smaller:{
+  smaller: {
     breakpoint: { max: 1440, min: 1024 },
     items: 3,
     slidesToSlide: 1, // optional, default to 1.
-
   },
   tablet: {
     breakpoint: { max: 1024, min: 761 },
@@ -34,29 +32,22 @@ const responsive = {
 
 function OnlineConfs() {
   const [data, setData] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadData = async () => {
       try {
         const r = await api.get("/conferences?mode=onlineConf");
         // setData(r.data.data.conferences);
-
-        console.log(r)
-        const d = r.data.data.conferences
-
+        const d = r.data.data.conferences;
         // d.length = 8
-
-        setData(d)
-
-
-        
+        setData(d);
       } catch (err) {
         console.log(err);
       }
-    }
+    };
 
-    loadData()
+    loadData();
   }, []);
 
   return (
@@ -64,7 +55,7 @@ function OnlineConfs() {
       <div>
         <h2>Online Conferences</h2>
         <div className="recently-viewed-confs">
-        <Carousel
+          <Carousel
             // swipeable={true}
             // draggable={true}
             showDots={true}
@@ -78,26 +69,35 @@ function OnlineConfs() {
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
           >
-          {data ? data.map((item, index)=> {
-            return (
-              <div key={index}>
-                 <ConfCard
-                  link={item._id}
-                  confName={item.title}
-                  startDate={item.startDate}
-                  currency={item.currency}
-                  location={item.location}
-                  price={item.basePrice}
-                  startTime={item.startTime}
-                  credits={item.credits}
-                />
-              </div>
-            )
-          }) : <div></div>}
+            {data ? (
+              data.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <ConfCard
+                      link={item._id}
+                      confName={item.title}
+                      startDate={item.startDate}
+                      currency={item.currency}
+                      location={item.location}
+                      price={item.basePrice}
+                      startTime={item.startTime}
+                      credits={item.credits}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <div></div>
+            )}
           </Carousel>
         </div>
         <div className="see-all-button">
-          <button onClick={()=>navigate("/search-conference")} className="button button-primary">See all</button>
+          <button
+            onClick={() => navigate("/search-conference")}
+            className="button button-primary"
+          >
+            See all
+          </button>
         </div>
       </div>
     </section>

@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 import api from "../../utility/api";
 
-import { loadOrganization } from "./organizationUtil";
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
 
 import "./saveInput.styles.scss";

@@ -1,4 +1,3 @@
-
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -11,17 +10,12 @@ export default function DashConfPreviewFinished() {
   const [data, setData] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [attendee, setAttendee] = useState();
-  const conf = useParams().id
-
-  console.log(conf)
+  const conf = useParams().id;
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const r = await api.get(
-          "/organizers/conferences/"+conf
-        );
-        console.log(r.data.data.conferenceDetails);
+        const r = await api.get("/organizers/conferences/" + conf);
         setData(r.data.data.conferenceDetails);
       } catch (err) {
         console.log(err);
@@ -42,7 +36,6 @@ export default function DashConfPreviewFinished() {
   const downloadCertificate = async (id) => {
     try {
       const r = await api.get("/attendees/credits/certificates/users/" + id);
-      console.log(r);
       const pdfRaw = r.data;
       const file = new Blob([pdfRaw], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
@@ -98,11 +91,17 @@ export default function DashConfPreviewFinished() {
         >
           <h4>Ticket Type</h4>
         </div>
-        <div className="overview-table-item"><h4>Price</h4></div>
+        <div className="overview-table-item">
+          <h4>Price</h4>
+        </div>
 
-        <div className="overview-table-item"><h4>Sold</h4></div>
+        <div className="overview-table-item">
+          <h4>Sold</h4>
+        </div>
 
-        <div className="overview-table-item"><h4>Status</h4></div>
+        <div className="overview-table-item">
+          <h4>Status</h4>
+        </div>
       </div>
 
       {data?.tickets.map((item, index) => {
@@ -138,13 +137,18 @@ export default function DashConfPreviewFinished() {
           className="overview-table-item"
         >
           <h4>Name</h4>
-          
         </div>
-        <div className="overview-table-item"><h4>Registration no.</h4></div>
+        <div className="overview-table-item">
+          <h4>Registration no.</h4>
+        </div>
 
-        <div className="overview-table-item"><h4>Booked</h4></div>
+        <div className="overview-table-item">
+          <h4>Booked</h4>
+        </div>
 
-        <div className="overview-table-item"><h4>Credits</h4></div>
+        <div className="overview-table-item">
+          <h4>Credits</h4>
+        </div>
       </div>
 
       {/* <div>

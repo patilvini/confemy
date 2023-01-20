@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
@@ -52,15 +52,12 @@ export default function SpeakerForm(props) {
         formDataObj.append("file", values.images[0]);
         try {
           const imagesResponse = await api.post("fileUploads", formDataObj);
-          // console.log("images upload response", imagesResponse);
           if (imagesResponse) {
             formData.speakerDetails.data = imagesResponse.data.data;
-            // console.log("formData", values.images.length, formData);
 
             const response = await api.post("/speakers", formData);
             if (response) {
               console.log("speaker saved res", response);
-              props.setFormikSpeakers(response.data.data.newSpeaker);
               actions.resetForm({ values: initialValues });
               props.onClose();
             }
@@ -72,7 +69,6 @@ export default function SpeakerForm(props) {
         try {
           const response = await api.post("/speakers", formData);
           if (response) {
-            console.log("speaker saved res", response);
             props.setFormikSpeakers(response.data.data.newSpeaker);
             // props.setMySpeakers((prev) => [
             //   ...prev,

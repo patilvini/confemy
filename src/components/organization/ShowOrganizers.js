@@ -2,7 +2,6 @@ import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import api from "../../utility/api";
 import CloseIcon from "../icons/CloseIcon";
-import { loadOrganization } from "./organizationUtil";
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
 
 import "./showOrganizers.styles.scss";

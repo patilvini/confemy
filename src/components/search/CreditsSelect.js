@@ -1,12 +1,10 @@
 import { useState } from "react";
 import Select from "react-select";
 import BackIcon from "../icons/BackIcon";
-import NextIcon from "../icons/NextIcon";
 
 const options = [
   { value: "ama", label: "AMA" },
   { value: "aecp", label: "AECP" },
-  
 ];
 
 export default function CreditsSelect({ close, setValue }) {
@@ -21,7 +19,7 @@ export default function CreditsSelect({ close, setValue }) {
         value: { type: type, amount: amount },
         label: type.label + ", " + amount,
       });
-      close()
+      close();
     }
     if (!type) {
       setErrorSelect("Please select a Credit Type");
@@ -38,10 +36,10 @@ export default function CreditsSelect({ close, setValue }) {
   return (
     <div className="filter-component ">
       <div className="flex-container filter-back-button" onClick={close}>
-        <div><BackIcon fill="#757575" className="filter-icon" /></div>
-        <div style={{marginTop:".7rem"}}> Filters</div>
-        
-       
+        <div>
+          <BackIcon fill="#757575" className="filter-icon" />
+        </div>
+        <div style={{ marginTop: ".7rem" }}> Filters</div>
       </div>
 
       <h3 className="component-title">Credits</h3>

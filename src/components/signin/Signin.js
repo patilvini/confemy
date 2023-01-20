@@ -44,7 +44,6 @@ export default function Signin() {
     try {
       const response = await api.post("login", signinData);
       if (response) {
-        console.log("login response:", response);
         dispatch(loginAction(response.data.data.user));
         navigate("/");
       }

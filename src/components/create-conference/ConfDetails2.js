@@ -125,7 +125,6 @@ export default function ConfDetails2() {
       if (imageDataObj.has("file")) {
         try {
           const imagesResponse = await api.post("fileUploads", imageDataObj);
-          console.log("imageResp", imagesResponse);
           if (imagesResponse) {
             formData.conferenceDetails.venueImages = [
               ...oldVenueImages,
@@ -143,7 +142,6 @@ export default function ConfDetails2() {
     try {
       const response = await api.post("conferences/step3", formData);
       if (response) {
-        console.log("Details 2 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         actions.resetForm({ values: initialValues });
         navigate("/dashboard/create-conf/step-4");
@@ -210,9 +208,6 @@ export default function ConfDetails2() {
     const speakerAlreadyAssigned = formik.values.speakers.find(
       (speaker) => speaker._id === newSpeaker._id
     );
-
-    console.log("newSpeaker", newSpeaker);
-    console.log("speakerAlreadyAssigned", speakerAlreadyAssigned);
 
     if (
       speakerAlreadyAssigned &&
@@ -306,8 +301,6 @@ export default function ConfDetails2() {
         URL.revokeObjectURL(file.Location)
       );
   }, [formik.values.banner]);
-
-  // console.log("Details2 formik", formik);
 
   return (
     <main className="conf-form-wrap">

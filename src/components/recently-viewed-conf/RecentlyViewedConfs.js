@@ -11,11 +11,10 @@ const responsive = {
     items: 4,
     slidesToSlide: 1, // optional, default to 1.
   },
-  smaller:{
+  smaller: {
     breakpoint: { max: 1440, min: 1024 },
     items: 3,
     slidesToSlide: 1, // optional, default to 1.
-
   },
   tablet: {
     breakpoint: { max: 1024, min: 761 },
@@ -32,15 +31,11 @@ const responsive = {
 function RecentlyViewedConfs() {
   const [data, setData] = useState();
 
-
-
   useEffect(() => {
     const loadData = async () => {
       try {
         const r = await api.get("/homePage/recentlyviewed?page=1&limit=5");
-        // console.log(r)
-        setData(r.data.data.viewedConferences)
-        
+        setData(r.data.data.viewedConferences);
       } catch (err) {
         console.log(err);
       }
@@ -70,7 +65,7 @@ function RecentlyViewedConfs() {
           >
             {data ? (
               data.map((item, index) => {
-                console.log(item.conference)
+                console.log(item.conference);
                 return (
                   <div key={index}>
                     <ConfCard

@@ -24,7 +24,6 @@ export default function CreateConfLanding() {
     try {
       const response = await api.get(url);
       if (response) {
-        console.log("get one incomplete conference", response);
         dispatch(loadOneIncopleteConfAction(response.data.data.conferences));
         navigate("/dashboard/create-conf/step-1");
       }
@@ -43,12 +42,10 @@ export default function CreateConfLanding() {
     try {
       const response = await api.get(url);
       if (response) {
-        console.log("get incomplete conferences", response);
         dispatch(loadIncopleteConfsAction(response.data.data.conferences));
       }
     } catch (err) {
       if (err) {
-        console.log(err);
         dispatch(alertAction(err.response.data.message, "danger"));
       }
     }

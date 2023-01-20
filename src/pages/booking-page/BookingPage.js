@@ -74,9 +74,7 @@ export default function BookingPage() {
     try {
       const response = await api.post(url, formData);
       if (response) {
-        console.log("booking step2 response", response.data.data);
         if (!response.data.data.bookingStatus) {
-          console.log("payment path triggered");
           const paymentUrl = response.data.data.orderResponseObj.paymentLink;
           window.location.assign(paymentUrl);
         } else {
@@ -84,7 +82,6 @@ export default function BookingPage() {
         }
       }
     } catch (err) {
-      console.log("err happened");
       dispatch(alertAction(err.response.data?.message, "danger"));
     }
   };

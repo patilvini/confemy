@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import RadioIcon from "../icons/RadioIcon";
 import RadioFilledIcon from "../icons/RadioFilled";

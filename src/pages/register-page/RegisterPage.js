@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Register from "../../components/register/Register";
-import Modal from "../../components/modal/Modal";
 import ModalX from "../../components/modal/ModalX";
 
 const RegisterPage = () => {

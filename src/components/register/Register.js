@@ -13,7 +13,6 @@ import "./register.styles.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { alertAction } from "../../redux/alert/alertAction";
 import { registerAction } from "../../redux/auth/authAction";
 import BackIcon from "../icons/BackIcon";
 import api from "../../utility/api";
@@ -72,7 +71,6 @@ const Register = ({ registerAction, isAuthenticated }) => {
     try {
       const response = await api.post("register", formData);
       if (response) {
-        console.log("Register response", response);
         actions.setSubmitting(false);
         setcurrentPage(currentPage + 1);
       }
@@ -97,7 +95,6 @@ const Register = ({ registerAction, isAuthenticated }) => {
       try {
         const response = await api.post("email", formData);
         if (response) {
-          console.log(response);
           setotpId(response?.data.data._id);
           setcurrentPage(currentPage + 1);
           actions.setTouched({});
@@ -120,7 +117,6 @@ const Register = ({ registerAction, isAuthenticated }) => {
       try {
         const response = await api.post("verify", formData);
         if (response) {
-          console.log(response);
           setuserId(response.data.data.user._id);
           setcurrentPage(currentPage + 1);
           actions.setTouched({});
@@ -143,8 +139,6 @@ const Register = ({ registerAction, isAuthenticated }) => {
   }
 
   if (isAuthenticated) return <Navigate to="/dashboard" replace={true} />;
-
-  console.log("page", currentPage);
 
   return (
     <div className="modal-form-wrapper">

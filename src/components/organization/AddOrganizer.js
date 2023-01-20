@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import api from "../../utility/api";
-import { loadOrganization } from "./organizationUtil";
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
 
 import "./saveInput.styles.scss";
@@ -30,16 +29,12 @@ export default function AddOrganizer({ organizationId }) {
     };
     e.preventDefault();
 
-    console.log(organizerDetails);
-
     try {
       const response = await api.post("/organizations/organizers", {
         organizerDetails,
       });
       if (response) {
-        console.log("organizer patched", response);
         dispatch(loadOrganizationAction(response.data.data.organization));
-        // loadOrganization(organizationId, user._id);
         setInputValue("");
         setShowButtons(false);
         textInputRef.current.style.paddingBottom = "1.6rem";

@@ -1,5 +1,4 @@
 import Select, { components } from "react-select";
-import PropTypes from "prop-types";
 import "./searchAndAdd.styles.scss";
 import AddIcon from "../icons/AddIcon";
 

@@ -10,9 +10,6 @@ export default function DashboardLayoutPage({ onClickOutside }) {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // console.log(event.target)
-      // console.log(ref)
-
       if (ref.current && !ref.current.contains(event.target)) {
         setDashOpen(false);
         onClickOutside && onClickOutside();

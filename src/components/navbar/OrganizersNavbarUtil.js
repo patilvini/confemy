@@ -1,5 +1,3 @@
-import ODashboardIcon from "../icons/ODashboardIcon";
-
 // set side drawer width
 export const drawerWidth = 250;
 

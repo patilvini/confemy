@@ -1,8 +1,6 @@
 import { useDropzone } from "react-dropzone";
 import "./dragAndDrop.styles.scss";
 
-// import styled from 'styled-components';
-
 const getColor = (props) => {
   if (props.isDragAccept) {
     return "#00e676";

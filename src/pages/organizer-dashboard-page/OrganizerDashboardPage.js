@@ -1,14 +1,11 @@
-import React, {Fragment } from 'react';
-import { connect } from 'react-redux';
-import AddManager from '../organizer-profile-page/AddManager';
-
-
+import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import AddManager from "../organizer-profile-page/AddManager";
 
 const OrganizerDashboardPage = () => {
-  
   return (
     <Fragment>
-      <AddManager/>
+      <AddManager />
     </Fragment>
   );
 };

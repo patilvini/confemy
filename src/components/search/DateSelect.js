@@ -21,8 +21,6 @@ export default function DateSelect({ close, setValue }) {
     }
 
     if (startDate && endDate) {
-      console.log("hello");
-
       const start = new Date(startDate).toISOString();
       const end = new Date(endDate).toISOString();
       setValue({
@@ -37,10 +35,10 @@ export default function DateSelect({ close, setValue }) {
   return (
     <div className="filter-component">
       <div className="flex-container filter-back-button" onClick={close}>
-        <div><BackIcon fill="#757575" className="filter-icon" /></div>
-        <div style={{marginTop:".7rem"}}> Filters</div>
-        
-       
+        <div>
+          <BackIcon fill="#757575" className="filter-icon" />
+        </div>
+        <div style={{ marginTop: ".7rem" }}> Filters</div>
       </div>
 
       <h3 className="component-title">Dates</h3>

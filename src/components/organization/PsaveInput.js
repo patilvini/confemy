@@ -1,12 +1,9 @@
 import { useRef } from "react";
 import { useFormik } from "formik";
-import { useState, useEffect } from "react";
-import * as yup from "yup";
+import { useState } from "react";
 
 import TextError from "../formik/TextError";
 import "./saveInput.styles.scss";
-import api from "../../utility/api";
-
 
 // declare in parent component
 // const validationSchema = yup.object({
@@ -18,34 +15,30 @@ import api from "../../utility/api";
 //   name: "",
 // };
 
-export default function PsaveInput({ name, id, label, validationSchema, url, apiData}) {
+export default function PsaveInput({
+  name,
+  id,
+  label,
+  validationSchema,
+  url,
+  apiData,
+}) {
   const [show, setShow] = useState(false);
   const ref = useRef();
 
+  let initialValues = { name: apiData.name };
+  //   declare in paren
 
-  let initialValues = {name: apiData.name}
-
-
-
-
-//   declare in paren
-
-// if(apiData){
-//     initialValues.name = apiData.name
-// }
+  // if(apiData){
+  //     initialValues.name = apiData.name
+  // }
 
   const onSubmit = async (values, actions) => {
-    console.log("SaveInput", values);
     ref.current.style.paddingBottom = "1.6rem";
     setShow(false);
 
-//    const organization = initialValues
+    //    const organization = initialValues
 
-
-
-
-
-   
     // try {
     //   const res = await api.patch(url, {organization});
     //   console.log(res);
@@ -56,7 +49,6 @@ export default function PsaveInput({ name, id, label, validationSchema, url, api
 
   // import this as props
   const formik = useFormik({ initialValues, validationSchema, onSubmit });
-
 
   function onInputFocus(e) {
     e.target.style.paddingBottom = "40px";
@@ -69,8 +61,7 @@ export default function PsaveInput({ name, id, label, validationSchema, url, api
     ref.current.style.paddingBottom = "1.6rem";
   };
 
-
-  console.log(initialValues)
+  console.log(initialValues);
   return (
     <>
       <form

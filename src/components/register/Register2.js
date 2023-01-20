@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { Link, useHistory, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as yup from "yup";
+import { Link } from "react-router-dom";
+import { Field, ErrorMessage } from "formik";
 import TextError from "../formik/TextError";
-import GoogleIcon from "../icons/GoogleIcon";
 import ClosedEyeIcon from "../icons/ClosedEyeIcon";
 import OpenEyeIcon from "../icons/OpenEyeIcon";
 
-import { registerAction } from "../../redux/auth/authAction";
 import "./register.styles.scss";
 import "../signin/signin.styles.scss";
 import { Fragment } from "react";

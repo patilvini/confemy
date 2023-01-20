@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import CreditsIcon from "../icons/CreditsIcon";
@@ -43,7 +43,6 @@ export default function BookingCard({
     try {
       const response = await api.post("/conferences/like", data);
       if (response) {
-        console.log("like res", response);
         setSelectedConference(response.data.data.conference);
       }
     } catch (err) {
@@ -56,7 +55,6 @@ export default function BookingCard({
     try {
       const response = await api.delete(url);
       if (response) {
-        console.log("unlike res", response);
         setSelectedConference(response.data.data.conference);
       }
     } catch (err) {

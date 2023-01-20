@@ -6,7 +6,6 @@ import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
 import CreditsIcon from "../icons/CreditsIcon";
 import LikeInactiveIcon from "../icons/LikeInactiveIcon";
-import LikeBlueIcon from "../icons/LikeBlueIcon";
 import PropTypes from "prop-types";
 
 export default function ConfCard({
@@ -29,17 +28,14 @@ export default function ConfCard({
     if (mode?.length > 0) {
       if (mode?.includes("venue") && city) {
         locationStrig = city;
-        // console.log("venue", locationStrig);
       }
 
       if (mode?.includes("onlineConf")) {
         locationStrig = "Online";
-        // console.log("online", locationStrig);
       }
 
       if (mode?.includes("venue") && mode?.includes("onlineConf")) {
         locationStrig = `${city} & Online`;
-        // console.log("both", locationStrig);
       }
     }
     return locationStrig;
