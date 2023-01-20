@@ -8,8 +8,6 @@ import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
 
 export default function UserTicket({ data }) {
-  console.log("data", data);
-
   const startDateObj = new Date(data?.conference?.startDate);
   const formattedStartDate = formatInTimeZone(
     startDateObj,

@@ -15,9 +15,9 @@ import api from "../../utility/api";
 import PriceIcon from "../icons/PriceIcon";
 
 export default function TicketModal({ onDismiss, userData }) {
-  console.log("user", userData);
   const [ticketDetails, setTicketDetails] = useState();
   const startDateObj = new Date(userData?.conference?.startDate);
+
   const formattedStartDate = formatInTimeZone(
     startDateObj,
     userData?.conference?.timezone,
@@ -59,7 +59,6 @@ export default function TicketModal({ onDismiss, userData }) {
   const getBookingDetails = async () => {
     try {
       let { data } = await api.get(`/conferences/bookings/${userData._id}`);
-      console.log("response from t-modal", data);
       setTicketDetails(data.data);
     } catch (error) {
       console.log("Error", error);
@@ -133,13 +132,25 @@ export default function TicketModal({ onDismiss, userData }) {
                     <p className="caption-1-heavy-cblack ">{`Last Name : `}</p>
                     <p className="ml-10">{guest.lastName}</p>
                   </div>
+                  <div className="flex-vc my-6">
+                    <p className="caption-1-heavy-cblack">{`Email : `}</p>
+                  </div>
+                  <p className="caption-1-heavy-cblack">{`Tickest Details : `}</p>
+                  <div className="flex-vc">
+                    <p className="my-6 mr-5">Ticket Name : </p>
+                    <p className="ml-5">{guest?.ticket?.name}</p>
+                  </div>
+                  <div className="flex-vc">
+                    <p className="mr-5">Ticket Price : </p>
+                    <p>{guest?.ticket?.price}</p>
+                  </div>
                 </div>
               </>
             );
           })}
         </div>
       </div>
-      <div className="flex-vc-sb mt-16">
+      <div className="flex-vc-sb mt-40">
         <div className="user-ticket-resend flex-vchc">
           <ResendIcon className="icon-button" fill="#fff" />
           <p className="ml-4 avenir-roman-18 ">Resend Tickets</p>

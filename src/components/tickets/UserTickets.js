@@ -45,7 +45,6 @@ export default function UserTickets() {
   };
 
   useEffect(() => {
-    console.log("use-effect ran");
     getData(user?._id);
   }, [user?._id]);
 
