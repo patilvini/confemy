@@ -17,7 +17,6 @@ import api from "../../utility/api";
 import "./userTickets.styles.scss";
 
 export default function UserTicket({ ticketData, setOpenModal }) {
-  console.log("userData", ticketData);
   const [openModalX, setOpenModalX] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);

@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 
-import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import HomePage from "./pages/home-page/HomePage";
 import SigninPage from "./pages/signin-page/SigninPage";
@@ -11,14 +10,6 @@ import RegisterPage from "./pages/register-page/RegisterPage";
 import VerifyEmail from "./components/verify-email/VerifyEmail";
 import Alert from "./components/alert/Alert";
 import MessagePage from "./pages/message-page/MessagePage";
-import AttendeeDashboardPage from "./pages/attendee-dashboard-page/AttendeeDashboardPage";
-import AttendeeProfilePage from "./pages/attandee-profile-page/AttendeeProfilePage";
-import CreateAttendeeProfilePage from "./pages/attandee-profile-page/CreateAttendeeProfilePage";
-import EditAttendeeProfilePage from "./pages/attandee-profile-page/EditAttendeeProfilePage";
-import OrganizerDashboardPage from "./pages/organizer-dashboard-page/OrganizerDashboardPage";
-import OrganizerProfilePage from "./pages/organizer-profile-page/OrganizerProfilePage";
-import CreateOrganizerProfilePage from "./pages/organizer-profile-page/CreateOrganizerProfilePage";
-import EditOrganizerProfilePage from "./pages/organizer-profile-page/EditOrganizerProfilePage";
 import CreateConfLandingPage from "./pages/create-conference-pages/CreateConfLandingPage";
 import ConfBasicInfoPage from "./pages/create-conference-pages/ConfBasicInfoPage";
 import ConfDetailsPage1 from "./pages/create-conference-pages/ConfDetailsPage1";
@@ -28,8 +19,6 @@ import ConfTicketsPage from "./pages/create-conference-pages/ConfTicketsPage";
 import ConfPreviewPage from "./pages/create-conference-pages/ConfPreviewPage";
 
 import MyPrivateRoute from "./components/routing/MyPrivateRoute";
-import PrivateAttendeeRoute from "./components/routing/PrivateAttendeeRoute";
-import PrivateOrganizerRoute from "./components/routing/PrivateOrganizerRoute";
 import CreateConfLayoutPage from "./pages/layout-pages/CreateConfLayoutPage";
 import DashboardLayoutPage from "./pages/layout-pages/DashboardLayoutPage";
 import { loadUserAction } from "./redux/auth/authAction";
@@ -39,11 +28,9 @@ import VerifyManagerPage from "./pages/verify-manager-page/VerifyManagerPage";
 import MyOrganizationsPage from "./pages/organization-pages/MyOrganizationsPage";
 import OrganizationDetailsPage from "./pages/organization-pages/OrganizationDetailsPage";
 
-// import MyOrganizationDetails from "./components/organization/MyOrganizationDetails";
 import SearchPage from "./pages/search-page/SearchPage";
 import ConfDetailsPage from "./pages/conference-page/ConfDetailsPage";
 
-import OrganizerConfDashPage from "./pages/organizer-conf-dashboard-page/OrganizerConfDashPage";
 import OrganizerConfPreviewPage from "./pages/organizer-conf-dashboard-page/OrganizerConfPreviewPage";
 import CreditRequestsPage from "./pages/organizer-conf-dashboard-page/CreditRequestsPage";
 import RefundRequestsPage from "./pages/organizer-conf-dashboard-page/RefundRequestsPage";
@@ -61,8 +48,8 @@ import Credits from "./components/user-profile/Credits";
 import AccountSettings from "./components/user-settings/AccountSettings";
 import UserProfileLayoutPage from "./pages/layout-pages/UserProfileLayoutPage";
 import UserTickets from "./components/tickets/UserTickets";
-import SelectTest2 from "./components/reselect/SelectTest2";
-import SelectTest from "./components/reselect/SelectTest";
+import ForgotPasswordPage from "./pages/forgot-password-page/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/reset-password-page/ResetPasswordPage";
 
 const App = () => {
   useEffect(() => {
@@ -79,6 +66,12 @@ const App = () => {
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>
+            <Route
+              path="/forgot-password"
+              element={<ForgotPasswordPage />}
+            ></Route>
+            <Route path="/reset/:secret" element={<ResetPasswordPage />} />
+
             <Route
               path="/verify-email/:secret"
               element={<VerifyEmail />}
