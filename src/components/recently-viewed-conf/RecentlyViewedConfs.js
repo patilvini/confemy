@@ -36,13 +36,13 @@ function RecentlyViewedConfs() {
       try {
         const r = await api.get("/homePage/recentlyviewed?page=1&limit=5");
         setData(r.data.data.viewedConferences);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     };
 
     loadData();
   }, []);
+
+  console.log("recently viewed confs", data);
 
   return (
     <section className="bg-background conf-display recently-viewed-confs">
@@ -69,14 +69,18 @@ function RecentlyViewedConfs() {
                 return (
                   <div key={index}>
                     <ConfCard
-                      link={item.conference._id}
-                      confName={item.conference.title}
-                      startDate={item.conference.startDate}
-                      currency={item.conference.currency}
-                      location={item.conference.location}
-                      price={item.conference.basePrice}
-                      startTime={item.conference.startTime}
+                      mode={item.conference.location}
+                      city
+                      src
+                      title={item.conference.title}
+                      // startDate={item.conference.startDate}
+                      // endDate
+                      // timezone
                       credits={item.conference.credits}
+                      currency={item.conference.currency}
+                      basePrice={item.conference.basePrice}
+                      confId={item.conference._id}
+                      // location={item.conference.location}
                     />
                   </div>
                 );

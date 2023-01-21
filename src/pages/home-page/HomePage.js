@@ -11,13 +11,13 @@ import { useSelector } from "react-redux";
 function HomePage() {
   const userID = useSelector((state) => state.auth.user?._id);
   return (
-    <main className="container">
+    <main className="container pt-64">
       <Hero />
       <HowItWorks />
       <ExploreConfs />
-      {userID && <RecentlyViewedConfs />}
       <TrendingConfs />
       <OnlineConfs />
+      {userID && <RecentlyViewedConfs />}
       <HostYourConfs />
     </main>
   );
