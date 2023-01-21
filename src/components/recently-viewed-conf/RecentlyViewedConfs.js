@@ -69,7 +69,7 @@ function RecentlyViewedConfs() {
                 return (
                   <div key={index}>
                     <ConfCard
-                      mode={item.conference.location}
+                      mode={item.conference.mode}
                       city
                       src
                       title={item.conference.title}
