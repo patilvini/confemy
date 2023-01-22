@@ -6,7 +6,6 @@ import * as yup from "yup";
 import TextError from "../formik/TextError";
 
 import api from "../../utility/api";
-import { alertAction } from "../../redux/alert/alertAction";
 import "./forgotpassword.styles.scss";
 
 const initialValues = {
@@ -24,8 +23,9 @@ export default function ForgotPassword() {
   const [apiResponce, setApiResponce] = useState();
   const [showResponce, setShowResponce] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, action) => {
     const { email } = values;
     const resetEmail = {
       user: {
@@ -40,7 +40,7 @@ export default function ForgotPassword() {
         setShowResponce(true);
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      action.setFieldError("email", err.response.data.message);
     }
   };
 
@@ -49,9 +49,9 @@ export default function ForgotPassword() {
       {!showResponce ? (
         <>
           <div className="text-align-center">
-            <h2>Forgot Password?</h2>
-            <p className="body-regular-gray3 text-align-center mt-13 mb-31">
-              Don't worry! Happens with the best of us
+            <h2 className="color-primary mb-13">Forgot Password?</h2>
+            <p className="body-regular-gray3 mb-31">
+              Don't worry! Happens to the best of us.
             </p>
           </div>
           <Formik
@@ -73,23 +73,24 @@ export default function ForgotPassword() {
               <div className="mb-24">
                 <ErrorMessage name="email" component={TextError} />
               </div>
-
-              <button className="button button-primary mb-48" type="submit">
+              <button className="button button-primary" type="submit">
                 Reset
               </button>
             </Form>
           </Formik>
         </>
       ) : (
-        <>
-          <h2 className="text-align-center">It'll be alright</h2>
-          <p className="body-regular-gray3 text-align-center mt-21 mb-44">
-            {apiResponce.message}
-          </p>
-          <p className="msg-btn text-align-center mb-40">
-            <span className="button button-primary ">Thanks</span>
-          </p>
-        </>
+        <div className="text-align-center">
+          <h2 className="color-primary mb-21">It'll be alright</h2>
+          <p className="body-regular-gray3 mb-44">{apiResponce.message}</p>
+          <button
+            type="sumbit"
+            onClick={() => navigate("/")}
+            className="button button-primary "
+          >
+            Okay
+          </button>
+        </div>
       )}
     </div>
   );

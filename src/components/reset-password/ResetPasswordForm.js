@@ -7,11 +7,10 @@ import * as yup from "yup";
 import TextError from "../formik/TextError";
 
 import api from "../../utility/api";
-import { alertAction } from "../../redux/alert/alertAction";
+
 import ClosedEyeIcon from "../icons/ClosedEyeIcon";
 import OpenEyeIcon from "../icons/OpenEyeIcon";
 import SubmitButtonWithLoader from "../button/SubmitButtonWithLoader";
-import "./resetpassword.styles.scss";
 
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
@@ -31,18 +30,18 @@ const validationSchema = yup.object().shape({
 });
 
 export default function UpdatePassword() {
-  const { secret } = useParams();
   const [status, setStatus] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const { secret } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const togglePassword = () => setShowPassword((prev) => !prev);
   const toggleConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
 
-  const dispatch = useDispatch();
-
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, action) => {
     const formData = {
       user: {
         password: values.password,
@@ -56,7 +55,7 @@ export default function UpdatePassword() {
       );
       setStatus(response.data.statusCode);
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      action.setFieldError("confirmPassword", err.response.data.message);
     }
   };
 
@@ -71,12 +70,12 @@ export default function UpdatePassword() {
   });
 
   return (
-    <div className="rp-wrap">
+    <div className="fp-wrap">
       {!status ? (
         <>
-          <h2 className=" text-align-center mb-48">Reset Password</h2>
+          <h2 className="text-align-center mb-60">Reset Password</h2>
           <form
-            className="form-type-1 mb-20"
+            className="form-type-1"
             autoComplete="off"
             onSubmit={formik.handleSubmit}
           >
@@ -143,14 +142,12 @@ export default function UpdatePassword() {
                   <TextError>{formik.errors.confirmPassword}</TextError>
                 )}
             </div>
-
-            <div className="text-align-center ">
-              <SubmitButtonWithLoader
-                isSubmitting={formik.isSubmitting}
-                text="Reset"
-                className="button button-primary rp-msg-btn"
-              />
-            </div>
+            <SubmitButtonWithLoader
+              isSubmitting={formik.isSubmitting}
+              text="Reset"
+              className="button button-primary"
+              fullWidth={true}
+            />
           </form>
         </>
       ) : (

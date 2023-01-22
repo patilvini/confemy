@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ModalX from "../../components/modal/ModalX";
-import ResetPassword from "../../components/reset-password/ResetPassword";
+import ResetPasswordForm from "../../components/reset-password/ResetPasswordForm";
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const ResetPasswordPage = () => {
   return (
     <section className="container">
       <ModalX onDismiss={onDismiss}>
-        <ResetPassword />
+        <ResetPasswordForm />
       </ModalX>
     </section>
   );
