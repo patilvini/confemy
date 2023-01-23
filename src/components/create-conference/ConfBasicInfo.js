@@ -18,6 +18,11 @@ import { loadMyOrganizationsSelectListAction } from "../../redux/organization/my
 import { alertAction } from "../../redux/alert/alertAction";
 import CustomDatepicker from "../react-datepicker/CustomDatepicker";
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
+import {
+  loadCountryList,
+  loadStateList,
+  loadCityList,
+} from "../../utility/commonUtil";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required("Required"),
@@ -82,9 +87,9 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ConfBasicInfo() {
-  const [countryList, setCountryList] = useState([]);
-  const [stateList, setStateList] = useState([]);
-  const [cityList, setCityList] = useState([]);
+  // const [countryList, setCountryList] = useState([]);
+  // const [stateList, setStateList] = useState([]);
+  // const [cityList, setCityList] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -93,6 +98,9 @@ export default function ConfBasicInfo() {
   const { newConference } = conference;
   const organizationsListForSelect = useSelector(
     (state) => state.myOrganizations.organizationsListForSelect
+  );
+  const { countryList, stateList, cityList } = useSelector(
+    (state) => state.list
   );
 
   async function onSubmit(values, actions) {
@@ -227,68 +235,94 @@ export default function ConfBasicInfo() {
     }
   };
 
-  const loadCountryList = async () => {
-    const url = `venues/countryList`;
-    try {
-      const response = await api.get(url);
-      if (response) {
-        setCountryList(response.data.data.countries);
-        if (countryList) {
-          loadStateList(
-            countryList?.find(
-              (country) => country.label === newConference?.country
-            )?.countryId
-          );
-        }
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
+  // const loadCountryList = async () => {
+  //   const url = `venues/countryList`;
+  //   try {
+  //     const response = await api.get(url);
+  //     if (response) {
+  //       setCountryList(response.data.data.countries);
+  //       if (countryList) {
+  //         loadStateList(
+  //           countryList?.find(
+  //             (country) => country.label === newConference?.country
+  //           )?.countryId
+  //         );
+  //       }
+  //     }
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
 
-  const loadStateList = async (countryId) => {
-    const url = `venues/stateList?countryId=${countryId}`;
-    try {
-      const response = await api.get(url);
-      if (response) {
-        setStateList(response.data.data.states);
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
+  // const loadStateList = async (countryId) => {
+  //   const url = `venues/stateList?countryId=${countryId}`;
+  //   try {
+  //     const response = await api.get(url);
+  //     if (response) {
+  //       setStateList(response.data.data.states);
+  //     }
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
 
-  const loadCityList = async (stateId) => {
-    const url = `venues/cityList?stateId=${stateId}`;
-    try {
-      const response = await api.get(url);
-      if (response) {
-        setCityList(response.data.data.cities);
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
+  // const loadCityList = async (stateId) => {
+  //   const url = `venues/cityList?stateId=${stateId}`;
+  //   try {
+  //     const response = await api.get(url);
+  //     if (response) {
+  //       setCityList(response.data.data.cities);
+  //     }
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
 
   useEffect(() => {
     loadMyOrgnizations(user._id);
-    loadCountryList();
+    if (!countryList.length > 0) {
+      loadCountryList();
+    }
   }, [user._id]);
 
-  useEffect(() => {
-    if (countryList.length > 0) {
-      const myCountryId = countryList.find(
-        (country) => country.value === newConference?.country
-      )?.countryId;
-      loadStateList(myCountryId);
-    }
-  }, [countryList]);
+  // useEffect(() => {
+  //   if (countryList.length > 0) {
+  //     const myCountryId = countryList.find(
+  //       (country) => country.value === newConference?.country
+  //     )?.countryId;
+  //     loadStateList(myCountryId);
+  //   }
+  // }, [countryList]);
+
+  // useEffect(() => {
+  //   if (stateList.length > 0) {
+  //     const myStateId = stateList.find(
+  //       (state) => state.value === newConference?.state
+  //     )?.stateId;
+  //     loadCityList(myStateId);
+  //   }
+  // }, [stateList]);
 
   useEffect(() => {
+    let myCountryId;
+    if (countryList.length > 0) {
+      myCountryId = countryList.find(
+        (country) => country.value === newConference?.country
+      )?.countryId;
+    }
+    if (myCountryId) {
+      loadStateList(myCountryId);
+    }
+  }, []);
+
+  useEffect(() => {
+    let myStateId;
     if (stateList.length > 0) {
-      const myStateId = stateList.find(
+      myStateId = stateList.find(
         (state) => state.value === newConference?.state
       )?.stateId;
+    }
+    if (myStateId) {
       loadCityList(myStateId);
     }
   }, [stateList]);

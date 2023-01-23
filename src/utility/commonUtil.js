@@ -1,6 +1,15 @@
 import { utcToZonedTime, format } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 import api from "./api";
+import StoreAndPersistStore from "../redux/store";
+import { alertAction } from "../redux/alert/alertAction";
+import {
+  loadCountryListAction,
+  loadStateListAction,
+  loadCityListAction,
+} from "../redux/list/listAction";
+
+const { store } = StoreAndPersistStore;
 
 export const getFormattedDateInTz = (date, timezone) => {
   let dateInTz;
@@ -69,6 +78,49 @@ export const getValue = (options, value, isMulti) => {
 export const loadLocations = async (searchText, callback) => {
   const response = await api.get(`venues/search?venue=${searchText}`);
   callback(response.data.data.venue);
+};
+
+export const loadCountryList = async () => {
+  const url = `venues/countryList`;
+  try {
+    const response = await api.get(url);
+    if (response) {
+      store.dispatch(loadCountryListAction(response.data.data.countries));
+      const { countries } = response.data.data;
+      // if (editMode && practice?.country) {
+      //   const Id = countries.find(
+      //     (country) => country.label === practice?.country
+      //   )?.countryId;
+      //   loadStateList(Id);
+      // }
+    }
+  } catch (err) {
+    store.dispatch(alertAction(err.response.data.message, "danger"));
+  }
+};
+
+export const loadStateList = async (countryId) => {
+  const url = `venues/stateList?countryId=${countryId}`;
+  try {
+    const response = await api.get(url);
+    if (response) {
+      store.dispatch(loadStateListAction(response.data.data.states));
+    }
+  } catch (err) {
+    store.dispatch(alertAction(err.response.data.message, "danger"));
+  }
+};
+
+export const loadCityList = async (stateId) => {
+  const url = `venues/cityList?stateId=${stateId}`;
+  try {
+    const response = await api.get(url);
+    if (response) {
+      store.dispatch(loadCityListAction(response.data.data.cities));
+    }
+  } catch (err) {
+    store.dispatch(alertAction(err.response.data.message, "danger"));
+  }
 };
 
 export const professions = [
