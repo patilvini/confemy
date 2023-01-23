@@ -313,7 +313,7 @@ export default function ConfBasicInfo() {
     if (myCountryId) {
       loadStateList(myCountryId);
     }
-  }, []);
+  }, [countryList]);
 
   useEffect(() => {
     let myStateId;
@@ -652,7 +652,6 @@ export default function ConfBasicInfo() {
                     <SelectFormType1
                       options={countryList}
                       value={formik.values.country}
-                      isMulti={false}
                       onChange={(value) => {
                         if (formik.values.country !== value?.value) {
                           formik.setFieldValue("state", "");
@@ -689,7 +688,6 @@ export default function ConfBasicInfo() {
                     <ReloadableSelectFormType1
                       options={stateList}
                       value={formik.values.state}
-                      isMulti={false}
                       onChange={(value) => {
                         if (formik.values.state !== value?.value) {
                           formik.setFieldValue("city", "");
@@ -723,7 +721,6 @@ export default function ConfBasicInfo() {
                     <ReloadableSelectFormType1
                       options={cityList}
                       value={formik.values.city}
-                      isMulti={false}
                       onChange={(value) => {
                         formik.setFieldValue("city", value?.value);
                       }}
