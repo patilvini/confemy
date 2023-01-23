@@ -37,6 +37,7 @@ export default function ForgotPassword() {
     try {
       const response = await api.post(`/users/email`, resetEmail);
       if (response) {
+        console.log("response:", response);
         setApiResponce(response.data);
         setShowResponce(true);
       }
@@ -61,7 +62,7 @@ export default function ForgotPassword() {
             onSubmit={onSubmit}
           >
             {(props) => {
-              console.log("formik props", props);
+              // console.log("formik props", props);
               return (
                 <Form className="form-type-1" autoComplete="off">
                   <div className="material-textfield">

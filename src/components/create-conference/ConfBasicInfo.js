@@ -199,13 +199,8 @@ export default function ConfBasicInfo() {
       host: newConference?.host || "",
       organizationId: newConference?.hostedBy?.organization || "",
       startDate: apiStartDate || null,
-      // startDate: newDateToDisplay || null,
-      // startTime: jsStartTimeObj || null,
       endDate: apiEndDate || null,
-      // endDate: jsEndDateObj || null,
-      // endTime: jsEndTimeObj || null,
       timezone: newConference?.timezone || "",
-
       mode: newConference?.mode || [],
       venueName: newConference?.venueName || "",
       street1: newConference?.street1 || "",
@@ -773,7 +768,7 @@ export default function ConfBasicInfo() {
           <div className="mb-72">
             <SubmitCancelButtonWithLoader
               isSubmitting={formik.isSubmitting}
-              isValid={formik.isValid}
+              onCancel={() => formik.resetForm({})}
             />
           </div>
         </form>

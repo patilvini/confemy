@@ -1,0 +1,28 @@
+@import "../../utility/utility.styles.scss";
+
+.inactive-shared-tab {
+  padding-bottom: 1.6rem;
+  border-bottom: solid 0.4rem $colour-white;
+  @include caption-1-heavy;
+  color: #757575;
+}
+
+.active-shared-tab {
+  border-bottom-color: $primary;
+  color: $primary;
+  font-weight: 900;
+}
+
+.completed-shared-tab {
+  color: #4cb944;
+}
+
+.completed-active-shared-tab {
+  color: #4cb944;
+  border-bottom-color: #4cb944;
+  font-weight: 900;
+}
+
+.completed-inactive-shared-tab {
+  color: #4cb944;
+}
