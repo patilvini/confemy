@@ -45,6 +45,7 @@ import PNavbar from "./components/navbar/PNavbar";
 import BookingPage from "./pages/booking-page/BookingPage";
 import SavedConfs from "./components/user-profile/SavedConfs";
 import Credits from "./components/user-profile/Credits";
+import UserCredits from "./components/user-credits/UserCredits";
 import AccountSettings from "./components/user-settings/AccountSettings";
 import UserProfileLayoutPage from "./pages/layout-pages/UserProfileLayoutPage";
 import UserTickets from "./components/tickets/UserTickets";
@@ -92,7 +93,7 @@ const App = () => {
             >
               <Route path="tickets" element={<UserTickets />} />
               <Route path="saved-conference" element={<SavedConfs />} />
-              <Route path="credits" element={<Credits />} />
+              <Route path="credits" element={<UserCredits />} />
               <Route path="account-settings" element={<AccountSettings />} />
               <Route
                 index={true}
