@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage, useFormik } from "formik";
-import PropTypes from "prop-types";
 
 import * as yup from "yup";
 import TextError from "../formik/TextError";
 
 import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
-import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
 import ClosedEyeIcon from "../icons/ClosedEyeIcon";
 import OpenEyeIcon from "../icons/OpenEyeIcon";
-import Loader from "../loader/Loader";
 import SubmitButtonWithLoader from "../button/SubmitButtonWithLoader";
 
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;

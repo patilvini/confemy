@@ -14,3 +14,13 @@
     min-width: 212px;
   }
 }
+
+.fullwidth-submit-loader {
+  display: block;
+  width: 100%;
+  position: relative;
+  button {
+    min-height: 52px;
+    width: 100%;
+  }
+}

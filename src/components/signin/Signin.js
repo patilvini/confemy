@@ -114,7 +114,7 @@ export default function Signin() {
       </Formik>
       <p>
         <span className="caption-2-regular-gray3">Forgot password?</span>{" "}
-        <Link className="caption-2-bold-gray3" to="#!">
+        <Link className="caption-2-bold-gray3" to="/forgot-password">
           Reset Password
         </Link>
       </p>
