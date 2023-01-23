@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
+import SubmitButtonWithLoader from "../button/SubmitButtonWithLoader";
 
 import api from "../../utility/api";
 import "./forgotpassword.styles.scss";
@@ -59,24 +60,32 @@ export default function ForgotPassword() {
             validationSchema={validationSchema}
             onSubmit={onSubmit}
           >
-            <Form className="form-type-1" autoComplete="off">
-              <div className="material-textfield">
-                <Field
-                  id="email"
-                  type="text"
-                  placeholder=" "
-                  name="email"
-                  autoComplete="username"
-                />
-                <label>Email</label>
-              </div>
-              <div className="mb-24">
-                <ErrorMessage name="email" component={TextError} />
-              </div>
-              <button className="button button-primary" type="submit">
-                Reset
-              </button>
-            </Form>
+            {(props) => {
+              console.log("formik props", props);
+              return (
+                <Form className="form-type-1" autoComplete="off">
+                  <div className="material-textfield">
+                    <Field
+                      id="email"
+                      type="text"
+                      placeholder=" "
+                      name="email"
+                      autoComplete="username"
+                    />
+                    <label>Email</label>
+                  </div>
+                  <div className="mb-24">
+                    <ErrorMessage name="email" component={TextError} />
+                  </div>
+                  <SubmitButtonWithLoader
+                    isSubmitting={props.isSubmitting}
+                    text="Reset"
+                    className="button button-primary"
+                    fullWidth={true}
+                  />
+                </Form>
+              );
+            }}
           </Formik>
         </>
       ) : (

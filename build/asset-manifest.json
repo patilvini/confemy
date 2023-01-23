@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.48c3b333.css",
-    "main.js": "/static/js/main.d74c9951.js",
+    "main.js": "/static/js/main.aa72064c.js",
     "static/js/787.7814be23.chunk.js": "/static/js/787.7814be23.chunk.js",
     "static/media/Avenir.ttc": "/static/media/Avenir.bd849aa48220dc5266c4.ttc",
     "static/media/Avenir-Roman.ttf": "/static/media/Avenir-Roman.69c167230fe72fa92d10.ttf",
@@ -15,11 +15,11 @@
     "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/index.html",
     "main.48c3b333.css.map": "/static/css/main.48c3b333.css.map",
-    "main.d74c9951.js.map": "/static/js/main.d74c9951.js.map",
+    "main.aa72064c.js.map": "/static/js/main.aa72064c.js.map",
     "787.7814be23.chunk.js.map": "/static/js/787.7814be23.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.48c3b333.css",
-    "static/js/main.d74c9951.js"
+    "static/js/main.aa72064c.js"
   ]
 }
