@@ -7,6 +7,7 @@ import {
   loadCountryListAction,
   loadStateListAction,
   loadCityListAction,
+  loadCreditTypesListAction,
 } from "../redux/list/listAction";
 
 const { store } = StoreAndPersistStore;
@@ -117,6 +118,18 @@ export const loadCityList = async (stateId) => {
     const response = await api.get(url);
     if (response) {
       store.dispatch(loadCityListAction(response.data.data.cities));
+    }
+  } catch (err) {
+    store.dispatch(alertAction(err.response.data.message, "danger"));
+  }
+};
+
+export const loadCreditTypesList = async () => {
+  const url = `common/conferences/credits`;
+  try {
+    const response = await api.get(url);
+    if (response) {
+      store.dispatch(loadCreditTypesListAction(response.data.data.credits));
     }
   } catch (err) {
     store.dispatch(alertAction(err.response.data.message, "danger"));

@@ -73,7 +73,6 @@ export default function PracticeAddressForm({
     try {
       const response = await api.patch(`/users/${userProfile._id}`, formData);
       if (response) {
-        console.log("submit res", response);
         dispatch(loadUserProfileAction(response.data.data.user));
         if (editMode) {
           setEditMode(false);

@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
+import { useDropzone } from "react-dropzone";
+
 import * as yup from "yup";
 
 import TextError from "../formik/TextError";
-import SelectFormType1 from "../reselect/SelectFormType1";
 import OnlyDatepicker from "../react-datepicker/OnlyDatePicker";
+import { alertAction } from "../../redux/alert/alertAction";
 
-import DateIcon from "../icons/DateIcon";
+import { loadUserExternalCreditsAction } from "../../redux/user-profile/userProfileAction";
 
 import "./usercredits.styles.scss";
 import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
+import api from "../../utility/api";
+import { loadCreditTypesList } from "../../utility/commonUtil";
+
+const initialValues = {
+  conferenceName: "",
+  startDate: "",
+  endDate: "",
+  creditType: "",
+  totalCredits: "",
+  certificate: [],
+};
 
 const validationSchema = yup.object().shape({
   conferenceName: yup.string().required("Required"),
@@ -20,38 +34,104 @@ const validationSchema = yup.object().shape({
 });
 
 const ExternalCreditsForm = () => {
-  const SelecetStartDate = () => {
-    return (
-      <div className="flex-vc">
-        <i>
-          <DateIcon className="icon-sm" />
-        </i>
-        <span> Start Date</span>
-      </div>
-    );
-  };
-  const onSubmit = async (values, action) => {
+  const [files, setFiles] = useState([]);
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.auth.user);
+  const creditTypesList = useSelector((state) => state.list.creditTypesList);
+
+  const myDropZone = useDropzone({
+    accept: {
+      "application/pdf": [".pdf"],
+    },
+    maxFiles: 10,
+    onDrop: (acceptedFiles) => {
+      setFiles((prev) => [...prev, ...acceptedFiles]);
+    },
+  });
+
+  const { isFocused, isDragAccept, isDragReject, getRootProps, getInputProps } =
+    myDropZone;
+  const onSubmit = async (values, actions) => {
+    const { conferenceName, startDate, endDate, creditType, totalCredits } =
+      values;
+
     const formData = {
-      conferenceName: values.conferenceName || "",
-      startDate: values.startDate || "",
-      endDate: values.endDate || "",
-      creditType: values.creditType || "",
-      totalCredits: values.totalCredits || "",
+      conferenceDetails: {
+        userId: user._id,
+        title: conferenceName,
+        startDate: startDate,
+        endDate: endDate,
+        creditId: creditType,
+        quantity: totalCredits,
+      },
     };
+
+    if (files?.length > 0) {
+      const fileDataObj = new FormData();
+
+      files.forEach((file) => fileDataObj.append("file", file));
+
+      if (fileDataObj.has("file")) {
+        try {
+          const fileResponse = await api.post("fileUploads", fileDataObj);
+          if (fileResponse) {
+            formData.conferenceDetails.data = fileResponse.data.data;
+            let response = await api.post(
+              `attendees/credits/externals`,
+              formData
+            );
+            if (response) {
+              dispatch(
+                loadUserExternalCreditsAction(
+                  response.data.data.externalCredits
+                )
+              );
+            }
+          }
+        } catch (err) {
+          dispatch(alertAction("File(s) failed to save", "danger"));
+        }
+      }
+    } else {
+      try {
+        let response = await api.post(`attendees/credits/externals`, formData);
+        if (response) {
+          dispatch(
+            loadUserExternalCreditsAction(response.data.data.externalCredits)
+          );
+        }
+      } catch (error) {
+        dispatch(alertAction(error.response.data.message, "danger"));
+      }
+    }
   };
 
-  const initialValues = {
-    conferenceName: "",
-    startDate: "",
-    endDate: "",
-    creditType: "",
-    totalCredits: "",
-  };
   const formik = useFormik({
-    initialValues: initialValues,
-    onSubmit: onSubmit,
-    enableReinitialize: true,
+    initialValues,
+    onSubmit,
+    validationSchema,
   });
+
+  const getAllExternalCredits = async (userID) => {
+    try {
+      let response = await api.get(`attendees/${userID}/credits/externals`);
+      dispatch(
+        loadUserExternalCreditsAction(response.data.data.externalCredits)
+      );
+    } catch (error) {
+      dispatch(alertAction(error.response.data.message, "danger"));
+    }
+  };
+
+  useEffect(() => {
+    loadCreditTypesList();
+  }, []);
+
+  useEffect(() => {
+    getAllExternalCredits(user?._id);
+  }, [user?._id]);
+
   return (
     <div className="ec-form-wrap">
       <div className="text-align-center">
@@ -73,98 +153,124 @@ const ExternalCreditsForm = () => {
             />
             <label>Add conference name or CME event*</label>
           </div>
-          {/* <div className="mb-24">
-            {formik.touched.title && Boolean(formik.errors.title) && (
-              <TextError>{formik.errors.title}</TextError>
-            )}
-          </div> */}
-          <div className="grid-col-2 mb-16">
+          <div className="mb-24">
+            {formik.touched.conferenceName &&
+              Boolean(formik.errors.conferenceName) && (
+                <TextError>{formik.errors.conferenceName}</TextError>
+              )}
+          </div>
+          <div className="grid-col-2">
             <div className="grid-1st-col">
               {/* <DateIcon className="icon-sm" /> */}
               <OnlyDatepicker
                 id="startDate"
                 name="startDate"
-                selected={""}
-                onChange={""}
+                selected={formik.values.startDate}
+                onChange={(date) => formik.setFieldValue("startDate", date)}
                 minDate={new Date()}
-                maxDate={""}
-                customInput={SelecetStartDate}
+                maxDate={formik.values.endDate}
+                placeholder="Start Date"
                 disabled={false}
               />
-              {/* <div className="mb-24">
-                  {formik.touched.startDate &&
-                    Boolean(formik.errors.startDate) && (
-                      <TextError>{formik.errors.startDate}</TextError>
-                    )}
-                </div> */}
+              <div className="mb-24">
+                {formik.touched.startDate &&
+                  Boolean(formik.errors.startDate) && (
+                    <TextError>{formik.errors.startDate}</TextError>
+                  )}
+              </div>
             </div>
 
             <div className="grid-2nd-col">
               <OnlyDatepicker
                 id="endDate"
                 name="endDate"
-                selected=""
-                onChange=""
-                minDate=""
+                selected={formik.values.endDate}
+                onChange={(date) => formik.setFieldValue("endDate", date)}
+                minDate={formik.values.startDate}
                 placeholder="End Date"
                 disabled={false}
               />
-              {/* <div className="mb-24">
-                  {formik.touched.endDate && Boolean(formik.errors.endDate) && (
-                    <TextError>{formik.errors.endDate}</TextError>
-                  )}
-                </div> */}
+              <div className="mb-24">
+                {formik.touched.endDate && Boolean(formik.errors.endDate) && (
+                  <TextError>{formik.errors.endDate}</TextError>
+                )}
+              </div>
             </div>
           </div>
-          <div className="mb-16">
+          <div>
             <ReloadableSelectFormType1
-              options=""
-              value=""
-              onChange=""
+              label="creditType"
+              name="creditType"
+              options={creditTypesList}
+              value={formik.values.creditType}
+              isMulti={false}
+              onChange={(value) => {
+                formik.setFieldValue("creditType", value?.value);
+              }}
               placeholder="Credit Type*"
-              isDisabled=""
-              name="state"
             />
-            {/* <div className="mb-24">
-                {Boolean(formik.errors.creditType) && (
-                  <TextError>{formik.errors.creditType}</TextError>
-                )}
-              </div> */}
+            <div className="mb-24">
+              {Boolean(formik.errors.creditType) && (
+                <TextError>{formik.errors.creditType}</TextError>
+              )}
+            </div>
           </div>
-          <div className="material-textfield mb-16">
+          <div className="material-textfield">
             <input
               id="totalCredits"
-              type="number"
+              type="text"
               name="totalCredits"
-              value=""
-              onChange=""
+              value={formik.values.totalCredits}
+              onChange={formik.handleChange}
               placeholder=" "
             />
             <label>Total Credits*</label>
           </div>
-          {/* <div className="mb-24">
-            {formik.touched.title && Boolean(formik.errors.title) && (
-              <TextError>{formik.errors.title}</TextError>
-            )}
-          </div> */}
-          <div className="material-textfield">
-            <input
-              id="certificate"
-              type="text"
-              name="certificate"
-              value=""
-              onChange=""
-              placeholder=" "
-            />
-            <label>Upload credit certificate*</label>
+          <div className="mb-24">
+            {formik.touched.totalCredits &&
+              Boolean(formik.errors.totalCredits) && (
+                <TextError>{formik.errors.totalCredits}</TextError>
+              )}
           </div>
-          {/* <div className="mb-24">
-            {formik.touched.title && Boolean(formik.errors.title) && (
-              <TextError>{formik.errors.title}</TextError>
-            )}
-          </div> */}
+          <div>
+            {files?.map((file) => (
+              <div className="" key={file.name}>
+                <div className="flex-vc">{file.name}</div>
+                <i
+                  onClick={() => {
+                    const remainingFiles = files.filter(
+                      (item) => item.name !== file.name
+                    );
+                    setFiles(remainingFiles);
+                  }}
+                ></i>
+              </div>
+            ))}
+            <div
+              {...getRootProps()}
+              // style={{
+              //   border: "solid gray 1px",
+              //   borderRadius: "5px",
+              //   width: "100%",
+              //   height: "60px",
+              //   paddingTop: "18px",
+              //   paddingLeft: "24px",
+              // }}
+            >
+              <p className="caption-1-regular-gray3">Upload your certificate</p>
+              <input {...getInputProps()} />
+            </div>
+            {/* <div className="mb-24">
+              {formik.touched.certificate &&
+                Boolean(formik.errors.certificate) && (
+                  <TextError>{formik.errors.certificate}</TextError>
+                )}
+            </div> */}
+          </div>
           <div className="mt-40">
-            <button className="button button-primary">Add Credits</button>
+            <button type="submit" className="button button-primary">
+              Submit
+            </button>
           </div>
         </div>
       </form>

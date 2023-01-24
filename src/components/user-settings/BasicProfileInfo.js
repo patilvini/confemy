@@ -82,8 +82,6 @@ export default function BasicProfileInfo() {
     //   userData.mobile = values.mobile;
     // }
 
-    console.log("userData", userData);
-
     try {
       const response = await api.patch(`/users/${userProfile._id}`, {
         user: userData,
@@ -123,6 +121,7 @@ export default function BasicProfileInfo() {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
+  console.log("dhhhhhhh", countryCodeList);
 
   const onInputChange = (e) => {
     setDisplayButton(true);

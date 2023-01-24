@@ -1,8 +1,14 @@
-import { LOAD_COUNTRYLIST, LOAD_STATELIST, LOAD_CITYLIST } from "./listyTypes";
+import {
+  LOAD_COUNTRYLIST,
+  LOAD_STATELIST,
+  LOAD_CITYLIST,
+  LOAD_CREDIT_TYPES_LIST,
+} from "./listTypes";
 const INITIAL_STATE = {
   countryList: [],
   stateList: [],
   cityList: [],
+  creditTypesList: [],
 };
 
 const listReducer = (state = INITIAL_STATE, action) => {
@@ -22,7 +28,11 @@ const listReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cityList: action.payload,
       };
-
+    case LOAD_CREDIT_TYPES_LIST:
+      return {
+        ...state,
+        creditTypesList: action.payload,
+      };
     default:
       return state;
   }
