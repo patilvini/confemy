@@ -113,24 +113,9 @@ const ExternalCreditsForm = () => {
     validationSchema,
   });
 
-  const getAllExternalCredits = async (userID) => {
-    try {
-      let response = await api.get(`attendees/${userID}/credits/externals`);
-      dispatch(
-        loadUserExternalCreditsAction(response.data.data.externalCredits)
-      );
-    } catch (error) {
-      dispatch(alertAction(error.response.data.message, "danger"));
-    }
-  };
-
   useEffect(() => {
     loadCreditTypesList();
   }, []);
-
-  useEffect(() => {
-    getAllExternalCredits(user?._id);
-  }, [user?._id]);
 
   return (
     <div className="ec-form-wrap">
