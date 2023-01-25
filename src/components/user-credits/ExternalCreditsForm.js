@@ -248,14 +248,14 @@ const ExternalCreditsForm = () => {
             ))}
             <div
               {...getRootProps()}
-              // style={{
-              //   border: "solid gray 1px",
-              //   borderRadius: "5px",
-              //   width: "100%",
-              //   height: "60px",
-              //   paddingTop: "18px",
-              //   paddingLeft: "24px",
-              // }}
+              style={{
+                border: "solid gray 1px",
+                borderRadius: "5px",
+                width: "100%",
+                height: "60px",
+                paddingTop: "18px",
+                paddingLeft: "24px",
+              }}
             >
               <p className="caption-1-regular-gray3">Upload your certificate</p>
               <input {...getInputProps()} />

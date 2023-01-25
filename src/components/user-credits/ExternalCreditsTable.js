@@ -7,7 +7,6 @@ const ExternalCreditsTable = () => {
   const externalCredits = useSelector(
     (state) => state.userProfile.userExternalCredits
   );
-  console.log("fdff", externalCredits);
   return (
     <div className="my-40">
       <h4 className="mb-24">External Credits</h4>
