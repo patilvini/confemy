@@ -385,7 +385,7 @@ export default function ConfDetails1() {
         <div className="mb-72">
           <SubmitCancelButtonWithLoader
             isSubmitting={formik.isSubmitting}
-            isValid={formik.isValid}
+            onCancel={() => formik.resetForm({})}
           />
         </div>
       </form>

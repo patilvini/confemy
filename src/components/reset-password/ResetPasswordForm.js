@@ -11,6 +11,7 @@ import api from "../../utility/api";
 import ClosedEyeIcon from "../icons/ClosedEyeIcon";
 import OpenEyeIcon from "../icons/OpenEyeIcon";
 import SubmitButtonWithLoader from "../button/SubmitButtonWithLoader";
+import CelebrationIcon from "../icons/CelebrationIcon";
 
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
@@ -30,7 +31,8 @@ const validationSchema = yup.object().shape({
 });
 
 export default function UpdatePassword() {
-  const [status, setStatus] = useState();
+  const [displayMsg, setDisplayMsg] = useState(false);
+  const [msg, setMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -53,7 +55,11 @@ export default function UpdatePassword() {
         `/users/reset?verifyToken=${secret}`,
         formData
       );
-      setStatus(response.data.statusCode);
+      console.log("response from pass submit", response);
+      if (response) {
+        setMsg(response.data.message);
+        setDisplayMsg(true);
+      }
     } catch (err) {
       action.setFieldError("confirmPassword", err.response.data.message);
     }
@@ -65,13 +71,13 @@ export default function UpdatePassword() {
       confirmPassword: "",
     },
     onSubmit: onSubmit,
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     enableReinitialize: true,
   });
 
   return (
     <div className="fp-wrap">
-      {!status ? (
+      {!displayMsg ? (
         <>
           <h2 className="text-align-center mb-60">Reset Password</h2>
           <form
@@ -151,19 +157,18 @@ export default function UpdatePassword() {
           </form>
         </>
       ) : (
-        <div>
-          <h2 className="text-align-center">Hurrah!</h2>
-          <p className="body-regular-gray3 text-align-center my-24">
-            Your password has been updated successfully!
-          </p>
-          <p className="msg-btn text-align-center">
-            <span
-              className="button button-primary mb-40"
-              onClick={() => navigate("/signin")}
-            >
-              Login
-            </span>
-          </p>
+        <div className="text-align-center">
+          <i>
+            <CelebrationIcon />
+          </i>
+          <h2 className="my-24">Hurrah!</h2>
+          <p className="body-regular-gray3 mb-40">{msg}</p>
+          <button
+            onClick={() => navigate("/signin")}
+            className="button button-primary"
+          >
+            Login
+          </button>
         </div>
       )}
     </div>
