@@ -8,6 +8,7 @@ import * as yup from "yup";
 import TextError from "../formik/TextError";
 import OnlyDatepicker from "../react-datepicker/OnlyDatePicker";
 import { alertAction } from "../../redux/alert/alertAction";
+import AddFileIcon from "../icons/AddFileIcon";
 
 import { loadUserExternalCreditsAction } from "../../redux/user-profile/userProfileAction";
 
@@ -16,30 +17,25 @@ import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 import api from "../../utility/api";
 import { loadCreditTypesList } from "../../utility/commonUtil";
 
-const initialValues = {
-  conferenceName: "",
-  startDate: "",
-  endDate: "",
-  creditType: "",
-  totalCredits: "",
-  certificate: [],
-};
-
 const validationSchema = yup.object().shape({
   conferenceName: yup.string().required("Required"),
-  startDate: yup.string().required("Required"),
-  endDate: yup.string().required("Required"),
+  startDate: yup.date().required("Required").nullable(),
+  endDate: yup.date().required("Required").nullable(),
   creditType: yup.string().required("Required"),
   totalCredits: yup.string().required("Required"),
 });
 
-const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
+const ExternalCreditsForm = ({
+  editData,
+  editMode,
+  setEditMode,
+  setShowExternalCreditForm,
+}) => {
   const [files, setFiles] = useState([]);
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.user);
   const creditTypesList = useSelector((state) => state.list.creditTypesList);
-  console.log("credit types", creditTypesList);
 
   const myDropZone = useDropzone({
     accept: {
@@ -53,6 +49,15 @@ const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
 
   const { isFocused, isDragAccept, isDragReject, getRootProps, getInputProps } =
     myDropZone;
+
+  const initialValues = {
+    conferenceName: editData?.conferenceTitle || "",
+    startDate: null,
+    endDate: null,
+    creditType: editData?.credit?.name || "",
+    totalCredits: editData?.quantity || "",
+    certificate: editData?.certificate?.key || [],
+  };
   const onSubmit = async (values, actions) => {
     const { conferenceName, startDate, endDate, creditType, totalCredits } =
       values;
@@ -94,7 +99,7 @@ const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
           dispatch(alertAction("File(s) failed to save", "danger"));
         }
       }
-    } else {
+    } else if (!editMode) {
       try {
         let response = await api.post(`attendees/credits/externals`, formData);
         if (response) {
@@ -102,6 +107,19 @@ const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
             loadUserExternalCreditsAction(response.data.data.externalCredits)
           );
         }
+      } catch (error) {
+        dispatch(alertAction(error.response.data.message, "danger"));
+      }
+    }
+    if (editMode) {
+      try {
+        let response = await api.patch(
+          `attendees/${user._id}/credits/externals/${editData._id}`,
+          formData
+        );
+        dispatch(
+          loadUserExternalCreditsAction(response.data.data.externalCredits)
+        );
       } catch (error) {
         dispatch(alertAction(error.response.data.message, "danger"));
       }
@@ -146,7 +164,7 @@ const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
                 <TextError>{formik.errors.conferenceName}</TextError>
               )}
           </div>
-          <div className="grid-col-2">
+          <div className="grid-col-2 ">
             <div className="grid-1st-col">
               {/* <DateIcon className="icon-sm" /> */}
               <OnlyDatepicker
@@ -154,7 +172,6 @@ const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
                 name="startDate"
                 selected={formik.values.startDate}
                 onChange={(date) => formik.setFieldValue("startDate", date)}
-                minDate={""}
                 maxDate={formik.values.endDate}
                 placeholder="Start Date"
                 disabled={false}
@@ -184,7 +201,7 @@ const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
               </div>
             </div>
           </div>
-          <div>
+          <div className="mb-24">
             <ReloadableSelectFormType1
               label="creditType"
               name="creditType"
@@ -194,12 +211,13 @@ const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
               onChange={(value) => {
                 formik.setFieldValue("creditType", value?.value);
               }}
-              placeholder="Credit Type*"
+              placeholder="Credit Type"
             />
             <div className="mb-24">
-              {Boolean(formik.errors.creditType) && (
-                <TextError>{formik.errors.creditType}</TextError>
-              )}
+              {formik.touched.creditType &&
+                Boolean(formik.errors.creditType) && (
+                  <TextError>{formik.errors.creditType}</TextError>
+                )}
             </div>
           </div>
           <div className="material-textfield">
@@ -214,7 +232,7 @@ const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
             <label>Total Credits*</label>
           </div>
           <div className="mb-24">
-            {formik.touched.totalCredits &&
+            {formik.touched.conferenceName &&
               Boolean(formik.errors.totalCredits) && (
                 <TextError>{formik.errors.totalCredits}</TextError>
               )}
@@ -238,24 +256,39 @@ const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
               ))
             ) : (
               <div {...getRootProps()} className="uc-uploadfile-input">
-                <p className="caption-1-regular-gray2">
-                  Upload credit certificate
-                </p>
+                <div className="flex-vc">
+                  <i>
+                    <AddFileIcon className="icon-sm" />
+                  </i>
+                  <p className="caption-1-regular-gray2 ml-5">
+                    Upload credit certificate
+                  </p>
+                </div>
+
                 <input {...getInputProps()} />
               </div>
             )}
           </div>
 
-          <div className="mt-40">
+          <div className="mt-40 mb-24">
             <button
               style={{ width: "100%" }}
               type="submit"
               className="button button-primary"
-              // onClick={() => setShowExternalCreditForm(false)}
             >
               Add Credits
             </button>
           </div>
+          {editMode && (
+            <button
+              className="button-text button-text-red"
+              type="button"
+              style={{ width: "100%" }}
+              onClick={() => setEditMode(false)}
+            >
+              Cancel
+            </button>
+          )}
         </div>
       </form>
     </div>
