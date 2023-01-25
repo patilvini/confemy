@@ -33,12 +33,13 @@ const validationSchema = yup.object().shape({
   totalCredits: yup.string().required("Required"),
 });
 
-const ExternalCreditsForm = () => {
+const ExternalCreditsForm = ({ setShowExternalCreditForm }) => {
   const [files, setFiles] = useState([]);
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.user);
   const creditTypesList = useSelector((state) => state.list.creditTypesList);
+  console.log("credit types", creditTypesList);
 
   const myDropZone = useDropzone({
     accept: {
@@ -105,6 +106,7 @@ const ExternalCreditsForm = () => {
         dispatch(alertAction(error.response.data.message, "danger"));
       }
     }
+    setShowExternalCreditForm(false);
   };
 
   const formik = useFormik({
@@ -152,7 +154,7 @@ const ExternalCreditsForm = () => {
                 name="startDate"
                 selected={formik.values.startDate}
                 onChange={(date) => formik.setFieldValue("startDate", date)}
-                minDate={new Date()}
+                minDate={""}
                 maxDate={formik.values.endDate}
                 placeholder="Start Date"
                 disabled={false}
@@ -218,43 +220,40 @@ const ExternalCreditsForm = () => {
               )}
           </div>
           <div>
-            {files?.map((file) => (
-              <div className="" key={file.name}>
-                <div className="flex-vc">{file.name}</div>
-                <i
-                  onClick={() => {
-                    const remainingFiles = files.filter(
-                      (item) => item.name !== file.name
-                    );
-                    setFiles(remainingFiles);
-                  }}
-                ></i>
+            {files.length > 0 ? (
+              files?.map((file) => (
+                <div className="" key={file.name}>
+                  <div className="flex-vc uc-uploadfile-input pb-24 caption-1-regular-gray2">
+                    {file.name}
+                  </div>
+                  <i
+                    onClick={() => {
+                      const remainingFiles = files.filter(
+                        (item) => item.name !== file.name
+                      );
+                      setFiles(remainingFiles);
+                    }}
+                  ></i>
+                </div>
+              ))
+            ) : (
+              <div {...getRootProps()} className="uc-uploadfile-input">
+                <p className="caption-1-regular-gray2">
+                  Upload credit certificate
+                </p>
+                <input {...getInputProps()} />
               </div>
-            ))}
-            <div
-              {...getRootProps()}
-              style={{
-                border: "solid gray 1px",
-                borderRadius: "5px",
-                width: "100%",
-                height: "60px",
-                paddingTop: "18px",
-                paddingLeft: "24px",
-              }}
-            >
-              <p className="caption-1-regular-gray3">Upload your certificate</p>
-              <input {...getInputProps()} />
-            </div>
-            {/* <div className="mb-24">
-              {formik.touched.certificate &&
-                Boolean(formik.errors.certificate) && (
-                  <TextError>{formik.errors.certificate}</TextError>
-                )}
-            </div> */}
+            )}
           </div>
+
           <div className="mt-40">
-            <button type="submit" className="button button-primary">
-              Submit
+            <button
+              style={{ width: "100%" }}
+              type="submit"
+              className="button button-primary"
+              // onClick={() => setShowExternalCreditForm(false)}
+            >
+              Add Credits
             </button>
           </div>
         </div>

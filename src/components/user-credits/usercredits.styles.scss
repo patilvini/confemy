@@ -48,3 +48,18 @@
           }
         }
 }
+
+
+.uc-uploadfile-input {
+  border-radius: 5px;
+  width: 100%;
+  height: 65px;
+  padding-top: 24px;
+  padding-left: 24px;
+  border: none;
+  border: solid $shade-1 2px;
+  }
+
+.uc-uploadfile-input:focus{
+  border: solid $info 2px;
+}

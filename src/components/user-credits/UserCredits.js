@@ -60,7 +60,9 @@ const UserCredits = () => {
       <ExternalCreditsTable />
       {showExternalCreditForm && (
         <ModalX onDismiss={() => setShowExternalCreditForm(false)}>
-          <ExternalCreditsForm />
+          <ExternalCreditsForm
+            setShowExternalCreditForm={setShowExternalCreditForm}
+          />
         </ModalX>
       )}
     </div>

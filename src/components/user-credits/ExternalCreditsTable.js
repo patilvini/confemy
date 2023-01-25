@@ -1,12 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import AddFileIcon from "../icons/AddFileIcon";
 import DucumentIcon from "../icons/DocumentIcon";
 
 const ExternalCreditsTable = () => {
   const externalCredits = useSelector(
     (state) => state.userProfile.userExternalCredits
   );
+
+  console.log("credit start date", externalCredits.startDate);
   return (
     <div className="my-40">
       <h4 className="mb-24">External Credits</h4>
@@ -35,7 +36,7 @@ const ExternalCreditsTable = () => {
                   >
                     <DucumentIcon className="icon-sm" />
                   </i>
-                  <div> View certificate</div>
+                  <div>View certificate</div>
                 </div>
               </td>
             </tr>
