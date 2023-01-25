@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../utility/api";
 import SaveInput from "./SaveInput";
+import OSaveInput from "./OSaveInput";
 import LogoUploader from "./LogoUploader";
 import SocialMedia from "./SocialMedia";
 import Spinner from "../spinner/Spinner";
@@ -24,9 +25,10 @@ import "./organizationDetails.styles.scss";
 export default function OrganizationDetails() {
   const [open, setopen] = useState(false);
 
-  const { organizationId } = useParams();
   const user = useSelector((state) => state.auth.user);
   const { organization } = useSelector((state) => state.organization);
+
+  const { organizationId } = useParams();
   const navigate = useNavigate();
 
   const yesAction = async () => {
@@ -61,7 +63,7 @@ export default function OrganizationDetails() {
             />
           </section>
           <section>
-            <SaveInput
+            <OSaveInput
               label="Organization name*"
               inputName="name"
               inputApiValue={organization?.name}

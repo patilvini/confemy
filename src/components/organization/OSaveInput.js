@@ -2,37 +2,79 @@ import { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { alertAction } from "../../redux/alert/alertAction";
+import TextError from "../formik/TextError";
 
 import api from "../../utility/api";
 
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
 
 import "./saveInput.styles.scss";
-export default function SaveInput({
+export default function OSaveInput({
   label,
   inputName,
   inputApiValue,
   organizationId,
 }) {
+  const [state, setState] = useState({
+    orgName: inputApiValue,
+    // email:"",
+    formErrors: {
+      orgName: "",
+      // email: ""
+    },
+    // emailValid: false,
+    orgNameValid: false,
+    formValid: false,
+  });
+  const [fieldChanged, setFieldChanged] = useState("");
+  const [touched, setTouched] = useState({
+    orgName: false,
+    // email: ""
+  });
   const [showButtons, setShowButtons] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  // const [orgName, setorgName] = useState("");
 
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const textInputRef = useRef();
 
-  function handleInputChange(e) {
-    setInputValue(e.target.value);
+  // function handleInputChange(e) {
+  //   setorgName(e.target.value);
+  // }
+
+  const handleInputChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+    setFieldChanged(e.target.name);
+    setTouched({ ...touched, [e.target.name]: true });
+  };
+
+  function validate() {
+    console.log("ran validation");
+    let allValidationErrors = state.formErrors;
+    // let isEmailValid = state.emailValid;
+    let isOrgNameValid = state.orgNameValid;
+    isOrgNameValid = state.orgName?.length > 0;
+    allValidationErrors.orgName = isOrgNameValid ? "" : " Required";
+    setState({
+      ...state,
+      formErrors: allValidationErrors,
+      // emailValid: isEmailValid,
+      orgNameValid: isOrgNameValid,
+      formValid: isOrgNameValid,
+      // && isEmailValid
+    });
   }
 
   const handleInputSubmit = async (e) => {
     e.preventDefault();
+    if (!state.formValid) {
+      return;
+    }
     const key = inputName;
     const formData = {
       organization: {
         user: user._id,
-        [key]: inputValue,
+        [key]: state.orgName,
       },
     };
 
@@ -57,14 +99,22 @@ export default function SaveInput({
   }
 
   const handleInputCancel = () => {
-    setInputValue(inputApiValue);
+    setState({ ...state, orgName: inputApiValue });
     setShowButtons(false);
     textInputRef.current.style.paddingBottom = "1.6rem";
   };
 
+  // useEffect(() => {
+  //   setorgName(inputApiValue);
+  // }, [inputApiValue]);
+
   useEffect(() => {
-    setInputValue(inputApiValue);
-  }, [inputApiValue]);
+    console.log("ue ran");
+    validate();
+  }, [state[fieldChanged]]);
+
+  console.log("state", state);
+  console.log("touched", touched);
 
   return (
     <form
@@ -81,21 +131,24 @@ export default function SaveInput({
         />
         <input
           ref={textInputRef}
-          id={inputName}
+          id="orgName"
           type="text"
-          name={inputName}
-          value={inputValue}
-          onChange={(e) => handleInputChange(e)}
+          name="orgName"
+          value={state.orgName}
+          onChange={handleInputChange}
           placeholder=" "
           onFocus={(e) => onInputFocus(e)}
+          onBlur={(e) => {
+            console.log("onBlur ran");
+            validate();
+          }}
         />
         <label>{label}</label>
       </div>
       <div className="saveinput-error">
-        {errorMsg}
-        {/* {formik.touched.name && Boolean(formik.errors.name) && (
-              <TextError>{formik.errors.name}</TextError>
-            )} */}
+        {touched.orgName && state.formErrors.orgName?.length > 0 && (
+          <TextError>{state.formErrors.orgName}</TextError>
+        )}
       </div>
       <div className="mb-20">
         <div
@@ -119,7 +172,7 @@ export default function SaveInput({
   );
 }
 
-SaveInput.propTypes = {
+OSaveInput.propTypes = {
   label: PropTypes.string,
   inputName: PropTypes.string.isRequired,
   inputApiValue: PropTypes.string,

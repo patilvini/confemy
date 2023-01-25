@@ -8,6 +8,7 @@ import CloseIcon from "../icons/CloseIcon";
 import { capitalize } from "../../utility/commonUtil";
 
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
+import { alertAction } from "../../redux/alert/alertAction";
 
 import "./socialmedia.styles.scss";
 
@@ -51,7 +52,7 @@ export default function SocialMedia({
         socialInputRef.current.style.paddingBottom = "1.6rem";
       }
     } catch (err) {
-      console.log("logo error", err.response?.data.message);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 

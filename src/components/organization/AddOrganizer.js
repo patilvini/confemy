@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import api from "../../utility/api";
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
+import { alertAction } from "../../redux/alert/alertAction";
 
 import "./saveInput.styles.scss";
 
@@ -40,7 +41,7 @@ export default function AddOrganizer({ organizationId }) {
         textInputRef.current.style.paddingBottom = "1.6rem";
       }
     } catch (err) {
-      console.log(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   }
 
