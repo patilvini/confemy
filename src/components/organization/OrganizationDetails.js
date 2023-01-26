@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../utility/api";
-import SaveInput from "./SaveInput";
-import OSaveInput from "./OSaveInput";
 import LogoUploader from "./LogoUploader";
 import SocialMedia from "./SocialMedia";
 import Spinner from "../spinner/Spinner";
@@ -21,6 +19,7 @@ import { loadOrganization } from "./organizationUtil";
 import { removeOrganizationAction } from "../../redux/organization/organizationAction";
 import { store } from "../../redux/store";
 import "./organizationDetails.styles.scss";
+import EditOrgBasicInfo from "./EditOrgBasicInfo";
 
 export default function OrganizationDetails() {
   const [open, setopen] = useState(false);
@@ -63,28 +62,8 @@ export default function OrganizationDetails() {
             />
           </section>
           <section>
-            <OSaveInput
-              label="Organization name*"
-              inputName="name"
-              inputApiValue={organization?.name}
-              organizationId={organizationId}
-            />
-            <SaveInput
-              label="City*"
-              inputName="city"
-              inputApiValue={organization?.city}
-              organizationId={organizationId}
-            />
-            <SaveInput
-              label="Country*"
-              inputName="country"
-              inputApiValue={organization?.country}
-              organizationId={organizationId}
-            />
-            <SaveInput
-              label="Website"
-              inputName="website"
-              inputApiValue={organization?.website}
+            <EditOrgBasicInfo
+              organization={organization}
               organizationId={organizationId}
             />
           </section>

@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import TextError from "../formik/TextError";
@@ -37,8 +37,7 @@ export default function SocialMedia({
   const handleInputSubmit = async (e) => {
     e.preventDefault();
     if (!inputValue?.trim()?.length > 0) {
-      // dispatch(alertAction("Social link can not be empty", "danger"));
-      setErrMsg("Social link can not be empty");
+      setErrMsg(`${label} can't be empty`);
       return;
     }
     try {

@@ -48,7 +48,8 @@ export default function OSaveInput({
     setTouched({ ...touched, [e.target.name]: true });
   };
 
-  function validate() {
+  async function validate() {
+    let isFormValid;
     console.log("ran validation");
     let allValidationErrors = state.formErrors;
     // let isEmailValid = state.emailValid;
@@ -63,11 +64,14 @@ export default function OSaveInput({
       formValid: isOrgNameValid,
       // && isEmailValid
     });
+    isFormValid = isOrgNameValid;
+    // && isEmailValid
+    return isFormValid;
   }
 
   const handleInputSubmit = async (e) => {
     e.preventDefault();
-    if (!state.formValid) {
+    if (!validate()) {
       return;
     }
     const key = inputName;
