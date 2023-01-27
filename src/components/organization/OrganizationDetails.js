@@ -64,7 +64,7 @@ export default function OrganizationDetails() {
               organizationId={organizationId}
             />
           </section> */}
-          <section className={organization?.logo?.length > 0 ? "mb-40" : ""}>
+          <section className="mb-40">
             {organization?.logo?.length > 0 ? (
               <div className="org-logo-wrap">
                 <div className="org-logo-innerwrap">
