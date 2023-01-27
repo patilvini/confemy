@@ -20,9 +20,12 @@ import { removeOrganizationAction } from "../../redux/organization/organizationA
 import { store } from "../../redux/store";
 import "./organizationDetails.styles.scss";
 import EditOrgBasicInfo from "./EditOrgBasicInfo";
+import EditIcon from "../icons/EditIcon";
+import ModalX from "../modal/ModalX";
 
 export default function OrganizationDetails() {
   const [open, setopen] = useState(false);
+  const [openLogoUploader, setOpenLogoUploader] = useState(false);
 
   const user = useSelector((state) => state.auth.user);
   const { organization } = useSelector((state) => state.organization);
@@ -55,11 +58,34 @@ export default function OrganizationDetails() {
     <>
       {organization ? (
         <div className="create-org-wrap">
-          <section className="mb-60">
+          {/* <section className="mb-60">
             <LogoUploader
               apiLogo={organization?.logo}
               organizationId={organizationId}
             />
+          </section> */}
+          <section className={organization?.logo?.length > 0 ? "mb-40" : ""}>
+            {organization?.logo?.length > 0 ? (
+              <div className="org-logo-wrap">
+                <div className="org-logo-innerwrap">
+                  <img
+                    alt="organization logo"
+                    src={organization?.logo[0].Location}
+                  />
+                  <div className="org-logo-overlay"></div>
+                  <div
+                    onClick={() => {
+                      setOpenLogoUploader(true);
+                    }}
+                    className="org-logo-edit-circle"
+                  >
+                    <EditIcon className="icon-size" />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <LogoUploader organizationId={organizationId} />
+            )}
           </section>
           <section>
             <EditOrgBasicInfo
@@ -140,6 +166,16 @@ export default function OrganizationDetails() {
               closeDialogue={closeDialogue}
               yesAction={yesAction}
             />
+          )}
+          {openLogoUploader && (
+            <ModalX onDismiss={() => setOpenLogoUploader(false)}>
+              <div className="px-40 pb-40">
+                <LogoUploader
+                  setOpenLogoUploader={setOpenLogoUploader}
+                  organizationId={organizationId}
+                />
+              </div>
+            </ModalX>
           )}
         </div>
       ) : (

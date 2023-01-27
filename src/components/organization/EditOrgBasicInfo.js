@@ -6,7 +6,9 @@ import TextError from "../formik/TextError";
 import * as yup from "yup";
 
 import api from "../../utility/api";
-import ExpandableSelect from "../reselect/ExpandableSelect";
+
+import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
+import SelectFormType1 from "../reselect/SelectFormType1";
 
 import {
   loadCountryList,
@@ -76,26 +78,26 @@ export default function EditOrgBasicInfo({ organization, organizationId }) {
   });
 
   function onInputFocus(e) {
-    e.target.style.paddingBottom = "48px";
-    e.target.style.border = "solid 2px #55a0fa";
+    // e.target.style.paddingBottom = "48px";
+    // e.target.style.border = "solid 2px #55a0fa";
     setShowButtons(true);
   }
 
   function onInputBlur(e) {
-    e.target.style.paddingBottom = "1.6rem";
-    e.target.style.border = "2px solid #ced9de";
+    // e.target.style.paddingBottom = "1.6rem";
+    // e.target.style.border = "2px solid #ced9de";
   }
 
   function onTextAreaFocus(e) {
     // e.target.style.transition = "0.1s ease-out";
-    e.target.style.height = "16.6rem";
-    e.target.style.border = "solid 2px #55a0fa";
+    // e.target.style.height = "16.6rem";
+    // e.target.style.border = "solid 2px #55a0fa";
     setShowButtons(true);
   }
 
   function onTextAreaBlur(e) {
-    e.target.style.height = "15rem";
-    e.target.style.border = "2px solid #ced9de";
+    // e.target.style.height = "15rem";
+    // e.target.style.border = "2px solid #ced9de";
   }
 
   function onSelectFocus(e) {
@@ -158,7 +160,7 @@ export default function EditOrgBasicInfo({ organization, organizationId }) {
 
   return (
     <>
-      <h2 className="mb-24 mt-40">Basic Information</h2>
+      <h2 className="mb-24">Basic Information</h2>
       <form
         className="form-type-1"
         onSubmit={formik.handleSubmit}
@@ -176,7 +178,7 @@ export default function EditOrgBasicInfo({ organization, organizationId }) {
             }}
             placeholder=" "
             onFocus={onInputFocus}
-            onBlur={onInputBlur}
+            // onBlur={onInputBlur}
           />
           <label>Organization name*</label>
         </div>
@@ -186,7 +188,7 @@ export default function EditOrgBasicInfo({ organization, organizationId }) {
           )}
         </div>
         <div style={{ overflow: "visible" }}>
-          <ExpandableSelect
+          <SelectFormType1
             options={countryList}
             value={formik.values.country}
             onChange={(value) => {
@@ -211,7 +213,7 @@ export default function EditOrgBasicInfo({ organization, organizationId }) {
         </div>
 
         <div>
-          <ExpandableSelect
+          <ReloadableSelectFormType1
             options={stateList}
             value={formik.values.state}
             onChange={(value) => {
@@ -235,7 +237,7 @@ export default function EditOrgBasicInfo({ organization, organizationId }) {
           </div>
         </div>
         <div>
-          <ExpandableSelect
+          <ReloadableSelectFormType1
             options={cityList}
             value={formik.values.city}
             onChange={(value) => {
@@ -266,7 +268,7 @@ export default function EditOrgBasicInfo({ organization, organizationId }) {
             }}
             placeholder=" "
             onFocus={onInputFocus}
-            onBlur={onInputBlur}
+            // onBlur={onInputBlur}
           />
           <label>Website</label>
         </div>
@@ -286,7 +288,7 @@ export default function EditOrgBasicInfo({ organization, organizationId }) {
             }}
             placeholder="Describe your organization "
             onFocus={onTextAreaFocus}
-            onBlur={onTextAreaBlur}
+            // onBlur={onTextAreaBlur}
           />
         </div>
         <div className="mb-24">

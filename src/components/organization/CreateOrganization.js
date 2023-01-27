@@ -187,7 +187,7 @@ export default function CreateOrganization() {
         autoComplete="off"
       >
         <h2 className="mb-32">Logo</h2>
-        <section>
+        <section className="mb-40">
           <div className="logo-upload-wrap">
             <div {...getRootProps({ className: "logo-dropzone" })}>
               <input {...getInputProps()} />
@@ -201,7 +201,7 @@ export default function CreateOrganization() {
             </div>
           </div>
         </section>
-        <h2 className="mb-16 mt-40">Basic Information</h2>
+        <h2 className="mb-16">Basic Information</h2>
         <div className="material-textfield">
           <input
             id="name"
