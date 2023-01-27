@@ -50,11 +50,18 @@ const ExternalCreditsForm = ({
   const { isFocused, isDragAccept, isDragReject, getRootProps, getInputProps } =
     myDropZone;
 
+  let formatedStartDate;
+  let formatedEndDate;
+  if (editData) {
+    formatedStartDate = new Date(editData?.startDate);
+    formatedEndDate = new Date(editData?.endDate);
+  }
+
   const initialValues = {
     conferenceName: editData?.conferenceTitle || "",
-    startDate: null,
-    endDate: null,
-    creditType: editData?.credit?.name || "",
+    startDate: formatedStartDate || null,
+    endDate: formatedEndDate || null,
+    creditType: editData?.credit?._id || "",
     totalCredits: editData?.quantity || "",
     certificate: editData?.certificate?.key || [],
   };
@@ -123,6 +130,7 @@ const ExternalCreditsForm = ({
       } catch (error) {
         dispatch(alertAction(error.response.data.message, "danger"));
       }
+      setEditMode(false);
     }
     setShowExternalCreditForm(false);
   };
@@ -207,7 +215,7 @@ const ExternalCreditsForm = ({
               name="creditType"
               options={creditTypesList}
               value={formik.values.creditType}
-              isMulti={false}
+              // isMulti={false}
               onChange={(value) => {
                 formik.setFieldValue("creditType", value?.value);
               }}
