@@ -1,54 +1,55 @@
 @import "../../utility/utility.styles.scss";
 
-.user-credit-wrap{
-    width:119.6rem;
-    margin: 0 auto;
+.user-credit-wrap {
+  width: 119.6rem;
+  margin: 0 auto;
+  padding: 7.6rem 0rem 6rem;
 }
 
-.uc-dropdown{
-    background: $shade-1;
-    width: 16.1rem;
-    height: 4.8rem;
-    border-radius: 0.4rem;
-    padding: 1.2rem 1.6rem 0.9rem;
+.uc-dropdown {
+  background: $shade-1;
+  width: 16.1rem;
+  height: 4.8rem;
+  border-radius: 0.4rem;
+  padding: 1.2rem 1.6rem 0.9rem;
 }
 
-.ec-form-wrap{
-    margin: 0rem 4.2rem;
-    max-width: 119.6rem;
+.ec-form-wrap {
+  margin: 0rem 4.2rem;
+  padding-bottom: 6rem;
+  max-width: 119.6rem;
 }
-.uc-table{
-        width: 100%;
-        border-spacing: 0;
-        @include avenir-heavy-18;
-        color: $gray-3;
-        thead {
-          tr {
-            background-color: $shade-1;
-            th {
-              padding: 16px;
-              text-align: left;
-              &:last-child {
-                text-align: left;
-              }
-            }
-          }
+.uc-table {
+  width: 100%;
+  border-spacing: 0;
+  @include avenir-heavy-18;
+  color: $gray-3;
+  thead {
+    tr {
+      background-color: $shade-1;
+      th {
+        padding: 16px;
+        text-align: left;
+        &:last-child {
+          text-align: left;
         }
-        tbody {
-          td {
-            padding: 16px;
-            text-align: left;
-            color: $gray-2;
-          }
-      
-          tr {
-            & > td:nth-child(5n + 5) {
-              text-align: center;
-            }
-          }
-        }
-}
+      }
+    }
+  }
+  tbody {
+    td {
+      padding: 16px;
+      text-align: left;
+      color: $gray-2;
+    }
 
+    tr {
+      & > td:nth-child(5n + 5) {
+        text-align: center;
+      }
+    }
+  }
+}
 
 .uc-uploadfile-input {
   border-radius: 5px;
@@ -58,8 +59,8 @@
   padding-left: 24px;
   border: none;
   border: solid $shade-1 2px;
-  }
+}
 
-.uc-uploadfile-input:focus{
+.uc-uploadfile-input:focus {
   border: solid $info 2px;
 }

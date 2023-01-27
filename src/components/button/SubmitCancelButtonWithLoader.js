@@ -21,7 +21,7 @@ export default function SubmitCancelButtonWithLoader({
           disabled={isSubmitting}
           className="button button-primary"
         >
-          {!isSubmitting && "Save and Continue"}
+          {!isSubmitting && "Save"}
         </button>
         {isSubmitting && <Loader />}
       </div>

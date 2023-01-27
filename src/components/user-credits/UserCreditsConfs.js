@@ -2,7 +2,7 @@ import React from "react";
 
 const UserCreditsConfs = () => {
   return (
-    <div className="mb-60">
+    <div className="mb-80">
       <h4 className="mb-24">Conference</h4>
       <table className="uc-table">
         <thead>

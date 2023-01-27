@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ExternalCreditsTable from "./ExternalCreditsTable";
 import ModalX from "../modal/ModalX";
@@ -7,6 +7,7 @@ import ExternalCreditsForm from "./ExternalCreditsForm";
 
 import AddIcon from "../icons/AddIcon";
 import DropdownIcon from "../icons/DropdownIcon";
+
 import { loadUserExternalCreditsAction } from "../../redux/user-profile/userProfileAction";
 import { alertAction } from "../../redux/alert/alertAction";
 import api from "../../utility/api";
@@ -36,7 +37,7 @@ const UserCredits = () => {
 
   return (
     <div className="user-credit-wrap">
-      <h1 className="mt-76 ">Credits</h1>
+      <h1>Credits</h1>
       <div className="flex-vc-sb">
         <div className="flex-vc my-24">
           <button
@@ -49,18 +50,18 @@ const UserCredits = () => {
           </button>
           <p className="caption-1-regular-gray3 ml-5">Add external credits</p>
         </div>
+        {/* change to select */}
         <div className="flex-vchc uc-dropdown">
           <p className="body-regular-gray3 mr-4">Last 30 days</p>
           <DropdownIcon className="icon-sm" />
         </div>
       </div>
-      <div className="mb-40">
-        <UserCreditsConfs />
-      </div>
+      <UserCreditsConfs />
       <ExternalCreditsTable />
       {showExternalCreditForm && (
         <ModalX onDismiss={() => setShowExternalCreditForm(false)}>
           <ExternalCreditsForm
+            editMode={false}
             setShowExternalCreditForm={setShowExternalCreditForm}
           />
         </ModalX>
