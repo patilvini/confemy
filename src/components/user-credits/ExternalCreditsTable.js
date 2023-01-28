@@ -17,6 +17,7 @@ import {
 } from "../../redux/user-profile/userProfileAction";
 import api from "../../utility/api";
 import { alertAction } from "../../redux/alert/alertAction";
+import UploadArrowIcon from "../icons/UploadArrowIcon";
 
 const ExternalCreditsTable = () => {
   const [editMode, setEditMode] = useState(false);
@@ -27,6 +28,8 @@ const ExternalCreditsTable = () => {
   const externalCredits = useSelector(
     (state) => state.userProfile.userExternalCredits
   );
+
+  console.log("external credit", externalCredits);
   const dispatch = useDispatch();
 
   const handleDelete = (creditID) => {
@@ -83,14 +86,28 @@ const ExternalCreditsTable = () => {
                 <td>{data.credit.name}</td>
                 <td>{data.quantity}</td>
                 <td>
-                  <div className="flex-vc">
+                  <div className="flex-vc" style={{ cursor: "pointer" }}>
                     <i
                       className="mr-8 "
                       style={{ position: "relative", paddingTop: "5px" }}
-                    >
-                      <DucumentIcon className="icon-sm" />
-                    </i>
-                    <p>View certificate</p>
+                    ></i>
+                    <div>
+                      {data?.certificate ? (
+                        <div className="flex-vc" onClick={() => {}}>
+                          <i className="position-relative pt-8 mr-8">
+                            <DucumentIcon className="icon-sm" />
+                          </i>{" "}
+                          <span>View certificate</span>
+                        </div>
+                      ) : (
+                        <div className="flex-vc">
+                          <i className="position-relative pt-8 mr-8">
+                            <UploadArrowIcon className="icon-md" />
+                          </i>{" "}
+                          <span>Upload certificate</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </td>
                 <td>

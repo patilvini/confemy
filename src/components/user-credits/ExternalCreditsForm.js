@@ -2,24 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useDropzone } from "react-dropzone";
+import { alertAction } from "../../redux/alert/alertAction";
+import PropTypes from "prop-types";
 
 import * as yup from "yup";
 
 import TextError from "../formik/TextError";
 import OnlyDatepicker from "../react-datepicker/OnlyDatePicker";
-import { alertAction } from "../../redux/alert/alertAction";
 import AddFileIcon from "../icons/AddFileIcon";
+
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
+import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 
 import {
   clearUserSingleExternalCreditAction,
   loadUserExternalCreditsAction,
 } from "../../redux/user-profile/userProfileAction";
 
-import "./usercredits.styles.scss";
-import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
-import api from "../../utility/api";
 import { loadCreditTypesList } from "../../utility/commonUtil";
+import api from "../../utility/api";
+
+import "./usercredits.styles.scss";
+import UploadArrowIcon from "../icons/UploadArrowIcon";
 
 const validationSchema = yup.object().shape({
   conferenceName: yup.string().required("Required"),
@@ -274,8 +278,8 @@ const ExternalCreditsForm = ({
             ) : (
               <div {...getRootProps()} className="uc-uploadfile-input">
                 <div className="flex-vc">
-                  <i>
-                    <AddFileIcon className="icon-sm" />
+                  <i className="position-relative pt-5 mr-8">
+                    <UploadArrowIcon className="icon-sm" />
                   </i>
                   <p className="caption-1-regular-gray2 ml-5">
                     Upload credit certificate
@@ -325,3 +329,9 @@ const ExternalCreditsForm = ({
 };
 
 export default ExternalCreditsForm;
+
+ExternalCreditsForm.propTypes = {
+  editMode: PropTypes.bool.isRequired,
+  setEditMode: PropTypes.func,
+  setShowExternalCreditForm: PropTypes.func,
+};
