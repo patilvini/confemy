@@ -29,8 +29,11 @@ const ExternalCreditsTable = () => {
     (state) => state.userProfile.userExternalCredits
   );
 
-  console.log("external credit", externalCredits);
   const dispatch = useDispatch();
+
+  const viewCertificate = (certificate) => {
+    window.open(certificate.location);
+  };
 
   const handleDelete = (creditID) => {
     setOpen(true);
@@ -93,7 +96,10 @@ const ExternalCreditsTable = () => {
                     ></i>
                     <div>
                       {data?.certificate ? (
-                        <div className="flex-vc" onClick={() => {}}>
+                        <div
+                          className="flex-vc"
+                          onClick={() => viewCertificate(data.certificate)}
+                        >
                           <i className="position-relative pt-8 mr-8">
                             <DucumentIcon className="icon-sm" />
                           </i>{" "}
@@ -102,7 +108,7 @@ const ExternalCreditsTable = () => {
                       ) : (
                         <div className="flex-vc">
                           <i className="position-relative pt-8 mr-8">
-                            <UploadArrowIcon className="icon-md" />
+                            <UploadArrowIcon className="icon-sm" />
                           </i>{" "}
                           <span>Upload certificate</span>
                         </div>
