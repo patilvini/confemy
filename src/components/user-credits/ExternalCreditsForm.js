@@ -9,7 +9,7 @@ import * as yup from "yup";
 
 import TextError from "../formik/TextError";
 import OnlyDatepicker from "../react-datepicker/OnlyDatePicker";
-import AddFileIcon from "../icons/AddFileIcon";
+import CloseIcon from "../icons/CloseIcon";
 
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
@@ -24,6 +24,7 @@ import api from "../../utility/api";
 
 import "./usercredits.styles.scss";
 import UploadArrowIcon from "../icons/UploadArrowIcon";
+import DocumentIcon from "../icons/DocumentIcon";
 
 const validationSchema = yup.object().shape({
   conferenceName: yup.string().required("Required"),
@@ -34,13 +35,10 @@ const validationSchema = yup.object().shape({
 });
 
 const ExternalCreditsForm = ({
-  // editData,
   editMode,
   setEditMode,
   setShowExternalCreditForm,
 }) => {
-  const [files, setFiles] = useState([]);
-
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const creditTypesList = useSelector((state) => state.list.creditTypesList);
@@ -54,7 +52,8 @@ const ExternalCreditsForm = ({
     },
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
-      setFiles((prev) => [...prev, ...acceptedFiles]);
+      console.log("accepted files:", acceptedFiles);
+      formik.setFieldValue("certificate", acceptedFiles);
     },
   });
 
@@ -68,12 +67,20 @@ const ExternalCreditsForm = ({
     formatedEndDate = new Date(editData?.endDate);
   }
 
-  const onSubmit = async (values, actions) => {
-    const { conferenceName, startDate, endDate, creditType, totalCredits } =
-      values;
+  const onSubmit = async (values) => {
+    const {
+      conferenceName,
+      startDate,
+      endDate,
+      creditType,
+      totalCredits,
+      deteledCertificate,
+    } = values;
 
     const formData = {
       conferenceDetails: {
+        deleteCreditCertificate: deteledCertificate?.length > 0,
+        creditCertificateKey: deteledCertificate,
         userId: user._id,
         title: conferenceName,
         startDate: startDate,
@@ -83,60 +90,152 @@ const ExternalCreditsForm = ({
       },
     };
 
-    if (files?.length > 0) {
-      const fileDataObj = new FormData();
-
-      files.forEach((file) => fileDataObj.append("file", file));
-
-      if (fileDataObj.has("file")) {
-        try {
-          const fileResponse = await api.post("fileUploads", fileDataObj);
-          if (fileResponse) {
-            formData.conferenceDetails.data = fileResponse.data.data;
-            let response = await api.post(
-              `attendees/credits/externals`,
-              formData
-            );
-            if (response) {
-              dispatch(
-                loadUserExternalCreditsAction(
-                  response.data.data.externalCredits
-                )
-              );
+    if (formik.values.certificate?.length > 0) {
+      let oldFiles = [];
+      let newFiles = [];
+      formik.values.certificate?.map((file) =>
+        file.key ? oldFiles.push(file) : newFiles.push(file)
+      );
+      if (newFiles.length > 0) {
+        const fileDataObj = new FormData();
+        newFiles.forEach((file) => fileDataObj.append("file", file));
+        if (fileDataObj.has("file")) {
+          try {
+            const fileResponse = await api.post("fileUploads", fileDataObj);
+            if (fileResponse) {
+              formData.conferenceDetails.data = fileResponse.data.data;
+              formData.conferenceDetails.data[0].name =
+                formik.values.certificate[0]?.name;
             }
+          } catch (err) {
+            dispatch(alertAction("File(s) failed to save", "danger"));
+            return;
           }
-        } catch (err) {
-          dispatch(alertAction("File(s) failed to save", "danger"));
         }
       }
-    } else if (!editMode) {
+
       try {
-        let response = await api.post(`attendees/credits/externals`, formData);
+        let response;
+        let url;
+        if (editMode) {
+          url = `attendees/${user?._id}/credits/externals/${editData?._id}`;
+          response = await api.patch(url, formData);
+        } else {
+          url = `attendees/credits/externals`;
+          response = await api.post(url, formData);
+        }
+
         if (response) {
           dispatch(
             loadUserExternalCreditsAction(response.data.data.externalCredits)
           );
+          if (editMode) {
+            setEditMode(false);
+          } else {
+            setShowExternalCreditForm(false);
+          }
+          dispatch(alertAction(response.data.message, "success"));
         }
-      } catch (error) {
-        dispatch(alertAction(error.response.data.message, "danger"));
+      } catch (err) {
+        dispatch(alertAction(err.response.data.message, "danger"));
       }
-    }
-    if (editMode) {
+    } else {
       try {
-        let response = await api.patch(
-          `attendees/${user._id}/credits/externals/${editData._id}`,
-          formData
-        );
-        dispatch(
-          loadUserExternalCreditsAction(response.data.data.externalCredits)
-        );
-      } catch (error) {
-        dispatch(alertAction(error.response.data.message, "danger"));
+        let response;
+        let url;
+        if (editMode) {
+          url = `attendees/${user?._id}/credits/externals/${editData?._id}`;
+          response = await api.patch(url, formData);
+        } else {
+          url = `attendees/credits/externals`;
+          response = await api.post(url, formData);
+        }
+        if (response) {
+          dispatch(
+            loadUserExternalCreditsAction(response.data.data.externalCredits)
+          );
+          if (editMode) {
+            setEditMode(false);
+          } else {
+            setShowExternalCreditForm(false);
+          }
+          dispatch(alertAction(response.data.message, "success"));
+        }
+      } catch (err) {
+        dispatch(alertAction(err.response.data.message, "danger"));
       }
-      setEditMode(false);
     }
-    setShowExternalCreditForm(false);
   };
+
+  // const onSubmitHandle = async (values, actions) => {
+  //   const { conferenceName, startDate, endDate, creditType, totalCredits } =
+  //     values;
+
+  //   const formData = {
+  //     conferenceDetails: {
+  //       userId: user._id,
+  //       title: conferenceName,
+  //       startDate: startDate,
+  //       endDate: endDate,
+  //       creditId: creditType,
+  //       quantity: totalCredits,
+  //     },
+  //   };
+
+  //   if (files?.length > 0) {
+  //     const fileDataObj = new FormData();
+
+  //     files.forEach((file) => fileDataObj.append("file", file));
+
+  //     if (fileDataObj.has("file")) {
+  //       try {
+  //         const fileResponse = await api.post("fileUploads", fileDataObj);
+  //         if (fileResponse) {
+  //           formData.conferenceDetails.data = fileResponse.data.data;
+  //           let response = await api.post(
+  //             `attendees/credits/externals`,
+  //             formData
+  //           );
+  //           if (response) {
+  //             dispatch(
+  //               loadUserExternalCreditsAction(
+  //                 response.data.data.externalCredits
+  //               )
+  //             );
+  //           }
+  //         }
+  //       } catch (err) {
+  //         dispatch(alertAction("File(s) failed to save", "danger"));
+  //       }
+  //     }
+  //   } else if (!editMode) {
+  //     try {
+  //       let response = await api.post(`attendees/credits/externals`, formData);
+  //       if (response) {
+  //         dispatch(
+  //           loadUserExternalCreditsAction(response.data.data.externalCredits)
+  //         );
+  //       }
+  //     } catch (error) {
+  //       dispatch(alertAction(error.response.data.message, "danger"));
+  //     }
+  //   }
+  //   if (editMode) {
+  //     try {
+  //       let response = await api.patch(
+  //         `attendees/${user._id}/credits/externals/${editData._id}`,
+  //         formData
+  //       );
+  //       dispatch(
+  //         loadUserExternalCreditsAction(response.data.data.externalCredits)
+  //       );
+  //     } catch (error) {
+  //       dispatch(alertAction(error.response.data.message, "danger"));
+  //     }
+  //     setEditMode(false);
+  //   }
+  //   setShowExternalCreditForm(false);
+  // };
 
   const initialValues = {
     conferenceName: editData?.conferenceTitle || "",
@@ -144,7 +243,8 @@ const ExternalCreditsForm = ({
     endDate: formatedEndDate || null,
     creditType: editData?.credit?._id || "",
     totalCredits: editData?.quantity || "",
-    certificate: editData?.certificate?.key || [],
+    certificate: (editData?.certificate && [editData?.certificate]) || [],
+    deteledCertificate: "",
   };
   const formik = useFormik({
     initialValues,
@@ -259,33 +359,40 @@ const ExternalCreditsForm = ({
               )}
           </div>
           <div className="mb-24">
-            {files.length > 0 ? (
-              files?.map((file) => (
-                <div className="" key={file.name}>
-                  <div className="flex-vc uc-uploadfile-input pb-24 caption-1-regular-gray2">
-                    {file.name}
+            {formik.values.certificate?.length > 0 ? (
+              <>
+                <div className="flex-vc-sb uc-uploadfile-input pb-24 caption-1-regular-gray2">
+                  <div className="flex-vc">
+                    <i className="mr-8">
+                      <DocumentIcon className="icon-sm" />
+                    </i>
+                    <p>{formik.values.certificate[0]?.name || "Certificate"}</p>
                   </div>
                   <i
                     onClick={() => {
-                      const remainingFiles = files.filter(
-                        (item) => item.name !== file.name
-                      );
-                      setFiles(remainingFiles);
+                      if (formik.values.certificate[0]?.key) {
+                        formik.setFieldValue(
+                          "deteledCertificate",
+                          formik.values.certificate[0]?.key
+                        );
+                      }
+                      formik.setFieldValue("certificate", []);
                     }}
-                  ></i>
+                  >
+                    <CloseIcon className="icon-sm" fill="#000000" />
+                  </i>
                 </div>
-              ))
+              </>
             ) : (
-              <div {...getRootProps()} className="uc-uploadfile-input">
+              <div {...getRootProps({ className: "uc-uploadfile-input" })}>
                 <div className="flex-vc">
                   <i className="position-relative pt-5 mr-8">
                     <UploadArrowIcon className="icon-sm" />
                   </i>
                   <p className="caption-1-regular-gray2 ml-5">
-                    Upload credit certificate
+                    Click & browse to upload credit certificate
                   </p>
                 </div>
-
                 <input {...getInputProps()} />
               </div>
             )}
@@ -303,25 +410,6 @@ const ExternalCreditsForm = ({
               cancelButtonClass="button button-green"
             />
           </div>
-          {/* <div className="mt-40 mb-24">
-            <button
-              style={{ width: "100%" }}
-              type="submit"
-              className="button button-primary"
-            >
-              Add Credits
-            </button>
-          </div>
-          <div>
-            <button
-              className="button-text button-text-red"
-              type="button"
-              style={{ width: "100%" }}
-              onClick={() => setEditMode(false)}
-            >
-              Cancel
-            </button>
-          </div> */}
         </div>
       </form>
     </div>
