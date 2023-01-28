@@ -1,0 +1,12 @@
+@import "../../utility/utility.styles.scss";
+
+// edit organization basic info
+.eobi-save-buttons-wrap {
+  border-bottom: 2px solid $shade-1;
+  padding-bottom: 40px;
+  button {
+    padding: 8px 8px;
+    margin-top: 8px;
+    margin-right: 8px;
+  }
+}

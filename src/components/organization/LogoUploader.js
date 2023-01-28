@@ -7,10 +7,12 @@ import { thumb, thumbInner, img } from "./organizationUtil";
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
 
 import "./createOrganization.styles.scss";
+import "./logoUploader.styles.scss";
 
 import api from "../../utility/api";
+import { alertAction } from "../../redux/alert/alertAction";
 
-export default function LogoUploader({ apiLogo, organizationId }) {
+export default function LogoUploader({ organizationId, setOpenLogoUploader }) {
   const [files, setFiles] = useState([]);
   const [showButtons, setShowButtons] = useState(false);
 
@@ -30,7 +32,6 @@ export default function LogoUploader({ apiLogo, organizationId }) {
           })
         )
       );
-      //   formik.setFieldValue("logos", acceptedFiles);
       setShowButtons(true);
     },
   });
@@ -54,7 +55,7 @@ export default function LogoUploader({ apiLogo, organizationId }) {
   ));
 
   const onCancel = () => {
-    setFiles(apiLogo);
+    setFiles([]);
     setShowButtons(false);
   };
 
@@ -73,65 +74,63 @@ export default function LogoUploader({ apiLogo, organizationId }) {
         const url = `organizations/${organizationId}`;
         const response = await api.patch(url, data);
         if (response) {
-          setShowButtons(false);
           dispatch(loadOrganizationAction(response.data.data.organization));
+          setShowButtons(false);
+          setOpenLogoUploader(false);
         }
       }
     } catch (err) {
-      console.log("logo error", err.response?.data.message);
+      dispatch(alertAction(err.response?.data.message, "danger"));
     }
   };
 
   useEffect(() => {
-    setFiles(apiLogo);
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files.forEach((file) => URL.revokeObjectURL(file.Location));
-  }, [apiLogo]);
+  }, []);
 
   return (
-    <>
-      <h2 className="mb-40">Logo</h2>
-      <section>
-        <div className="logo-upload-wrap">
-          <div {...getRootProps({ className: "logo-dropzone" })}>
-            <input {...getInputProps()} />
-            <CameraIcon className="camera-icon" />
-            {thumbs}
-          </div>
-          <div className="logo-upload-textbox">
-            <span>Drag and drop your logo here or</span>
-            <span>Browse</span>
-            <span>to choose a file</span>
-          </div>
+    <section>
+      <h2>Upload logo</h2>
+      <div className="logo-upload-wrap">
+        <div {...getRootProps({ className: "logo-dropzone" })}>
+          <input {...getInputProps()} />
+          <CameraIcon className="camera-icon" />
+          {thumbs}
         </div>
-        <div className="mb-40">
-          <div
-            className={`${
-              showButtons ? "savelogo-buttons-wrap" : "display-none"
-            }`}
+        <div className="logo-upload-textbox">
+          <span>Drag and drop your logo here or</span>
+          <span>Browse</span>
+          <span>to choose a file</span>
+        </div>
+      </div>
+      <div>
+        <div
+          className={`${
+            showButtons ? "savelogo-buttons-wrap" : "visibility-hidden"
+          }`}
+        >
+          <button
+            type="submit"
+            onClick={saveLogo}
+            className="button button-primary"
           >
-            <button
-              type="submit"
-              onClick={saveLogo}
-              className="button button-primary"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={onCancel}
-              className="button-text button-text-primary"
-            >
-              Cancel
-            </button>
-          </div>
+            Save
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="button-text button-text-primary"
+          >
+            Cancel
+          </button>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 
 LogoUploader.propTypes = {
-  apiLogo: PropTypes.array,
+  //   apiLogo: PropTypes.array,
   organizationId: PropTypes.string.isRequired,
 };

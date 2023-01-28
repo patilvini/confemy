@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+import { alertAction } from "../../redux/alert/alertAction";
 
 import api from "../../utility/api";
 
@@ -45,7 +46,7 @@ export default function SaveInput({
         textInputRef.current.style.paddingBottom = "1.6rem";
       }
     } catch (err) {
-      console.log(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 

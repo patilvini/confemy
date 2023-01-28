@@ -4,10 +4,12 @@ import PropTypes from "prop-types";
 
 import api from "../../utility/api";
 import CloseIcon from "../icons/CloseIcon";
+import TextError from "../formik/TextError";
 
 import { capitalize } from "../../utility/commonUtil";
 
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
+import { alertAction } from "../../redux/alert/alertAction";
 
 import "./socialmedia.styles.scss";
 
@@ -21,6 +23,7 @@ export default function SocialMedia({
 }) {
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [errMsg, setErrMsg] = useState("");
 
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
@@ -29,10 +32,18 @@ export default function SocialMedia({
 
   function handleInputChange(e) {
     setInputValue(e.target.value);
+    if (e.target.value) {
+      setErrMsg("");
+    }
   }
 
   const handleInputSubmit = async (e) => {
     e.preventDefault();
+    if (!inputValue?.trim()?.length > 0) {
+      // dispatch(alertAction("Social link can not be empty", "danger"));
+      setErrMsg(`${label} can't be empty`);
+      return;
+    }
     try {
       const key = name;
       const formData = {
@@ -51,7 +62,7 @@ export default function SocialMedia({
         socialInputRef.current.style.paddingBottom = "1.6rem";
       }
     } catch (err) {
-      console.log("logo error", err.response?.data.message);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
@@ -65,6 +76,7 @@ export default function SocialMedia({
     setInputValue("");
     setShowInput(false);
     socialInputRef.current.style.paddingBottom = "1.6rem";
+    setErrMsg("");
   };
 
   const deleteSocialMediaLink = async () => {
@@ -146,6 +158,7 @@ export default function SocialMedia({
           />
           <label>{label}</label>
         </div>
+        <TextError>{errMsg}</TextError>
         <div className="mb-20">
           <div className="saveinput-buttons-wrap">
             <button type="submit" className="button button-primary">
