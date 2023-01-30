@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuid } from "uuid";
 
 import AddFileIcon from "../icons/AddFileIcon";
 import CloseIcon from "../icons/CloseIcon";
@@ -17,6 +18,8 @@ import { alertAction } from "../../redux/alert/alertAction";
 import api from "../../utility/api";
 import "./fileUploader.styles.scss";
 import DeleteIcon from "../icons/DeleteIcon";
+import FileTitleInput from "./FileTitleInput";
+import { documentTitleContext } from "./documentTitleContext";
 
 export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
   const [files, setFiles] = useState([]);
@@ -30,8 +33,11 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
       "application/pdf": [".pdf"],
     },
     maxFiles: 10,
-    onDrop: (acceptedFiles) => {
-      setFiles((prev) => [...prev, ...acceptedFiles]);
+    onDrop: (acceptedFile) => {
+      acceptedFile[0].id = uuid().slice(0, 8);
+      acceptedFile[0].title = "";
+      console.log("accepted files", acceptedFile);
+      setFiles((prev) => [...prev, ...acceptedFile]);
     },
   });
 
@@ -68,7 +74,7 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
       conferenceId: newConference._id,
     };
 
-    //  Submit banner image and add image url to formData object
+    //  Submit file and add file url to formData object
     if (files?.length > 0) {
       const imageDataObj = new FormData();
 
@@ -77,10 +83,13 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
 
       files.forEach((file) => imageDataObj.append("file", file));
 
+      console.log("image data obj", imageDataObj.get("file"));
+
       if (imageDataObj.has("file")) {
         try {
           const imagesResponse = await api.post("fileUploads", imageDataObj);
           if (imagesResponse) {
+            console.log("aws files", imagesResponse);
             formData.resourceDocs.data = [
               ...newConference?.resourceDocuments,
               ...imagesResponse.data.data,
@@ -91,6 +100,8 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
           return;
         }
       }
+
+      console.log("formData after aws", formData);
 
       try {
         const url = "/conferences/step4/resources?resourceStatus=documents";
@@ -124,6 +135,8 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
     }
   };
 
+  console.log("files", files);
+
   return (
     <>
       <h2 className="mb-32">Saved Files</h2>
@@ -154,17 +167,23 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
       <form onSubmit={handleSubmit}>
         <div className="filesdz-section-wrap mb-24">
           <div className="filesdz-section-innerwrap">
-            <div
-              className="filesdz-files-container"
-              // style={{
-              //   borderBottom: files?.length > 0 ? "1px solid #c4c4c4" : null,
-              // }}
-            >
-              {files?.map((file) => (
+            <div className="filesdz-files-container">
+              {files?.map((file, indx) => (
                 <div className="filesdz-files-row" key={file.name}>
-                  <div className="flex-vc">
-                    <AddFileIcon className="icon-xs mr-16" />
-                    {file.name}
+                  <div>
+                    <div className="flex-vc mb-8">
+                      <AddFileIcon className="icon-xs mr-16" />
+                      {file.name}
+                    </div>
+                    <FileTitleInput
+                      value={file.title}
+                      onChange={(e) => {
+                        setFiles((prev) => {
+                          prev[indx].title = e.target.value;
+                          return [...prev];
+                        });
+                      }}
+                    />
                   </div>
                   <i
                     onClick={() => {

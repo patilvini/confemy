@@ -90,7 +90,7 @@ const ExternalCreditsForm = ({
         let response;
         if (editMode) {
           response = await api.patch(
-            "attendees/${user?._id}/credits/externals/${editData?._id}",
+            `attendees/${user?._id}/credits/externals/${editData?._id}`,
             formData
           );
         } else {
