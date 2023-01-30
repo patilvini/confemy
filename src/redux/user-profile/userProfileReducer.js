@@ -3,6 +3,7 @@ import {
   GET_USER_EXTERNAL_CREDITS,
   GET_USER_SINGELE_EXTERNAL_CREDIT,
   CLEAR_USER_SINGELE_EXTERNAL_CREDIT,
+  GET_USER_CREDIT_CONFERENCES,
 } from "./userProfileTypes";
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   userProfile: null,
   userExternalCredits: [],
   userSingleExternalCredit: null,
+  userCreditConferences: null,
 };
 
 export default function userProfileReducer(state = initialState, action) {
@@ -37,6 +39,11 @@ export default function userProfileReducer(state = initialState, action) {
       return {
         ...state,
         userSingleExternalCredit: null,
+      };
+    case GET_USER_CREDIT_CONFERENCES:
+      return {
+        ...state,
+        userCreditConferences: payload,
       };
     default:
       return {

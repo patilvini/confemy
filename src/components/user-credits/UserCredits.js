@@ -1,24 +1,38 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { alertAction } from "../../redux/alert/alertAction";
+
 import ExternalCreditsTable from "./ExternalCreditsTable";
 import ModalX from "../modal/ModalX";
 import UserCreditsConfs from "./UserCreditsConfs";
 import ExternalCreditsForm from "./ExternalCreditsForm";
+import SelectFormType3 from "../reselect/SelectFormType3";
 
 import AddIcon from "../icons/AddIcon";
-import DropdownIcon from "../icons/DropdownIcon";
 
-import { loadUserExternalCreditsAction } from "../../redux/user-profile/userProfileAction";
-import { alertAction } from "../../redux/alert/alertAction";
+import {
+  loadUserCreditConferencesAction,
+  loadUserExternalCreditsAction,
+} from "../../redux/user-profile/userProfileAction";
 import api from "../../utility/api";
 
 import "./usercredits.styles.scss";
+import CreditsTable from "./CreditsTable";
 
 const UserCredits = () => {
   const [showExternalCreditForm, setShowExternalCreditForm] = useState(false);
 
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+
+  // const getConfs = async (userID) => {
+  //   try {
+  //     const response = await api.get(`/attendees/credits/users/${userID}`);
+  //     dispatch(loadUserCreditConferencesAction(response.data.data.allCredits));
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
 
   const getAllExternalCredits = async (userID) => {
     try {
@@ -32,6 +46,7 @@ const UserCredits = () => {
   };
 
   useEffect(() => {
+    // getConfs(user?._id);
     getAllExternalCredits(user?._id);
   }, [user?._id]);
 
@@ -51,11 +66,21 @@ const UserCredits = () => {
           <p className="caption-1-regular-gray3 ml-5">Add external credits</p>
         </div>
         {/* change to select */}
-        <div className="flex-vchc uc-dropdown">
+        <SelectFormType3
+          options={""}
+          value={""}
+          isMulti={false}
+          onChange=""
+          placeholder="Last 30 days"
+          isDisabled={false}
+          className="uc-dropdown"
+        />
+        {/* <div className="flex-vchc uc-dropdown">
           <p className="body-regular-gray3 mr-4">Last 30 days</p>
           <DropdownIcon className="icon-sm" />
-        </div>
+        </div> */}
       </div>
+      <CreditsTable />
       <UserCreditsConfs />
       <ExternalCreditsTable />
       {showExternalCreditForm && (

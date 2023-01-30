@@ -3,6 +3,7 @@ import {
   GET_USER_EXTERNAL_CREDITS,
   GET_USER_SINGELE_EXTERNAL_CREDIT,
   CLEAR_USER_SINGELE_EXTERNAL_CREDIT,
+  GET_USER_CREDIT_CONFERENCES,
 } from "./userProfileTypes";
 
 export const loadUserProfileAction = (data) => (dispatch) => {
@@ -29,3 +30,10 @@ export const loadUserSingleExternalCreditAction = (data) => (dispatch) => {
 export const clearUserSingleExternalCreditAction = () => ({
   type: CLEAR_USER_SINGELE_EXTERNAL_CREDIT,
 });
+
+export const loadUserCreditConferencesAction = (data) => (dispatch) => {
+  dispatch({
+    type: GET_USER_CREDIT_CONFERENCES,
+    payload: data,
+  });
+};

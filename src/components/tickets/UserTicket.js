@@ -8,7 +8,6 @@ import CreditsIcon from "../icons/CreditsIcon";
 import LocationIcon from "../icons/LocationIcon";
 import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
-import Modal from "../modal/Modal";
 import ModalX from "../modal/ModalX";
 import BookingDetails from "./BookingDetails";
 

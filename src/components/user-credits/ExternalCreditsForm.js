@@ -9,22 +9,22 @@ import * as yup from "yup";
 
 import TextError from "../formik/TextError";
 import OnlyDatepicker from "../react-datepicker/OnlyDatePicker";
-import CloseIcon from "../icons/CloseIcon";
-
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
+
+import CloseIcon from "../icons/CloseIcon";
+import UploadArrowIcon from "../icons/UploadArrowIcon";
+import DocumentIcon from "../icons/DocumentIcon";
 
 import {
   clearUserSingleExternalCreditAction,
   loadUserExternalCreditsAction,
 } from "../../redux/user-profile/userProfileAction";
 
-import { loadCreditTypesList } from "../../utility/commonUtil";
 import api from "../../utility/api";
+import { loadCreditTypesList } from "../../utility/commonUtil";
 
 import "./usercredits.styles.scss";
-import UploadArrowIcon from "../icons/UploadArrowIcon";
-import DocumentIcon from "../icons/DocumentIcon";
 
 const validationSchema = yup.object().shape({
   conferenceName: yup.string().required("Required"),
