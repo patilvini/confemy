@@ -76,23 +76,23 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
 
     //  Submit file and add file url to formData object
     if (files?.length > 0) {
-      const imageDataObj = new FormData();
+      const fd = new FormData();
 
       // files.forEach((file) =>
-      //   !file.Key ? imageDataObj.append("file", file) : oldFiles.push(file)
+      //   !file.Key ? fd.append("file", file) : oldFiles.push(file)
 
-      files.forEach((file) => imageDataObj.append("file", file));
+      files.forEach((file) => fd.append("file", file, file.title));
 
-      console.log("image data obj", imageDataObj.get("file"));
+      console.log("fd", Array.from(fd));
 
-      if (imageDataObj.has("file")) {
+      if (fd.has("file")) {
         try {
-          const imagesResponse = await api.post("fileUploads", imageDataObj);
-          if (imagesResponse) {
-            console.log("aws files", imagesResponse);
+          const awsResponse = await api.post("fileUploads", fd);
+          if (awsResponse) {
+            console.log("aws files", awsResponse);
             formData.resourceDocs.data = [
               ...newConference?.resourceDocuments,
-              ...imagesResponse.data.data,
+              ...awsResponse.data.data,
             ];
           }
         } catch (err) {
