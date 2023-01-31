@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useDropzone } from "react-dropzone";
-import { alertAction } from "../../redux/alert/alertAction";
-import PropTypes from "prop-types";
 
+import PropTypes from "prop-types";
 import * as yup from "yup";
 
 import TextError from "../formik/TextError";
 import OnlyDatepicker from "../react-datepicker/OnlyDatePicker";
+import CloseIcon from "../icons/CloseIcon";
+import UploadArrowIcon from "../icons/UploadArrowIcon";
+import DocumentIcon from "../icons/DocumentIcon";
+
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 
@@ -20,6 +23,7 @@ import {
   clearUserSingleExternalCreditAction,
   loadUserExternalCreditsAction,
 } from "../../redux/user-profile/userProfileAction";
+import { alertAction } from "../../redux/alert/alertAction";
 
 import api from "../../utility/api";
 import { loadCreditTypesList } from "../../utility/commonUtil";
@@ -52,20 +56,15 @@ const ExternalCreditsForm = ({
     },
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
-      console.log("accepted files:", acceptedFiles);
       formik.setFieldValue("certificate", acceptedFiles);
     },
   });
 
-  const { isFocused, isDragAccept, isDragReject, getRootProps, getInputProps } =
-    myDropZone;
-
-  let formatedStartDate;
-  let formatedEndDate;
-  if (editData) {
-    formatedStartDate = new Date(editData?.startDate);
-    formatedEndDate = new Date(editData?.endDate);
-  }
+  const {
+    // isFocused, isDragAccept, isDragReject,
+    getRootProps,
+    getInputProps,
+  } = myDropZone;
 
   const onSubmit = async (values) => {
     const {
@@ -90,11 +89,37 @@ const ExternalCreditsForm = ({
       },
     };
 
+    async function apiCall() {
+      try {
+        let response;
+        if (editMode) {
+          response = await api.patch(
+            `attendees/${user?._id}/credits/externals/${editData?._id}`,
+            formData
+          );
+        } else {
+          response = await api.post("attendees/credits/externals", formData);
+        }
+        if (response) {
+          dispatch(
+            loadUserExternalCreditsAction(response.data.data.externalCredits)
+          );
+          if (editMode) {
+            setEditMode(false);
+          } else {
+            setShowExternalCreditForm(false);
+          }
+          dispatch(alertAction(response.data.message, "success"));
+        }
+      } catch (err) {
+        dispatch(alertAction(err.response.data.message, "danger"));
+      }
+    }
+
     if (formik.values.certificate?.length > 0) {
-      let oldFiles = [];
       let newFiles = [];
       formik.values.certificate?.map((file) =>
-        file.key ? oldFiles.push(file) : newFiles.push(file)
+        file.key ? null : newFiles.push(file)
       );
       if (newFiles.length > 0) {
         const fileDataObj = new FormData();
@@ -114,129 +139,19 @@ const ExternalCreditsForm = ({
         }
       }
 
-      try {
-        let response;
-        let url;
-        if (editMode) {
-          url = `attendees/${user?._id}/credits/externals/${editData?._id}`;
-          response = await api.patch(url, formData);
-        } else {
-          url = `attendees/credits/externals`;
-          response = await api.post(url, formData);
-        }
-
-        if (response) {
-          dispatch(
-            loadUserExternalCreditsAction(response.data.data.externalCredits)
-          );
-          if (editMode) {
-            setEditMode(false);
-          } else {
-            setShowExternalCreditForm(false);
-          }
-          dispatch(alertAction(response.data.message, "success"));
-        }
-      } catch (err) {
-        dispatch(alertAction(err.response.data.message, "danger"));
-      }
+      await apiCall();
     } else {
-      try {
-        let response;
-        let url;
-        if (editMode) {
-          url = `attendees/${user?._id}/credits/externals/${editData?._id}`;
-          response = await api.patch(url, formData);
-        } else {
-          url = `attendees/credits/externals`;
-          response = await api.post(url, formData);
-        }
-        if (response) {
-          dispatch(
-            loadUserExternalCreditsAction(response.data.data.externalCredits)
-          );
-          if (editMode) {
-            setEditMode(false);
-          } else {
-            setShowExternalCreditForm(false);
-          }
-          dispatch(alertAction(response.data.message, "success"));
-        }
-      } catch (err) {
-        dispatch(alertAction(err.response.data.message, "danger"));
-      }
+      await apiCall();
     }
   };
+  // onSubmit Ends
 
-  // const onSubmitHandle = async (values, actions) => {
-  //   const { conferenceName, startDate, endDate, creditType, totalCredits } =
-  //     values;
-
-  //   const formData = {
-  //     conferenceDetails: {
-  //       userId: user._id,
-  //       title: conferenceName,
-  //       startDate: startDate,
-  //       endDate: endDate,
-  //       creditId: creditType,
-  //       quantity: totalCredits,
-  //     },
-  //   };
-
-  //   if (files?.length > 0) {
-  //     const fileDataObj = new FormData();
-
-  //     files.forEach((file) => fileDataObj.append("file", file));
-
-  //     if (fileDataObj.has("file")) {
-  //       try {
-  //         const fileResponse = await api.post("fileUploads", fileDataObj);
-  //         if (fileResponse) {
-  //           formData.conferenceDetails.data = fileResponse.data.data;
-  //           let response = await api.post(
-  //             `attendees/credits/externals`,
-  //             formData
-  //           );
-  //           if (response) {
-  //             dispatch(
-  //               loadUserExternalCreditsAction(
-  //                 response.data.data.externalCredits
-  //               )
-  //             );
-  //           }
-  //         }
-  //       } catch (err) {
-  //         dispatch(alertAction("File(s) failed to save", "danger"));
-  //       }
-  //     }
-  //   } else if (!editMode) {
-  //     try {
-  //       let response = await api.post(`attendees/credits/externals`, formData);
-  //       if (response) {
-  //         dispatch(
-  //           loadUserExternalCreditsAction(response.data.data.externalCredits)
-  //         );
-  //       }
-  //     } catch (error) {
-  //       dispatch(alertAction(error.response.data.message, "danger"));
-  //     }
-  //   }
-  //   if (editMode) {
-  //     try {
-  //       let response = await api.patch(
-  //         `attendees/${user._id}/credits/externals/${editData._id}`,
-  //         formData
-  //       );
-  //       dispatch(
-  //         loadUserExternalCreditsAction(response.data.data.externalCredits)
-  //       );
-  //     } catch (error) {
-  //       dispatch(alertAction(error.response.data.message, "danger"));
-  //     }
-  //     setEditMode(false);
-  //   }
-  //   setShowExternalCreditForm(false);
-  // };
-
+  let formatedStartDate;
+  let formatedEndDate;
+  if (editData) {
+    formatedStartDate = new Date(editData?.startDate);
+    formatedEndDate = new Date(editData?.endDate);
+  }
   const initialValues = {
     conferenceName: editData?.conferenceTitle || "",
     startDate: formatedStartDate || null,
