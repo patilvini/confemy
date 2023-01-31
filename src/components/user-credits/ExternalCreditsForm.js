@@ -15,10 +15,6 @@ import DocumentIcon from "../icons/DocumentIcon";
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 
-import CloseIcon from "../icons/CloseIcon";
-import UploadArrowIcon from "../icons/UploadArrowIcon";
-import DocumentIcon from "../icons/DocumentIcon";
-
 import {
   clearUserSingleExternalCreditAction,
   loadUserExternalCreditsAction,
