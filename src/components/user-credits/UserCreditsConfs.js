@@ -42,6 +42,7 @@ const UserCreditsConfs = () => {
             <th>Date</th>
             <th>Conference</th>
             <th>Credit Type</th>
+            <th>Conference Credits</th>
             <th>Total Credits</th>
             <th>Status</th>
           </tr>
