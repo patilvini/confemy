@@ -1,17 +1,6 @@
-import { useState } from "react";
-import { useContext } from "react";
-import { documentTitleContext } from "./documentTitleContext";
-
 import "./fileUploader.styles.scss";
 
 export default function FileTitleInput({ onChange, value }) {
-  //   const [file, setFile] = useState({
-  //     title: "",
-  //     id: "",
-  //   });
-
-  const { document, setDocument } = useContext(documentTitleContext);
-
   return (
     <div className="file-material-textfield">
       <input
@@ -22,7 +11,7 @@ export default function FileTitleInput({ onChange, value }) {
         onChange={onChange}
         placeholder=" "
       />
-      <label>Add title to display</label>
+      <label>Add file name for display</label>
     </div>
   );
 }

@@ -120,6 +120,7 @@ const ExternalCreditsForm = ({
       if (newFiles.length > 0) {
         const fileDataObj = new FormData();
         newFiles.forEach((file) => fileDataObj.append("file", file));
+
         if (fileDataObj.has("file")) {
           try {
             const fileResponse = await api.post("fileUploads", fileDataObj);
@@ -134,7 +135,6 @@ const ExternalCreditsForm = ({
           }
         }
       }
-
       await apiCall();
     } else {
       await apiCall();

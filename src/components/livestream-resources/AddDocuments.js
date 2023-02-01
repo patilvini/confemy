@@ -19,7 +19,6 @@ import api from "../../utility/api";
 import "./fileUploader.styles.scss";
 import DeleteIcon from "../icons/DeleteIcon";
 import FileTitleInput from "./FileTitleInput";
-import { documentTitleContext } from "./documentTitleContext";
 
 export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
   const [files, setFiles] = useState([]);
@@ -34,9 +33,8 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
     },
     maxFiles: 10,
     onDrop: (acceptedFile) => {
-      acceptedFile[0].id = uuid().slice(0, 8);
+      acceptedFile[0].id = uuid();
       acceptedFile[0].title = "";
-      console.log("accepted files", acceptedFile);
       setFiles((prev) => [...prev, ...acceptedFile]);
     },
   });
@@ -81,9 +79,11 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
       // files.forEach((file) =>
       //   !file.Key ? fd.append("file", file) : oldFiles.push(file)
 
-      files.forEach((file) => fd.append("file", file, file.title));
+      files.forEach((file) =>
+        fd.append("file", file, file.title?.trim() || file.name)
+      );
 
-      console.log("fd", Array.from(fd));
+      // console.log("fd", Array.from(fd));
 
       if (fd.has("file")) {
         try {
@@ -155,7 +155,13 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
             <li key={file._id} className="flex-vc body-bold mx-24">
               <AddFileIcon className="icon-lg mr-16" />
               <div style={{ flexGrow: 1 }}>
-                <a href={file.Location}>{file._id}</a>
+                <a
+                  href={file.Location}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {file.name}
+                </a>
               </div>
               <i onClick={() => deleteResource(file.Key)}>
                 <DeleteIcon className="icon-size" />

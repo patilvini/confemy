@@ -114,6 +114,7 @@ export default function SelectFormType1(props) {
         noOptionsMessage={() => "No option found"}
         styles={customStyles}
         isMulti={props.isMulti}
+        ref={props.ref}
       />
     </div>
   );

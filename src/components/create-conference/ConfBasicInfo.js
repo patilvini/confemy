@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import * as yup from "yup";
 import TextError from "../formik/TextError";
 
 import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
+import { CSSTransition } from "react-transition-group";
 
 import api from "../../utility/api";
 import SelectFormType1 from "../reselect/SelectFormType1";
@@ -92,6 +93,7 @@ export default function ConfBasicInfo() {
   // const [cityList, setCityList] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const cssRef = useRef();
 
   const user = useSelector((state) => state.auth.user);
   const conference = useSelector((state) => state.conference);
@@ -395,22 +397,29 @@ export default function ConfBasicInfo() {
               )}
             </div>
             <div
-              className={`${
-                formik.values.host === "organization" ? "" : "display-none"
-              }`}
+            // className={`${
+            //   formik.values.host === "organization" ? "" : "display-none"
+            // }`}
             >
-              <SelectFormType1
-                label="organizationId"
-                options={organizationsListForSelect}
-                name="organizationId"
-                onChange={(value) =>
-                  formik.setFieldValue("organizationId", value?.value)
-                }
-                placeholder="Select organization"
-                value={formik.values.organizationId}
-                isDisabled={formik.values.host !== "organization"}
-              />
+              <CSSTransition
+                in={formik.values.host === "organization"}
+                timeout={1000}
+                classNames="display"
 
+                // unmountOnExit
+              >
+                <SelectFormType1
+                  label="organizationId"
+                  options={organizationsListForSelect}
+                  name="organizationId"
+                  onChange={(value) =>
+                    formik.setFieldValue("organizationId", value?.value)
+                  }
+                  placeholder="Select organization"
+                  value={formik.values.organizationId}
+                  isDisabled={formik.values.host !== "organization"}
+                />
+              </CSSTransition>
               <div>
                 {formik.touched.organizationId &&
                   Boolean(formik.errors.organizationId) && (
