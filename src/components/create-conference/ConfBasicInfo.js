@@ -7,7 +7,6 @@ import * as yup from "yup";
 import TextError from "../formik/TextError";
 
 import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
-import { CSSTransition } from "react-transition-group";
 
 import api from "../../utility/api";
 import SelectFormType1 from "../reselect/SelectFormType1";
@@ -401,25 +400,17 @@ export default function ConfBasicInfo() {
             //   formik.values.host === "organization" ? "" : "display-none"
             // }`}
             >
-              <CSSTransition
-                in={formik.values.host === "organization"}
-                timeout={1000}
-                classNames="display"
-
-                // unmountOnExit
-              >
-                <SelectFormType1
-                  label="organizationId"
-                  options={organizationsListForSelect}
-                  name="organizationId"
-                  onChange={(value) =>
-                    formik.setFieldValue("organizationId", value?.value)
-                  }
-                  placeholder="Select organization"
-                  value={formik.values.organizationId}
-                  isDisabled={formik.values.host !== "organization"}
-                />
-              </CSSTransition>
+              <SelectFormType1
+                label="organizationId"
+                options={organizationsListForSelect}
+                name="organizationId"
+                onChange={(value) =>
+                  formik.setFieldValue("organizationId", value?.value)
+                }
+                placeholder="Select organization"
+                value={formik.values.organizationId}
+                isDisabled={formik.values.host !== "organization"}
+              />
               <div>
                 {formik.touched.organizationId &&
                   Boolean(formik.errors.organizationId) && (

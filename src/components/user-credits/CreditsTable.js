@@ -6,14 +6,17 @@ import SetGoalModal from "./SetGoalModal";
 import ModalX from "../modal/ModalX";
 
 import EditIcon from "../icons/EditIcon";
-import { loadUserCreditConferencesAction } from "../../redux/user-profile/userProfileAction";
+import { loadUserTotalCreditsAction } from "../../redux/user-profile/userProfileAction";
 
 import api from "../../utility/api";
 
 const CreditsTable = () => {
-  const [totalCredits, setTotalCredits] = useState("");
+  const totalCredits = useSelector(
+    (state) => state.userProfile.userTotalCredits
+  );
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [singleCredit, setSingleCredit] = useState("");
 
   const user = useSelector((state) => state.auth.user);
 
@@ -23,9 +26,7 @@ const CreditsTable = () => {
       const response = await api.get(
         `/attendees/credits/users/${userID}?getAllCreditTypes=true`
       );
-      console.log("get confs response total", response.data.data.allCredits);
-      setTotalCredits(response.data.data.allCredits);
-      // dispatch(loadUserCreditConferencesAction(response.data.data.allCredits));
+      dispatch(loadUserTotalCreditsAction(response.data.data.allCredits));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
@@ -57,14 +58,28 @@ const CreditsTable = () => {
                   <td>{credit.earnedCreditQuantity}</td>
                   <td>{credit.pendingCreditQuantity}</td>
                   <td>
-                    {editMode ? (
-                      <i onClick={() => setShowGoalModal(true)}>
-                        <EditIcon />
-                      </i>
+                    {credit?.goal ? (
+                      <div className="flex-vchc">
+                        <span className="mr-24">{credit.goal}</span>
+                        <i
+                          onClick={() => {
+                            setSingleCredit(credit);
+                            setEditMode(true);
+                            setShowGoalModal(true);
+                          }}
+                        >
+                          <EditIcon />
+                        </i>
+                      </div>
                     ) : (
                       <button
                         className="button button-green"
-                        onClick={() => setShowGoalModal(true)}
+                        onClick={() => {
+                          setSingleCredit(credit);
+                          console.log("credit", credit);
+                          setShowGoalModal(true);
+                          setEditMode(false);
+                        }}
                       >
                         Set goal
                       </button>
@@ -77,7 +92,11 @@ const CreditsTable = () => {
       </table>
       {showGoalModal && (
         <ModalX onDismiss={() => setShowGoalModal(false)}>
-          <SetGoalModal setShowGoalModal={setShowGoalModal} />
+          <SetGoalModal
+            setShowGoalModal={setShowGoalModal}
+            data={singleCredit}
+            editMode={editMode}
+          />
         </ModalX>
       )}
     </div>

@@ -18,7 +18,6 @@ const UserCreditsConfs = () => {
     try {
       const response = await api.get(`/attendees/credits/users/${userID}`);
       console.log("get confs response", response.data);
-
       dispatch(loadUserCreditConferencesAction(response.data.data.allCredits));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));

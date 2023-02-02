@@ -4,6 +4,7 @@ import {
   GET_USER_SINGELE_EXTERNAL_CREDIT,
   CLEAR_USER_SINGELE_EXTERNAL_CREDIT,
   GET_USER_CREDIT_CONFERENCES,
+  USER_TOTAL_CREDITS,
 } from "./userProfileTypes";
 
 export const loadUserProfileAction = (data) => (dispatch) => {
@@ -34,6 +35,13 @@ export const clearUserSingleExternalCreditAction = () => ({
 export const loadUserCreditConferencesAction = (data) => (dispatch) => {
   dispatch({
     type: GET_USER_CREDIT_CONFERENCES,
+    payload: data,
+  });
+};
+
+export const loadUserTotalCreditsAction = (data) => (dispatch) => {
+  dispatch({
+    type: USER_TOTAL_CREDITS,
     payload: data,
   });
 };

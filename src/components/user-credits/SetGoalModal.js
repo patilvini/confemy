@@ -4,51 +4,78 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
 
-import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
-import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 import TextError from "../formik/TextError";
 import CustomDatepicker from "../react-datepicker/CustomDatepicker";
 
 import api from "../../utility/api";
+import { loadUserTotalCreditsAction } from "../../redux/user-profile/userProfileAction";
 
-const SetGoalModal = ({ setShowGoalModal }) => {
+const SetGoalModal = ({ setShowGoalModal, editMode, data }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const creditTypesList = useSelector((state) => state.list.creditTypesList);
 
+  let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const onSubmit = async (values) => {
-    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
     const formData = {
       creditDetails: {
-        creditId: values.creditType,
-        quantity: values.totalCredits,
-        endDate: zonedTimeToUtc(values.endDate, timezone).toISOString(),
-        startDate: zonedTimeToUtc(values.startDate, timezone).toISOString(),
+        creditId: data._id,
+        quantity: values.totalCredit,
+        endDate: zonedTimeToUtc(values.endDate, timezone).toUTCString(),
+        startDate: zonedTimeToUtc(values.startDate, timezone).toUTCString(),
         userId: user._id,
       },
     };
 
-    try {
-      let response = await api.post(`attendees/credits/creditGoals`, formData);
-      console.log("goal response", response);
-    } catch (error) {
-      dispatch(alertAction(error.response.data.message, "danger"));
+    if (editMode) {
+      const editData = {
+        creditDetails: {
+          quantity: values.totalCredit,
+        },
+      };
+      try {
+        let response = await api.patch(
+          `attendees/credits/creditGoals/${data?.creditGoalId}`,
+          editData
+        );
+        setShowGoalModal(false);
+        dispatch(loadUserTotalCreditsAction(response.data.data.allCredits));
+      } catch (error) {
+        dispatch(alertAction(error.response.data.message, "danger"));
+      }
+    } else {
+      try {
+        let response = await api.post(
+          `attendees/credits/creditGoals`,
+          formData
+        );
+        setShowGoalModal(false);
+        dispatch(loadUserTotalCreditsAction(response.data.data.allCredits));
+      } catch (error) {
+        dispatch(alertAction(error.response.data.message, "danger"));
+      }
     }
-    console.log("formData", formData);
-    setShowGoalModal(false);
   };
 
-  try {
-  } catch (error) {}
+  let apiStartDate;
+  if (data?.creditGoalStartDate && data?.timezone) {
+    apiStartDate = utcToZonedTime(data?.creditGoalStartDate, timezone);
+  } else {
+    apiStartDate = null;
+  }
+
+  let apiEndDate;
+  if (data?.creditGoalEndDate && data?.timezone) {
+    apiEndDate = utcToZonedTime(data?.creditGoalEndDate, timezone);
+  } else {
+    apiEndDate = null;
+  }
 
   const initialValues = {
-    creditType: "",
-    totalCredit: "",
-    startDate: null,
-    endDate: null,
+    creditType: data.creditName || data.creditName,
+    totalCredit: data.goal || "",
+    startDate: apiStartDate || null,
+    endDate: apiEndDate || null,
   };
-
   const formik = useFormik({
     initialValues,
     onSubmit,
@@ -64,39 +91,37 @@ const SetGoalModal = ({ setShowGoalModal }) => {
       </div>
       <form autoComplete="off" onSubmit={formik.handleSubmit}>
         <div className="form-type-1">
-          <div className="mb-16">
-            <ReloadableSelectFormType1
-              label="creditType"
+          <div className="material-textfield mb-16">
+            <input
+              id="creditType"
+              type="text"
               name="creditType"
-              options={creditTypesList}
               value={formik.values.creditType}
-              onChange={(value) => {
-                formik.setFieldValue("creditType", value?.value);
-              }}
-              placeholder="Credit Type"
+              onChange={formik.handleChange}
+              disabled={true}
+              placeholder=" "
             />
-            <div className="mb-16">
-              {formik.touched.creditType &&
-                Boolean(formik.errors.creditType) && (
-                  <TextError>{formik.errors.creditType}</TextError>
-                )}
-            </div>
+          </div>
+          <div className="mb-16">
+            {formik.touched.creditType && Boolean(formik.errors.creditType) && (
+              <TextError>{formik.errors.creditType}</TextError>
+            )}
           </div>
           <div className="material-textfield">
             <input
-              id="totalCredits"
+              id="totalCredit"
               type="number"
-              name="totalCredits"
-              value={formik.values.totalCredits}
+              name="totalCredit"
+              value={formik.values.totalCredit}
               onChange={formik.handleChange}
               placeholder=" "
             />
             <label>Total Credits*</label>
           </div>
           <div className="mb-16">
-            {formik.touched.conferenceName &&
-              Boolean(formik.errors.totalCredits) && (
-                <TextError>{formik.errors.totalCredits}</TextError>
+            {formik.touched.totalCredit &&
+              Boolean(formik.errors.totalCredit) && (
+                <TextError>{formik.errors.totalCredit}</TextError>
               )}
           </div>
           <div className="grid-col-2 mb-16">
