@@ -66,6 +66,8 @@ export default function ConfPreview() {
       return;
     }
 
+    console.log("values", values);
+
     const formData = {
       conferenceDetails: {
         conferenceId: newConference._id,
@@ -74,9 +76,12 @@ export default function ConfPreview() {
         publishDate: zonedTimeToUtc(
           values.publishDate,
           newConference?.timezone
-        ).toISOString(),
+        ).toUTCString(),
       },
     };
+
+    console.log("formData", formData);
+
     try {
       const response = await api.post("conferences/step6", formData);
       if (response) {
@@ -88,6 +93,7 @@ export default function ConfPreview() {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
+
   const formik = useFormik({
     initialValues: {
       whenToPublish: "",
