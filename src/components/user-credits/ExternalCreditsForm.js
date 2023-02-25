@@ -264,7 +264,7 @@ const ExternalCreditsForm = ({
             <label>Total Credits*</label>
           </div>
           <div className="mb-16">
-            {formik.touched.conferenceName &&
+            {formik.touched.totalCredits &&
               Boolean(formik.errors.totalCredits) && (
                 <TextError>{formik.errors.totalCredits}</TextError>
               )}

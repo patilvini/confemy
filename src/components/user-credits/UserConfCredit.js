@@ -23,9 +23,8 @@ export default function UserConfCredit({ data }) {
     data?.conference?.credits[0]?.quantity
   );
   const dispatch = useDispatch();
-
+  console.log("data", data);
   const selectChangeHandler = (id) => {
-    console.log("id", id);
     let creditTypeID = data?.conference?.credits?.find(
       (credit) => id.toString() === credit.creditId._id.toString()
     );
@@ -44,14 +43,11 @@ export default function UserConfCredit({ data }) {
       },
     };
 
-    console.log("formdata", formData);
-
     try {
       let response = await api.patch(
         `attendees/credits/users/${data?._id}`,
         formData
       );
-      console.log("responce", response);
     } catch (error) {
       dispatch(alertAction(error.response.data.message, "danger"));
     }
@@ -67,85 +63,112 @@ export default function UserConfCredit({ data }) {
     window.open(certificate.location);
   };
 
-  // console.log("quantity", quantity);
-  // useEffect(() => {
-  //   setQuantity(data?.conference?.credits?.quantity);
-  // }, []);
-
   return (
-    <tr>
-      <td>
-        {formatInTimeZone(
-          new Date(data?.conference?.startDate),
-          data?.conference?.timeZone,
-          "MMM dd yyyy",
-          { locale: enGB }
-        )}
-      </td>
-      <td>{data?.conference?.title}</td>
-      {data?.conference?.isAccredited ? (
-        <>
-          <td>
-            <div style={{ width: 220 }}>
-              <Select
-                defaultValue={{
-                  label: data.conference.credits[0].creditId.name,
-                  value: data.conference.credits[0].quantity,
-                }}
-                options={getCreditOptions(data?.conference)}
-                value={getValue(
-                  getCreditOptions(data?.conference),
-                  value,
-                  false
+    <>
+      <form id="conf-table-form" onSubmit={handleSubmit}></form>
+      <tr>
+        <td>
+          {formatInTimeZone(
+            new Date(data?.conference?.startDate),
+            data?.conference?.timeZone,
+            "MMM dd yyyy",
+            { locale: enGB }
+          )}
+        </td>
+        <td>{data?.conference?.title}</td>
+        {data?.conference?.isAccredited ? (
+          <>
+            <td>
+              <div style={{ width: 220 }}>
+                {data?.creditRequest ? (
+                  <Select
+                    defaultValue={{
+                      label: data.conference.credits[0].creditId.name,
+                      value: data.conference.credits[0].quantity,
+                    }}
+                    options={getCreditOptions(data?.conference)}
+                    value={getValue(
+                      getCreditOptions(data?.conference),
+                      value,
+                      false
+                    )}
+                    isDisabled={true}
+                    // onChange={(value) => setValue(value.value)}
+                    onChange={(value) => selectChangeHandler(value.value)}
+                    styles={{ overFlow: "hidden" }}
+                    isSearchable
+                  />
+                ) : (
+                  <Select
+                    defaultValue={{
+                      label: data.conference.credits[0].creditId.name,
+                      value: data.conference.credits[0].quantity,
+                    }}
+                    options={getCreditOptions(data?.conference)}
+                    value={getValue(
+                      getCreditOptions(data?.conference),
+                      value,
+                      false
+                    )}
+                    // onChange={(value) => setValue(value.value)}
+                    onChange={(value) => selectChangeHandler(value.value)}
+                    styles={{ overFlow: "hidden" }}
+                    isSearchable
+                  />
                 )}
-                // onChange={(value) => setValue(value.value)}
-                onChange={(value) => selectChangeHandler(value.value)}
-                styles={{ overFlow: "hidden" }}
-                isSearchable
-              />
-            </div>
-          </td>
-          <td>{quantity}</td>
-          <div>
-            <form onSubmit={handleSubmit}>
-              <td>
+              </div>
+            </td>
+            <td>{quantity}</td>
+            {/* <form onSubmit={handleSubmit}> */}
+            <td>
+              {data?.creditRequest ? (
+                <span>{data.creditQuantity}</span>
+              ) : (
                 <input
                   id="totalCredits"
                   type="number"
                   name="totalCredits"
                   value={totalCredit}
                   onChange={(e) => setTotalCredit(e.target.value)}
-                  max={""}
+                  max={quantity}
                   className="uc-conf-input"
+                  form="conf-table-form"
                 />
-              </td>
-              <td>
-                {data?.creditCertificateUploaded ? (
-                  <div
-                    className="flex-vc"
-                    onClick={() => viewCertificate(data.certificate)}
-                  >
-                    <i className="position-relative pt-8 mr-8">
-                      <DucumentIcon className="icon-sm" />
-                    </i>{" "}
-                    <span>View certificate</span>
-                  </div>
-                ) : (
-                  <button type="submit" className="btn">
-                    {data?.creditStatus === 2 && data?.creditRequest
-                      ? "Pending"
-                      : data?.creditStatus === 1 && data?.creditRequest
-                      ? "Success"
-                      : "Request credit"}
-                  </button>
-                )}
-              </td>
-            </form>
-          </div>
-        </>
-      ) : (
-        <td>Credit not offered</td>
-      )}
-    </tr>
+              )}
+            </td>
+            <td>
+              {data?.creditCertificateUploaded ? (
+                <div
+                  className="flex-vc"
+                  onClick={() => viewCertificate(data.certificate)}
+                >
+                  <i className="position-relative pt-8 mr-8">
+                    <DucumentIcon className="icon-sm" />
+                  </i>{" "}
+                  <span>View certificate</span>
+                </div>
+              ) : (
+                <button type="submit" className="btn" form="conf-table-form">
+                  {data?.creditStatus === 2 && data?.creditRequest ? (
+                    <span className="caption-1-heavy-cblack">
+                      Pending clearance
+                    </span>
+                  ) : data?.creditStatus === 1 && data?.creditRequest ? (
+                    <span>Success</span>
+                  ) : (
+                    <span className="caption-1-heavy-primary">
+                      Request credit certificate
+                    </span>
+                  )}
+                </button>
+              )}
+            </td>
+            {/* </form> */}
+          </>
+        ) : (
+          <td>Credit not offered</td>
+        )}
+      </tr>
+    </>
   );
 }

@@ -174,8 +174,6 @@ export default function PracticeAddressForm({
     }
   }, [stateList]);
 
-  console.log("formik:", formik);
-
   return (
     <>
       <form

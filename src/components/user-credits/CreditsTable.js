@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { alertAction } from "../../redux/alert/alertAction";
+import { formatInTimeZone } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
 
 import SetGoalModal from "./SetGoalModal";
 import ModalX from "../modal/ModalX";
@@ -46,11 +48,13 @@ const CreditsTable = () => {
             <th>Earned Credits</th>
             <th>Pending Clearance</th>
             <th>To Goal</th>
+            <th>Goal Duration</th>
           </tr>
         </thead>
         <tbody>
           {totalCredits.length > 0 &&
             totalCredits?.map((credit) => {
+              console.log("credit", credit);
               return (
                 <tr>
                   <td>{credit.creditName}</td>
@@ -84,6 +88,19 @@ const CreditsTable = () => {
                         Set goal
                       </button>
                     )}
+                  </td>
+                  <td>
+                    {`${formatInTimeZone(
+                      new Date(credit.creditGoalStartDate),
+                      Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      "MMM dd yyyy",
+                      { locale: enGB }
+                    )}  -  ${formatInTimeZone(
+                      new Date(credit.creditGoalEndDate),
+                      Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      "MMM dd yyyy",
+                      { locale: enGB }
+                    )}`}
                   </td>
                 </tr>
               );

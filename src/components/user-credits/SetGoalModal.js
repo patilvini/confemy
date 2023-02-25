@@ -39,6 +39,7 @@ const SetGoalModal = ({ setShowGoalModal, editMode, data }) => {
         );
         setShowGoalModal(false);
         dispatch(loadUserTotalCreditsAction(response.data.data.allCredits));
+        dispatch(alertAction(response.data.message, "success"));
       } catch (error) {
         dispatch(alertAction(error.response.data.message, "danger"));
       }
@@ -50,32 +51,24 @@ const SetGoalModal = ({ setShowGoalModal, editMode, data }) => {
         );
         setShowGoalModal(false);
         dispatch(loadUserTotalCreditsAction(response.data.data.allCredits));
+        dispatch(alertAction(response.data.message, "success"));
       } catch (error) {
         dispatch(alertAction(error.response.data.message, "danger"));
       }
     }
   };
 
-  let apiStartDate;
-  if (data?.creditGoalStartDate && data?.timezone) {
-    apiStartDate = utcToZonedTime(data?.creditGoalStartDate, timezone);
-  } else {
-    apiStartDate = null;
-  }
-
-  let apiEndDate;
-  if (data?.creditGoalEndDate && data?.timezone) {
-    apiEndDate = utcToZonedTime(data?.creditGoalEndDate, timezone);
-  } else {
-    apiEndDate = null;
-  }
+  const startDate = new Date(data.creditGoalStartDate);
+  const endDate = new Date(data.creditGoalEndDate);
 
   const initialValues = {
     creditType: data.creditName || data.creditName,
     totalCredit: data.goal || "",
-    startDate: apiStartDate || null,
-    endDate: apiEndDate || null,
+    startDate: startDate || null,
+    endDate: endDate || null,
   };
+
+  console.log("dates----", endDate);
   const formik = useFormik({
     initialValues,
     onSubmit,

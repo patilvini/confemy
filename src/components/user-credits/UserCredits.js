@@ -19,20 +19,18 @@ import api from "../../utility/api";
 import "./usercredits.styles.scss";
 import CreditsTable from "./CreditsTable";
 
+const options1 = [
+  { value: 1, label: "1 month" },
+  { value: 3, label: "3 months" },
+  { value: 6, label: "6 months" },
+];
+
 const UserCredits = () => {
+  const [filterText, setFilterText] = useState("");
   const [showExternalCreditForm, setShowExternalCreditForm] = useState(false);
 
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-
-  // const getConfs = async (userID) => {
-  //   try {
-  //     const response = await api.get(`/attendees/credits/users/${userID}`);
-  //     dispatch(loadUserCreditConferencesAction(response.data.data.allCredits));
-  //   } catch (err) {
-  //     dispatch(alertAction(err.response.data.message, "danger"));
-  //   }
-  // };
 
   const getAllExternalCredits = async (userID) => {
     try {
@@ -46,7 +44,6 @@ const UserCredits = () => {
   };
 
   useEffect(() => {
-    // getConfs(user?._id);
     getAllExternalCredits(user?._id);
   }, [user?._id]);
 
@@ -67,18 +64,17 @@ const UserCredits = () => {
         </div>
         {/* change to select */}
         <SelectFormType3
-          options={""}
-          value={""}
-          isMulti={false}
-          onChange=""
-          placeholder="Last 30 days"
+          id="filterText1"
+          isClearable
+          isSearchable
+          name="filuterText1"
+          options={options1}
+          onChange={(value) => setFilterText(value?.value)}
+          value={filterText}
+          placeholder="Filter Data"
           isDisabled={false}
-          className="uc-dropdown"
+          isMulti={false}
         />
-        {/* <div className="flex-vchc uc-dropdown">
-          <p className="body-regular-gray3 mr-4">Last 30 days</p>
-          <DropdownIcon className="icon-sm" />
-        </div> */}
       </div>
       <CreditsTable />
       <UserCreditsConfs />

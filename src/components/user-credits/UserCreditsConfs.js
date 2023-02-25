@@ -1,13 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import UserConfCredit from "./UserConfCredit";
+import SelectFormType3 from "../reselect/SelectFormType3";
 import { alertAction } from "../../redux/alert/alertAction";
 
 import { loadUserCreditConferencesAction } from "../../redux/user-profile/userProfileAction";
 import api from "../../utility/api";
 
+const options1 = [
+  { value: 1, label: "1 month" },
+  { value: 3, label: "3 months" },
+  { value: 6, label: "6 months" },
+];
+
 const UserCreditsConfs = () => {
+  const [filterText, setFilterText] = useState("");
   const user = useSelector((state) => state.auth.user);
   const userConfs = useSelector(
     (state) => state.userProfile.userCreditConferences
@@ -17,15 +25,10 @@ const UserCreditsConfs = () => {
   const getConfs = async (userID) => {
     try {
       const response = await api.get(`/attendees/credits/users/${userID}`);
-      console.log("get confs response", response.data);
       dispatch(loadUserCreditConferencesAction(response.data.data.allCredits));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
-  };
-
-  const handleChange = (e) => {
-    console.log("e.target.value", e.target.value);
   };
 
   useEffect(() => {
@@ -34,7 +37,21 @@ const UserCreditsConfs = () => {
 
   return (
     <div className="mb-80">
-      <h4 className="mb-24">Conference</h4>
+      <div className="flex-vc-sb mb-24">
+        <h4 className="mb-24">Conference</h4>
+        <SelectFormType3
+          id="filterText1"
+          isClearable
+          isSearchable
+          name="filterText1"
+          options={options1}
+          onChange={(value) => setFilterText(value?.value)}
+          value={filterText}
+          placeholder="Filter Data"
+          isDisabled={false}
+          isMulti={false}
+        />
+      </div>
       <table className="uc-table">
         <thead>
           <tr>

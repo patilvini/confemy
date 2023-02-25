@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux/es/exports";
-import { useNavigate } from "react-router";
 
 import api from "../../utility/api";
 import UserTicket from "./UserTicket";
