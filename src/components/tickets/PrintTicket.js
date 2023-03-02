@@ -3,10 +3,6 @@ import { useReactToPrint } from "react-to-print";
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 
-import DateIcon from "../icons/DateIcon";
-import CreditsIcon from "../icons/CreditsIcon";
-import LocationIcon from "../icons/LocationIcon";
-
 const PrintTicket = ({ ticketData }) => {
   const componentRef = useRef();
 

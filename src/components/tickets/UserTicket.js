@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 
 import DateIcon from "../icons/DateIcon";
 import CreditsIcon from "../icons/CreditsIcon";
@@ -80,7 +80,11 @@ export default function UserTicket({ ticketData, setOpenModal }) {
   const printTicket = (url, data) => {
     // localStorage.setItem("ticketData", data);
     // window.open(url);
-    setOpenPrint(true);
+    // setOpenPrint(true);
+    ReactDOM.createPortal(
+      <PrintTicket ticketData={ticketData} />,
+      document.getElementById("printTicket")
+    );
   };
 
   return (
