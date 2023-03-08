@@ -6,6 +6,7 @@ import api from "../../utility/api";
 import Carousel from "react-multi-carousel";
 import { useNavigate } from "react-router-dom";
 import "react-multi-carousel/lib/styles.css";
+import { useDispatch } from "react-redux";
 
 const responsive = {
   desktop: {
@@ -33,17 +34,15 @@ const responsive = {
 function OnlineConfs() {
   const [data, setData] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const r = await api.get("/conferences?mode=onlineConf");
-        // setData(r.data.data.conferences);
-        const d = r.data.data.conferences;
-        // d.length = 8
-        setData(d);
+        const response = await api.get("/conferences?mode=onlineConf");
+        setData(response.data.data.conferences);
       } catch (err) {
-        console.log(err);
+        console.log("error", err);
       }
     };
 
@@ -69,19 +68,24 @@ function OnlineConfs() {
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
           >
-            {data ? (
-              data.map((item, index) => {
+            {data?.length > 0 ? (
+              data.map((item) => {
                 return (
-                  <div key={index}>
+                  <div key={item._id}>
                     <ConfCard
                       link={item._id}
                       confName={item.title}
                       startDate={item.startDate}
+                      endDate={item.endDate}
                       currency={item.currency}
                       location={item.location}
-                      price={item.basePrice}
+                      basePrice={item.basePrice}
                       startTime={item.startTime}
                       credits={item.credits}
+                      timezone={item.timezone}
+                      mode={item.mode}
+                      title={item.title}
+                      confId={item._id}
                     />
                   </div>
                 );

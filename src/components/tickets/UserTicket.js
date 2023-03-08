@@ -78,11 +78,10 @@ export default function UserTicket({ ticketData, setOpenModal }) {
   };
 
   const printTicket = (url, data) => {
-    // localStorage.setItem("ticketData", data);
-    // window.open(url);
-    // setOpenPrint(true);
+    localStorage.setItem("ticketData", data);
+    window.open(url, "_blank");
     ReactDOM.createPortal(
-      <PrintTicket ticketData={ticketData} />,
+      <PrintTicket />,
       document.getElementById("printTicket")
     );
   };
@@ -99,8 +98,8 @@ export default function UserTicket({ ticketData, setOpenModal }) {
           className="pt-20 pl-25 mb-11"
         >
           <h4>
-            {ticketData.conference?.title
-              ? ticketData.conference?.title
+            {ticketData?.conference?.title
+              ? ticketData?.conference?.title
               : "Ticket title"}
           </h4>
           <div className="pt-16">
@@ -155,7 +154,7 @@ export default function UserTicket({ ticketData, setOpenModal }) {
           </div>
           <div
             className="user-ticket-resend user-ticket-print flex-vchc "
-            onClick={() => printTicket("/print-ticket")}
+            onClick={() => printTicket("/print-ticket", ticketData)}
           >
             <ReceiptIcon className="icon-button" fill="#fff" />
             <p className="ml-4 avenir-roman-18 ">Print Receipt</p>

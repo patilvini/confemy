@@ -34,15 +34,15 @@ function RecentlyViewedConfs() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const r = await api.get("/homePage/recentlyviewed?page=1&limit=5");
-        setData(r.data.data.viewedConferences);
+        const response = await api.get(
+          "/homePage/recentlyviewed?page=1&limit=5"
+        );
+        setData(response.data.data.viewedConferences);
       } catch (err) {}
     };
 
     loadData();
   }, []);
-
-  console.log("recently viewed confs", data);
 
   return (
     <section className="bg-background conf-display recently-viewed-confs">
@@ -63,24 +63,21 @@ function RecentlyViewedConfs() {
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
           >
-            {data ? (
-              data.map((item, index) => {
-                console.log(item.conference);
+            {data?.length > 0 ? (
+              data?.map((item) => {
                 return (
-                  <div key={index}>
+                  <div key={item._id}>
                     <ConfCard
                       mode={item.conference.mode}
-                      city
-                      src
+                      city={item.conference.city}
                       title={item.conference.title}
-                      // startDate={item.conference.startDate}
-                      // endDate
-                      // timezone
+                      startDate={item.conference.startDate}
+                      endDate={item.conference.endDate}
+                      timezone={item.conference.timezone}
                       credits={item.conference.credits}
                       currency={item.conference.currency}
                       basePrice={item.conference.basePrice}
                       confId={item.conference._id}
-                      // location={item.conference.location}
                     />
                   </div>
                 );

@@ -249,6 +249,7 @@ export default function BasicProfileInfo() {
               value={formik.values.mobile}
               onChange={onInputChange}
               placeholder=" "
+              autoComplete="mobile"
             />
             <label>Mobile</label>
           </div>

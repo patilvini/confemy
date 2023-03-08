@@ -15,7 +15,7 @@ import CreditsIcon from "../icons/CreditsIcon";
 import PriceIcon from "../icons/PriceIcon";
 import RadioIcon from "../icons/RadioIcon";
 import RadioFilledIcon from "../icons/RadioFilled";
-import Modal from "../modal/Modal";
+import ModalX from "../modal/ModalX";
 
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import { alertAction } from "../../redux/alert/alertAction";
@@ -335,14 +335,12 @@ export default function ConfPreview() {
       </div>
 
       {open && (
-        <Modal>
-          <div>
-            <div>Show Modal content</div>
-            <button onClick={closeModal} className="button button-primary">
-              Close
-            </button>
-          </div>
-        </Modal>
+        <ModalX onDismiss={closeModal}>
+          <h4>Show Modal content</h4>
+          <button onClick={closeModal} className="button button-primary">
+            Close
+          </button>
+        </ModalX>
       )}
     </div>
   );

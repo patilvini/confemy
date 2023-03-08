@@ -155,7 +155,13 @@ export default function LocationDropdown({ className }) {
       <div
         className={openLocationDropdown ? "location-dropdown" : "display-none"}
       >
-        <div className="location-item flex-vc">
+        <div
+          className="location-item flex-vc"
+          onClick={() => {
+            setOpenLocationDropdown(false);
+            navigate("/search-conference", { state: "online" });
+          }}
+        >
           <i className="mr-16">
             <WorldIcon className="icon-sm" />
           </i>

@@ -22,7 +22,6 @@ export default function ConfCard({
   confId,
 }) {
   const navigate = useNavigate();
-
   const getLocationString = () => {
     let locationStrig = "Location";
     if (mode?.length > 0) {
@@ -121,12 +120,13 @@ export default function ConfCard({
             <div className="flex-vc  mb-8">
               <LocationIcon className="icon-xxs mr-8" />
               <span className="caption-2-regular-gray3 cc-truncitem-wrap">
-                {getLocationString()}
+                Location: {getLocationString()}
               </span>
             </div>
             <div className="flex-vc  mb-8">
               <CreditsIcon className="icon-xxs mr-8" />
               <span className="caption-2-regular-gray3 cc-truncitem-wrap">
+                Credits:
                 {credits?.length > 0
                   ? `${credits[0].creditId?.name} - ${credits[0].quantity}`
                   : "Credits not added"}
@@ -137,6 +137,7 @@ export default function ConfCard({
         <div className="confcard-footer">
           <div className="flex-vc-sb ">
             <span className="caption-2-bold-cblack cc-truncitem-wrap">
+              Price :
               {currency && basePrice > 0
                 ? `${currency} -  
                     ${basePrice}`

@@ -87,6 +87,7 @@ export default function UserTickets() {
             name="searchText"
             value={searchText}
             onChange={onInputChange}
+            autoComplete="searchtext"
           />
           <i
             className={

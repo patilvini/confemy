@@ -3,10 +3,10 @@ import { useReactToPrint } from "react-to-print";
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 
-const PrintTicket = ({ ticketData }) => {
+const PrintTicket = () => {
   const componentRef = useRef();
 
-  //   let ticketData = localStorage.getItem("ticketData");
+  let ticketData = localStorage.getItem("ticketData");
   console.log("data", ticketData);
 
   const startDateObj = new Date(ticketData?.conference?.startDate);
@@ -29,34 +29,34 @@ const PrintTicket = ({ ticketData }) => {
     content: () => componentRef.current,
     documentTitle: "Print The Ticket",
   });
-  const getLocationString = () => {
-    let locationStrig = "Location";
-    if (ticketData?.conference?.mode?.length > 0) {
-      if (
-        ticketData?.conference?.mode?.includes("venue") &&
-        ticketData?.conference?.location
-      ) {
-        locationStrig = ticketData?.conference?.location;
-      }
+  // const getLocationString = () => {
+  //   let locationStrig = "Location";
+  //   if (ticketData?.conference?.mode?.length > 0) {
+  //     if (
+  //       ticketData?.conference?.mode?.includes("venue") &&
+  //       ticketData?.conference?.location
+  //     ) {
+  //       locationStrig = ticketData?.conference?.location;
+  //     }
 
-      if (ticketData?.conference?.mode?.includes("onlineConf")) {
-        locationStrig = "Online";
-      }
+  //     if (ticketData?.conference?.mode?.includes("onlineConf")) {
+  //       locationStrig = "Online";
+  //     }
 
-      if (
-        ticketData?.conference?.mode?.includes("venue") &&
-        ticketData?.conference?.mode?.includes("onlineConf")
-      ) {
-        locationStrig = `${ticketData?.conference?.location} & Online`;
-      }
-    }
-    return locationStrig;
-  };
+  //     if (
+  //       ticketData?.conference?.mode?.includes("venue") &&
+  //       ticketData?.conference?.mode?.includes("onlineConf")
+  //     ) {
+  //       locationStrig = `${ticketData?.conference?.location} & Online`;
+  //     }
+  //   }
+  //   return locationStrig;
+  // };
   return (
     <div className="p-24">
       <div ref={componentRef}>
         <h2> Ticket Details</h2>
-        <div className="pt-20  mb-11">
+        {/* <div className="pt-20  mb-11">
           <h4>
             Ticket Type:
             {ticketData.conference?.title
@@ -110,7 +110,7 @@ const PrintTicket = ({ ticketData }) => {
               })}
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
       <button onClick={handlePrint} className="button button-primary">
         Print ticket

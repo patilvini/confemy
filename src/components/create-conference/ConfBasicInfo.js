@@ -146,7 +146,6 @@ export default function ConfBasicInfo() {
         zipcode,
       },
     };
-    console.log("formData", formData);
     try {
       const response = await api.post("conferences/step1", formData);
       if (response) {

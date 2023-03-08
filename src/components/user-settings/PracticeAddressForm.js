@@ -211,6 +211,7 @@ export default function PracticeAddressForm({
                 onChange={formik.handleChange}
                 placeholder=" "
                 disabled={false}
+                autoComplete="street1"
               />
               <label>Address line 1</label>
             </div>
@@ -230,6 +231,7 @@ export default function PracticeAddressForm({
                 onChange={formik.handleChange}
                 placeholder=" "
                 disabled={false}
+                autoComplete="street2"
               />
               <label>Address line 2</label>
             </div>
@@ -316,6 +318,7 @@ export default function PracticeAddressForm({
                 onChange={formik.handleChange}
                 placeholder=" "
                 disabled={false}
+                autoComplete="zipcode"
               />
               <label>Zip Code*</label>
             </div>

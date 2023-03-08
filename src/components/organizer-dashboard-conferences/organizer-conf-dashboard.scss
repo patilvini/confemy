@@ -282,3 +282,42 @@
   display: grid;
   grid-template-columns: 45% 55%;
 }
+
+.org-credit-reqst{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2;
+}
+
+.org-credit-table {
+  width: 100%;
+  border-spacing: 0;
+  @include avenir-heavy-18;
+  color: $gray-3;
+  thead {
+    tr {
+      background-color: $shade-1;
+      th {
+        padding: 16px;
+        text-align: left;
+        &:last-child {
+          text-align: left;
+        }
+      }
+    }
+  }
+  tbody {
+    td {
+      padding: 16px;
+      text-align: left;
+      color: $gray-2;
+    }
+
+    tr {
+      & > td:nth-child(5n + 5) {
+        text-align: left;
+      }
+    }
+  }
+}
