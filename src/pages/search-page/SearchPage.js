@@ -212,7 +212,9 @@ export default function SearchPage() {
     setLocation(state);
   }, [state]);
 
-  // console.log("filters", filters);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // });
 
   return (
     <div className="container pt-64">

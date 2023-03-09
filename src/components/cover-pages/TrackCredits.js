@@ -4,8 +4,10 @@ import SetCreditGoals from "../SVG-assets/SetCreditGoals";
 import ManageCMECredits from "../SVG-assets/ManageCMECredits";
 import "./coverpages.scss";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function TrackCredits() {
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   });
@@ -24,7 +26,12 @@ export default function TrackCredits() {
           >
             With Confemy it's easier than ever to manage and track CME Credits.
           </p>
-          <button className="button button-green">Track CME Credits</button>
+          <button
+            className="button button-green"
+            onClick={() => navigate("/user-profile/credits")}
+          >
+            Track CME Credits
+          </button>
         </div>
         <div>
           <OnePlace className="onePlace" />

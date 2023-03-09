@@ -21,12 +21,16 @@
   cursor: pointer;
 }
 
-.user-ticket-resend {
+.user-ticket-btn {
   background: $primary;
   color: white;
   height: 4.8rem;
+  // width: 49.9%;
+}
+
+.user-ticket-resend{
   border-radius: 0 0rem 0rem 0.8rem;
-  width: 49.9%;
+
 }
 .user-ticket-print {
     border-radius: 0 0rem 0.8rem 0rem;
@@ -35,4 +39,10 @@
 .ut-modal-wrap {
   width: 62.4rem;
   padding: 0rem 2.4rem;
+}
+
+.print-ticket{
+  padding: 24px;
+  border: 2px solid black;
+  
 }

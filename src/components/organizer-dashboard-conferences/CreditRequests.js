@@ -12,23 +12,35 @@ import api from "../../utility/api";
 import "./organizer-conf-dashboard.scss";
 import { alertAction } from "../../redux/alert/alertAction";
 import UploadFile from "./UploadFile";
+import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
+import { loadAllOrganizerCreditsAction } from "../../redux/organizer-dashboard/organizerCreditActions";
 
 const options = [
-  { label: "All", value: "" },
+  { label: "All", value: "all" },
   { label: "Pending", value: "pending" },
   { label: "Approved", value: "approved" },
 ];
 
 export default function CreditRequests() {
-  const [creditData, setCreditData] = useState(null);
-  const [filterText, setFilterText] = useState("");
+  const creditData = useSelector((state) => state.organizer.allCredits);
+  const [data, setData] = useState(creditData);
+  const [filterText1, setFilterText1] = useState("");
+  const [filterText2, setFilterText2] = useState("");
+  const [orgFilter2, setOrgFilter2] = useState("");
   const [formData, setFormData] = useState({
     searchText: "",
   });
   const { searchText } = formData;
 
+  const [filter1, setfilter1] = useState("");
+
   const user = useSelector((state) => state.auth.user);
+  const organizationsList = useSelector(
+    (state) => state.myOrganizations.organizationsListForSelect
+  );
   const dispatch = useDispatch();
+
+  const options2 = [{ value: "user", label: "User" }, ...organizationsList];
 
   const onInputChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,21 +55,60 @@ export default function CreditRequests() {
         ) {
           return item;
         }
+        if (
+          item.firstName
+            .toLowerCase()
+            .indexOf(searchText.toLocaleLowerCase()) >= 0
+        ) {
+          return item;
+        }
       });
       return dataSet;
     }
   };
 
-  const filterData = (data) => {
-    data?.filter((item) => {
-      if (filterText === "") {
-        return data;
+  const filter1Data = (value) => {
+    setFilterText1(value);
+    let filtredData = creditData?.filter((item) => {
+      if (value === "all") {
+        setfilter1(value);
+        return creditData;
       }
-      if (filterText === "pending") {
+      if (value === "pending") {
+        if (item.creditStatus === 2) {
+          return item;
+        }
       }
-      if (filterText === "approved") {
+      if (value === "approved") {
+        if (item.creditStatus === 1) {
+          return item;
+        }
       }
     });
+    setData(filtredData);
+  };
+  const filter2Data = (value) => {
+    console.log("value", value);
+    setFilterText2(value);
+    let filtredData = data?.filter((item) => {
+      if (value === "") {
+        return data;
+      }
+      if (value === "user") {
+        setOrgFilter2("user");
+        if (filter1 === "all") {
+        }
+        if (item.conference.host === "user") {
+          return item;
+        }
+      }
+      if (value !== "user") {
+        if (value === item.conference.hostedBy.organization) {
+          return item;
+        }
+      }
+    });
+    setData(filtredData);
   };
 
   const getOrganizerCredits = async (userId) => {
@@ -66,17 +117,35 @@ export default function CreditRequests() {
         `organizers/conferences/credits/users/${userId}`
       );
       if (response) {
-        setCreditData(response.data.data.allCredits);
-        console.log("response", response.data.data.allCredits);
+        dispatch(loadAllOrganizerCreditsAction(response.data.data.allCredits));
+        setData(response.data.data.allCredits);
       }
     } catch (error) {
       dispatch(alertAction(error.response.data.message, "error"));
     }
   };
+  const loadMyOrgnizations = async (id) => {
+    const url = `organizations/users/${id}?orgForConference=true`;
+    try {
+      const response = await api.get(url);
+
+      if (response) {
+        dispatch(
+          loadMyOrganizationsSelectListAction(response.data?.data?.organization)
+        );
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
+
+  useEffect(() => {
+    loadMyOrgnizations(user._id);
+  }, [user._id]);
 
   useEffect(() => {
     getOrganizerCredits(user._id);
-  }, [user._id]);
+  }, []);
 
   return (
     <>
@@ -110,8 +179,8 @@ export default function CreditRequests() {
             isSearchable
             name="filuterText1"
             options={options}
-            onChange={(value) => setFilterText(value?.value)}
-            value={filterText}
+            onChange={(value) => filter1Data(value?.value)}
+            value={filterText1}
             placeholder="Filter"
             isDisabled={false}
             isMulti={false}
@@ -119,13 +188,13 @@ export default function CreditRequests() {
         </div>
         <div>
           <SelectFormType3
-            id="filterText1"
+            id="filterText2"
             isClearable
             isSearchable
-            name="filuterText1"
-            options={options}
-            onChange={(value) => setFilterText(value?.value)}
-            value={filterText}
+            name="filuterText2"
+            options={options2}
+            onChange={(value) => filter2Data(value?.value)}
+            value={filterText2}
             placeholder="Filter"
             isDisabled={false}
             isMulti={false}
@@ -144,7 +213,7 @@ export default function CreditRequests() {
             </tr>
           </thead>
           <tbody>
-            {searchData(creditData)?.map((data) => {
+            {searchData(data)?.map((data) => {
               return (
                 <tr key={data._id}>
                   <td>{`${data.firstName}  ${data.lastName}`}</td>

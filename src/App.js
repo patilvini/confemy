@@ -64,9 +64,9 @@ const App = () => {
         <BrowserRouter>
           <PNavbar />
           <Alert />
-          <Routes>
-            <Route path="print-ticket" element={<PrintTicket />} />
 
+          <Routes>
+            <Route path="/print-ticket" element={<PrintTicket />} />
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>

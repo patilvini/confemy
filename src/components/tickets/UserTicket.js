@@ -78,7 +78,7 @@ export default function UserTicket({ ticketData, setOpenModal }) {
   };
 
   const printTicket = (url, data) => {
-    localStorage.setItem("ticketData", data);
+    localStorage.setItem("ticketData", JSON.stringify(data));
     window.open(url, "_blank");
     ReactDOM.createPortal(
       <PrintTicket />,
@@ -144,20 +144,24 @@ export default function UserTicket({ ticketData, setOpenModal }) {
           </div>
         </div>
 
-        <div className="flex-vc-sb">
+        <div className="grid-col-3 " style={{ columnGap: "1px" }}>
           <div
-            className="user-ticket-resend flex-vchc"
+            className="user-ticket-btn user-ticket-resend flex-vchc"
             onClick={() => resendTicket(ticketData._id)}
           >
             <ResendIcon className="icon-button" fill="#fff" />
             <p className="ml-4 avenir-roman-18 ">Resend Tickets</p>
           </div>
+          <div className="user-ticket-btn   flex-vchc ">
+            <ReceiptIcon className="icon-button" fill="#fff" />
+            <p className="ml-4 avenir-roman-18 ">Print Receipt</p>
+          </div>
           <div
-            className="user-ticket-resend user-ticket-print flex-vchc "
+            className="user-ticket-btn user-ticket-print flex-vchc "
             onClick={() => printTicket("/print-ticket", ticketData)}
           >
             <ReceiptIcon className="icon-button" fill="#fff" />
-            <p className="ml-4 avenir-roman-18 ">Print Receipt</p>
+            <p className="ml-4 avenir-roman-18 ">Print Ticket</p>
           </div>
         </div>
         {openModalX && isLoading && <div className="user-ticket-overlay"></div>}

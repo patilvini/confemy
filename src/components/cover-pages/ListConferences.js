@@ -29,7 +29,7 @@ export default function ListConferences() {
           </p>
           <button
             className="button button-green"
-            onClick={() => navigate("/signin")}
+            onClick={() => navigate("/dashboard/create-conference")}
           >
             HOST YOUR CONFERENCE
           </button>
