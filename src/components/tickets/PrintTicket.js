@@ -1,32 +1,59 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 
 import "./userTickets.styles.scss";
+import api from "../../utility/api";
+import { alertAction } from "../../redux/alert/alertAction";
 
 const PrintTicket = () => {
+  const [ticketData, setTicketData] = useState([]);
   const componentRef = useRef();
+  const dispatch = useDispatch();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [bookingDate, setBookingDate] = useState("");
 
-  let ticketData = JSON.parse(localStorage.getItem("ticketData"));
-  console.log("data", ticketData);
+  let ticketID = JSON.parse(localStorage.getItem("ticketData"));
 
-  const startDateObj = new Date(ticketData?.conference?.startDate);
-  const formattedStartDate = formatInTimeZone(
-    startDateObj,
-    ticketData?.conference?.timezone,
-    "MMM-dd-yyyy, HH:mm aa",
-    { locale: enGB }
-  );
+  console.log("ticket data", ticketData);
 
-  const bookingDateObj = new Date(ticketData?.bookingDate);
-  const formattedBookingDate = formatInTimeZone(
-    bookingDateObj,
-    ticketData?.conference?.timezone,
-    "MMM-dd-yyyy, HH:mm aa",
-    { locale: enGB }
-  );
+  const getFormatedDate = (bookingData) => {
+    console.log("ticketData-----------", bookingData);
+    const startDateObj = new Date(bookingData?.conference?.startDate);
+    if (startDateObj) {
+      const formattedStartDate = formatInTimeZone(
+        startDateObj,
+        bookingData?.conference?.timezone,
+        "MMM-dd-yyyy, HH:mm aa",
+        { locale: enGB }
+      );
+      setStartDate(formattedStartDate);
+    }
+    const endDateObj = new Date(bookingData?.conference?.endDate);
+    if (endDateObj) {
+      const formattedEndDate = formatInTimeZone(
+        endDateObj,
+        bookingData?.conference?.timezone,
+        "MMM-dd-yyyy, HH:mm aa",
+        { locale: enGB }
+      );
+      setEndDate(formattedEndDate);
+    }
 
+    const bookingDateObj = new Date(bookingData?.bookingDate);
+    if (bookingDateObj) {
+      const formattedBookingDate = formatInTimeZone(
+        bookingDateObj,
+        bookingData?.conference?.timezone,
+        "MMM-dd-yyyy, HH:mm aa",
+        { locale: enGB }
+      );
+      setBookingDate(formattedBookingDate);
+    }
+  };
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "Print The Ticket",
@@ -54,80 +81,96 @@ const PrintTicket = () => {
     }
     return locationStrig;
   };
+
+  const getBookingDetails = async (id) => {
+    try {
+      const response = await api.get(`/conferences/bookings/${id}`);
+      console.log("data", response.data);
+      if (response) {
+        setTicketData(response.data.data.bookingDetails);
+        getFormatedDate(response.data.data.bookingDetails);
+      }
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
+  useEffect(() => {
+    getBookingDetails(ticketID);
+  }, [ticketID]);
   return (
-    <div className="p-92 container " ref={componentRef}>
-      <div className="print-ticket mb-24">
-        <div className="flex-vc">
-          <h2 className="mr-92"> Ticket </h2>
-          <h2>
-            {ticketData.conference?.title
-              ? ticketData.conference?.title
-              : "Ticket title"}
-          </h2>
-        </div>
-        <div className="mb-24 ml-92 pl-88">
-          <div className="pt-16 caption-2-regular-gray3">
-            <div className="flex-vc  mb-24">
-              <h4>START DATE </h4>
-              <h5 className="caption-1-regular-gray2 ml-80">
-                {formattedStartDate} GMT+4
-              </h5>
-            </div>
-            <div className="flex-vc mb-24">
-              <h4>LOCATION </h4>
-              <h5 className="caption-1-regular-gray2 ml-92">
-                {getLocationString()}
-              </h5>
-            </div>
-            <div className=" flex-vc mb-24">
-              <h4>BOOKING DATE </h4>
-              <h5 className=" caption-1-regular-gray2 ml-48">
-                {formattedBookingDate} GMT+4
-              </h5>
-            </div>
-            <div className=" flex-vc mb-24">
-              <h4>BOOKING NO</h4>
-              <h5 className="caption-1-regular-gray2 ml-68">
-                {ticketData.bookingNumber}
-              </h5>
-            </div>
-            <div className="flex-vc  mb-40">
-              <h4>BOOKING TYPE </h4>
-              <h5 className="caption-1-regular-gray2 ml-76">
-                {ticketData.bookingType}
-              </h5>
-            </div>
-            <div className="flex-vc  mb-40">
-              <div className="flex-vc">
-                <h4>TOTAL PRICE </h4>
-                <h5 className="caption-1-regular-gray2 ml-24">
-                  {ticketData.totalPrice}
+    <div className="py-92 container">
+      <div
+        className="print-ticket "
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "end",
+        }}
+      >
+        <button onClick={handlePrint} className="button button-primary mb-24">
+          Print ticket
+        </button>
+        <div className="mb-24 " ref={componentRef}>
+          {ticketData?.attendees?.map((data, idx) => {
+            return (
+              <div
+                className="print-ticket-grid print-ticket-container mb-24 "
+                key={idx}
+              >
+                <h2> Ticket </h2>
+                {/* <div className="pl-40 print-ticket-content"> */}
+                <h2 className="mb-24 print-ticket-content">
+                  {ticketData?.conference?.title
+                    ? ticketData?.conference?.title
+                    : "Ticket title"}
+                </h2>
+                <h4 className="py-10 print-ticket-text-1">NAME </h4>
+                <h5 className="caption-1-regular-gray2 py-10 print-ticket-text-2">
+                  {`${data.firstName}  ${data.lastName}`}
                 </h5>
-              </div>
-              <div className="flex-vc ml-80">
-                <h4>CREDITS </h4>
-                <h5 className="caption-1-regular-gray2 ml-24">
-                  {" "}
-                  {ticketData?.conference?.credits?.length > 0
-                    ? `${ticketData?.conference?.credits[0]?.quantity} credits`
-                    : "Credits not added"}
+                <h4 className="py-10 print-ticket-text-1">START DATE </h4>
+                <h5 className="caption-1-regular-gray2 py-10 print-ticket-text-2">
+                  {startDate} GMT+4
                 </h5>
+                <h4 className="py-10 print-ticket-text-1">END DATE</h4>
+                <h5 className=" caption-1-regular-gray2 py-10 print-ticket-text-2">
+                  {endDate} GMT+4
+                </h5>
+                <h4 className="py-10 print-ticket-text-1">LOCATION</h4>
+                <h5 className="caption-1-regular-gray2 py-10 print-ticket-text-2">
+                  {getLocationString()}
+                </h5>
+                <h4 className="py-10 print-ticket-text-1">BOOKING DATE</h4>
+                <h5 className="caption-1-regular-gray2 py-10 print-ticket-text-2">
+                  {bookingDate} GMT+4{" "}
+                </h5>
+
+                <h4 className="mr-52 print-ticket-text-1 py-10">BOOKING NO </h4>
+                <h5 className="caption-1-regular-gray2 py-10">
+                  {ticketData?.bookingNumber}
+                </h5>
+
+                <div className="flex-vc">
+                  <h4 className="mr-18 text-center py-10"> BASE PRICE </h4>
+                  <h5 className="caption-1-regular-gray2 py-10">
+                    {data.originalPrice === 0 ? "FREE" : data.originalPrice}
+                  </h5>
+                </div>
+                <div className="flex-vc">
+                  <h4 className="mr-18">TOTAL TICKET PRICE </h4>
+                  <h5 className="caption-1-regular-gray2 py-10">
+                    {data.price === 0 ? "FREE" : data.price}
+                  </h5>
+                </div>
               </div>
-              <div className="ml-80">
-                <h5 className="caption-1-regular-gray2 ">TOTAL TICKETS </h5>
-                <p className="avenir-heavy-18">
-                  {ticketData?.tickets?.map((item) => {
-                    return `${item.quantity} x ${item.ticket?.name}`;
-                  })}
-                </p>
-              </div>
-            </div>
-          </div>
+              // </div>
+            );
+          })}
         </div>
+        <button onClick={handlePrint} className="button button-primary  ">
+          Print ticket
+        </button>
       </div>
-      <button onClick={handlePrint} className="button button-primary">
-        Print ticket
-      </button>
     </div>
   );
 };

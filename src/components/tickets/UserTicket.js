@@ -77,25 +77,26 @@ export default function UserTicket({ ticketData, setOpenModal }) {
     }
   };
 
-  const printTicket = (url, data) => {
-    localStorage.setItem("ticketData", JSON.stringify(data));
-    window.open(url, "_blank");
-    ReactDOM.createPortal(
-      <PrintTicket />,
-      document.getElementById("printTicket")
-    );
+  const printTicket = (url, id) => {
+    localStorage.setItem("ticketData", JSON.stringify(id));
+    window.open(url);
+  };
+
+  const printReceipt = (url, id) => {
+    localStorage.setItem("receiptData", JSON.stringify(id));
+    window.open(url);
   };
 
   return (
     <>
-      <div className="user-ticket-card position-relative">
+      <div className="user-ticket-card">
         <div
           onClick={() => {
             setOpenModalX(true);
             setIsLoading(true);
             getBookingDetails(ticketData?._id);
           }}
-          className="pt-20 pl-25 mb-11"
+          className="p-16"
         >
           <h4>
             {ticketData?.conference?.title
@@ -154,11 +155,16 @@ export default function UserTicket({ ticketData, setOpenModal }) {
           </div>
           <div className="user-ticket-btn   flex-vchc ">
             <ReceiptIcon className="icon-button" fill="#fff" />
-            <p className="ml-4 avenir-roman-18 ">Print Receipt</p>
+            <p
+              className="ml-4 avenir-roman-18 "
+              onClick={() => printReceipt("/print-receipt", ticketData._id)}
+            >
+              Print Receipt
+            </p>
           </div>
           <div
             className="user-ticket-btn user-ticket-print flex-vchc "
-            onClick={() => printTicket("/print-ticket", ticketData)}
+            onClick={() => printTicket("/print-ticket", ticketData._id)}
           >
             <ReceiptIcon className="icon-button" fill="#fff" />
             <p className="ml-4 avenir-roman-18 ">Print Ticket</p>

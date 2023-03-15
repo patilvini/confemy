@@ -1,4 +1,7 @@
+import { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+
 import { formatInTimeZone } from "date-fns-tz";
 import enGB from "date-fns/locale/en-GB";
 
@@ -9,29 +12,57 @@ import RedirectIcon from "../icons/RedirectIcon";
 import ResendIcon from "../icons/ResendIcon";
 import ReceiptIcon from "../icons/ReceiptIcon";
 import PriceIcon from "../icons/PriceIcon";
-import api from "../../utility/api";
-import { alertAction } from "../../redux/alert/alertAction";
 
-export default function BookingDetails({ bookingDetails }) {
+import { alertAction } from "../../redux/alert/alertAction";
+import api from "../../utility/api";
+
+export default function Receipt() {
+  const [receiptData, setReceiptData] = useState("");
+  const componentRef = useRef();
+  let ticketID = JSON.parse(localStorage.getItem("receiptData"));
   const dispatch = useDispatch();
 
-  const startDateObj = new Date(bookingDetails?.conference?.startDate);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: "Print The Ticket",
+  });
+
+  const getBookingDetails = async (bookingId) => {
+    try {
+      let { data } = await api.get(`/conferences/bookings/${bookingId}`);
+      setReceiptData(data.data.bookingDetails);
+    } catch (err) {
+      dispatch(alertAction(err.response.data.message, "danger"));
+    }
+  };
+
+  const startDateObj = new Date(receiptData?.conference?.startDate);
   let formattedStartDate;
-  if (startDateObj && bookingDetails?.conference?.timezone) {
+  if (startDateObj && receiptData?.conference?.timezone) {
     formattedStartDate = formatInTimeZone(
       startDateObj,
-      bookingDetails?.conference?.timezone,
+      receiptData?.conference?.timezone,
+      "MMM-dd-yyyy, HH:mm aa",
+      { locale: enGB }
+    );
+  }
+  const endtDateObj = new Date(receiptData?.conference?.endDate);
+  let formattedEndtDate;
+  if (endtDateObj && receiptData?.conference?.timezone) {
+    formattedEndtDate = formatInTimeZone(
+      endtDateObj,
+      receiptData?.conference?.timezone,
       "MMM-dd-yyyy, HH:mm aa",
       { locale: enGB }
     );
   }
 
   let formattedBookingDate;
-  const bookingDateObj = new Date(bookingDetails?.bookingDate);
-  if (bookingDateObj && bookingDetails?.conference?.timezone) {
+  const bookingDateObj = new Date(receiptData?.bookingDate);
+  if (bookingDateObj && receiptData?.conference?.timezone) {
     formattedBookingDate = formatInTimeZone(
       bookingDateObj,
-      bookingDetails?.conference?.timezone,
+      receiptData?.conference?.timezone,
       "MMM-dd-yyyy, HH:mm aa",
       { locale: enGB }
     );
@@ -39,142 +70,147 @@ export default function BookingDetails({ bookingDetails }) {
 
   const getLocationString = () => {
     let locationStrig = "Location";
-    if (bookingDetails?.conference?.mode?.length > 0) {
+    if (receiptData?.conference?.mode?.length > 0) {
       if (
-        bookingDetails?.conference?.mode?.includes("venue") &&
-        bookingDetails?.conference?.location
+        receiptData?.conference?.mode?.includes("venue") &&
+        receiptData?.conference?.location
       ) {
-        locationStrig = bookingDetails?.conference?.location;
+        locationStrig = receiptData?.conference?.location;
       }
 
-      if (bookingDetails?.conference?.mode?.includes("onlineConf")) {
+      if (receiptData?.conference?.mode?.includes("onlineConf")) {
         locationStrig = "Online";
       }
 
       if (
-        bookingDetails?.conference?.mode?.includes("venue") &&
-        bookingDetails?.conference?.mode?.includes("onlineConf")
+        receiptData?.conference?.mode?.includes("venue") &&
+        receiptData?.conference?.mode?.includes("onlineConf")
       ) {
-        locationStrig = `${bookingDetails?.conference?.location} & Online`;
+        locationStrig = `${receiptData?.conference?.location} & Online`;
       }
     }
     return locationStrig;
   };
-
-  const resendTicket = async (bookingId) => {
-    try {
-      const response = await api.get(`attendees/bookings/${bookingId}`);
-      dispatch(alertAction(response.data.message, "success"));
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
-  const printTicket = (url, id) => {
-    localStorage.setItem("ticketData", JSON.stringify(id));
-    window.open(url);
-  };
-
-  const printReceipt = (url, id) => {
-    localStorage.setItem("receiptData", JSON.stringify(id));
-    window.open(url);
-  };
+  useEffect(() => {
+    getBookingDetails(ticketID);
+  }, [ticketID]);
 
   return (
-    <>
-      <div className="ut-modal-wrap">
-        <div className="flex-vc">
-          <RedirectIcon />
-          <span
-            style={{
-              fontSize: "2rem",
-              color: "#55A0FA",
-            }}
-            className="ml-10"
-          >
-            Preview
-          </span>
-        </div>
+    <div
+      className="container p-92"
+      style={{ display: "flex", flexDirection: "column", alignItems: "end" }}
+    >
+      <button onClick={handlePrint} className="button button-primary mb-24">
+        Print ticket
+      </button>
+      <div
+        ref={componentRef}
+        className="mb-24 p-24"
+        style={{ border: "1px solid black", width: "100%" }}
+      >
+        <h1>Ticket Details</h1>
         <h4 className="mt-21 mb-12">
-          {bookingDetails?.conference
-            ? bookingDetails?.conference?.title
+          Ticket :{" "}
+          {receiptData?.conference
+            ? receiptData?.conference?.title
             : "Ticket title"}
         </h4>
-        <p className="caption-2-regular-gray3">
+
+        <p className="caption-2-regular-gray3 mb-16">
           <span className="caption-1-heavy-cblack">Booking number : </span>
-          <span>{bookingDetails?.bookingNumber} </span>
+          <span>{receiptData?.bookingNumber} </span>
           <span className="caption-1-heavy-cblack ml-12">Booking Date : </span>
           <span>{formattedBookingDate}</span>
+        </p>
+        <p className="caption-2-regular-gray3 ">
+          <span className="caption-1-heavy-cblack">Booking Type : </span>
+          <span>{receiptData?.bookingType} </span>
         </p>
 
         <div className="pt-16">
           <div className="flex-vc  mb-12">
             <DateIcon className="icon-sm mr-12" />
             <span className="caption-2-regular-gray3">
-              {`${formattedStartDate} GMT+4`}
+              Start Date : {`${formattedStartDate} GMT+4`}
+            </span>
+          </div>
+          <div className="flex-vc  mb-12">
+            <DateIcon className="icon-sm mr-12" />
+            <span className="caption-2-regular-gray3">
+              End Date : {`${formattedEndtDate} GMT+4`}
             </span>
           </div>
           <div className="flex-vc  mb-12">
             <LocationIcon className="icon-sm mr-12" />
             <span className="caption-2-regular-gray3">
-              {" "}
-              {getLocationString()}
+              Location : {getLocationString()}
             </span>
           </div>
           <div className="flex-vc  mb-12">
             <CreditsIcon className="icon-sm mr-12" />
             <span className="caption-2-regular-gray3">
-              {bookingDetails?.conference?.credits?.length > 0
-                ? `${bookingDetails?.conference?.credits[0]?.quantity} credits`
+              {receiptData?.conference?.credits?.length > 0
+                ? `${receiptData?.conference?.credits[0]?.quantity} credits`
                 : "Credits not offered"}
             </span>
           </div>
+          {/* <div className="flex-vc  mb-12">
+            <PriceIcon className="icon-sm mr-12" />
+            <span className="caption-2-regular-gray3">
+              Base Price :{" "}
+              {receiptData?.conference?.basePrice === 0
+                ? "FREE"
+                : receiptData?.conference?.basePrice + "/-"}
+            </span>
+          </div> */}
           <div className="flex-vc  mb-12">
             <PriceIcon className="icon-sm mr-12" />
             <span className="caption-2-regular-gray3">
               Total Price :{" "}
-              {bookingDetails?.totalPrice === 0
+              {receiptData?.totalPrice === 0
                 ? "FREE"
-                : bookingDetails?.totalPrice + "/-"}
+                : receiptData?.totalPrice + "/-"}
             </span>
           </div>
         </div>
         <div>
-          {bookingDetails?.attendees?.map((guest, idx) => {
-            console.log("object,", bookingDetails);
+          {receiptData?.attendees?.map((guest, idx) => {
             return (
               <div key={guest._id}>
                 <h4 className="mb-10 mt-24">{`Guest ${idx + 1}`}</h4>
                 <div className="caption-2-regular-gray3">
-                  <div className="flex-vc">
+                  <div className="flex-vc mb-10">
                     <p className="caption-1-heavy-cblack my-6">{`First Name : `}</p>
                     <p className="ml-10">{guest.firstName}</p>
                   </div>
-                  <div className="flex-vc">
+                  <div className="flex-vc mb-10">
                     <p className="caption-1-heavy-cblack ">{`Last Name : `}</p>
                     <p className="ml-10">{guest.lastName}</p>
                   </div>
-                  <div className="flex-vc">
+                  <div className="flex-vc mb-10">
                     <p className="caption-1-heavy-cblack mt-6">Email : </p>
                     <p className="ml-10">{guest.user.email}</p>
                   </div>
                 </div>
-                <div className="mt-6 caption-2-regular-gray3">
-                  <p className="caption-1-heavy-cblack">Ticket Details </p>
-                  <div className="flex-vc mt-6">
+                <div className="mt-6 caption-2-regular-gray3 ">
+                  <p className="caption-1-heavy-cblack mb-10">
+                    Ticket Details{" "}
+                  </p>
+                  <div className="flex-vc mb-10">
                     <p className="mr-10">Ticket number :</p>
                     <p>{guest.registrationNumber}</p>
                   </div>
-                  <div className="flex-vc my-6">
+                  <div className="flex-vc mb-10">
                     <p className="mr-10">Ticket Name :</p>
                     <p>{guest.ticket.name}</p>
                   </div>
-                  <div className="flex-vc">
+                  <div className="flex-vc mb-10">
                     <p className="mr-10">Ticket price :</p>
 
                     <p>
                       <span>
                         {guest.price > 0
-                          ? `${bookingDetails.orderCurrency} -`
+                          ? `${receiptData.orderCurrency} -`
                           : null}
                       </span>
                       <span>
@@ -183,12 +219,12 @@ export default function BookingDetails({ bookingDetails }) {
                       </span>
                     </p>
                   </div>
-                  <div className="flex-vc my-6">
+                  <div className="flex-vc mb-10">
                     <p className="mr-10">Service Charges :</p>
                     <p>
                       <span>
                         {guest.price > 0
-                          ? `${bookingDetails.orderCurrency} -`
+                          ? `${receiptData.orderCurrency} -`
                           : null}
                       </span>
                       <span>
@@ -204,7 +240,7 @@ export default function BookingDetails({ bookingDetails }) {
                     <p>
                       <span>
                         {guest.price > 0
-                          ? `${bookingDetails.orderCurrency} -`
+                          ? `${receiptData.orderCurrency} -`
                           : null}
                       </span>
                       <span> {guest.price > 0 ? guest.price : "FREE"}</span>
@@ -216,31 +252,10 @@ export default function BookingDetails({ bookingDetails }) {
           })}
         </div>
       </div>
-      <div className="grid-col-3 " style={{ columnGap: "1px" }}>
-        <div
-          className="user-ticket-btn user-ticket-resend flex-vchc"
-          onClick={() => resendTicket(bookingDetails._id)}
-        >
-          <ResendIcon className="icon-button" fill="#fff" />
-          <p className="ml-4 avenir-roman-18 ">Resend Tickets</p>
-        </div>
-        <div className="user-ticket-btn   flex-vchc ">
-          <ReceiptIcon className="icon-button" fill="#fff" />
-          <p
-            className="ml-4 avenir-roman-18 "
-            onClick={() => printReceipt("/print-receipt", bookingDetails._id)}
-          >
-            Print Receipt
-          </p>
-        </div>
-        <div
-          className="user-ticket-btn user-ticket-print flex-vchc "
-          onClick={() => printTicket("/print-ticket", bookingDetails._id)}
-        >
-          <ReceiptIcon className="icon-button" fill="#fff" />
-          <p className="ml-4 avenir-roman-18 ">Print Ticket</p>
-        </div>
-      </div>
-    </>
+
+      <button onClick={handlePrint} className="button button-primary mb-24">
+        Print ticket
+      </button>
+    </div>
   );
 }
