@@ -23,10 +23,9 @@ const options = [
 
 export default function CreditRequests() {
   const creditData = useSelector((state) => state.organizer.allCredits);
-  const [data, setData] = useState(creditData);
+  const [initialData, setInitialData] = useState(creditData);
   const [filterText1, setFilterText1] = useState("");
   const [filterText2, setFilterText2] = useState("");
-  const [orgFilter2, setOrgFilter2] = useState("");
   const [formData, setFormData] = useState({
     searchText: "",
   });
@@ -39,7 +38,6 @@ export default function CreditRequests() {
     (state) => state.myOrganizations.organizationsListForSelect
   );
   const dispatch = useDispatch();
-
   const options2 = [{ value: "user", label: "User" }, ...organizationsList];
 
   const onInputChange = (e) =>
@@ -71,45 +69,79 @@ export default function CreditRequests() {
     setFilterText1(value);
     let filtredData = creditData?.filter((item) => {
       if (value === "all") {
-        setfilter1(value);
-        return creditData;
-      }
-      if (value === "pending") {
-        if (item.creditStatus === 2) {
+        if (filterText2) {
+          if (item.conference.host === filterText2) {
+            return item;
+          }
+        } else {
           return item;
         }
       }
-      if (value === "approved") {
-        if (item.creditStatus === 1) {
+      if (value === "pending" && item.creditStatus === 2) {
+        if (filterText2) {
+          if (item.conference.host === filterText2) {
+            return item;
+          }
+        } else {
+          return item;
+        }
+      }
+      if (value === "approved" && item.creditStatus === 1) {
+        if (filterText2) {
+          if (item.conference.host === filterText2) {
+            return item;
+          }
+        } else {
           return item;
         }
       }
     });
-    setData(filtredData);
+    setInitialData(filtredData);
   };
   const filter2Data = (value) => {
-    console.log("value", value);
+    console.log("filter text --", value);
     setFilterText2(value);
-    let filtredData = data?.filter((item) => {
-      if (value === "") {
-        return data;
-      }
-      if (value === "user") {
-        setOrgFilter2("user");
-        if (filter1 === "all") {
-        }
-        if (item.conference.host === "user") {
-          return item;
-        }
-      }
-      if (value !== "user") {
-        if (value === item.conference.hostedBy.organization) {
-          return item;
-        }
-      }
-    });
-    setData(filtredData);
+    console.log("data", initialData);
+    let filtredData =
+      initialData.length === 0
+        ? creditData
+        : initialData?.filter((item) => {
+            console.log("conf", item.conference.host);
+            console.log("value----------", value);
+
+            if (value === "user" && item.conference.host === "user") {
+              console.log("value", value);
+              if (filterText1) {
+                console.log("1");
+                if (filterText1 === "pending" && item.creditStatus === 2) {
+                  return item;
+                } else if (
+                  filterText1 === "approved" &&
+                  item.creditStatus === 1
+                ) {
+                  console.log("2");
+                  return item;
+                } else {
+                  console.log("3");
+                  return item;
+                }
+              } else {
+                return item;
+              }
+            }
+            if (value !== "user") {
+              if (value === item.conference.hostedBy.organization) {
+                return item;
+              }
+            }
+          });
+    setInitialData(filtredData);
   };
+
+  //   const combineFilters = (...filters) => (item) => {
+  //     return filters.map((filter) => filter(item)).every((x) => x === true);
+  // };
+  // const filteredArray = creditData.filter(combineFilters(filter1Data, filter2Data));
 
   const getOrganizerCredits = async (userId) => {
     try {
@@ -118,16 +150,17 @@ export default function CreditRequests() {
       );
       if (response) {
         dispatch(loadAllOrganizerCreditsAction(response.data.data.allCredits));
-        setData(response.data.data.allCredits);
+        // setData(response.data.data.allCredits);
       }
     } catch (error) {
       dispatch(alertAction(error.response.data.message, "error"));
     }
   };
   const loadMyOrgnizations = async (id) => {
-    const url = `organizations/users/${id}?orgForConference=true`;
     try {
-      const response = await api.get(url);
+      const response = await api.get(
+        `organizations/users/${id}?orgForConference=true`
+      );
 
       if (response) {
         dispatch(
@@ -141,7 +174,7 @@ export default function CreditRequests() {
 
   useEffect(() => {
     loadMyOrgnizations(user._id);
-  }, [user._id]);
+  }, []);
 
   useEffect(() => {
     getOrganizerCredits(user._id);
@@ -213,7 +246,7 @@ export default function CreditRequests() {
             </tr>
           </thead>
           <tbody>
-            {searchData(data)?.map((data) => {
+            {searchData(initialData)?.map((data) => {
               return (
                 <tr key={data._id}>
                   <td>{`${data.firstName}  ${data.lastName}`}</td>
