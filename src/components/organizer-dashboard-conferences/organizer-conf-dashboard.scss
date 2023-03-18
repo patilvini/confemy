@@ -155,20 +155,6 @@
   border-radius: 0.4rem;
 }
 
-.earnings-table {
-  margin: 1rem 0 0 0;
-  font-family: Avenir-Roman;
-  display: grid;
-  grid-template-columns: 20% 40% 20% 20%;
-}
-
-.earnings-table-heading {
-  margin: 4.4rem 0 0 0;
-  display: grid;
-  grid-template-columns: 20% 40% 20% 20%;
-  background-color: $shade-1;
-  border-radius: 0.4rem;
-}
 
 .overview-table-item {
   // font-family: Avenir;
@@ -320,4 +306,119 @@
       }
     }
   }
+}
+
+.org-refund-table {
+  width: 100%;
+  border-spacing: 0;
+  @include avenir-heavy-18;
+  color: $gray-3;
+  thead {
+    tr {
+      background-color: $shade-1;
+      th {
+        padding: 16px;
+        text-align: left;
+        &:last-child {
+          text-align: left;
+        }
+      }
+    }
+  }
+  tbody {
+    td {
+      padding: 16px;
+      text-align: left;
+      color: $gray-2;
+    }
+
+    tr {
+      & > td:nth-child(5n + 5) {
+        text-align: left;
+      }
+    }
+  }
+}
+.earnings-card{
+  width: 100%;
+  // height: rem;
+  border: 1px solid $shade-1;
+  text-align: center;
+
+  padding: 1.6rem;
+}
+
+.earnings-btn{
+  width: 19rem;
+  height: 4.8rem;
+  border: 1px solid $shade-1;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.earnings-table {
+  width: 100%;
+  border-spacing: 0;
+  @include avenir-heavy-18;
+  color: $gray-3;
+  thead {
+    tr {
+      background-color: $shade-1;
+      th {
+        padding: 16px;
+        text-align: left;
+        &:last-child {
+          text-align: left;
+        }
+        &:nth-child(4n+4){
+          text-align: right;
+        }
+        &:nth-child(4n+5){
+          text-align: right;
+        }
+      }
+    }
+  }
+  tbody {
+    td {
+      padding: 16px;
+      text-align: left;
+      color: $gray-2;
+     
+      &:nth-child(5n + 3) {
+        text-align: left;
+        max-width: 200px;
+        overflow: hidden;
+
+      }
+      &:nth-child(5n + 4) {
+        text-align: right;
+    
+      }
+      &:nth-child(5n + 5) {
+        text-align: right;
+    
+      }
+ 
+    }
+
+    tr {
+      & > td:nth-child(6n + 6) {
+        text-align: left;
+
+      }
+      
+    }
+  }
+}
+
+.refund-approve-btn{
+  width:180px;
+  height: 50px;
+  background-color: $accent;
+  border: 1px solid $accent;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  padding: 4px 8px;
 }

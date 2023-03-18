@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import { useDropzone } from "react-dropzone";
 
 import SearchIcon from "../icons/SearchIcon";
-import CloseIcon from "../icons/CloseIcon";
 
 import SelectFormType3 from "../reselect/SelectFormType3";
 import api from "../../utility/api";
@@ -99,43 +98,62 @@ export default function CreditRequests() {
     setInitialData(filtredData);
   };
   const filter2Data = (value) => {
-    console.log("filter text --", value);
     setFilterText2(value);
-    console.log("data", initialData);
-    let filtredData =
-      initialData.length === 0
-        ? creditData
-        : initialData?.filter((item) => {
-            console.log("conf", item.conference.host);
-            console.log("value----------", value);
+    if (initialData.length === 0) {
+      console.log("initial val");
+      let filtredData = creditData?.filter((item) => {
+        if (value === "user" && item.conference.host === "user") {
+          if (filterText1) {
+            if (filterText1 === "pending" && item.creditStatus === 2) {
+              console.log("2");
+              return item;
+            } else if (filterText1 === "approved" && item.creditStatus === 1) {
+              console.log("2");
+              return item;
+            } else {
+              console.log("3");
+              return item;
+            }
+          } else {
+            return item;
+          }
+        }
+        if (value !== "user") {
+          if (value === item.conference.hostedBy.organization) {
+            return item;
+          }
+        }
+      });
+      setInitialData(filtredData);
+    } else {
+      let filtredData = initialData?.filter((item) => {
+        console.log("conf", item.conference.host);
 
-            if (value === "user" && item.conference.host === "user") {
-              console.log("value", value);
-              if (filterText1) {
-                console.log("1");
-                if (filterText1 === "pending" && item.creditStatus === 2) {
-                  return item;
-                } else if (
-                  filterText1 === "approved" &&
-                  item.creditStatus === 1
-                ) {
-                  console.log("2");
-                  return item;
-                } else {
-                  console.log("3");
-                  return item;
-                }
-              } else {
-                return item;
-              }
+        if (value === "user" && item.conference.host === "user") {
+          console.log("value", value);
+          if (filterText1) {
+            console.log("1");
+            if (filterText1 === "pending" && item.creditStatus === 2) {
+              return item;
+            } else if (filterText1 === "approved" && item.creditStatus === 1) {
+              console.log("2");
+              return item;
+            } else {
+              console.log("3");
+              return item;
             }
-            if (value !== "user") {
-              if (value === item.conference.hostedBy.organization) {
-                return item;
-              }
-            }
-          });
-    setInitialData(filtredData);
+          } else {
+            return item;
+          }
+        }
+        if (value !== "user") {
+          if (value === item.conference.hostedBy.organization) {
+            return item;
+          }
+        }
+      });
+      setInitialData(filtredData);
+    }
   };
 
   //   const combineFilters = (...filters) => (item) => {
