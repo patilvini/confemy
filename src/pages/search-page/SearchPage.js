@@ -38,6 +38,7 @@ export default function SearchPage() {
 
   const { state } = useLocation();
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [showRightArrow, setShowRightArrow] = useState(false);
 
   //  get utc date for location timezone
   let timezone;
@@ -374,23 +375,31 @@ export default function SearchPage() {
         )}
       </div>
       <div className="pagination caption-2-regular-gray3 ">
-        <span
-          onClick={() => {
-            if (active === 1) {
-              setActive(search.conferences.length);
-            } else {
-              setActive(active - 1);
-            }
-          }}
-        >
-          &laquo;
-        </span>
+        {showRightArrow ? (
+          <span
+            onClick={() => {
+              if (active === 1) {
+                setActive(search.conferences.length);
+              } else {
+                setActive(active - 1);
+              }
+            }}
+          >
+            &laquo;
+          </span>
+        ) : null}
         {search.conferences?.length > 0 &&
           search?.conferences.map((val, idx) => {
             return (
               <span
                 className={active === idx + 1 ? "active" : ""}
-                onClick={() => setActive(idx + 1)}
+                onClick={() => {
+                  if (active !== 1) {
+                    console.log("active", active);
+                    setShowRightArrow(true);
+                  }
+                  setActive(idx + 1);
+                }}
               >
                 {idx + 1}
               </span>

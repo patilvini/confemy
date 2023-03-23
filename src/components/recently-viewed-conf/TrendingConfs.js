@@ -50,7 +50,7 @@ function TrendingConfs() {
   return (
     <section className="bg-background conf-display recently-viewed-confs">
       <div>
-        <h2>Trending Conferences</h2>
+        <h2 className="trending-conf-title">Trending Conferences</h2>
         <div className="recently-viewed-confs">
           <Carousel
             // swipeable={true}
