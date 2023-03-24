@@ -59,8 +59,24 @@ h3 {
 // h4 = Subheading in zeplin project
 
 h4 {
+  font-family: Avenir-Heavy;
   font-size: 20px;
   font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.01px;
+}
+
+.avenir-heavy-18 {
+  font-family: Avenir-Heavy;
+  font-size: 18px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: 0.2px;
+  color: $gray-3;
 }
 
 .body-bold {
@@ -79,6 +95,11 @@ h4 {
 .caption-1-regular-gray3 {
   @include caption-1-regular;
   color: $gray-3;
+}
+
+.caption-1-regular-gray2 {
+  @include caption-1-regular;
+  color: $gray-2;
 }
 
 .caption-1-regular-cblack {
@@ -101,9 +122,19 @@ h4 {
   color: $primary;
 }
 
+.caption-1-heavy-cblack {
+  @include caption-1-heavy;
+  color: $confemy-black;
+}
+
 .caption-1-heavy-gray3 {
   @include caption-1-heavy;
   color: $gray-3;
+}
+
+.caption-1-heavy-gray2 {
+  @include caption-1-heavy;
+  color: $gray-2;
 }
 
 .caption-2-bold-cblack {
@@ -124,6 +155,10 @@ h4 {
 .caption-3 {
   font-family: Avenir-Roman;
   font-size: 12px;
+}
+
+.section-title-1 {
+  @include Section-title-1
 }
 
 // Some other font styles
@@ -149,4 +184,9 @@ h4 {
   line-height: 2.4rem;
   letter-spacing: 0.2px;
   color: $gray-3;
+}
+
+.editor-text {
+  font-size: medium;
+  line-height: 1.75;
 }

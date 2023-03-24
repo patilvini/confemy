@@ -1,9 +1,11 @@
+@use "./utility/media.mixins.scss" as media;
 @import "./utility/utility.styles.scss";
 @import "./utility/form.styles.scss";
 @import "./utility/font.styles.scss";
 @import "./utility/button.styles.scss";
 @import "./utility/images.styles.scss";
 @import "./utility/confCard.styles.scss";
+
 
 /* Universal set up */
 
@@ -83,6 +85,7 @@ a {
   min-height: 100vh;
   margin: 0 auto;
   overflow: hidden;
+  background-color: $background;
 }
 
 .container-offSidemenu {
@@ -174,7 +177,7 @@ a {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: auto;
-}
+  }
 
 // common classes
 
@@ -186,6 +189,14 @@ a {
   padding-left: 9.7rem;
   padding-right: 9.7rem;
   padding-bottom: 7rem;
+  @media screen and (max-width:320px) {
+    padding: 2.2rem;
+    
+  }
+  @media screen and (max-width: 500px) and (min-width: 350px) {
+    padding: 2rem
+    
+  }
 }
 
 .position-relative {
@@ -194,6 +205,10 @@ a {
 
 .display-none {
   display: none;
+}
+
+.visibility-hidden {
+  visibility: hidden;
 }
 
 .margin-0-auto {
@@ -364,6 +379,30 @@ a {
   overflow: auto;
 }
 
+.modalx-body {
+  display: flex;
+  min-width: 36rem;
+  max-width: 80%;
+  max-height: 80%;
+  flex-direction: column;
+  overflow: auto;
+  background-color: white;
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
+}
+
+.modalx-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1.2rem 1.2rem 0rem;
+}
+
+.modalx-content {
+  width: 100%;
+  height: auto;
+}
+
 .white-modal {
   position: relative;
   border-radius: 16px;
@@ -374,7 +413,7 @@ a {
 .modal-form-wrapper {
   width: 80%;
   margin: 0 auto;
-  padding: 56px 0 48px;
+  padding-bottom: 4.8rem;
 
   h2 {
     text-align: center;
@@ -535,38 +574,6 @@ $spaceamounts: (
 // transition classes
 .zero-height {
   height: 0px;
-}
-
-// using material UI breakpoints for differnet screen sizes.
-
-@mixin small() {
-  @media only screen and (max-width: 600px) {
-    @content;
-  }
-}
-
-@mixin medium() {
-  @media only screen and (min-width: 601px) and (max-width: 960px) {
-    @content;
-  }
-}
-
-@mixin large() {
-  @media only screen and (min-width: 961px) and (max-width: 1280px) {
-    @content;
-  }
-}
-
-@mixin xlarge {
-  @media only screen and (min-width: 1281px) and (max-width: 1920px) {
-    @content;
-  }
-}
-
-@mixin xxlarge {
-  @media only screen and (min-width: 1921px) {
-    @content;
-  }
 }
 
 // drag box

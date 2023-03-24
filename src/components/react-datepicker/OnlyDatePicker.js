@@ -3,7 +3,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./onlyDatePicker.styles.scss";
 
 export default function OnlyDatepicker({
-  id,
   name,
   selected,
   onChange,

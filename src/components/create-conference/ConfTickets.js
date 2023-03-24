@@ -1,10 +1,7 @@
-import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
-import * as yup from "yup";
-import TextError from "../formik/TextError";
 
 import CreateTickets from "./CreateTickets";
 
@@ -13,8 +10,6 @@ import { alertAction } from "../../redux/alert/alertAction";
 
 import api from "../../utility/api";
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
-
-const validationSchema = yup.object().shape({});
 
 export default function ConfTickets() {
   const newConference = useSelector((state) => state.conference.newConference);
@@ -37,7 +32,6 @@ export default function ConfTickets() {
     const url = "conferences/step5";
     try {
       const response = await api.post(url, formData);
-      console.log("step5 res", response);
       dispatch(createConferenceAction(response.data.data.conference));
       navigate("/dashboard/create-conf/step-6");
     } catch (err) {
@@ -69,7 +63,10 @@ export default function ConfTickets() {
           />
         </div>
         <div className="mb-72">
-          <SubmitCancelButtonWithLoader isSubmitting={formik.isSubmitting} />
+          <SubmitCancelButtonWithLoader
+            isSubmitting={formik.isSubmitting}
+            onCancel={() => formik.resetForm({})}
+          />
         </div>
       </form>
     </div>

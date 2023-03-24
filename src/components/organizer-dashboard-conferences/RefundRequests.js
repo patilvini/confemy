@@ -1,150 +1,180 @@
-import { useState } from "react";
-import SearchBar from "../search/SearchBar";
-import Select from "react-select";
-
-
-const confemyWhite = "#ffffff";
-const confemyBlac = "#000000";
-const shade1 = "#ced9de";
-const shade2 = "#ecf0f2";
-const shade3 = "#fcfdfd";
-const shade4 = "#aabdc7";
-
-export default function RefundRequests() {
-  const [filtered, setFiltered] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
-
-
-
-
-  const customStyles = {
-    control: (styles, state) => {
-      // console.log("styles from control", styles);
-      // console.log("control state", state);
-      return {
-        ...styles,
-        height: "4.8rem",
-        backgroundColor: confemyWhite,
-        border: `1px solid ${confemyBlac}`,
-        // padding: "13px 0px 13px 16px",
-        fontFamily: "Avenir-Roman",
-        fontSize: 16,
-  
-        ":hover": {
-          border: state.isFocused ? "1px solid #55a0fa" : `solid 3px ${shade4}`,
-        },
-  
-        ":focus": {
-          border: "1px solid #55a0fa",
-        },
-      };
-    },
-  
-    placeholder: (provided) => ({
-      ...provided,
-      // fontSize: "1em",
-      // color: confemyBlac,
-      // fontWeight: 400,
-    }),
-  
-    option: (provided, state) => {
-      return {
-        ...provided,
-        color: confemyBlac,
-        backgroundColor: state.isSelected ? shade2 : "#fff",
-        fontSize: 16,
-        fontFamily: "Avenir-Roman",
-        padding: 16,
-      };
-    },
-  
-    dropdownIndicator: (provided, state) => {
-      // console.log("DownChevron provided", provided);
-      // console.log("DownChevron state", state);
-      return {
-        ...provided,
-        color: shade1,
-        ":hover": {
-          color: shade4,
-        },
-      };
-    },
-  };
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import api from "../../utility/api";
+import SearchIcon from "../icons/SearchIcon";
+import SelectFormType3 from "../reselect/SelectFormType3";
+import { alertAction } from "../../redux/alert/alertAction";
 
 const options = [
-  { value: "Physician", label: "Physician" },
-  { value: "Nurse", label: "Nurse" },
-  { value: "Pharmacist", label: "Pharmacist" },
-  { value: "Example 1", label: "Example 1" },
-  { value: "Example 2", label: "Example 2" },
+  { label: "All", value: "all" },
+  { label: "Pending", value: "pending" },
+  { label: "Approved", value: "approved" },
 ];
 
-  const a = [0, 0, 0];
+export default function RefundRequests() {
+  const [formData, setFormData] = useState({
+    searchText: "",
+  });
+  const [filterText1, setFilterText1] = useState("");
+  const [price, setPrice] = useState(null);
+  const [refunds, setRefunds] = useState([]);
+
+  const { searchText } = formData;
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+
+  const onInputChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const searchData = (data) => {
+    if (data) {
+      const dataSet = data?.filter((item) => {
+        if (
+          item.firstName
+            .toLowerCase()
+            .indexOf(searchText.toLocaleLowerCase()) >= 0
+        ) {
+          return item;
+        }
+      });
+      return dataSet;
+    }
+  };
+
+  const filterData = (data) => {
+    let filteredData = data?.filter((item) => {
+      if (filterText1 === "") {
+        return item;
+      }
+      if (filterText1 === "all") {
+        return item;
+      }
+      if (filterText1 === "pending" && item.creditStatus === 2) {
+        return item;
+      }
+      if (filterText1 === "approved" && item.creditStatus === 1) {
+        return item;
+      }
+    });
+    return filteredData;
+  };
+
+  const handleChange = (data) => {
+    if (price <= data) {
+      dispatch(alertAction("Approved", "success"));
+    }
+    if (price > data) {
+      dispatch(
+        alertAction("Please select price less than actual price", "error")
+      );
+    }
+  };
+
+  const getRefundsData = async (userId) => {
+    try {
+      const response = await api.get(
+        `organizers/${userId}/conferences/refunds`
+      );
+      if (response) {
+        console.log("response", response);
+        setRefunds(response.data.data.refundDetails);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getRefundsData(user._id);
+  }, [user._id]);
+
   return (
-    <div className="dash-wrapper">
-      <h1 style={{marginRight:"2rem"}}>Refund Requests</h1>
-      <div className="opposite-grid">
-        
-      
-        
-        <div>
-          <SearchBar
-            onClear={() => setSearchValue("")}
-            setValue={(value) => {
-              setSearchValue(value);
-            }}
-            value={searchValue}
-            // data={data}
-          />
-        </div>
-
-        <div className="grid-item-right" style={{width:"89%", margin:"2rem 0rem 2rem 4rem", alignSelf:"center"}}>
-
-        <Select placeholder="Sort" width='200px' options={options} styles={customStyles}/>
-        </div>
-        
-      </div>
-
-      <div>
-        <div className="request-table-heading">
-          <div className="request-table-name">Name</div>
-          <div className="request-table-item">Conference</div>
-
-          <div className="request-table-item">Booked</div>
-
-          <div className="request-table-item">Registration #</div>
-          <div className="request-table-item">
-          
-            <button>Approve all</button>
+    <div>
+      <div className="flex-vc-sb">
+        <h1 className="mr-24">Refund Requests</h1>
+        <div className="flex-vc-sb ">
+          <div className="form-type-3 mr-4" style={{ width: "50%" }}>
+            <div className="position-relative ">
+              <input
+                type="text"
+                id="searchtickets"
+                placeholder="Search Credits"
+                name="searchText"
+                value={searchText}
+                onChange={onInputChange}
+              />
+              <i
+                className={
+                  searchText?.length > 0
+                    ? "display-none"
+                    : "conf-search-input-icon"
+                }
+              >
+                <SearchIcon width="2.4rem" height="2.4rem" />
+              </i>
+            </div>
+          </div>
+          <div style={{ width: "45%" }}>
+            <SelectFormType3
+              id="filterText1"
+              isClearable
+              isSearchable
+              name="filuterText1"
+              options={options}
+              onChange={(value) => setFilterText1(value?.value)}
+              value={filterText1}
+              placeholder="Filter"
+              isDisabled={false}
+              isMulti={false}
+            />
           </div>
         </div>
-
-        {a.map((item, index) => {
-          return (
-            <div className="request-table" key={index}>
-              <div className="request-table-name">Mohamad Ali Khan</div>
-              <div className="caption-2-regular-gray3 request-table-conf">
-                
-                  Future of innovation in medicines after COVID-19
-              
-              </div>
-
-              <div className="request-table-date">
-                
-                  OCT 21, 2021
-          
-              </div>
-
-              <div className="request-table-registration">
-                <p className="caption-2-regular-gray3">2164516123168</p>
-              </div>
-              <div className="request-table-item">
-                
-                <button className="button-green" >Approve Refund</button>
-              </div>
-            </div>
-          );
-        })}
+      </div>
+      <div className="mt-24">
+        <table className="org-refund-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Conference</th>
+              <th>Booked</th>
+              <th>Registration</th>
+              <th>Approve</th>
+            </tr>
+          </thead>
+          <tbody>
+            {searchData(filterData(refunds))?.map((val) => {
+              return (
+                <tr key={val._id}>
+                  <td>{`${val.firstName} ${val.lastName}`}</td>
+                  <td>
+                    {/* {val.conference.title} */}
+                    test 1234
+                  </td>
+                  <td>{val.bookedBy}</td>
+                  <td>#{val.registrationNumber}</td>
+                  <td>
+                    <div className="form-type-3 flex-vc">
+                      <div className="material-textfield">
+                        <input
+                          id="title"
+                          type="text"
+                          name="title"
+                          value={price}
+                          onChange={(e) => setPrice(e.target.value)}
+                          placeholder=" "
+                        />
+                      </div>
+                      <button
+                        className="refund-approve-btn ml-16"
+                        onClick={() => handleChange(val.price)}
+                      >
+                        Approve
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

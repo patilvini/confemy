@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-import Select, { components } from "react-select";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -14,12 +12,17 @@ import api from "../../utility/api";
 import SelectFormType1 from "../reselect/SelectFormType1";
 import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
-import { timezones, currencylist } from "../../utility/commonUtil";
+import { timezones } from "../../utility/commonUtil";
 import "./createConference.styles.scss";
 import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
 import { alertAction } from "../../redux/alert/alertAction";
 import CustomDatepicker from "../react-datepicker/CustomDatepicker";
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
+import {
+  loadCountryList,
+  loadStateList,
+  loadCityList,
+} from "../../utility/commonUtil";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required("Required"),
@@ -84,17 +87,21 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ConfBasicInfo() {
-  const [countryList, setCountryList] = useState([]);
-  const [stateList, setStateList] = useState([]);
-  const [cityList, setCityList] = useState([]);
+  // const [countryList, setCountryList] = useState([]);
+  // const [stateList, setStateList] = useState([]);
+  // const [cityList, setCityList] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const cssRef = useRef();
 
   const user = useSelector((state) => state.auth.user);
   const conference = useSelector((state) => state.conference);
   const { newConference } = conference;
   const organizationsListForSelect = useSelector(
     (state) => state.myOrganizations.organizationsListForSelect
+  );
+  const { countryList, stateList, cityList } = useSelector(
+    (state) => state.list
   );
 
   async function onSubmit(values, actions) {
@@ -139,11 +146,9 @@ export default function ConfBasicInfo() {
         zipcode,
       },
     };
-    console.log("formData", formData);
     try {
       const response = await api.post("conferences/step1", formData);
       if (response) {
-        console.log("submit step1 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         navigate("/dashboard/create-conf/step-2");
         dispatch(alertAction(response.data.message, "success"));
@@ -194,13 +199,8 @@ export default function ConfBasicInfo() {
       host: newConference?.host || "",
       organizationId: newConference?.hostedBy?.organization || "",
       startDate: apiStartDate || null,
-      // startDate: newDateToDisplay || null,
-      // startTime: jsStartTimeObj || null,
       endDate: apiEndDate || null,
-      // endDate: jsEndDateObj || null,
-      // endTime: jsEndTimeObj || null,
       timezone: newConference?.timezone || "",
-
       mode: newConference?.mode || [],
       venueName: newConference?.venueName || "",
       street1: newConference?.street1 || "",
@@ -230,68 +230,94 @@ export default function ConfBasicInfo() {
     }
   };
 
-  const loadCountryList = async () => {
-    const url = `venues/countryList`;
-    try {
-      const response = await api.get(url);
-      if (response) {
-        setCountryList(response.data.data.countries);
-        if (countryList) {
-          loadStateList(
-            countryList?.find(
-              (country) => country.label === newConference?.country
-            )?.countryId
-          );
-        }
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
+  // const loadCountryList = async () => {
+  //   const url = `venues/countryList`;
+  //   try {
+  //     const response = await api.get(url);
+  //     if (response) {
+  //       setCountryList(response.data.data.countries);
+  //       if (countryList) {
+  //         loadStateList(
+  //           countryList?.find(
+  //             (country) => country.label === newConference?.country
+  //           )?.countryId
+  //         );
+  //       }
+  //     }
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
 
-  const loadStateList = async (countryId) => {
-    const url = `venues/stateList?countryId=${countryId}`;
-    try {
-      const response = await api.get(url);
-      if (response) {
-        setStateList(response.data.data.states);
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
+  // const loadStateList = async (countryId) => {
+  //   const url = `venues/stateList?countryId=${countryId}`;
+  //   try {
+  //     const response = await api.get(url);
+  //     if (response) {
+  //       setStateList(response.data.data.states);
+  //     }
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
 
-  const loadCityList = async (stateId) => {
-    const url = `venues/cityList?stateId=${stateId}`;
-    try {
-      const response = await api.get(url);
-      if (response) {
-        setCityList(response.data.data.cities);
-      }
-    } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
-    }
-  };
+  // const loadCityList = async (stateId) => {
+  //   const url = `venues/cityList?stateId=${stateId}`;
+  //   try {
+  //     const response = await api.get(url);
+  //     if (response) {
+  //       setCityList(response.data.data.cities);
+  //     }
+  //   } catch (err) {
+  //     dispatch(alertAction(err.response.data.message, "danger"));
+  //   }
+  // };
 
   useEffect(() => {
     loadMyOrgnizations(user._id);
-    loadCountryList();
+    if (!countryList.length > 0) {
+      loadCountryList();
+    }
   }, [user._id]);
 
+  // useEffect(() => {
+  //   if (countryList.length > 0) {
+  //     const myCountryId = countryList.find(
+  //       (country) => country.value === newConference?.country
+  //     )?.countryId;
+  //     loadStateList(myCountryId);
+  //   }
+  // }, [countryList]);
+
+  // useEffect(() => {
+  //   if (stateList.length > 0) {
+  //     const myStateId = stateList.find(
+  //       (state) => state.value === newConference?.state
+  //     )?.stateId;
+  //     loadCityList(myStateId);
+  //   }
+  // }, [stateList]);
+
   useEffect(() => {
+    let myCountryId;
     if (countryList.length > 0) {
-      const myCountryId = countryList.find(
+      myCountryId = countryList.find(
         (country) => country.value === newConference?.country
       )?.countryId;
+    }
+    if (myCountryId) {
       loadStateList(myCountryId);
     }
   }, [countryList]);
 
   useEffect(() => {
+    let myStateId;
     if (stateList.length > 0) {
-      const myStateId = stateList.find(
+      myStateId = stateList.find(
         (state) => state.value === newConference?.state
       )?.stateId;
+    }
+    if (myStateId) {
       loadCityList(myStateId);
     }
   }, [stateList]);
@@ -369,9 +395,9 @@ export default function ConfBasicInfo() {
               )}
             </div>
             <div
-              className={`${
-                formik.values.host === "organization" ? "" : "display-none"
-              }`}
+            // className={`${
+            //   formik.values.host === "organization" ? "" : "display-none"
+            // }`}
             >
               <SelectFormType1
                 label="organizationId"
@@ -384,7 +410,6 @@ export default function ConfBasicInfo() {
                 value={formik.values.organizationId}
                 isDisabled={formik.values.host !== "organization"}
               />
-
               <div>
                 {formik.touched.organizationId &&
                   Boolean(formik.errors.organizationId) && (
@@ -621,7 +646,6 @@ export default function ConfBasicInfo() {
                     <SelectFormType1
                       options={countryList}
                       value={formik.values.country}
-                      isMulti={false}
                       onChange={(value) => {
                         if (formik.values.country !== value?.value) {
                           formik.setFieldValue("state", "");
@@ -658,7 +682,6 @@ export default function ConfBasicInfo() {
                     <ReloadableSelectFormType1
                       options={stateList}
                       value={formik.values.state}
-                      isMulti={false}
                       onChange={(value) => {
                         if (formik.values.state !== value?.value) {
                           formik.setFieldValue("city", "");
@@ -692,7 +715,6 @@ export default function ConfBasicInfo() {
                     <ReloadableSelectFormType1
                       options={cityList}
                       value={formik.values.city}
-                      isMulti={false}
                       onChange={(value) => {
                         formik.setFieldValue("city", value?.value);
                       }}
@@ -743,7 +765,10 @@ export default function ConfBasicInfo() {
             </div>
           </div>
           <div className="mb-72">
-            <SubmitCancelButtonWithLoader isSubmitting={formik.isSubmitting} />
+            <SubmitCancelButtonWithLoader
+              isSubmitting={formik.isSubmitting}
+              onCancel={() => formik.resetForm({})}
+            />
           </div>
         </form>
       </main>

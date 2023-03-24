@@ -4,31 +4,22 @@ import SearchIcon from "../icons/SearchIcon";
 import LogoDark from "../icons/LogoDark";
 import AuthDropdown from "../auth-dropdown/AuthDropdown";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import "./navbar.styles.scss";
-import ShoppingCart from "../auth-dropdown/ShoppingCart";
-import SettingsIcon from "../icons/SettingsIcon";
 import HamburgerIcon from "../icons/HamburgerIcon";
 import { useEffect, useRef, useState } from "react";
 import CloseMenu from "../icons/CloseMenu";
-import DropdownIcon from "../icons/DropdownIcon";
-import { set } from "date-fns";
-import BookingCart from "../booking/BookingCart";
+import LocationDropdown from "../location-dropdown/LocationDropdown";
 
 export default function PNavbar({ onClickOutside }) {
   const [menu, setMenuOpen] = useState(false);
   const auth = useSelector((state) => state.auth);
   const { isAuthenticated, user } = auth;
-  const [cart, setCartOpen] = useState(false);
-  const [authShow, setAuthShow] = useState(false);
+  const [showLocations, setShowLocations] = useState(false);
 
   const ref = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // console.log(event.target)
-      // console.log(ref)
-
       if (ref.current && !ref.current.contains(event.target)) {
         setMenuOpen(false);
         onClickOutside && onClickOutside();
@@ -45,15 +36,14 @@ export default function PNavbar({ onClickOutside }) {
   // },[])
 
   return (
-    <div className="navbar-container">
-      <div className="navbar-responsive">
+    <div className="navbar-container ">
+      <div className="navbar-responsive position-relative">
         <div className="navbar-left-item">
           <div className="logo-container">
             <Link to="/">
               <LogoDark className="logo" />
             </Link>
           </div>
-
           <div className="search-button-nav">
             <Link to="search-conference">
               <div className="search-box">
@@ -71,7 +61,6 @@ export default function PNavbar({ onClickOutside }) {
               >
                 Create Conference
               </Link>
-              <ShoppingCart />
               <AuthDropdown className={"auth-dropdown"} />
             </div>
           ) : (
@@ -98,12 +87,10 @@ export default function PNavbar({ onClickOutside }) {
             </div>
           )}
         </div>
-
         <div className="navbar-right-item">
           <div className="auth-cart">
             {isAuthenticated && user ? (
               <div className="flex">
-                <ShoppingCart />
                 <AuthDropdown className={"auth-dropdown-small"} />
               </div>
             ) : (
@@ -121,12 +108,15 @@ export default function PNavbar({ onClickOutside }) {
               </div>
             )}
           </div>
-
           <div className="location-flex">
-            <Link className="location" to="#!">
-              <LocationIcon className="nav-location-icon" />
-              <span className="location-text">Location</span>s
-            </Link>
+            <div
+              className="location"
+              onClick={() => setShowLocations((prev) => !prev)}
+            >
+              {/* <LocationIcon className="nav-location-icon" />
+              <span className="location-text">Location</span>s */}
+              <LocationDropdown />
+            </div>
           </div>
           <div className="hamburger-button">
             {!menu ? (
@@ -170,7 +160,6 @@ export default function PNavbar({ onClickOutside }) {
                 Create Conference
               </Link>
             </div>
-
             <div className="nav-item">
               <Link className="location-nav" to="#!">
                 <div className="flex-vc">

@@ -1,6 +1,5 @@
 import Select, { components } from "react-select";
 import PropTypes from "prop-types";
-import { formatRelative } from "date-fns";
 
 const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";
@@ -68,7 +67,6 @@ export default function SelectFormType3(props) {
     }),
 
     option: (provided, state) => {
-      console.log(provided);
       return {
         ...provided,
         color: confemyBlac,
@@ -124,7 +122,7 @@ export default function SelectFormType3(props) {
         placeholder={props.placeholder}
         // defaultValue={props.defaultValue}
 
-        isClearable
+        // isClearable
         isSearchable
         isDisabled={props.isDisabled}
         name={props.name}

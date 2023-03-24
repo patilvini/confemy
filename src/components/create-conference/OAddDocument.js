@@ -1,10 +1,5 @@
-import { useFormik } from "formik";
-import { useState } from "react";
-import { useDropzone } from "react-dropzone";
 import Dropzone from "react-dropzone-uploader";
-import Carousel from "react-multi-carousel";
 import { useDispatch, useSelector } from "react-redux";
-import * as yup from "yup";
 import { alertAction } from "../../redux/alert/alertAction";
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import api from "../../utility/api";
@@ -13,7 +8,6 @@ import DeleteIcon from "../icons/DeleteIcon";
 export default function AddDocument({ source, active }) {
   const dispatch = useDispatch();
   const conference = useSelector((state) => state.conference.newConference);
-  // console.log(conference);
   const conferenceId = useSelector(
     (state) => state.conference.newConference._id
   );
@@ -45,12 +39,10 @@ export default function AddDocument({ source, active }) {
         }
       );
 
-      console.log(r);
       dispatch(createConferenceAction(r.data.data.conference));
       dispatch(alertAction("Document deleted successfully", "success"));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
-      
     }
   };
 
@@ -107,7 +99,7 @@ export default function AddDocument({ source, active }) {
           }
         }
       } catch (err) {
-        console.log(err)
+        console.log(err);
         // dispatch(alertAction(err.response.message, "danger"));
       }
     }
@@ -133,7 +125,7 @@ export default function AddDocument({ source, active }) {
                           className="delete-button-icon"
                           onClick={() => deleteRec(item.Key)}
                         >
-                          <DeleteIcon/>
+                          <DeleteIcon />
                         </button>
                       </div>
                     </div>

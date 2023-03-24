@@ -43,12 +43,10 @@ export const loadOrganization = async (organizationId, userId) => {
   try {
     const response = await api.get(url);
     if (response) {
-      // console.log("get current organization call", response);
       store.dispatch(loadOrganizationAction(response.data.data.organization));
     }
   } catch (err) {
     if (err) {
-      console.log(err);
       store.dispatch(organizationErrorAction());
     }
   }

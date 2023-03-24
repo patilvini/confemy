@@ -2,8 +2,8 @@ import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import api from "../../utility/api";
 import CloseIcon from "../icons/CloseIcon";
-import { loadOrganization } from "./organizationUtil";
 import { loadOrganizationAction } from "../../redux/organization/organizationAction";
+import SettingsIcon from "../icons/SettingsIcon";
 
 import "./showOrganizers.styles.scss";
 
@@ -43,7 +43,12 @@ export default function ShowOrganizers({ organizers, organizationId }) {
             </div>
             <div className="grid-3rd-col">
               {org?.isAdmin ? (
-                <button className="button button-primary">Admin</button>
+                <div className="flex-vc">
+                  <i className="mr-4">
+                    <SettingsIcon className="icon-xs" />{" "}
+                  </i>
+                  <div className="body-regular-gray3 color-primary">Admin</div>
+                </div>
               ) : org?.active ? (
                 <button
                   onClick={() => removeOrganizer(org._id)}
@@ -58,7 +63,7 @@ export default function ShowOrganizers({ organizers, organizationId }) {
                   type="button"
                   className="social-delete-button"
                 >
-                  <CloseIcon className="icon-size" />
+                  <CloseIcon className="icon-size" fill="#000000" />
                 </button>
               )}
             </div>

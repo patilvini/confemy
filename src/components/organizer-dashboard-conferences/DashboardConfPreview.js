@@ -5,17 +5,12 @@ import api from "../../utility/api";
 
 export default function DashboardConfPreview() {
   const [data, setData] = useState();
-  const conf = useParams().id
-
-  console.log(conf)
+  const conf = useParams().id;
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const r = await api.get(
-          "/organizers/conferences/"+conf
-        );
-        console.log(r.data.data.conferenceDetails);
+        const r = await api.get("/organizers/conferences/" + conf);
         setData(r.data.data.conferenceDetails);
       } catch (err) {
         console.log(err);
@@ -86,16 +81,20 @@ export default function DashboardConfPreview() {
         <div
           style={{ textAlign: "left", marginLeft: "2rem" }}
           className="overview-table-item"
-        ><h4>
-Ticket Type
-        </h4>
-          
+        >
+          <h4>Ticket Type</h4>
         </div>
-        <div className="overview-table-item"><h4>Price</h4></div>
+        <div className="overview-table-item">
+          <h4>Price</h4>
+        </div>
 
-        <div className="overview-table-item"><h4>Sold</h4></div>
+        <div className="overview-table-item">
+          <h4>Sold</h4>
+        </div>
 
-        <div className="overview-table-item"><h4>Status</h4></div>
+        <div className="overview-table-item">
+          <h4>Status</h4>
+        </div>
       </div>
 
       {data?.tickets.map((item, index) => {
@@ -130,16 +129,19 @@ Ticket Type
           style={{ textAlign: "left", marginLeft: "2rem" }}
           className="overview-table-item"
         >
-          <h4>
-          Name
-          </h4>
-          
+          <h4>Name</h4>
         </div>
-        <div className="overview-table-item"><h4>Registration no.</h4></div>
+        <div className="overview-table-item">
+          <h4>Registration no.</h4>
+        </div>
 
-        <div className="overview-table-item"><h4>Booked</h4></div>
+        <div className="overview-table-item">
+          <h4>Booked</h4>
+        </div>
 
-        <div className="overview-table-item"><h4>Booking Status</h4></div>
+        <div className="overview-table-item">
+          <h4>Booking Status</h4>
+        </div>
       </div>
 
       {/* <div>

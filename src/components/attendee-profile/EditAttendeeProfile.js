@@ -55,7 +55,6 @@ function EditAttendeeProfile({
                   name="occupation"
                   value={occupation}
                   onChange={onInputChange}
-                  //   required
                 />
               </td>
             </tr>
@@ -68,7 +67,6 @@ function EditAttendeeProfile({
                   name="specialty"
                   value={specialty}
                   onChange={onInputChange}
-                  //   required
                 />
               </td>
             </tr>
@@ -93,7 +91,6 @@ function EditAttendeeProfile({
                   name="degrees"
                   value={degrees}
                   onChange={onInputChange}
-                  // required
                 />
               </td>
             </tr>

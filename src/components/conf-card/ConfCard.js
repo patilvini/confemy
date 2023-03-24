@@ -6,7 +6,6 @@ import DateIcon from "../icons/DateIcon";
 import LocationIcon from "../icons/LocationIcon";
 import CreditsIcon from "../icons/CreditsIcon";
 import LikeInactiveIcon from "../icons/LikeInactiveIcon";
-import LikeBlueIcon from "../icons/LikeBlueIcon";
 import PropTypes from "prop-types";
 
 export default function ConfCard({
@@ -15,6 +14,7 @@ export default function ConfCard({
   src,
   title,
   startDate,
+  endDate,
   timezone,
   credits,
   currency,
@@ -22,23 +22,19 @@ export default function ConfCard({
   confId,
 }) {
   const navigate = useNavigate();
-
   const getLocationString = () => {
     let locationStrig = "Location";
     if (mode?.length > 0) {
       if (mode?.includes("venue") && city) {
         locationStrig = city;
-        // console.log("venue", locationStrig);
       }
 
       if (mode?.includes("onlineConf")) {
         locationStrig = "Online";
-        // console.log("online", locationStrig);
       }
 
       if (mode?.includes("venue") && mode?.includes("onlineConf")) {
         locationStrig = `${city} & Online`;
-        // console.log("both", locationStrig);
       }
     }
     return locationStrig;
@@ -46,6 +42,9 @@ export default function ConfCard({
 
   let startDateInConfTz;
   let formattedStartDate;
+
+  let endDateInConfTz;
+  let formattedEndDate;
 
   if (startDate && timezone) {
     startDateInConfTz = utcToZonedTime(startDate, timezone);
@@ -58,10 +57,23 @@ export default function ConfCard({
     formattedStartDate = null;
   }
 
+  if (endDate && timezone) {
+    endDateInConfTz = utcToZonedTime(endDate, timezone);
+    formattedEndDate = format(endDateInConfTz, "MMM-dd-yyyy, HH:mm aa", {
+      timeZone: timezone,
+      locale: enGB,
+    });
+  } else {
+    endDateInConfTz = null;
+    formattedEndDate = null;
+  }
+
   return (
     <div className="conf-card">
       <div
-        onClick={() => navigate(`/search-conference/${confId}`)}
+        onClick={() => {
+          navigate(`/search-conference/${confId}`);
+        }}
         className="cc-img-container"
       >
         {src ? (
@@ -93,19 +105,28 @@ export default function ConfCard({
           <div className="confcard-trunc mt-8">
             <div className="flex-vc  mb-8">
               <DateIcon className="icon-xxs mr-8" />
+              <span className="caption-2-regular-gray3 mr-4">Start: </span>
               <span className="caption-2-regular-gray3  cc-truncitem-wrap">
                 {formattedStartDate}
               </span>
             </div>
             <div className="flex-vc  mb-8">
+              <DateIcon className="icon-xxs mr-8" />
+              <span className="caption-2-regular-gray3 mr-4">End: </span>
+              <span className="caption-2-regular-gray3  cc-truncitem-wrap">
+                {formattedEndDate}
+              </span>
+            </div>
+            <div className="flex-vc  mb-8">
               <LocationIcon className="icon-xxs mr-8" />
               <span className="caption-2-regular-gray3 cc-truncitem-wrap">
-                {getLocationString()}
+                Location: {getLocationString()}
               </span>
             </div>
             <div className="flex-vc  mb-8">
               <CreditsIcon className="icon-xxs mr-8" />
               <span className="caption-2-regular-gray3 cc-truncitem-wrap">
+                Credits:
                 {credits?.length > 0
                   ? `${credits[0].creditId?.name} - ${credits[0].quantity}`
                   : "Credits not added"}
@@ -116,6 +137,7 @@ export default function ConfCard({
         <div className="confcard-footer">
           <div className="flex-vc-sb ">
             <span className="caption-2-bold-cblack cc-truncitem-wrap">
+              Price :
               {currency && basePrice > 0
                 ? `${currency} -  
                     ${basePrice}`
@@ -124,7 +146,9 @@ export default function ConfCard({
                 : "Price not availabe"}
             </span>
             <i
-              onClick={() => console.log("liked")}
+              onClick={() => {
+                console.log("Liked");
+              }}
               className="cc-likeicon-wrap"
             >
               <LikeInactiveIcon className="icon-size" />

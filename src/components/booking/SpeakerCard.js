@@ -31,8 +31,6 @@ export default function SpeakerCard({
         <p className="caption-3">{degree}</p>
         <p className="caption-3">{designation}</p>
       </div>
-
-      
     </div>
   );
 }

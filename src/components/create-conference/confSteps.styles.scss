@@ -18,7 +18,7 @@
     align-items: center;
     // margin-right: 24px;
     svg {
-      margin-right: 4px;
+      margin-right: 2px;
     }
   }
   & > li:last-child .steps-line {
@@ -47,7 +47,7 @@
 .steps-line {
   margin-left: 4px;
   display: inline-block;
-  width: 48px;
+  width: 16px;
   height: 2px;
   background-color: $gray-1;
 }

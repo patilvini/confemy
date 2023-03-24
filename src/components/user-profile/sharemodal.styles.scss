@@ -1,0 +1,17 @@
+.share-card{
+    width: 280px;
+    height: 60px;
+    border-radius: 10px;
+    box-shadow: 2px 2px rgba(#000, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:250;
+    right: 150;
+    z-index: 10;
+}
+
+.share-icon{
+   padding: 0 20px;
+}

@@ -1,12 +1,17 @@
 import Loader from "../loader/Loader";
 import "./button.styles.scss";
+import PropTypes from "prop-types";
+
 export default function SubmitButtonWithLoader({
   isSubmitting,
   text,
   className,
+  fullWidth,
 }) {
   return (
-    <div className="submit-loader-wrap">
+    <div
+      className={fullWidth ? "fullwidth-submit-loader" : "submit-loader-wrap"}
+    >
       <button
         style={{
           ...(isSubmitting && {
@@ -24,3 +29,10 @@ export default function SubmitButtonWithLoader({
     </div>
   );
 }
+
+SubmitButtonWithLoader.propTypes = {
+  isSubmitting: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
+  fullWidth: PropTypes.bool,
+};

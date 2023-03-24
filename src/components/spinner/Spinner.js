@@ -1,5 +1,4 @@
 import "./spinner.styles.scss";
-import SearchIcon from "../icons/SearchIcon";
 import CameraIcon from "../icons/CameraIcon";
 
 function Spinner() {

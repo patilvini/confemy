@@ -13,7 +13,6 @@ import "./register.styles.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { alertAction } from "../../redux/alert/alertAction";
 import { registerAction } from "../../redux/auth/authAction";
 import BackIcon from "../icons/BackIcon";
 import api from "../../utility/api";
@@ -72,7 +71,6 @@ const Register = ({ registerAction, isAuthenticated }) => {
     try {
       const response = await api.post("register", formData);
       if (response) {
-        console.log("Register response", response);
         actions.setSubmitting(false);
         setcurrentPage(currentPage + 1);
       }
@@ -97,7 +95,6 @@ const Register = ({ registerAction, isAuthenticated }) => {
       try {
         const response = await api.post("email", formData);
         if (response) {
-          console.log(response);
           setotpId(response?.data.data._id);
           setcurrentPage(currentPage + 1);
           actions.setTouched({});
@@ -120,7 +117,6 @@ const Register = ({ registerAction, isAuthenticated }) => {
       try {
         const response = await api.post("verify", formData);
         if (response) {
-          console.log(response);
           setuserId(response.data.data.user._id);
           setcurrentPage(currentPage + 1);
           actions.setTouched({});
@@ -144,84 +140,80 @@ const Register = ({ registerAction, isAuthenticated }) => {
 
   if (isAuthenticated) return <Navigate to="/dashboard" replace={true} />;
 
-  console.log("page", currentPage);
-
   return (
-    <div className="register-modal white-modal">
-      <div className="modal-form-wrapper">
-        {currentPage === pages.length ? (
-          <RegistrationSuccess msg="kk...Registration successful" />
-        ) : (
-          <Fragment>
-            {/* The heading on the apge comes from the pages array. Corresponds to each form step */}
-            <h2>{pages[currentPage]}</h2>
-            {currentPage === 1 && <div className="inactive-email">{email}</div>}
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-            >
-              {(formik) => {
-                const { isSubmitting } = formik;
-                return (
-                  <Form className="form-type-1">
-                    {renderPageContent(currentPage)}
-                    <div>
-                      <button
-                        disable={isSubmitting}
-                        type="submit"
-                        className="button button-primary mb-34"
-                      >
-                        {isSubmitting
-                          ? "Submitting..."
-                          : isLastpage
-                          ? "Join"
-                          : "Continue"}
-                      </button>
-                    </div>
-                  </Form>
-                );
-              }}
-            </Formik>
-            {/** following will conditionally render on first page ie EmailForm */}
-            {currentPage === 2 && (
-              <Fragment>
-                <div className="text-align-center">
-                  <span className="caption-2-regular-gray3">
-                    By joining, you agree to Confemy’s{" "}
-                  </span>
-                  <Link to="#!" className="caption-2-bold-gray3">
-                    Terms of Service.
-                  </Link>
-                </div>
-              </Fragment>
-            )}
-            {currentPage !== 0 && (
-              <div className="text-align-center">
-                <div style={{ display: "inline-block" }}>
-                  <div className="back-to-more-sign-up" onClick={resetForm}>
-                    <BackIcon className="icon-lg" fill="#08415c" />
-                    <span className="back-to-more-sign-up">
-                      Back to more sign up options
-                    </span>
+    <div className="modal-form-wrapper">
+      {currentPage === pages.length ? (
+        <RegistrationSuccess msg="kk...Registration successful" />
+      ) : (
+        <Fragment>
+          {/* The heading on the apge comes from the pages array. Corresponds to each form step */}
+          <h2 className="mb-32">{pages[currentPage]}</h2>
+          {currentPage === 1 && <div className="inactive-email">{email}</div>}
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {(formik) => {
+              const { isSubmitting } = formik;
+              return (
+                <Form className="form-type-1">
+                  {renderPageContent(currentPage)}
+                  <div>
+                    <button
+                      disabled={isSubmitting}
+                      type="submit"
+                      className="button button-primary mb-34"
+                    >
+                      {isSubmitting
+                        ? "Submitting..."
+                        : isLastpage
+                        ? "Join"
+                        : "Continue"}
+                    </button>
                   </div>
+                </Form>
+              );
+            }}
+          </Formik>
+          {/** following will conditionally render on first page ie EmailForm */}
+          {currentPage === 2 && (
+            <Fragment>
+              <div className="text-align-center">
+                <span className="caption-2-regular-gray3">
+                  By joining, you agree to Confemy’s{" "}
+                </span>
+                <Link to="#!" className="caption-2-bold-gray3">
+                  Terms of Service.
+                </Link>
+              </div>
+            </Fragment>
+          )}
+          {currentPage !== 0 && (
+            <div className="text-align-center">
+              <div style={{ display: "inline-block" }}>
+                <div className="back-to-more-sign-up" onClick={resetForm}>
+                  <BackIcon className="icon-lg" fill="#08415c" />
+                  <span className="back-to-more-sign-up">
+                    Back to more sign up options
+                  </span>
                 </div>
               </div>
-            )}
-            {currentPage === 0 && (
-              <RegisterWGoogle label="Continue with Google" />
-            )}
-            <div className="modal-footer">
-              <span className="caption-1-medium-primary">
-                Already have an Account?{" "}
-              </span>
-              <Link className="caption-1-heavy-primary" to="/signin">
-                Sign in
-              </Link>
             </div>
-          </Fragment>
-        )}
-      </div>
+          )}
+          {currentPage === 0 && (
+            <RegisterWGoogle label="Continue with Google" />
+          )}
+          <div className="modal-footer">
+            <span className="caption-1-medium-primary">
+              Already have an Account?{" "}
+            </span>
+            <Link className="caption-1-heavy-primary" to="/signin">
+              Sign in
+            </Link>
+          </div>
+        </Fragment>
+      )}
     </div>
   );
 };

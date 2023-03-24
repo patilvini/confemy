@@ -10,9 +10,6 @@ export default function DashboardLayoutPage({ onClickOutside }) {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // console.log(event.target)
-      // console.log(ref)
-
       if (ref.current && !ref.current.contains(event.target)) {
         setDashOpen(false);
         onClickOutside && onClickOutside();
@@ -36,11 +33,11 @@ export default function DashboardLayoutPage({ onClickOutside }) {
         </i>
       </div>
       <main
-        className="container"
-        style={{
-          display: "flex",
-          backgroundColor: "#fafbfc",
-        }}
+        className="container flex"
+        // style={{
+        //   display: "flex",
+        //   // backgroundColor: "#fafbfc",
+        // }}
       >
         {dashOpen && (
           <div ref={ref}>

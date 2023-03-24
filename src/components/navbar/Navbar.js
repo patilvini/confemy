@@ -6,7 +6,6 @@ import AuthDropdown from "../auth-dropdown/AuthDropdown";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./navbar.styles.scss";
-import ShoppingCart from "../auth-dropdown/ShoppingCart";
 
 export default function Navbar() {
   const auth = useSelector((state) => state.auth);
@@ -38,7 +37,6 @@ export default function Navbar() {
         )} */}
         {isAuthenticated && user ? (
           <>
-            <ShoppingCart />
             <AuthDropdown />
           </>
         ) : (

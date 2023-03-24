@@ -3,10 +3,7 @@ import Select from "react-select";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import api from "../../utility/api";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
-
 
 const validationSchema = yup.object({
   creditType: yup.string().required("Required"),
@@ -15,12 +12,8 @@ const validationSchema = yup.object({
 });
 
 export default function UpdateGoalModal({ onDismiss, creditData }) {
-  
   const [credits, setCredits] = useState();
   const [options, setOptions] = useState([]);
-
- 
-
 
   const initialValues = {
     creditType: "",
@@ -32,7 +25,6 @@ export default function UpdateGoalModal({ onDismiss, creditData }) {
     const getCredits = async () => {
       try {
         const r = await api.get("/conferences/credits");
-        
 
         setCredits(r.data.data.credits);
       } catch (err) {
@@ -41,35 +33,27 @@ export default function UpdateGoalModal({ onDismiss, creditData }) {
     };
 
     getCredits();
-
-   
   }, []);
 
   credits?.forEach((item) => {
-   
     if (options.length !== credits.length) {
       options.push({ value: item._id, label: item.name });
     }
   });
 
   const onSubmit = async (values, actions) => {
-    console.log("form values form onSubmit", values);
-
     let creditDetails = {
       creditId: values.creditType,
       endDate: values.endDate,
       quantity: values.totalCredits,
-     
     };
-    console.log(creditDetails);
-
-    
-
     try {
-      const r = await api.patch("/attendees/credits/creditGoals/"+creditData.creditGoalId, {
-        creditDetails,
-      });
-      console.log(r);
+      const r = await api.patch(
+        "/attendees/credits/creditGoals/" + creditData.creditGoalId,
+        {
+          creditDetails,
+        }
+      );
     } catch (err) {
       console.log(err);
     }
@@ -99,7 +83,9 @@ export default function UpdateGoalModal({ onDismiss, creditData }) {
               console.log(e);
               formik.setFieldValue("creditType", e.value);
             }}
-            value = {options.filter(option => option.label === creditData.creditName)}
+            value={options.filter(
+              (option) => option.label === creditData.creditName
+            )}
             className=" form-element"
             options={options}
           />

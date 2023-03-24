@@ -1,45 +1,40 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux/es/exports";
+import { useSelector, useDispatch } from "react-redux";
+
+import SavedConfCard from "./SavedConfCard";
+import BannerWithGirlSketch from "../SVG-assets/BannerWithGirlSketch";
+import Loader from "../loader/Loader";
+
 import api from "../../utility/api";
-import GlobeSketch from "../icons/GlobeSketch";
-import SavedCard from "./SavedCard";
-import NoSavedConfs from "../SVG-assets/NoSavedConfs";
+import { alertAction } from "../../redux/alert/alertAction";
+
+import "./savedconfs.styles.scss";
 
 export default function SavedConfs() {
-  let component;
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [called, setCalled] = useState(true);
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
 
-  const [data, setData] = useState();
-  const userID = useSelector((state) => state.auth.user?._id);
-
-  const getSaved = async () => {
+  const getSaved = async (userID) => {
     try {
-      const r = await api.get("/conferences/like/" + userID);
-      console.log(r.data.data.conferences);
-
-      setData(r.data.data.conferences);
+      const responce = await api.get("/conferences/like/" + userID);
+      setData(responce.data.data.conferences);
+      setIsLoading(false);
     } catch (err) {
-      console.log(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
-  
-
   useEffect(() => {
-    console.log(called)
-  
+    getSaved(user?._id);
+  }, [user?._id]);
 
-    getSaved();
-  }, [userID, called]);
-
-  const navigate = useNavigate();
-
-  const noSaved = (
-    <div style={{textAlign: "center"}}>
-      <NoSavedConfs className="icon-plshld" />
-      <div className="passes-list">
+  const noSavedConfs = (
+    <div>
+      <BannerWithGirlSketch className="icon-plshld" />
+      <div className="passes-list my-28">
         <h2>You haven't saved any conference</h2>
         <button
           style={{ margin: "2rem 0 6rem 0" }}
@@ -52,33 +47,21 @@ export default function SavedConfs() {
   );
 
   const savedConfs = (
-    <div>
-      <h1 style={{ margin: "2rem 0 3rem 12.2rem" }}>Saved Conferences</h1>
-
-      {data?.map((item, index) => {
+    <>
+      <h1 className="mb-40">Saved Conferences</h1>
+      {data?.map((item) => {
         return (
-          <div key={index}>
-            <SavedCard
-            
-              unliked={() => {
-               
-                
-                setCalled(!called);
-                
-              }}
-              data={data[index]}
-            />
+          <div className="mb-12" key={item.conference._id}>
+            <SavedConfCard data={item} getSaved={getSaved} />
           </div>
         );
       })}
-    </div>
+    </>
   );
 
-  if (data?.length === 0) {
-    component = noSaved;
-  } else {
-    component = savedConfs;
-  }
-
-  return <div>{component}</div>;
+  return (
+    <div className="savedconfs-container">
+      {isLoading ? <Loader /> : data?.length > 0 ? savedConfs : noSavedConfs}
+    </div>
+  );
 }

@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuid } from "uuid";
 
 import AddFileIcon from "../icons/AddFileIcon";
 import CloseIcon from "../icons/CloseIcon";
@@ -17,6 +18,7 @@ import { alertAction } from "../../redux/alert/alertAction";
 import api from "../../utility/api";
 import "./fileUploader.styles.scss";
 import DeleteIcon from "../icons/DeleteIcon";
+import FileTitleInput from "./FileTitleInput";
 
 export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
   const [files, setFiles] = useState([]);
@@ -30,8 +32,10 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
       "application/pdf": [".pdf"],
     },
     maxFiles: 10,
-    onDrop: (acceptedFiles) => {
-      setFiles((prev) => [...prev, ...acceptedFiles]);
+    onDrop: (acceptedFile) => {
+      acceptedFile[0].id = uuid();
+      acceptedFile[0].title = "";
+      setFiles((prev) => [...prev, ...acceptedFile]);
     },
   });
 
@@ -49,7 +53,6 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
   );
 
   const handleSubmit = async (e) => {
-    console.log("save clicked");
     e.preventDefault();
     if (!newConference?.completedStep1) {
       dispatch(alertAction("Complete step-1 first", "danger"));
@@ -69,22 +72,27 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
       conferenceId: newConference._id,
     };
 
-    //  Submit banner image and add image url to formData object
+    //  Submit file and add file url to formData object
     if (files?.length > 0) {
-      const imageDataObj = new FormData();
+      const fd = new FormData();
 
       // files.forEach((file) =>
-      //   !file.Key ? imageDataObj.append("file", file) : oldFiles.push(file)
+      //   !file.Key ? fd.append("file", file) : oldFiles.push(file)
 
-      files.forEach((file) => imageDataObj.append("file", file));
+      files.forEach((file) =>
+        fd.append("file", file, file.title?.trim() || file.name)
+      );
 
-      if (imageDataObj.has("file")) {
+      // console.log("fd", Array.from(fd));
+
+      if (fd.has("file")) {
         try {
-          const imagesResponse = await api.post("fileUploads", imageDataObj);
-          if (imagesResponse) {
+          const awsResponse = await api.post("fileUploads", fd);
+          if (awsResponse) {
+            console.log("aws files", awsResponse);
             formData.resourceDocs.data = [
               ...newConference?.resourceDocuments,
-              ...imagesResponse.data.data,
+              ...awsResponse.data.data,
             ];
           }
         } catch (err) {
@@ -93,13 +101,12 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
         }
       }
 
-      console.log("formData", formData);
+      console.log("formData after aws", formData);
 
       try {
         const url = "/conferences/step4/resources?resourceStatus=documents";
         const response = await api.post(url, formData);
         if (response) {
-          console.log("Fileupload response", response);
           setFiles([]);
           dispatch(createConferenceAction(response?.data?.data?.conference));
           dispatch(alertAction(response.data.message, "success"));
@@ -121,13 +128,14 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
     };
     try {
       const response = await api.delete(url, formData);
-      console.log("deleted files", response);
       dispatch(createConferenceAction(response.data.data.conference));
       dispatch(alertAction("Document deleted successfully", "success"));
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
+
+  console.log("files", files);
 
   return (
     <>
@@ -147,7 +155,13 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
             <li key={file._id} className="flex-vc body-bold mx-24">
               <AddFileIcon className="icon-lg mr-16" />
               <div style={{ flexGrow: 1 }}>
-                <a href={file.Location}>{file._id}</a>
+                <a
+                  href={file.Location}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {file.name}
+                </a>
               </div>
               <i onClick={() => deleteResource(file.Key)}>
                 <DeleteIcon className="icon-size" />
@@ -159,17 +173,23 @@ export default function AddDocuments({ dropzoneContentType = "forDefault" }) {
       <form onSubmit={handleSubmit}>
         <div className="filesdz-section-wrap mb-24">
           <div className="filesdz-section-innerwrap">
-            <div
-              className="filesdz-files-container"
-              // style={{
-              //   borderBottom: files?.length > 0 ? "1px solid #c4c4c4" : null,
-              // }}
-            >
-              {files?.map((file) => (
+            <div className="filesdz-files-container">
+              {files?.map((file, indx) => (
                 <div className="filesdz-files-row" key={file.name}>
-                  <div className="flex-vc">
-                    <AddFileIcon className="icon-xs mr-16" />
-                    {file.name}
+                  <div>
+                    <div className="flex-vc mb-8">
+                      <AddFileIcon className="icon-xs mr-16" />
+                      {file.name}
+                    </div>
+                    <FileTitleInput
+                      value={file.title}
+                      onChange={(e) => {
+                        setFiles((prev) => {
+                          prev[indx].title = e.target.value;
+                          return [...prev];
+                        });
+                      }}
+                    />
                   </div>
                   <i
                     onClick={() => {

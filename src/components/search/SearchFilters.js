@@ -16,7 +16,6 @@ import {
   currencylist,
 } from "../../utility/commonUtil";
 import { alertAction } from "../../redux/alert/alertAction";
-import { hover } from "@testing-library/user-event/dist/hover";
 
 const confemyWhite = "#ffffff";
 const confemyBlac = "#000000";
@@ -40,7 +39,6 @@ const customStyles = {
     };
   },
   placeholder: (provided, state) => {
-    console.log("provided", provided);
     return {
       ...provided,
       color: state.isDisabled ? shade4 : "hsl(0, 0%, 50%)",
@@ -128,7 +126,7 @@ export default function SearchFilters({
   // load credit types from backend
   async function getCreditTypes() {
     try {
-      const response = await api.get("conferences/credits");
+      const response = await api.get("common/conferences/credits");
       if (response) {
         setCreditOptions(response.data.data.credits);
       }
@@ -148,12 +146,9 @@ export default function SearchFilters({
           <h3>Filters</h3>
           <div
             onClick={() => clearAllFilters()}
-            className="caption-1-heavy-gray3"
-            style={{
-              cursor: "pointer",
-            }}
+            className="caption-1-heavy-gray3 clearall-btn-wrap"
           >
-            Clear all
+            Clear All
           </div>
         </div>
         <div
@@ -194,7 +189,7 @@ export default function SearchFilters({
               name="startDate"
               selected={startDate}
               onChange={(date) => setStartDate(date)}
-              minDate={new Date()}
+              // minDate={new Date()}
               placeholder="Start date"
               disabled={false}
             />
@@ -323,23 +318,6 @@ export default function SearchFilters({
             styles={customStyles}
           />
           <div className="form-type-3 mt-8">
-            <p className="caption-3 ml-4">Min Price</p>
-            <input
-              style={{
-                ...(priceDisabled && {
-                  backgroundColor: shade2,
-                  color: shade4,
-                }),
-              }}
-              type="number"
-              name="minPrice"
-              placeholder="Min Price"
-              value={minPrice}
-              onChange={onMinPriceChange}
-              disabled={priceDisabled}
-            />
-          </div>
-          <div className="form-type-3 mt-8">
             <p className="caption-3 ml-4">Max Price</p>
             <input
               style={{
@@ -355,6 +333,24 @@ export default function SearchFilters({
               value={maxPrice}
               onChange={onMaxPriceChange}
               disabled={priceDisabled}
+            />
+          </div>
+          <div className="form-type-3 mt-8">
+            <p className="caption-3 ml-4">Min Price</p>
+            <input
+              style={{
+                ...(priceDisabled && {
+                  backgroundColor: shade2,
+                  color: shade4,
+                }),
+              }}
+              type="number"
+              name="minPrice"
+              placeholder="Min Price"
+              value={minPrice}
+              onChange={onMinPriceChange}
+              disabled={priceDisabled}
+              min="0"
             />
           </div>
         </div>

@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../modal/Modal";
-import { createConferenceAction } from "../../redux/conference/conferenceAction";
-import { alertAction } from "../../redux/alert/alertAction";
 
 import TicketForm from "../tickets/TicketForm";
 import TicketOptions from "../tickets/TicketOptions";

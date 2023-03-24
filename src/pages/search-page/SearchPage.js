@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { zonedTimeToUtc } from "date-fns-tz";
 import SearchFilters from "../../components/search/SearchFilters";
 import api from "../../utility/api";
-import ConfCard from "../../components/conf-card/ConfCard";
 import Loader from "../../components/loader/Loader";
 import SearchIcon from "../../components/icons/SearchIcon";
+import SearchResult from "../../components/search/SearchResult";
 
-import { searchConfsAction } from "../../redux/conference/conferenceAction";
+import {
+  searchConfsAction,
+  confSearchInitiatedAction,
+} from "../../redux/conference/conferenceAction";
 import { alertAction } from "../../redux/alert/alertAction";
-
 import "./searchPage.styles.scss";
-import { min } from "date-fns";
-import { number } from "yup";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
@@ -26,16 +27,27 @@ export default function SearchPage() {
   const [currency, setCurrency] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
-  const [mode, setMode] = useState("venue");
+  const [mode, setMode] = useState("allConferences");
   const [spltDisabled, setSpltDisabled] = useState(true);
   const [creditAmountDisabled, setCreditAmountDisabled] = useState(true);
   const [priceDisabled, setPriceDisabled] = useState(true);
 
   const dispatch = useDispatch();
   const search = useSelector((state) => state.conference.search);
+  const [active, setActive] = useState(1);
+
+  const { state } = useLocation();
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [showRightArrow, setShowRightArrow] = useState(false);
 
   //  get utc date for location timezone
-  const timezone = location?.timezone;
+  let timezone;
+  if (location) {
+    timezone = location.timezone;
+  } else {
+    timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  }
+  // const timezone = location?.timezone;
   const locationValue = location?.value;
   let utcStartDate;
   let utcEndDate;
@@ -66,30 +78,29 @@ export default function SearchPage() {
       quantity: creditAmount,
     });
   }
-  if (currency && minPrice && maxPrice) {
+
+  let intMinPrice;
+  if (minPrice >= 0) intMinPrice = parseInt(minPrice);
+
+  let intMaxPrice;
+  if (maxPrice >= 0) intMaxPrice = parseInt(maxPrice);
+
+  if (currency || intMinPrice || intMaxPrice) {
     filters.push({
       label: "price",
       currency: currency,
-      min: minPrice,
-      max: maxPrice,
+      min: intMinPrice,
+      max: intMaxPrice,
     });
   }
-  if (mode === "onlineConf") {
-    filters.push({
-      label: "mode",
-      value: "onlineConf",
-    });
-  }
-
   // function to call search api. it will send above filters array
   async function loadSearchResults() {
-    console.log("loadSearch called");
-    const url = `homePage/conferences/search?page=1&limit=10&text=${query}`;
+    dispatch(confSearchInitiatedAction());
+    const url = `homePage/conferences/search?page=${active}&limit=9&text=${query}`;
     try {
       const response = await api.post(url, { filters });
       if (response) {
-        console.log("search response", response);
-        dispatch(searchConfsAction(response.data.data.conferences));
+        dispatch(searchConfsAction(response.data.data));
       }
     } catch (err) {
       dispatch(alertAction(err.response.data.message, "danger"));
@@ -160,6 +171,30 @@ export default function SearchPage() {
     setPriceDisabled(true);
   }
 
+  function renderSearch(type) {
+    switch (type) {
+      case "allConferences":
+        return (
+          <SearchResult
+            result={search.conferences}
+            isLoading={search.isLoading}
+          />
+        );
+      case "livestreamConfs":
+        return (
+          <SearchResult
+            result={search.liveStreamConfs}
+            isLoading={search.isLoading}
+          />
+        );
+      case "video":
+        return <div>Coming Soon</div>;
+      case "audio":
+        return <div>Coming Soon</div>;
+      default:
+        return null;
+    }
+  }
   useEffect(() => {
     loadSearchResults();
   }, [
@@ -173,10 +208,17 @@ export default function SearchPage() {
     currency,
     maxPrice,
     minPrice,
-    mode,
+    active,
   ]);
 
-  console.log("filters", filters);
+  useEffect(() => {
+    setLocation(state);
+  }, [state]);
+
+  useEffect(() => {
+    setScrollPosition(window.scrollY);
+    window.scrollTo(0, scrollPosition);
+  }, []);
 
   return (
     <div className="container pt-64">
@@ -198,7 +240,9 @@ export default function SearchPage() {
             creditType={creditType}
             onCreditTypeChange={onCreditTypeChange}
             creditAmount={creditAmount}
-            onCreditAmountChange={(e) => setCreditAmount(e.target.value)}
+            onCreditAmountChange={(e) =>
+              setCreditAmount(parseInt(e.target.value))
+            }
             creditAmountDisabled={creditAmountDisabled}
             currency={currency}
             onCurrencyChange={onCurrencyChange}
@@ -245,42 +289,41 @@ export default function SearchPage() {
             <input
               type="radio"
               style={{ display: "none" }}
-              id="searchVenueConf"
+              id="searchAllConf"
               name="mode"
-              value="venue"
-              checked={mode === "venue"}
+              value="allConferences"
+              checked={mode === "allConferences"}
               onChange={(e) => setMode(e.target.value)}
             />
-            <label htmlFor="searchVenueConf">
+            <label htmlFor="searchAllConf">
               <div
                 className={`mr-40 ${
-                  mode === "venue"
+                  mode === "allConferences"
                     ? "active-search-type"
                     : "inactive-search-type "
                 }`}
               >
-                Conferences ({mode === "venue" ? search.result.length : 0})
+                All Conferences ({search.conferences.length})
               </div>
             </label>
             <input
               type="radio"
               style={{ display: "none" }}
               name="mode"
-              id="searchOnlineConf"
-              value="onlineConf"
-              checked={mode === "onlineConf"}
+              id="searchLivestreamConfs"
+              value="livestreamConfs"
+              checked={mode === "livestreamConfs"}
               onChange={(e) => setMode(e.target.value)}
             />
-            <label htmlFor="searchOnlineConf">
+            <label htmlFor="searchLivestreamConfs">
               <div
                 className={`mr-40 ${
-                  mode === "onlineConf"
+                  mode === "livestreamConfs"
                     ? "active-search-type"
                     : "inactive-search-type "
                 }`}
               >
-                Stream Live (
-                {mode === "onlineConf" ? search.result.length : "tbd"})
+                Stream Live ({search.liveStreamConfs.length})
               </div>
             </label>
             <input
@@ -325,28 +368,54 @@ export default function SearchPage() {
             </label>
           </div>
         </form>
-        {search?.isLoading ? (
+        {search.isLoading && search.conferences.length === 0 ? (
           <Loader />
         ) : (
-          <div className="sr-container">
-            {search?.result.map((conf) => (
-              <div key={conf._id}>
-                <ConfCard
-                  src={conf.banner[0]?.Location}
-                  title={conf.title}
-                  startDate={conf.startDate}
-                  timezone={conf.timezone}
-                  mode={conf.mode}
-                  city={conf.city}
-                  credits={conf.credits}
-                  currency={conf.currency}
-                  basePrice={conf.basePrice}
-                  confId={conf._id}
-                />
-              </div>
-            ))}
-          </div>
+          renderSearch(mode)
         )}
+      </div>
+      <div className="pagination caption-2-regular-gray3 ">
+        {showRightArrow ? (
+          <span
+            onClick={() => {
+              if (active === 1) {
+                setActive(search.conferences.length);
+              } else {
+                setActive(active - 1);
+              }
+            }}
+          >
+            &laquo;
+          </span>
+        ) : null}
+        {search.conferences?.length > 0 &&
+          search?.conferences.map((val, idx) => {
+            return (
+              <span
+                className={active === idx + 1 ? "active" : ""}
+                onClick={() => {
+                  if (active !== 1) {
+                    console.log("active", active);
+                    setShowRightArrow(true);
+                  }
+                  setActive(idx + 1);
+                }}
+              >
+                {idx + 1}
+              </span>
+            );
+          })}
+        <span
+          onClick={() => {
+            if (active === search.conferences.length) {
+              setActive(1);
+            } else {
+              setActive(active + 1);
+            }
+          }}
+        >
+          &raquo;
+        </span>
       </div>
     </div>
   );

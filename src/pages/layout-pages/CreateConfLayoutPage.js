@@ -24,7 +24,6 @@ export default function CreateConfLayoutPage() {
   useEffect(() => {
     return () => {
       dispatch(removeConferenceStateAction());
-      console.log("Removed new conference from redux");
     };
   }, []);
 

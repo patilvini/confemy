@@ -4,6 +4,7 @@ import OpenEyeIcon from "../icons/OpenEyeIcon";
 import TextInput from "../formik/TextInput";
 import SelectOne from "../formik/SelectOne";
 import DropdownIcon from "../icons/DropdownIcon";
+import { professions } from "../../utility/commonUtil";
 
 function NameForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,20 +25,11 @@ function NameForm() {
       <div className="input-container position-relative">
         <SelectOne name="profession">
           <option value="">Select a Profession</option>
-          <option value="physician">Physician</option>
-          <option value="physicianAssistant">Physician Assistant</option>
-          <option value="nursePractitioner">Nurse Practitioner</option>
-          <option value="dentist">Dentist</option>
-          <option value="nurse">Nurse</option>
-          <option value="pharmacist">Pharmacist</option>
-          <option value="physicalTherapist">Physical Therapist</option>
-          <option value="occupationalTherapist">Occupational Therapist</option>
-          <option value="speechTherapist">Speech Therapist</option>
-          <option value="respiratoryTherapist">Respiratory Therapist</option>
-          <option value="dietitian">Dietitian</option>
-          <option value="socialWorker">Social Worker</option>
-          <option value="caseManagement">Case Management</option>
-          <option value="other">Other</option>
+          {professions.map((profession) => (
+            <option key={profession.value} value={profession.value}>
+              {profession.label}
+            </option>
+          ))}
         </SelectOne>
         <DropdownIcon className=" right-input-icon icon-lg" />
       </div>

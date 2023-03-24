@@ -39,11 +39,9 @@ const EditorContainer = () => {
       contents: rawContent,
     };
 
-    console.log("formData from onSave", formData);
     try {
       const res = await api.post("conferences/draft", formData);
       if (res) {
-        console.log(" response on save", res);
         setdraftId(res.data.data._id);
       }
     } catch (err) {
@@ -56,7 +54,6 @@ const EditorContainer = () => {
     try {
       const res = await api.get(url);
       if (res) {
-        console.log("raw data from get API", res);
         setrawContent(res.data.data.contents);
       }
     } catch (err) {

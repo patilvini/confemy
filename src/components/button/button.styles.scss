@@ -1,4 +1,5 @@
 .submit-cancel-loader-wrap {
+  width: 100%;
   button {
     min-height: 52px;
     min-width: 212px;
@@ -12,5 +13,15 @@
   button {
     min-height: 52px;
     min-width: 212px;
+  }
+}
+
+.fullwidth-submit-loader {
+  display: block;
+  width: 100%;
+  position: relative;
+  button {
+    min-height: 52px;
+    width: 100%;
   }
 }

@@ -1,14 +1,18 @@
-import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import {
+  useNavigate,
+  // useLocation
+} from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import RadioIcon from "../icons/RadioIcon";
-import RadioFilledIcon from "../icons/RadioFilled";
+// import RadioIcon from "../icons/RadioIcon";
+// import RadioFilledIcon from "../icons/RadioFilled";
 import "./confSteps.styles.scss";
-import RadioCompletedIcon from "../icons/RadioCompletedIcon";
+// import RadioCompletedIcon from "../icons/RadioCompletedIcon";
+import Tabs from "../tabs/Tabs";
 
 export default function ConfSteps() {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const newConference = useSelector((state) => state.conference?.newConference);
 
   const steps = [
@@ -47,7 +51,8 @@ export default function ConfSteps() {
   return (
     <div className="conf-steps-container">
       <h2>Create Conference Steps</h2>
-      <ul className="conf-steps">
+      <Tabs tabs={steps} showRadioButtons={true} />
+      {/* <ul className="conf-steps">
         {steps.map((step, indx) => (
           <li onClick={() => navigate(step.path)} key={step.label}>
             {step.completed ? (
@@ -71,30 +76,6 @@ export default function ConfSteps() {
             <div className="steps-line"></div>
           </li>
         ))}
-      </ul>
-
-      {/* <ul className="conf-steps">
-        <li onClick={() => navigate("/dashboard/create-conf/step-1")}>
-          {completedStep1 ? (
-            <RadioCompletedIcon />
-          ) : location.pathname == "/dashboard/create-conf/step-1" ? (
-            <RadioFilledIcon className="icon-size" />
-          ) : (
-            <RadioIcon className="icon-size" />
-          )}
-          <div
-            className={
-              completedStep1
-                ? "completed-conf-step"
-                : location.pathname == "/dashboard/create-conf/step-1"
-                ? "active-conf-step"
-                : "inactive-conf-step "
-            }
-          >
-            Basic Info
-          </div>
-          <div className="steps-line"></div>
-        </li>
       </ul> */}
     </div>
   );

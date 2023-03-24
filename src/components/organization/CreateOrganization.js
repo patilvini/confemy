@@ -11,16 +11,26 @@ import FacebookBlueCircle from "../icons/FacebookBlueCircle";
 import LinkedinBlueIcon from "../icons/LinkedinBlueIcon";
 import TwitterBlueIcon from "../icons/TwitterBlueIcon";
 import InstagramGradientIcon from "../icons/InstagramGradientIcon";
+import SelectFormType1 from "../reselect/SelectFormType1";
+import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
 
 import api from "../../utility/api";
+import {
+  loadCountryList,
+  loadStateList,
+  loadCityList,
+} from "../../utility/commonUtil";
+
 import { thumb, thumbInner, img } from "./organizationUtil";
 import "./createOrganization.styles.scss";
+import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
 
 const initialValues = {
   logos: [],
   name: "",
   city: "",
   country: "",
+  state: "",
   website: "",
   description: "",
   facebook: "",
@@ -33,6 +43,7 @@ const validationSchema = yup.object({
   name: yup.string().required("Required"),
   city: yup.string().required("Required"),
   country: yup.string().required("Required"),
+  state: yup.string().required("Required"),
   // logos: yup.mixed().required(),
 });
 
@@ -41,6 +52,10 @@ export default function CreateOrganization() {
 
   const user = useSelector((state) => state.auth.user);
   const [files, setFiles] = useState([]);
+
+  const { countryList, stateList, cityList } = useSelector(
+    (state) => state.list
+  );
   const navigate = useNavigate();
 
   const onSubmit = async (values, actions) => {
@@ -49,6 +64,7 @@ export default function CreateOrganization() {
       logos,
       city,
       country,
+      state,
       website,
       description,
       facebook,
@@ -62,6 +78,7 @@ export default function CreateOrganization() {
         user: user?._id,
         name,
         city,
+        state,
         country,
         website,
         description,
@@ -77,10 +94,8 @@ export default function CreateOrganization() {
       formDataObj.append("file", logos[0]);
       try {
         const imagesResponse = await api.post("fileUploads", formDataObj);
-        // console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           formData.organization.logo = imagesResponse.data.data;
-          console.log("formData", logos.length, formData);
           const response = await api.post("organizations", formData);
           if (response) {
             actions.resetForm({ values: initialValues });
@@ -156,6 +171,12 @@ export default function CreateOrganization() {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [files]);
 
+  useEffect(() => {
+    if (!countryList.length > 0) {
+      loadCountryList();
+    }
+  }, []);
+
   console.log(formik);
 
   return (
@@ -166,7 +187,7 @@ export default function CreateOrganization() {
         autoComplete="off"
       >
         <h2 className="mb-32">Logo</h2>
-        <section>
+        <section className="mb-40">
           <div className="logo-upload-wrap">
             <div {...getRootProps({ className: "logo-dropzone" })}>
               <input {...getInputProps()} />
@@ -180,7 +201,7 @@ export default function CreateOrganization() {
             </div>
           </div>
         </section>
-        <h2 className="mb-16 mt-40">Basic Information</h2>
+        <h2 className="mb-16">Basic Information</h2>
         <div className="material-textfield">
           <input
             id="name"
@@ -197,7 +218,70 @@ export default function CreateOrganization() {
             <TextError>{formik.errors.name}</TextError>
           )}
         </div>
-        <div className="material-textfield">
+        <div>
+          <SelectFormType1
+            options={countryList}
+            value={formik.values.country}
+            onChange={(value) => {
+              if (formik.values.country !== value?.value) {
+                formik.setFieldValue("state", "");
+                formik.setFieldValue("city", "");
+              }
+              formik.setFieldValue("country", value?.value);
+              loadStateList(value?.countryId);
+            }}
+            placeholder="Select country*"
+            isDisabled={false}
+            name="country"
+          />
+          <div className="mb-24">
+            {formik.touched.country && Boolean(formik.errors.country) && (
+              <TextError>{formik.errors.country}</TextError>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <ReloadableSelectFormType1
+            options={stateList}
+            value={formik.values.state}
+            onChange={(value) => {
+              if (formik.values.state !== value?.value) {
+                formik.setFieldValue("city", "");
+              }
+              formik.setFieldValue("state", value?.value);
+              loadCityList(value?.stateId);
+            }}
+            placeholder="Select state*"
+            isDisabled={false}
+            name="state"
+          />
+
+          <div className="mb-24">
+            {formik.touched.state && Boolean(formik.errors.state) && (
+              <TextError>{formik.errors.state}</TextError>
+            )}
+          </div>
+        </div>
+        <div>
+          <ReloadableSelectFormType1
+            options={cityList}
+            value={formik.values.city}
+            onChange={(value) => {
+              formik.setFieldValue("city", value?.value);
+            }}
+            placeholder="Select city*"
+            isDisabled={false}
+            name="city"
+          />
+
+          <div className="mb-24">
+            {formik.touched.city && Boolean(formik.errors.city) && (
+              <TextError>{formik.errors.city}</TextError>
+            )}
+          </div>
+        </div>
+        {/* <div className="material-textfield">
           <input
             id="city"
             type="text"
@@ -228,7 +312,7 @@ export default function CreateOrganization() {
           {formik?.touched.country && Boolean(formik?.errors.country) && (
             <TextError>{formik?.errors.country}</TextError>
           )}
-        </div>
+        </div> */}
 
         <div className="material-textfield">
           <input
@@ -342,8 +426,15 @@ export default function CreateOrganization() {
             )}
           </div>
         </section>
+        <div className="mt-60">
+          <SubmitCancelButtonWithLoader
+            isSubmitting={formik.isSubmitting}
+            onCancel={onCancel}
+            cancelButtonClass="button-text button-text-red"
+          />
+        </div>
 
-        <div className="mt-40 mb-32">
+        {/* <div className="mt-40 mb-32">
           <button
             type="button"
             onClick={onCancel}
@@ -354,7 +445,7 @@ export default function CreateOrganization() {
           <button type="submit" className="button button-primary">
             Submit
           </button>
-        </div>
+        </div> */}
       </form>
     </div>
   );

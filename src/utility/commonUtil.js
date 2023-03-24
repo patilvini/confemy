@@ -1,3 +1,54 @@
+import { utcToZonedTime, format } from "date-fns-tz";
+import enGB from "date-fns/locale/en-GB";
+import api from "./api";
+import StoreAndPersistStore from "../redux/store";
+import { alertAction } from "../redux/alert/alertAction";
+import {
+  loadCountryListAction,
+  loadStateListAction,
+  loadCityListAction,
+  loadCreditTypesListAction,
+} from "../redux/list/listAction";
+
+const { store } = StoreAndPersistStore;
+
+export const getFormattedDateInTz = (date, timezone) => {
+  let dateInTz;
+  let formattedDate;
+
+  if (date && timezone) {
+    dateInTz = utcToZonedTime(date, timezone);
+    formattedDate = format(dateInTz, "MMM-dd-yyyy, HH:mm aa", {
+      timeZone: timezone,
+      locale: enGB,
+    });
+  } else {
+    formattedDate = null;
+  }
+  return formattedDate;
+};
+
+export const getLocationString = (mode, city) => {
+  let locationStrig = "Location";
+  if (mode?.length > 0) {
+    if (mode?.includes("venue") && city) {
+      locationStrig = city;
+      // console.log("venue", locationStrig);
+    }
+
+    if (mode?.includes("onlineConf")) {
+      locationStrig = "Online";
+      // console.log("online", locationStrig);
+    }
+
+    if (mode?.includes("venue") && mode?.includes("onlineConf")) {
+      locationStrig = `${city} & Online`;
+      // console.log("both", locationStrig);
+    }
+  }
+  return locationStrig;
+};
+
 export const capitalize = (word) => {
   return word[0]?.toUpperCase() + word.slice(1).toLowerCase();
 };
@@ -16,6 +67,75 @@ export const getIndex = (myArray, valueOfKey) => {
 export const getOption = (myArray, valueOfKey) => {
   return myArray?.find((option) => option?.value === valueOfKey);
 };
+
+export const getValue = (options, value, isMulti) => {
+  if (isMulti) {
+    return value;
+  } else {
+    return options ? options?.find((option) => option.value === value) : "";
+  }
+};
+
+export const loadLocations = async (searchText, callback) => {
+  const response = await api.get(`venues/search?venue=${searchText}`);
+  callback(response.data.data.venue);
+};
+
+export const loadCountryList = async () => {
+  const url = `venues/countryList`;
+  try {
+    const response = await api.get(url);
+    if (response) {
+      store.dispatch(loadCountryListAction(response.data.data.countries));
+      const { countries } = response.data.data;
+      // if (editMode && practice?.country) {
+      //   const Id = countries.find(
+      //     (country) => country.label === practice?.country
+      //   )?.countryId;
+      //   loadStateList(Id);
+      // }
+    }
+  } catch (err) {
+    store.dispatch(alertAction(err.response.data.message, "danger"));
+  }
+};
+
+export const loadStateList = async (countryId) => {
+  const url = `venues/stateList?countryId=${countryId}`;
+  try {
+    const response = await api.get(url);
+    if (response) {
+      store.dispatch(loadStateListAction(response.data.data.states));
+    }
+  } catch (err) {
+    store.dispatch(alertAction(err.response.data.message, "danger"));
+  }
+};
+
+export const loadCityList = async (stateId) => {
+  const url = `venues/cityList?stateId=${stateId}`;
+  try {
+    const response = await api.get(url);
+    if (response) {
+      store.dispatch(loadCityListAction(response.data.data.cities));
+    }
+  } catch (err) {
+    store.dispatch(alertAction(err.response.data.message, "danger"));
+  }
+};
+
+export const loadCreditTypesList = async () => {
+  const url = `common/conferences/credits`;
+  try {
+    const response = await api.get(url);
+    if (response) {
+      store.dispatch(loadCreditTypesListAction(response.data.data.credits));
+    }
+  } catch (err) {
+    store.dispatch(alertAction(err.response.data.message, "danger"));
+  }
+};
+
 export const professions = [
   { value: "physician", label: "Physician" },
   { value: "physicianAssistant", label: "Physician Assistant" },

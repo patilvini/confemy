@@ -15,7 +15,7 @@ import CreditsIcon from "../icons/CreditsIcon";
 import PriceIcon from "../icons/PriceIcon";
 import RadioIcon from "../icons/RadioIcon";
 import RadioFilledIcon from "../icons/RadioFilled";
-import Modal from "../modal/Modal";
+import ModalX from "../modal/ModalX";
 
 import { createConferenceAction } from "../../redux/conference/conferenceAction";
 import { alertAction } from "../../redux/alert/alertAction";
@@ -66,6 +66,8 @@ export default function ConfPreview() {
       return;
     }
 
+    console.log("values", values);
+
     const formData = {
       conferenceDetails: {
         conferenceId: newConference._id,
@@ -74,13 +76,15 @@ export default function ConfPreview() {
         publishDate: zonedTimeToUtc(
           values.publishDate,
           newConference?.timezone
-        ).toISOString(),
+        ).toUTCString(),
       },
     };
+
+    console.log("formData", formData);
+
     try {
       const response = await api.post("conferences/step6", formData);
       if (response) {
-        console.log("submit step1 response", response);
         dispatch(createConferenceAction(response.data.data.conference));
         navigate("/dashboard/my-conferences");
         dispatch(alertAction(response.data.message, "success"));
@@ -89,6 +93,7 @@ export default function ConfPreview() {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
+
   const formik = useFormik({
     initialValues: {
       whenToPublish: "",
@@ -103,12 +108,10 @@ export default function ConfPreview() {
     if (newConference?.mode?.length > 0) {
       if (newConference?.mode?.includes("venue") && newConference?.city) {
         locationStrig = newConference?.city;
-        console.log("venue", locationStrig);
       }
 
       if (newConference?.mode?.includes("onlineConf")) {
         locationStrig = "Online";
-        console.log("online", locationStrig);
       }
 
       if (
@@ -116,7 +119,6 @@ export default function ConfPreview() {
         newConference?.mode?.includes("onlineConf")
       ) {
         locationStrig = `${newConference?.city} & Online`;
-        console.log("both", locationStrig);
       }
     }
     return locationStrig;
@@ -182,7 +184,9 @@ export default function ConfPreview() {
               }}
             >
               <div className="text-align-center">
-                <h4>Add Banner to improve visibility through Details 2 step</h4>
+                <p className="body-bold mb-32">
+                  Add Banner to improve visibility through Details 2 step
+                </p>
               </div>
             </div>
           )}
@@ -331,14 +335,12 @@ export default function ConfPreview() {
       </div>
 
       {open && (
-        <Modal>
-          <div>
-            <div>Show Modal content</div>
-            <button onClick={closeModal} className="button button-primary">
-              Close
-            </button>
-          </div>
-        </Modal>
+        <ModalX onDismiss={closeModal}>
+          <h4>Show Modal content</h4>
+          <button onClick={closeModal} className="button button-primary">
+            Close
+          </button>
+        </ModalX>
       )}
     </div>
   );

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Field, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 import TextError from "../formik/TextError";
 import SelectFormType1 from "../reselect/SelectFormType1";
@@ -14,7 +14,6 @@ import { alertAction } from "../../redux/alert/alertAction";
 import api from "../../utility/api";
 import "./createConference.styles.scss";
 import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
-import Modal from "../modal/Modal";
 
 const validationSchema = yup.object().shape({
   professions: yup
@@ -72,7 +71,6 @@ const validationSchema = yup.object().shape({
 });
 export default function ConfDetails1() {
   const [creditOptions, setcreditOptions] = useState([]);
-  // const [openTagsModal, setOpenTagsModal] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -96,7 +94,6 @@ export default function ConfDetails1() {
       try {
         const response = await api.post("conferences/step2", formData);
         if (response) {
-          console.log("step 2", response);
           dispatch(createConferenceAction(response.data.data.conference));
           navigate("/dashboard/create-conf/step-3");
           dispatch(alertAction(response.data.message, "success"));
@@ -209,7 +206,7 @@ export default function ConfDetails1() {
                 <TextError>{formik.errors.professions}</TextError>
               )}
           </div>
-          <h4>specialties</h4>
+          <h4>Specialties</h4>
           <SelectFormType1
             options={subspecialties}
             label="specialities"
@@ -386,7 +383,10 @@ export default function ConfDetails1() {
           </div>
         </div>
         <div className="mb-72">
-          <SubmitCancelButtonWithLoader isSubmitting={formik.isSubmitting} />
+          <SubmitCancelButtonWithLoader
+            isSubmitting={formik.isSubmitting}
+            onCancel={() => formik.resetForm({})}
+          />
         </div>
       </form>
     </main>

@@ -1,5 +1,3 @@
-import ODashboardIcon from "../icons/ODashboardIcon";
-
 // set side drawer width
 export const drawerWidth = 250;
 
@@ -44,7 +42,6 @@ export const sidemenuOptions = [
     path: "/dashboard/my-conferences",
     items: [],
   },
- 
 
   {
     text: "Organization",
@@ -62,7 +59,7 @@ export const sidemenuOptions = [
 
       {
         text: "Settings",
-        path: "settings",
+        path: "/user-profile/account-settings",
       },
     ],
   },

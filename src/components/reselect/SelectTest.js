@@ -12,8 +12,6 @@ import { loadOrganizationAction } from "../../redux/organization/organizationAct
 import { loadMyOrganizationsAction } from "../../redux/organization/myOrganizationsAction";
 import api from "../../utility/api";
 
-// import DatePickerTest from "./DatePickerTest";
-
 const validationSchema = yup.object({
   organizationId: yup.string().required("Required"),
 });
@@ -31,7 +29,6 @@ export default function SelectTest() {
     (state) => state.myOrganizations.organizations
   );
   const onSubmit = (values, actions) => {
-    console.log(values);
     dispatch(loadOrganizationAction(values.organizationId));
     navigate("/dashboard/create-conference");
   };
@@ -73,11 +70,9 @@ export default function SelectTest() {
     const date = new Date(str);
 
     setStartDate(date);
-    console.log("JS Obj", date);
     loadMyOrgnizations(user._id);
   }, [user._id]);
 
-  // console.log("endDate", formik.values.endDate);
   return (
     <div className="conf-form-wrap">
       <form

@@ -11,11 +11,10 @@ const responsive = {
     items: 4,
     slidesToSlide: 1, // optional, default to 1.
   },
-  smaller:{
+  smaller: {
     breakpoint: { max: 1440, min: 1024 },
     items: 3,
     slidesToSlide: 1, // optional, default to 1.
-
   },
   tablet: {
     breakpoint: { max: 1024, min: 761 },
@@ -32,18 +31,14 @@ const responsive = {
 function RecentlyViewedConfs() {
   const [data, setData] = useState();
 
-
-
   useEffect(() => {
     const loadData = async () => {
       try {
-        const r = await api.get("/homePage/recentlyviewed?page=1&limit=5");
-        // console.log(r)
-        setData(r.data.data.viewedConferences)
-        
-      } catch (err) {
-        console.log(err);
-      }
+        const response = await api.get(
+          "/homePage/recentlyviewed?page=1&limit=5"
+        );
+        setData(response.data.data.viewedConferences);
+      } catch (err) {}
     };
 
     loadData();
@@ -68,20 +63,21 @@ function RecentlyViewedConfs() {
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
           >
-            {data ? (
-              data.map((item, index) => {
-                console.log(item.conference)
+            {data?.length > 0 ? (
+              data?.map((item) => {
                 return (
-                  <div key={index}>
+                  <div key={item._id}>
                     <ConfCard
-                      link={item.conference._id}
-                      confName={item.conference.title}
+                      mode={item.conference.mode}
+                      city={item.conference.city}
+                      title={item.conference.title}
                       startDate={item.conference.startDate}
-                      currency={item.conference.currency}
-                      location={item.conference.location}
-                      price={item.conference.basePrice}
-                      startTime={item.conference.startTime}
+                      endDate={item.conference.endDate}
+                      timezone={item.conference.timezone}
                       credits={item.conference.credits}
+                      currency={item.conference.currency}
+                      basePrice={item.conference.basePrice}
+                      confId={item.conference._id}
                     />
                   </div>
                 );
