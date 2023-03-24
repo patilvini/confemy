@@ -5,8 +5,8 @@ import "./hostYourConfs.styles.scss";
 function HostYourConfs(props) {
   const navigate = useNavigate();
   return (
-    <section className=" grid-col-2 host-your-conference ">
-      <div className="grid-1st-col plan-and-host-conf">
+    <section className=" host-your-conference ">
+      <div className="plan-and-host-conf">
         <h1>
           Plan and Host your <br /> conference for FREE
         </h1>
@@ -18,10 +18,7 @@ function HostYourConfs(props) {
           Host your conference
         </button>
       </div>
-      <div
-        style={{ margin: "4.5rem 23.7rem 7.4rem 5.3rem" }}
-        className="grid-2nd-col"
-      >
+      <div className="">
         <HostYourConfSketch className="host-your-conference-sketch" />
       </div>
     </section>
