@@ -34,7 +34,11 @@ export default function SearchPage() {
 
   const dispatch = useDispatch();
   const search = useSelector((state) => state.conference.search);
+  const [active, setActive] = useState(1);
+
   const { state } = useLocation();
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [showRightArrow, setShowRightArrow] = useState(false);
 
   //  get utc date for location timezone
   let timezone;
@@ -89,12 +93,10 @@ export default function SearchPage() {
       max: intMaxPrice,
     });
   }
-
   // function to call search api. it will send above filters array
   async function loadSearchResults() {
-    console.log("loadSearch called");
     dispatch(confSearchInitiatedAction());
-    const url = `homePage/conferences/search?page=1&limit=10&text=${query}`;
+    const url = `homePage/conferences/search?page=${active}&limit=9&text=${query}`;
     try {
       const response = await api.post(url, { filters });
       if (response) {
@@ -206,13 +208,17 @@ export default function SearchPage() {
     currency,
     maxPrice,
     minPrice,
+    active,
   ]);
 
   useEffect(() => {
     setLocation(state);
   }, [state]);
 
-  // console.log("filters", filters);
+  useEffect(() => {
+    setScrollPosition(window.scrollY);
+    window.scrollTo(0, scrollPosition);
+  }, []);
 
   return (
     <div className="container pt-64">
@@ -367,6 +373,49 @@ export default function SearchPage() {
         ) : (
           renderSearch(mode)
         )}
+      </div>
+      <div className="pagination caption-2-regular-gray3 ">
+        {showRightArrow ? (
+          <span
+            onClick={() => {
+              if (active === 1) {
+                setActive(search.conferences.length);
+              } else {
+                setActive(active - 1);
+              }
+            }}
+          >
+            &laquo;
+          </span>
+        ) : null}
+        {search.conferences?.length > 0 &&
+          search?.conferences.map((val, idx) => {
+            return (
+              <span
+                className={active === idx + 1 ? "active" : ""}
+                onClick={() => {
+                  if (active !== 1) {
+                    console.log("active", active);
+                    setShowRightArrow(true);
+                  }
+                  setActive(idx + 1);
+                }}
+              >
+                {idx + 1}
+              </span>
+            );
+          })}
+        <span
+          onClick={() => {
+            if (active === search.conferences.length) {
+              setActive(1);
+            } else {
+              setActive(active + 1);
+            }
+          }}
+        >
+          &raquo;
+        </span>
       </div>
     </div>
   );

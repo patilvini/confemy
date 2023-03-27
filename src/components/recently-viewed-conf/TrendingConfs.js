@@ -50,7 +50,7 @@ function TrendingConfs() {
   return (
     <section className="bg-background conf-display recently-viewed-confs">
       <div>
-        <h2>Trending Conferences</h2>
+        <h2 className="trending-conf-title">Trending Conferences</h2>
         <div className="recently-viewed-confs">
           <Carousel
             // swipeable={true}
@@ -66,19 +66,23 @@ function TrendingConfs() {
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
           >
-            {data ? (
-              data.map((item, index) => {
+            {data?.length > 0 ? (
+              data?.map((item) => {
+                console.log("ddddddddd", item);
                 return (
-                  <div key={index}>
+                  <div key={item._id}>
                     <ConfCard
-                      link={item.conference._id}
-                      confName={item.conference.title}
+                      confId={item.conference._id}
                       startDate={item.conference.startDate}
+                      endDate={item.conference.endDate}
                       currency={item.conference.currency}
-                      location={item.conference.location}
-                      price={item.conference.basePrice}
+                      city={item.conference.city}
+                      basePrice={item.conference.basePrice}
                       startTime={item.conference.startTime}
-                      credits={item.conference.credits}
+                      credits={item.conference.conferenceCredit}
+                      mode={item.conference.mode}
+                      timezone={item.conference.timezone}
+                      title={item.conference.title}
                     />
                   </div>
                 );

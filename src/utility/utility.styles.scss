@@ -38,6 +38,7 @@ $mrContainerOffSidemenu: 20px;
 @mixin body-regular-gray3 {
   @include body-regular;
   color: $gray-3;
+
 }
 
 @mixin body-regular-a {

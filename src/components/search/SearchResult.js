@@ -18,7 +18,7 @@ export default function SearchResult({ result, isLoading }) {
           {result.map((conf) => (
             <div key={conf._id}>
               <ConfCard
-                src={conf.banner[0]?.Location}
+                src={conf?.banner[0]?.Location}
                 title={conf.title}
                 startDate={conf.startDate}
                 endDate={conf.endDate}

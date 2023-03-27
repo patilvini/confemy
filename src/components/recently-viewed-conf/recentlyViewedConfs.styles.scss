@@ -2,3 +2,10 @@
   margin-top: 7rem;
   // padding-top: 9.6rem;
 }
+
+.trending-conf-title{
+  @media screen and (max-width:500px) {
+    text-align: center;
+    
+  }
+}

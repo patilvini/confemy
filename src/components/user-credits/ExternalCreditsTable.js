@@ -7,6 +7,7 @@ import enGB from "date-fns/locale/en-GB";
 import ExternalCreditsForm from "./ExternalCreditsForm";
 import Dialogue from "../dialogue/Dialogue";
 import ModalX from "../modal/ModalX";
+import SelectFormType3 from "../reselect/SelectFormType3";
 
 import DucumentIcon from "../icons/DocumentIcon";
 import EditIcon from "../icons/EditIcon";
@@ -19,10 +20,17 @@ import {
 } from "../../redux/user-profile/userProfileAction";
 import api from "../../utility/api";
 
+const options1 = [
+  { value: 1, label: "1 month" },
+  { value: 3, label: "3 months" },
+  { value: 6, label: "6 months" },
+];
+
 const ExternalCreditsTable = () => {
   const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
   const [creditId, setCreditId] = useState(null);
+  const [filterText, setFilterText] = useState("");
 
   const user = useSelector((state) => state.auth.user);
   const externalCredits = useSelector(
@@ -61,7 +69,21 @@ const ExternalCreditsTable = () => {
   };
   return (
     <div className="mb-40">
-      <h4 className="mb-24">External Credits</h4>
+      <div className="flex-vc-sb mb-24">
+        <h4 className="mb-24">External Credits</h4>
+        <SelectFormType3
+          id="filterText1"
+          isClearable
+          isSearchable
+          name="filterText1"
+          options={options1}
+          onChange={(value) => setFilterText(value?.value)}
+          value={filterText}
+          placeholder="Filter Data"
+          isDisabled={false}
+          isMulti={false}
+        />
+      </div>
       <table className="uc-table">
         <thead>
           <tr>

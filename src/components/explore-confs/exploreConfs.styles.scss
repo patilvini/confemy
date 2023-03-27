@@ -1,19 +1,33 @@
+
 .explore-section-1 {
   grid-column: 2/4;
   text-align: center;
   cursor: pointer;
+  @media screen and (max-width:750px) {
+    grid-column: 1/9;
+    
+  }
 }
 
 .explore-section-2 {
   grid-column: 4/6;
   text-align: center;
   cursor: pointer;
+  @media screen and (max-width:750px) {
+    margin: 3.2rem ;
+    grid-column: 1/9;
+    
+  }
 }
 
 .explore-section-3 {
   grid-column: 6/8;
   text-align: center;
   cursor: pointer;
+  @media screen and (max-width:750px) {
+    grid-column: 1/9;
+    
+  }
 }
 
 .globe-sketch {

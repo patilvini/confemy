@@ -8,10 +8,7 @@
 
 .uc-dropdown {
   background: $shade-1;
-  // width: 16.1rem;
-  // height: 4.8rem;
-  // border-radius: 0.4rem;
-  // padding: 1.2rem 1.6rem 0.9rem;
+
 }
 
 .ec-form-wrap {
@@ -60,4 +57,23 @@
   &:focus {
     border: solid $info 2px;
   }
+}
+
+.uc-conf-input{
+  width: 170px;
+  height: 45px;
+  border: 2px solid $shade-1;
+  border-radius: 5px;
+  :focus{
+    border-radius: 2px solid $info;
+  }
+}
+
+.btn{
+  width: 200px;
+  height: 40px;
+  border: none;
+  border-radius: 4px;
+  background: $shade-3;
+  color: $gray-3;
 }

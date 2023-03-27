@@ -8,4 +8,20 @@
 
 .how-it-works-heading {
   margin: 0 119px 17px;
+  @media screen and (max-width:500px) {
+    font-size: medium;
+    margin: 0 auto 1.7rem;
+    
+  }
 }
+
+
+// .how-it-works-heading {
+//   margin: 0 auto 17px;
+// }
+
+// @media screen and (min-width:425px) {
+//   .how-it-works-heading {
+//   margin: 0 auto 17px;
+// }
+// }

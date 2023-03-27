@@ -51,6 +51,8 @@ import UserProfileLayoutPage from "./pages/layout-pages/UserProfileLayoutPage";
 import UserTickets from "./components/tickets/UserTickets";
 import ForgotPasswordPage from "./pages/forgot-password-page/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/reset-password-page/ResetPasswordPage";
+import PrintTicket from "./components/tickets/PrintTicket";
+import Receipt from "./components/tickets/Receipt";
 
 const App = () => {
   useEffect(() => {
@@ -63,7 +65,11 @@ const App = () => {
         <BrowserRouter>
           <PNavbar />
           <Alert />
+
           <Routes>
+            <Route path="/print-ticket" element={<PrintTicket />} />
+            <Route path="/print-receipt" element={<Receipt />} />
+
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/signin" element={<SigninPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>
@@ -95,6 +101,7 @@ const App = () => {
               <Route path="saved-conference" element={<SavedConfs />} />
               <Route path="credits" element={<UserCredits />} />
               <Route path="account-settings" element={<AccountSettings />} />
+
               <Route
                 index={true}
                 element={<Navigate to="./tickets" replace />}

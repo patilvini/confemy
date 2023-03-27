@@ -1,9 +1,11 @@
+@use "./utility/media.mixins.scss" as media;
 @import "./utility/utility.styles.scss";
 @import "./utility/form.styles.scss";
 @import "./utility/font.styles.scss";
 @import "./utility/button.styles.scss";
 @import "./utility/images.styles.scss";
 @import "./utility/confCard.styles.scss";
+
 
 /* Universal set up */
 
@@ -175,7 +177,7 @@ a {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: auto;
-}
+  }
 
 // common classes
 
@@ -187,6 +189,14 @@ a {
   padding-left: 9.7rem;
   padding-right: 9.7rem;
   padding-bottom: 7rem;
+  @media screen and (max-width:320px) {
+    padding: 2.2rem;
+    
+  }
+  @media screen and (max-width: 500px) and (min-width: 350px) {
+    padding: 2rem
+    
+  }
 }
 
 .position-relative {
@@ -564,38 +574,6 @@ $spaceamounts: (
 // transition classes
 .zero-height {
   height: 0px;
-}
-
-// using material UI breakpoints for differnet screen sizes.
-
-@mixin small() {
-  @media only screen and (max-width: 600px) {
-    @content;
-  }
-}
-
-@mixin medium() {
-  @media only screen and (min-width: 601px) and (max-width: 960px) {
-    @content;
-  }
-}
-
-@mixin large() {
-  @media only screen and (min-width: 961px) and (max-width: 1280px) {
-    @content;
-  }
-}
-
-@mixin xlarge {
-  @media only screen and (min-width: 1281px) and (max-width: 1920px) {
-    @content;
-  }
-}
-
-@mixin xxlarge {
-  @media only screen and (min-width: 1921px) {
-    @content;
-  }
 }
 
 // drag box
