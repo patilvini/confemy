@@ -15,8 +15,7 @@ function Hero() {
             onClick={() => {
               navigate("/search-conference");
             }}
-            style={{ maxWidth: "60%", fontSize: "1.1vw" }}
-            className="button button-green"
+            className="button button-green hero-btn"
           >
             Explore Trending Conferences
           </button>

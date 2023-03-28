@@ -1,5 +1,11 @@
 @import "../../utility/utility.styles.scss";
 
+.tabs-flex{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .inactive-shared-tab {
   padding-bottom: 1.6rem;
   border-bottom: solid 0.4rem $colour-white;

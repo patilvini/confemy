@@ -3,7 +3,7 @@
 .hero-container{
   display: flex;
   flex-direction: row;
-  @media screen and (max-width:500px) {
+  @media screen and (max-width:700px) {
     flex-wrap: wrap;
     margin:5rem auto 5rem;
     
@@ -12,7 +12,17 @@
 
 .hero-text {
   margin: auto 2rem auto 8rem;
-  @media screen and (max-width:500px) {
+  @media screen and (max-width:700px) {
+     margin: 2rem auto;
+     text-align: center;
+  }
+}
+.hero-btn{
+  width: 60%;
+  height: 30%;
+  @media screen and (max-width:900px) and (min-width:490px) {
+    width: 80%;
+    height: 30%;
     
   }
 }
@@ -22,7 +32,7 @@
   width: 760px;
   height: 626px;
   margin: 2.3rem 8rem 0 0;
-  @media screen and (max-width:500px) {
+  @media screen and (max-width:700px) {
     height: 300px;
     padding: 2rem;
 
@@ -41,6 +51,9 @@
   color: $primary;
   margin: 0.7rem 1rem 3.2rem 0;
   overflow-wrap: unset;
+  @media screen and (max-width:700px) {
+    font-size: 5vh;
+ }
 }
 
 .landing-page-title {
@@ -52,4 +65,7 @@
   line-height: normal;
   letter-spacing: 0.02px;
   color: $primary;
+  @media screen and (max-width:700px) {
+    font-size: 3vh;
+ }
 }

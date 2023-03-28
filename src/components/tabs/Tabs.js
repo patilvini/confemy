@@ -8,7 +8,7 @@ import "./tabs.styles.scss";
 
 export default function Tabs({ tabs, showRadioButtons }) {
   return (
-    <div className="flex-vc">
+    <div className="tabs-flex">
       {tabs.map((tab) => (
         <div>
           <NavLink key={tab.label} to={tab.path}>
