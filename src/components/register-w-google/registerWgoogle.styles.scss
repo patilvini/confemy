@@ -1,20 +1,4 @@
-@import '../../utility//utility.styles.scss';
-
-.or-container {
-  opacity: 0.67;
-  display: flex;
-  align-items: center;
-  margin: 3.2rem auto;
-  text-align: center;
-}
-
-.or-line {
-  margin: auto 2.2rem;
-  display: inline-block;
-  width: 175px;
-  height: 1px;
-  background-color: $shade-1;
-}
+@import "../../utility//utility.styles.scss";
 
 .signin-social {
   width: 100%;

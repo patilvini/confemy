@@ -1,42 +1,59 @@
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import api from "../../utility/api";
-import { loadOrganization } from "./organizationUtil";
+import { loadOrganizationAction } from "../../redux/organization/organizationAction";
+import { alertAction } from "../../redux/alert/alertAction";
+import TextError from "../formik/TextError";
+
 import "./saveInput.styles.scss";
 
 export default function AddOrganizer({ organizationId }) {
   const [showButtons, setShowButtons] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errMsg, setErrMsg] = useState("");
 
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
 
   const textInputRef = useRef();
 
   function handleInputChange(e) {
     setInputValue(e.target.value);
+    if (e.target.value) {
+      setErrMsg("");
+    }
   }
 
   async function handleInputSubmit(e) {
+    e.preventDefault();
+    // validate email
+    const emailRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const isEmailValid = emailRegex.test(inputValue.toLowerCase());
+    if (!isEmailValid) {
+      setErrMsg("Email not valid");
+      return;
+    }
+
     const organizerDetails = {
       email: inputValue,
-      organizationId,
+      organizationId: organizationId,
+      user: user._id,
     };
-    e.preventDefault();
 
     try {
       const response = await api.post("/organizations/organizers", {
         organizerDetails,
       });
       if (response) {
-        loadOrganization(organizationId, user._id);
+        dispatch(loadOrganizationAction(response.data.data.organization));
         setInputValue("");
         setShowButtons(false);
         textInputRef.current.style.paddingBottom = "1.6rem";
       }
     } catch (err) {
-      console.log(err);
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   }
 
@@ -50,15 +67,21 @@ export default function AddOrganizer({ organizationId }) {
     setInputValue("");
     setShowButtons(false);
     textInputRef.current.style.paddingBottom = "1.6rem";
+    setErrMsg("");
   };
 
   return (
-    <form className="form-type-1" onSubmit={handleInputSubmit}>
+    <form
+      autoComplete="off"
+      autoCorrect="off"
+      className="form-type-1"
+      onSubmit={handleInputSubmit}
+    >
       <div className="material-textfield">
         <input
           ref={textInputRef}
           id="organizersEmail"
-          type="email"
+          type="text"
           name="organizersEmail"
           value={inputValue}
           onChange={handleInputChange}
@@ -67,15 +90,14 @@ export default function AddOrganizer({ organizationId }) {
         />
         <label>+ Add organizer's email</label>
       </div>
-      <div className="saveinput-error">
-        {errorMsg}
-        {/* {formik.touched.name && Boolean(formik.errors.name) && (
-              <TextError>{formik.errors.name}</TextError>
-            )} */}
+      <div>
+        <TextError>{errMsg}</TextError>
       </div>
       <div className="mb-20">
         <div
-          className={showButtons ? "saveinput-buttons-wrap" : "display-none"}
+          className={`${
+            showButtons ? "saveinput-buttons-wrap" : "display-none"
+          }`}
         >
           <button type="submit" className="button button-primary">
             Save

@@ -1,15 +1,17 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import ConfSteps from "../../components/conference/ConfSteps";
+import ConfSteps from "../../components/create-conference/ConfSteps";
 import Modal from "../../components/modal/Modal";
+import { removeConferenceStateAction } from "../../redux/conference/conferenceAction";
 
 export default function CreateConfLayoutPage() {
   const [skip, setskip] = useState(false);
 
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onDismiss = () => {
     setskip(true);
@@ -18,6 +20,12 @@ export default function CreateConfLayoutPage() {
   const onSetupOrganizationClick = () => {
     navigate("/dashboard/create-organization");
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(removeConferenceStateAction());
+    };
+  }, []);
 
   if (!user?.hasOrganization && !skip) {
     return (
@@ -53,11 +61,11 @@ export default function CreateConfLayoutPage() {
   }
 
   return (
-    <>
+    <div className="ml-32">
       <ConfSteps />
       <div>
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }

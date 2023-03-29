@@ -1,7 +1,20 @@
 @import '../../utility/utility.styles.scss';
 
+.hero-container{
+  display: flex;
+  flex-direction: row;
+  @media screen and (max-width:500px) {
+    flex-wrap: wrap;
+    margin:5rem auto 5rem;
+    
+  }
+}
+
 .hero-text {
   margin: auto 2rem auto 8rem;
+  @media screen and (max-width:500px) {
+    
+  }
 }
 
 .hero-sketch {
@@ -9,6 +22,12 @@
   width: 760px;
   height: 626px;
   margin: 2.3rem 8rem 0 0;
+  @media screen and (max-width:500px) {
+    height: 300px;
+    padding: 2rem;
+
+    
+  }
 }
 
 .landing-huge-title {

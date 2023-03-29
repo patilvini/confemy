@@ -1,10 +1,9 @@
-@import '../../utility/utility.styles.scss';
+@import "../../utility/utility.styles.scss";
 
 .register-modal {
   width: 506px;
-  //   height: 582px;
   .grid-col-2 {
-    grid-gap: 1.6rem;
+    grid-gap: 0.8rem;
   }
 }
 

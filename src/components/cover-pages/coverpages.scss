@@ -1,0 +1,92 @@
+.section-one{
+    margin: 13rem ;
+    @media screen and (max-width:1170px) {
+        margin: 13rem 5rem;
+        text-align: center;
+
+    }
+    h1 p button{
+        text-align: center;
+    }
+    p{
+        margin: 2rem 0;
+    }
+
+}
+
+.section-header{
+    margin: auto;
+    width: 250px;
+    text-align: left;
+    h1{
+        margin-bottom: 1rem ;
+    }
+    @media screen and (max-width:600px) {
+        text-align: center;
+    }
+}
+
+
+.section-1-grid{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    @media screen and (max-width:1170px) {
+        grid-template-columns: 1fr
+
+    }
+}
+
+.section-grid{
+    height: 48rem;
+    text-align: center;
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    align-items: center;
+    @media screen and (max-width:600px) {
+        grid-template-columns: 1fr;
+    }
+   
+}
+
+
+.wallet{
+    width:25.2rem;
+}
+
+.hostConfs{
+    margin:5.8rem auto;
+    
+    max-width: 52.2rem; 
+    @media screen and (max-width:1170px) {
+        margin:0rem 28rem;
+        
+
+    }
+}
+
+.smartTicketing{
+    width: 16.6rem
+
+}
+
+.getStarted{
+    text-align: center;
+    height:44.8rem;
+    background-color: #4cb944;
+
+    h1{
+        font-size: 5rem;
+        color: white;
+        padding-top:11.2rem;
+
+    }
+    p{
+        font-size: 1.8rem;
+        color:"#444444";
+        margin-top:2.6rem;
+
+    }
+    button{
+        margin-top: 6.4rem;
+    }
+}

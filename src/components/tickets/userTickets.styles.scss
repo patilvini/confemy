@@ -1,0 +1,73 @@
+@import "../../utility//utility.styles.scss";
+
+.user-ticket-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.7;
+  border-radius: 4px;
+  background-color: $colour-white;
+}
+
+.user-ticket-card {
+  min-width: 55.8rem;
+  height: 27.3rem;
+  border-radius: 0.8rem;
+  margin-bottom: 2.8rem;
+  box-shadow: 0 0.2rem 0.8rem 0 rgba(52, 40, 40, 0.08);
+  cursor: pointer;
+  overflow-wrap: break-word;
+}
+  
+.user-ticket-btn {
+  background: $primary;
+  color: white;
+  height: 4.8rem;
+}
+
+.user-ticket-resend{
+  border-radius: 0 0rem 0rem 0.8rem;
+
+}
+.user-ticket-print {
+    border-radius: 0 0rem 0.8rem 0rem;
+}
+
+.ut-modal-wrap {
+  width: 62.4rem;
+  padding: 0rem 2.4rem;
+}
+
+.print-ticket-grid{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:10px;
+  word-wrap: break-word;  
+}
+.print-ticket{
+  text-overflow: hidden;
+
+ width: 70%;
+  margin: 0 auto;
+
+
+}
+.print-ticket-container{
+  border: 2px solid black;
+  padding: 24px 56px;
+}
+.print-ticket-content{
+  grid-column: 2/span 4;
+}
+.print-ticket-text-1{
+  grid-column: 2/3;
+
+}
+.print-ticket-text-2{
+  grid-column: 3/4;
+}
+

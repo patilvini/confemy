@@ -7,16 +7,15 @@ import { hasChildren } from "./OrganizersNavbarUtil";
 
 import DropdownIcon from "../icons/DropdownIcon";
 import NextIcon from "../icons/NextIcon";
+import CloseIcon from "../icons/CloseIcon";
 
 import "./organizersNavbar.styles.scss";
-
-// active sidebar menu color
 
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export default function OrganizersNavbar() {
+export default function OrganizersNavbar({ className, closeDash }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -24,7 +23,7 @@ export default function OrganizersNavbar() {
   const { user } = auth;
 
   return (
-    <div className="sidemenu-container">
+    <div className={className}>
       <div className="organizers-dashboard">
         <h2
           onClick={() => {
@@ -39,6 +38,12 @@ export default function OrganizersNavbar() {
             <MenuItem key={key} item={item} />
           ))}
         </ul>
+      </div>
+      <div onClick={() => closeDash()} className="close-org-dash">
+        <i>
+          <CloseIcon fill="#444444" className="icon-size mr-10" />{" "}
+        </i>
+        <p>Close</p>
       </div>
     </div>
   );

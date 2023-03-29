@@ -1,0 +1,33 @@
+.submit-cancel-loader-wrap {
+  width: 100%;
+  button {
+    min-height: 52px;
+    min-width: 212px;
+    @media screen and (max-width: 632px) {
+      min-width: auto;
+    }
+  }
+}
+
+.submit-loader-wrap {
+  display: inline-block;
+  position: relative;
+
+  button {
+    min-height: 52px;
+    min-width: 212px;
+    @media screen and (max-width: 750px) {
+      min-width: auto;
+    }
+  }
+}
+
+.fullwidth-submit-loader {
+  display: block;
+  width: 100%;
+  position: relative;
+  button {
+    min-height: 52px;
+    width: 100%;
+  }
+}

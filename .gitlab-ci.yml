@@ -1,0 +1,24 @@
+stages:
+  - build
+
+main_server_staging:
+  stage: build
+  variables:
+    PROJECT_PATH: "/home/ubuntu/app/confemy-react"
+    IP_ADDRESS_STAGING: "staging.confemy.com"
+  tags:
+    - confemy-react-staging
+  script:
+    - echo "Starting build 🛠️"
+    - sudo rsync -a --delete ./ $PROJECT_PATH --exclude=node_modules
+    - echo "PROJECT_PATH::" $PROJECT_PATH
+    - echo "ENV_PATH::" $ENV_PATH
+    - echo "IP_ADDRESS_STAGING:" $IP_ADDRESS_STAGING
+    - cd $PROJECT_PATH
+    - echo "Completed build 🕺🏼"
+  environment:
+    name: staging
+    url: http://$IP_ADDRESS_STAGING
+  only:
+    - staging_check
+    - dev

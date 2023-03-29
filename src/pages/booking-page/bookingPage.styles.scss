@@ -1,0 +1,84 @@
+@import "../../utility//utility.styles.scss";
+
+.bookingpage-container {
+  display: flex;
+  justify-content: center;
+  min-width: 300px;
+  margin: 8.2rem 1.6rem;
+}
+// bp = booking page
+.bp-content-wrap {
+  max-width: 83.2rem;
+}
+
+.bp-tickets-grid {
+  padding-top: 9rem;
+  margin-bottom: 1.6rem;
+  display: grid;
+  width: 100%;
+  //   grid-template-columns: 61.6rem 20rem;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto;
+  gap: 16px;
+
+  .grid-2nd-col {
+    justify-self: right;
+  }
+}
+
+.bp-total {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid $shade-1;
+  padding-top: 3.2rem;
+}
+
+.bp-tickets-table-wrap {
+  // border-bottom: 1px solid $shade-1;
+  table {
+    width: 100%;
+    // border-spacing: 0;
+    // table border needs to be collapsed to give order to bottom row
+    border-collapse: collapse;
+    th {
+      padding: 16px 24px 16px;
+      background-color: $shade-1;
+      vertical-align: middle;
+      text-align: left;
+      height: 48px;
+      @include caption-1-heavy;
+
+      // &:nth-child(5n + 4) {
+      //   text-align: right;
+      // }
+      // &:nth-child(5n + 5) {
+      //   text-align: center;
+      // }
+    }
+
+    tbody {
+      tr:last-child {
+        border-top: 1px solid $shade-1;
+        // & > td:nth-child(4) {
+        //   text-align: left;
+        //   // padding: 12px;
+        // }
+      }
+      td {
+        @include caption-1-regular;
+        padding: 16px 24px 16px;
+        vertical-align: middle;
+        text-align: left;
+        height: 48px;
+
+        // &:nth-child(5n + 4) {
+        //   text-align: right;
+        // }
+        // &:nth-child(5n + 5) {
+        //   text-align: center;
+        // }
+      }
+    }
+  }
+}

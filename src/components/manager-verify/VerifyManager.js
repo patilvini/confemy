@@ -1,5 +1,5 @@
-import { Fragment, useState, useEffect } from "react";
-import { Form, Formik, useFormik } from "formik";
+import { useState } from "react";
+import { Form, Formik } from "formik";
 import api from "../../utility/api";
 
 import NameForm from "../../components/register/NameForm";
@@ -54,15 +54,12 @@ export default function VerifyManager() {
         formData
       );
       if (response) {
-        console.log("Register response", response);
         actions.setSubmitting(false);
         setMsg(response.data.message);
-
         openDialogue();
       }
     } catch (err) {
       setMsg(err.response.data.message);
-      console.log(msg);
       openDialogue();
 
       if (err) actions.setFieldError("email", err.response?.data.message);
@@ -71,7 +68,7 @@ export default function VerifyManager() {
 
   return (
     <div>
-      <div style={{ width: "80%" }}>
+      <div className="modal-form-wrapper">
         <div className="form-type-1">
           <Formik
             initialValues={initialValues}
@@ -80,7 +77,9 @@ export default function VerifyManager() {
           >
             <Form>
               <NameForm />
-              <button type="submit">Submit</button>
+              <button className="button button-green" type="submit">
+                Submit
+              </button>
             </Form>
           </Formik>
         </div>
@@ -96,4 +95,3 @@ export default function VerifyManager() {
     </div>
   );
 }
-

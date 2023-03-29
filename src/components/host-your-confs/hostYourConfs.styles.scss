@@ -1,9 +1,32 @@
+
 .host-your-conference {
   height: 491px;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:10px;
+  @media screen and (max-width:730px) {
+    grid-template-columns:1fr;
+
+  }
+  
+}
+
+.plan-and-host-conf{
+  margin:auto 0 auto 13.8rem;
+  @media screen and (max-width:720px){
+    margin:auto;
+
+  }
+ 
 }
 
 .host-your-conference-sketch {
   max-width: 100%;
   width: 430px;
   height: 372px;
+  @media screen and (max-width:700px){
+    margin:auto;
+
+  }
+ 
 }

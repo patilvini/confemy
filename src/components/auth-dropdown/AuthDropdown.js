@@ -7,54 +7,57 @@ import ODashboardIcon from "../icons/ODashboardIcon";
 import ProfileIcon from "../icons/ProfileIcon";
 import PassesIcon from "../icons/PassesIcon";
 import LikeBlueIcon from "../icons/LikeBlueIcon";
-import HelpIcon from "../icons/HelpIcon";
 import SettingsIcon from "../icons/SettingsIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import DropdownIcon from "../icons/DropdownIcon";
 
 import "./AuthDropdown.styles.scss";
 import api from "../../utility/api";
-// import { capitalize } from "../../utility/commonUtil";
 
 const authDropdownOptions = [
   {
     icon: <ExploreIcon className="icon-size" />,
-    name: "Browse Conference",
-    path: "#!",
+    name: "Browse Conferences",
+    path: "search-conference",
   },
   {
     icon: <ODashboardIcon className="icon-size" />,
     name: "Organizer's Dashboard",
-    path: "/dashboard",
+    path: "dashboard",
   },
   {
     icon: <ProfileIcon className="icon-size" />,
     name: "Profile",
-    path: "#!",
+    path: "/user-profile/account-settings",
   },
   {
     icon: <PassesIcon className="icon-size" />,
     name: "Tickets",
-    path: "#!",
+    path: "/user-profile/tickets",
   },
   {
     icon: <LikeBlueIcon className="icon-size" />,
     name: "Saved Conference",
-    path: "#!",
+    path: "/user-profile/saved-conference",
   },
+  // {
+  //   icon: <HelpIcon className="icon-size" />,
+  //   name: "Help",
+  //   path: "#!",
+  // },
   {
-    icon: <HelpIcon className="icon-size" />,
-    name: "Help",
-    path: "#!",
+    icon: <SettingsIcon className="icon-size" />,
+    name: "Credits",
+    path: "/user-profile/credits",
   },
   {
     icon: <SettingsIcon className="icon-size" />,
     name: "Account Settings",
-    path: "#!",
+    path: "/user-profile/account-settings",
   },
 ];
 
-export default function AuthDropdown() {
+export default function AuthDropdown({ className }) {
   const [openAuthDropdown, setOpenAuthDropdown] = useState(false);
   const onDropdownClick = () => setOpenAuthDropdown(!openAuthDropdown);
 
@@ -94,9 +97,9 @@ export default function AuthDropdown() {
   };
 
   return (
-    <div style={{ height: "100%" }} ref={ref}>
+    <div ref={ref}>
       <div
-        className="user-name-wrapper"
+        className="user-name-wrapper mr-15 mt-6"
         onClick={onDropdownClick}
         // onMouseEnter={() => setOpenAuthDropdown(true)}
         // onMouseLeave={() => setOpenAuthDropdown(false)}
@@ -109,7 +112,7 @@ export default function AuthDropdown() {
         // onMouseEnter={() => setOpenAuthDropdown(true)}
         // onMouseLeave={() => setOpenAuthDropdown(false)}
       >
-        <div className="auth-dropdown">
+        <div className={className}>
           <ul>
             {authDropdownOptions.map((e) => (
               <li

@@ -1,10 +1,10 @@
-import React, { useEffect, Fragment } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { getProfileAction } from '../../redux/profile/profileAction';
-import Spinner from '../../components/spinner/Spinner';
-import NoProfile from '../../components/no-profile/NoProfile';
-import OrganizerProfile from '../../components/organizer-profile/OrganizerProfile';
+import React, { useEffect, Fragment } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getProfileAction } from "../../redux/profile/profileAction";
+import Spinner from "../../components/spinner/Spinner";
+import NoProfile from "../../components/no-profile/NoProfile";
+import OrganizerProfile from "../../components/organizer-profile/OrganizerProfile";
 
 const OrganizerProfilePage = ({
   getProfileAction,
@@ -18,7 +18,7 @@ const OrganizerProfilePage = ({
 
   return (
     <Fragment>
-      <div className='right-max-container'>
+      <div className="right-max-container">
         {isLoading && profile === null ? (
           <Spinner />
         ) : (

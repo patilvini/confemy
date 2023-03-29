@@ -13,13 +13,6 @@ import LinkedinBlueIcon from "../icons/LinkedinBlueIcon";
 import TwitterBlueIcon from "../icons/TwitterBlueIcon";
 import InstagramGradientIcon from "../icons/InstagramGradientIcon";
 
-import {
-  loadOrganizationAction,
-  organizationErrorAction,
-} from "../../redux/organization/organizationAction";
-
-import { thumbsContainer, thumb, thumbInner, img } from "./organizationUtil";
-
 const initialValues = {
   logos: [],
   name: "",
@@ -59,9 +52,6 @@ export default function OneComponentOrganization() {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  // Set msg to display msg after API call
-  const [msg, setMsg] = useState("");
-
   const navigate = useNavigate();
   // const dispatch = useDispatch();
   const { organizationId } = useParams();
@@ -100,7 +90,6 @@ export default function OneComponentOrganization() {
       formDataObj.append("file", logos[0]);
       try {
         const imagesResponse = await api.post("fileUploads", formDataObj);
-        console.log("images upload response", imagesResponse);
         if (imagesResponse) {
           formData.organization.logos = imagesResponse.data.data;
 
@@ -148,7 +137,6 @@ export default function OneComponentOrganization() {
     },
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
-      console.log("accepted files ondrop", acceptedFiles);
       setFiles(
         acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -211,7 +199,6 @@ export default function OneComponentOrganization() {
     try {
       const response = await api.get(url);
       if (response) {
-        console.log("get current organization api", response);
         setOrganization(response.data.data.organization);
         setIsLoading(false);
         setIsError(false);
@@ -395,7 +382,7 @@ export default function OneComponentOrganization() {
                 placeholder="Facebook (optional)"
               />
               <i className="left-input-icon">
-                <FacebookBlueCircle className="large-icon" />
+                <FacebookBlueCircle className="icon-lg" />
               </i>
             </div>
             {formik.touched.facebook && Boolean(formik.errors.facebook) && (
@@ -414,7 +401,7 @@ export default function OneComponentOrganization() {
                 placeholder="Instagram (optional)"
               />
               <i className="left-input-icon">
-                <InstagramGradientIcon className="large-icon" />
+                <InstagramGradientIcon className="icon-lg" />
               </i>
             </div>
             {formik.touched.instagram && Boolean(formik.errors.instagram) && (
@@ -432,7 +419,7 @@ export default function OneComponentOrganization() {
                 placeholder="Twitter (optional)"
               />
               <i className="left-input-icon">
-                <TwitterBlueIcon className="large-icon" />
+                <TwitterBlueIcon className="icon-lg" />
               </i>
             </div>
             {formik.touched.twitter && Boolean(formik.errors.twitter) && (
@@ -450,7 +437,7 @@ export default function OneComponentOrganization() {
                 placeholder="Linkedin (optional)"
               />
               <i className="left-input-icon">
-                <LinkedinBlueIcon className="large-icon" />
+                <LinkedinBlueIcon className="icon-lg" />
               </i>
             </div>
             {formik.touched.linkedin && Boolean(formik.errors.linkedin) && (
