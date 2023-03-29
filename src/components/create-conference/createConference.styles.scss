@@ -316,7 +316,7 @@
 }
 // images are in aspect ratio of 16:9
 .confbanner-dropzone-container {
-  width: 817.77px;
+  max-width: 917.77px;
   height: 460px;
 }
 
@@ -461,11 +461,14 @@
 // Preview page
 
 .preview-imgcard-wrap {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  @media screen and (max-width:1190px) {
+    grid-template-columns: 1fr;
+  }
 }
 .preview-img-wrap {
-  width: 464px;
+  width: 100%;
   height: 261px;
   background-color: $colour-white;
   overflow: hidden;
@@ -479,7 +482,7 @@
 .preview-card {
   display: flex;
   flex-direction: column;
-  width: 440px;
+  width:100%;
   height: 261px;
   padding: 16px 16px 12px;
   background-color: $colour-white;
@@ -500,3 +503,15 @@
 .publish-date-wrap {
   max-width: 300px;
 }
+
+
+.basicInfo-grid{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:2rem;
+  @media screen and (max-width:550px) {
+    grid-template-columns: 1fr;
+    
+  }
+}
+

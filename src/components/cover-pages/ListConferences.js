@@ -13,17 +13,10 @@ export default function ListConferences() {
   });
   return (
     <div>
-      <div className="cover-grid">
+      <div className="section-1-grid">
         <div className="section-one">
-          <h1
-            style={{ width: "52.3rem", fontSize: "4.8rem", color: "#000000" }}
-          >
-            Host your conference on confemy. It's Free!
-          </h1>
-          <p
-            style={{ margin: "2.4rem 0 3.2rem 0", width: "48.5rem" }}
-            className="caption-2-regular-gray3"
-          >
+          <h1>Host your conference on confemy. It's Free!</h1>
+          <p className="caption-2-regular-gray3">
             Confemy is a new age platform for hosting medical conferences, in
             few easy steps.
           </p>
@@ -39,17 +32,10 @@ export default function ListConferences() {
         </div>
       </div>
 
-      <div style={{ backgroundColor: "#ecf0f2" }} className="cover-grid">
-        <div className="section-two">
+      <div style={{ backgroundColor: "#ecf0f2" }} className="section-grid">
+        <div className="section-header">
           <h1>Easy Setup</h1>
-          <p
-            style={{
-              margin: "2.4rem 0 3.2rem 0",
-              width: "30.9rem",
-              lineHeight: "2.4rem",
-            }}
-            className="caption-2-regular-gray3"
-          >
+          <p className="caption-2-regular-gray3">
             Hosting conferences on confemy is super easy and super fast.
           </p>
         </div>
@@ -57,36 +43,22 @@ export default function ListConferences() {
           <EasySetup className="wallet" />
         </div>
       </div>
-      <div className="cover-grid">
+      <div className="section-grid">
         <div>
           <SmartTicketing className="smartTicketing" />
         </div>
 
-        <div className="section-three">
+        <div className="">
           <h1>Smart Ticketing</h1>
-          <p
-            style={{
-              margin: "2.4rem 0 3.2rem 0",
-              width: "30.9rem",
-              lineHeight: "2.4rem",
-            }}
-            className="caption-2-regular-gray3"
-          >
+          <p className="caption-2-regular-gray3">
             Create multiple ticket types, in just few easy steps.
           </p>
         </div>
       </div>
-      <div style={{ backgroundColor: "#ecf0f2" }} className="cover-grid">
-        <div className="section-four">
+      <div style={{ backgroundColor: "#ecf0f2" }} className="section-grid">
+        <div className="section-header">
           <h1>Real-time Analytics</h1>
-          <p
-            style={{
-              margin: "2.4rem 0 3.2rem 0",
-              width: "38.4rem",
-              lineHeight: "2.4rem",
-            }}
-            className="caption-2-regular-gray3"
-          >
+          <p className="caption-2-regular-gray3">
             Keep track of all your conferences with real time analytics.
           </p>
         </div>

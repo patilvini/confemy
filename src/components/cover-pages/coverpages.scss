@@ -1,59 +1,73 @@
 .section-one{
-    margin: 13.4rem 0 0 15.2rem;
+    margin: 13rem ;
+    @media screen and (max-width:1170px) {
+        margin: 13rem 5rem;
+        text-align: center;
+
+    }
+    h1 p button{
+        text-align: center;
+    }
+    p{
+        margin: 2rem 0;
+    }
 
 }
 
-.section-two{
-    margin: 22rem 0 0 24.2rem;
-
+.section-header{
+    margin: auto;
+    width: 250px;
+    text-align: left;
+    h1{
+        margin-bottom: 1rem ;
+    }
+    @media screen and (max-width:600px) {
+        text-align: center;
+    }
 }
 
-.section-three{
-    margin: 21.2rem 0 0 12.9rem;
-}
 
-.section-four{
-    margin: 20.9rem 0 0 24.2rem;
-}
-
-
-.cover-grid{
-
+.section-1-grid{
     display:grid;
-    grid-template-columns: 50% 50%;
+    align-items: center;
+    grid-template-columns: repeat(2,1fr);
+    @media screen and (max-width:1170px) {
+        grid-template-columns: 1fr;
+        align-items: center;
 
+    }
 }
 
-.onePlace{
-    width: 49.6rem;
-    
-    // margin-top: 5.7rem
-
-    // height: 40.2rem;
+.section-grid{
+    height: 48rem;
+    text-align: center;
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    align-items: center;
+    @media screen and (max-width:600px) {
+        grid-template-columns: 1fr;
+    }
+   
 }
 
 
 .wallet{
     width:25.2rem;
-    margin:14.9rem 28rem 14.8rem 18.8rem;
-}
-
-.manageCME{
-    margin: 10.1rem 0rem 15.8rem 31.8rem;
-}
-
-.setGoals{
-    margin: 13.3rem 26.5rem 13.3rem 18.8rem
 }
 
 .hostConfs{
-    margin:5.6rem 14.5rem 5.8rem 0;
+    margin:5.8rem auto;
     
-    width: 52.2rem; 
+    max-width: 52.2rem; 
+    @media screen and (max-width:1170px) {
+        margin:0rem auto;
+        
+
+    }
 }
 
+
 .smartTicketing{
-    margin: 15.7rem 0 15.7rem 26.1rem;
     width: 16.6rem
 
 }
@@ -77,5 +91,16 @@
     }
     button{
         margin-top: 6.4rem;
+    }
+}
+
+.trackCredit-sketch{
+    margin:5.8rem auto;
+    max-height: 50rem;
+    max-width: 52.2rem; 
+    @media screen and (max-width:1170px) {
+        margin:0rem 28rem;
+        
+
     }
 }

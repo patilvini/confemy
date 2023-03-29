@@ -95,6 +95,10 @@ a {
 
   margin: 96px $mrContainerOffSidemenu 64px $mlContainerOffSidemenu;
   overflow: hidden;
+  @media screen and (max-width:720px) {
+    margin:  96px 4rem  64px;
+    
+  }
 }
 
 // .container-offSidemenu {

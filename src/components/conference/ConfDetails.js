@@ -93,12 +93,12 @@ export default function ConfDetails() {
               </div>
             )}
           </div>
-          <div className="cd-1stcol-cardwrap">
+          {/* <div className="cd-1stcol-cardwrap">
             <BookingCard
               data={selectedConference}
               reload={() => setAction(!action)}
             />
-          </div>
+          </div> */}
           {selectedConference?.description &&
             Object.keys(selectedConference?.description).length > 0 && (
               <div className="mb-60">
@@ -209,7 +209,7 @@ export default function ConfDetails() {
               </div>
             )}
           <h2 className="mb-16">Conference Speakers</h2>
-          <div className="cd-speakers-grid mb-60">
+          <div className="mb-60">
             {selectedConference?.speakers?.map((speaker) => (
               <div key={speaker._id}>
                 <SpeakerCard
