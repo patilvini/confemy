@@ -364,7 +364,7 @@ export default function ConfDetails2() {
 
         <div className="mb-72">
           <h2>Speakers</h2>
-          <div className="grid-col-2">
+          <div>
             {formik.values.speakers?.map((speaker) => (
               <Speakercard
                 key={speaker?.label}
