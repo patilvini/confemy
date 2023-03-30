@@ -128,13 +128,9 @@
 }
 
 .tags-display {
-  // width: 100%;
-  // min-height: 100px;
-  // background-color: $colour-white;
-  // border: 2px solid $shade-1;
-
   display: flex;
   flex-wrap: wrap;
+ 
 
   li {
     height: 50px;
@@ -161,6 +157,7 @@
       margin-left: 8px;
     }
   }
+  
 }
 
 .details2-venue-wrap {
@@ -208,7 +205,7 @@
 }
 
 .add-speaker-button {
-  width: 392px;
+  max-width: 492px;
   height: 304px;
   max-width: 392px;
   max-height: 304px;
@@ -342,6 +339,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
+  
 }
 
 .livestream-tab {
@@ -351,6 +349,7 @@
   &:hover {
     background-color: $shade-1;
   }
+ 
 }
 
 .active-livestream-tab {
@@ -515,3 +514,20 @@
   }
 }
 
+.live-stream{
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  @media screen and (max-width:600px){
+    grid-template-columns: repeat(3,1fr);
+  }
+  // @media screen and (max-width:600px) {
+  //   grid-template-columns: repeat(2,1fr);
+  // }
+}
+
+.add-credit-btn{
+  margin-left: 16px;
+  @media screen and (max-width:660px) {
+    margin-left: 0;
+  }
+}

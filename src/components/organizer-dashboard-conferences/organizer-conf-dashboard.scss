@@ -352,13 +352,13 @@
   width: 19rem;
   height: 4.8rem;
   border: 1px solid $shade-1;
-  border-radius: 0.5rem;
   text-align: center;
+  border-radius: 0.5rem;
 }
 
 .earnings-table {
-  width: 100%;
   border-spacing: 0;
+  width: 100%;
   @include avenir-heavy-18;
   color: $gray-3;
   thead {

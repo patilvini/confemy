@@ -96,7 +96,7 @@ export default function ConfLiveStream() {
         <p className="caption-1-regular-gray3">
           Add Livestream to your online conference
         </p>
-        <div className="grid-col-5 mt-56 mb-80">
+        <div className="live-stream mt-56 mb-80">
           {tabs.map((tab, index) => {
             return (
               <div className="livestream-tab-wrap" key={tab.name}>
@@ -151,7 +151,7 @@ export default function ConfLiveStream() {
           These resources will be shared with the attendees only after they book
           for the conference.
         </p>
-        <div className="grid-col-5 mt-56 mb-80">
+        <div className="live-stream mt-56 mb-80">
           {resources.map((resource, index) => {
             return (
               <div className="livestream-tab-wrap" key={resource.name}>

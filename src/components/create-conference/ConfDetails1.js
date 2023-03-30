@@ -248,8 +248,8 @@ export default function ConfDetails1() {
           >
             Add Tags
           </button> */}
-          <div style={{ display: "flex" }}>
-            <div style={{ flexGrow: 1 }} className="material-textfield">
+          <div className="tags-display">
+            <div style={{ flexGrow: 1 }} className="material-textfield mb-18">
               <input
                 id="tag"
                 type="text"
@@ -266,7 +266,7 @@ export default function ConfDetails1() {
               <button
                 onClick={() => addTags()}
                 type="button"
-                className="button button-primary ml-16"
+                className="button button-primary add-credit-btn"
               >
                 Add Tags
               </button>
@@ -319,7 +319,7 @@ export default function ConfDetails1() {
 
           <div
             className={`${
-              formik.values.isAccredited ? "flex" : "display-none"
+              formik.values.isAccredited ? "tags-display" : "display-none"
             }`}
           >
             {/* <div
@@ -330,8 +330,8 @@ export default function ConfDetails1() {
               Disappear
             </div> */}
             <div style={{ flexGrow: 1 }}>
-              <div className="grid-col-2">
-                <div className="grid-1st-col">
+              <div className="basicInfo-grid">
+                <div className="">
                   <SelectFormType1
                     options={creditOptions}
                     label="Credit Type"
@@ -349,7 +349,7 @@ export default function ConfDetails1() {
                       )}
                   </div>
                 </div>
-                <div className="grid-2nd-col">
+                <div className="">
                   <div className="material-textfield">
                     <input
                       id="creditAmount"
@@ -374,7 +374,7 @@ export default function ConfDetails1() {
             <div>
               <button
                 type="button"
-                className="button button-primary ml-16"
+                className="button button-primary add-credit-btn"
                 onClick={() => addCredit()}
               >
                 Add Credit
