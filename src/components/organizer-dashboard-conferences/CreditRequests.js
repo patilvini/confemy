@@ -1,43 +1,45 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useFormik } from "formik";
-import { useDropzone } from "react-dropzone";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import { useDropzone } from 'react-dropzone';
 
-import SearchIcon from "../icons/SearchIcon";
+import SearchIcon from '../icons/SearchIcon';
 
-import SelectFormType3 from "../reselect/SelectFormType3";
-import api from "../../utility/api";
+import SelectFormType3 from '../reselect/SelectFormType3';
+import api from '../../utility/api';
 
-import "./organizer-conf-dashboard.scss";
-import { alertAction } from "../../redux/alert/alertAction";
-import UploadFile from "./UploadFile";
-import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
-import { loadAllOrganizerCreditsAction } from "../../redux/organizer-dashboard/organizerCreditActions";
+import './organizer-conf-dashboard.scss';
+import { alertAction } from '../../redux/alert/alertAction';
+import UploadFile from './UploadFile';
+import { loadMyOrganizationsSelectListAction } from '../../redux/organization/myOrganizationsAction';
+import { loadAllOrganizerCreditsAction } from '../../redux/organizer-dashboard/organizerCreditActions';
 
 const options = [
-  { label: "All", value: "all" },
-  { label: "Pending", value: "pending" },
-  { label: "Approved", value: "approved" },
+  { label: 'All', value: 'all' },
+  { label: 'Pending', value: 'pending' },
+  { label: 'Approved', value: 'approved' },
 ];
 
 export default function CreditRequests() {
   const creditData = useSelector((state) => state.organizer.allCredits);
-  const [initialData, setInitialData] = useState(creditData);
-  const [filterText1, setFilterText1] = useState("");
-  const [filterText2, setFilterText2] = useState("");
+
+  //remove this state
+  const [initialData, setInitialData] = useState([]);
+  const [filterText1, setFilterText1] = useState('');
+  const [filterText2, setFilterText2] = useState('');
   const [formData, setFormData] = useState({
-    searchText: "",
+    searchText: '',
   });
   const { searchText } = formData;
 
-  const [filter1, setfilter1] = useState("");
+  const [filter1, setfilter1] = useState('');
 
   const user = useSelector((state) => state.auth.user);
   const organizationsList = useSelector(
     (state) => state.myOrganizations.organizationsListForSelect
   );
   const dispatch = useDispatch();
-  const options2 = [{ value: "user", label: "User" }, ...organizationsList];
+  const options2 = [{ value: 'user', label: 'User' }, ...organizationsList];
 
   const onInputChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -67,7 +69,7 @@ export default function CreditRequests() {
   const filter1Data = (value) => {
     setFilterText1(value);
     let filtredData = creditData?.filter((item) => {
-      if (value === "all") {
+      if (value === 'all') {
         if (filterText2) {
           if (item.conference.host === filterText2) {
             return item;
@@ -76,7 +78,7 @@ export default function CreditRequests() {
           return item;
         }
       }
-      if (value === "pending" && item.creditStatus === 2) {
+      if (value === 'pending' && item.creditStatus === 2) {
         if (filterText2) {
           if (item.conference.host === filterText2) {
             return item;
@@ -85,7 +87,7 @@ export default function CreditRequests() {
           return item;
         }
       }
-      if (value === "approved" && item.creditStatus === 1) {
+      if (value === 'approved' && item.creditStatus === 1) {
         if (filterText2) {
           if (item.conference.host === filterText2) {
             return item;
@@ -100,25 +102,25 @@ export default function CreditRequests() {
   const filter2Data = (value) => {
     setFilterText2(value);
     if (initialData.length === 0) {
-      console.log("initial val");
+      console.log('initial val');
       let filtredData = creditData?.filter((item) => {
-        if (value === "user" && item.conference.host === "user") {
+        if (value === 'user' && item.conference.host === 'user') {
           if (filterText1) {
-            if (filterText1 === "pending" && item.creditStatus === 2) {
-              console.log("2");
+            if (filterText1 === 'pending' && item.creditStatus === 2) {
+              console.log('2');
               return item;
-            } else if (filterText1 === "approved" && item.creditStatus === 1) {
-              console.log("2");
+            } else if (filterText1 === 'approved' && item.creditStatus === 1) {
+              console.log('2');
               return item;
             } else {
-              console.log("3");
+              console.log('3');
               return item;
             }
           } else {
             return item;
           }
         }
-        if (value !== "user") {
+        if (value !== 'user') {
           if (value === item.conference.hostedBy.organization) {
             return item;
           }
@@ -127,26 +129,26 @@ export default function CreditRequests() {
       setInitialData(filtredData);
     } else {
       let filtredData = initialData?.filter((item) => {
-        console.log("conf", item.conference.host);
+        console.log('conf', item.conference.host);
 
-        if (value === "user" && item.conference.host === "user") {
-          console.log("value", value);
+        if (value === 'user' && item.conference.host === 'user') {
+          console.log('value', value);
           if (filterText1) {
-            console.log("1");
-            if (filterText1 === "pending" && item.creditStatus === 2) {
+            console.log('1');
+            if (filterText1 === 'pending' && item.creditStatus === 2) {
               return item;
-            } else if (filterText1 === "approved" && item.creditStatus === 1) {
-              console.log("2");
+            } else if (filterText1 === 'approved' && item.creditStatus === 1) {
+              console.log('2');
               return item;
             } else {
-              console.log("3");
+              console.log('3');
               return item;
             }
           } else {
             return item;
           }
         }
-        if (value !== "user") {
+        if (value !== 'user') {
           if (value === item.conference.hostedBy.organization) {
             return item;
           }
@@ -166,12 +168,13 @@ export default function CreditRequests() {
       const response = await api.get(
         `organizers/conferences/credits/users/${userId}`
       );
+      console.log({ response });
       if (response) {
         dispatch(loadAllOrganizerCreditsAction(response.data.data.allCredits));
         // setData(response.data.data.allCredits);
       }
     } catch (error) {
-      dispatch(alertAction(error.response.data.message, "error"));
+      dispatch(alertAction(error.response.data.message, 'error'));
     }
   };
   const loadMyOrgnizations = async (id) => {
@@ -186,17 +189,17 @@ export default function CreditRequests() {
         );
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
 
   useEffect(() => {
     loadMyOrgnizations(user._id);
-  }, []);
+  }, [user._id]);
 
   useEffect(() => {
     getOrganizerCredits(user._id);
-  }, []);
+  }, [user._id]);
 
   return (
     <>
@@ -215,8 +218,8 @@ export default function CreditRequests() {
             <i
               className={
                 searchText?.length > 0
-                  ? "display-none"
-                  : "conf-search-input-icon"
+                  ? 'display-none'
+                  : 'conf-search-input-icon'
               }
             >
               <SearchIcon width="2.4rem" height="2.4rem" />
@@ -264,7 +267,7 @@ export default function CreditRequests() {
             </tr>
           </thead>
           <tbody>
-            {searchData(initialData)?.map((data) => {
+            {searchData(creditData)?.map((data) => {
               return (
                 <tr key={data._id}>
                   <td>{`${data.firstName}  ${data.lastName}`}</td>

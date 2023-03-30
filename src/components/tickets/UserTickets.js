@@ -42,6 +42,7 @@ export default function UserTickets() {
 
   useEffect(() => {
     if (data) {
+      console.log('runn');
       const dataSet = data.filter((item) => {
         if (
           item.conference.title

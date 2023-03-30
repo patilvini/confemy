@@ -6,9 +6,13 @@ import SelectFormType3 from '../reselect/SelectFormType3';
 
 import MyConfsCard from './MyConfsCard';
 import EditIcon from '../icons/EditIcon';
+import { useNavigate } from 'react-router-dom';
 
 import { alertAction } from '../../redux/alert/alertAction';
-import { loadAllMyConfsAction } from '../../redux/conference/conferenceAction';
+import {
+  loadAllMyConfsAction,
+  loadOneIncopleteConfAction,
+} from '../../redux/conference/conferenceAction';
 import { loadMyOrganizationsSelectListAction } from '../../redux/organization/myOrganizationsAction';
 
 import './myConfs.styles.scss';
@@ -28,37 +32,78 @@ export default function MyConfs() {
   const [confList, setConfList] = useState(
     useSelector((state) => state.conference.myConfs)
   );
+  const [filteredList, setFilteredList] = useState([]);
 
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const myConfs = useSelector((state) => state.conference.myConfs);
 
   let organizationsList = useSelector(
-    (state) => state?.myOrganizations?.organizationsListForSelect
+    (state) => state.myOrganizations.organizationsListForSelect
   );
 
-  if (!organizationsList) {
-    organizationsList = [];
-  }
+  // if (!organizationsList) {
+  //   organizationsList = [];
+  // }
   const dispatch = useDispatch();
 
   const options2 = [{ value: 'self', label: 'User' }, ...organizationsList];
 
-  const onInputChange = (e) => {
-    setSearchText(e.target.value);
-    searchFilter(myConfs);
-  };
+  const onInputChange = (e) => setSearchText(e.target.value);
 
   const keys = ['title', 'city'];
 
-  const searchFilter = (data) => {
-    let filteredConfs = data?.filter((item) =>
-      keys.some((key) => item[key]?.toLowerCase()?.includes(searchText))
-    );
-    console.log('search', searchText);
-    console.log({ filteredConfs });
-    // return filteredConfs;
+  const searchFilter = (data, value) => {
+    let filteredConfs = data.filter((item) => {
+      if (item.title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+        return item;
+      }
+    });
     setConfList(filteredConfs);
   };
+
+  const getOneIncompleteConf = async (conferenceId) => {
+    const url = `conferences/${conferenceId}`;
+
+    try {
+      const response = await api.get(url);
+      if (response) {
+        dispatch(loadOneIncopleteConfAction(response.data.data.conferences));
+        navigate('/dashboard/create-conf/step-1');
+      }
+    } catch (err) {
+      if (err) {
+        dispatch(alertAction(err.response.data.message, 'danger'));
+      }
+    }
+  };
+
+  const getConfStatus = (confData) => {
+    if (!confData.completedAllMandatorySteps) {
+      return 'Draft';
+    } else if (
+      Date.parse(confData.startDate) >= new Date() &&
+      Date.parse(confData.endDate) <= new Date() &&
+      confData.completedAllMandatorySteps
+    ) {
+      return 'Live';
+    } else if (
+      Date.parse(confData.activeDate) <= new Date() &&
+      confData.completedAllMandatorySteps
+    ) {
+      return 'Published';
+    } else if (
+      Date.parse(confData.startDate) > new Date() &&
+      Date.parse(confData.endDate) > new Date() &&
+      confData.completedAllMandatorySteps
+    ) {
+      return 'Upcoming';
+    }
+  };
+
+  useEffect(() => {
+    searchFilter(filteredList, searchText);
+  }, [searchText]);
 
   const filterOneNew = (value) => {
     let filteredconfs = [];
@@ -194,7 +239,6 @@ export default function MyConfs() {
         }
       } else {
         if (item?.hostedBy?.organization?._id === value) {
-          console.log(filterText1);
           if (filterText1) {
             if (filterText1 === 'drafts') {
               if (!item.completedAllMandatorySteps) {
@@ -224,8 +268,12 @@ export default function MyConfs() {
         }
       }
     });
+
+    setFilteredList(filteredconfs);
     // console.log({ filteredconfs });
-    searchText ? searchFilter(filteredconfs) : setConfList(filteredconfs);
+    searchText
+      ? searchFilter(filteredconfs, searchText)
+      : setConfList(filteredconfs);
   };
 
   const getMyConfs = async (userId) => {
@@ -235,6 +283,7 @@ export default function MyConfs() {
 
       if (response) {
         setConfList(response.data.data.conferences);
+        setFilteredList(response.data.data.conferences);
         dispatch(loadAllMyConfsAction(response.data.data.conferences));
       }
     } catch (err) {
@@ -266,7 +315,12 @@ export default function MyConfs() {
     <div>
       <div className="myconfs-header mb-24">
         <h1 className="mr-16">Conferences</h1>
-        <button className="button button-green">Create conference</button>
+        <button
+          onClick={() => navigate('/dashboard/create-conf/step-1')}
+          className="button button-green"
+        >
+          Create conference
+        </button>
       </div>
       <div className="myconfs-sort mb-32">
         <div className="form-type-3">
@@ -351,12 +405,18 @@ export default function MyConfs() {
                   {conf.totalTickets ? conf.totalTickets : 0}
                 </td>
                 <td>{conf.grossPrice ? conf.grossPrice : 0}</td>
-                <td>Live</td>
+                <td>{getConfStatus(conf)}</td>
                 <td>
-                  <i>
-                    {/* <ThreeDotsVIcon className="icon-size" /> */}
+                  <span
+                    // className="mr-8 ml-12"
+                    onClick={() => {
+                      getOneIncompleteConf(conf?._id);
+                    }}
+                  >
+                    {' '}
                     <EditIcon className="icon-size" />
-                  </i>
+                  </span>
+                  <i>{/* <ThreeDotsVIcon className="icon-size" /> */}</i>
                 </td>
               </tr>
             ))}
