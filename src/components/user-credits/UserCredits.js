@@ -1,36 +1,40 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { alertAction } from "../../redux/alert/alertAction";
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { alertAction } from '../../redux/alert/alertAction';
 
-import ExternalCreditsTable from "./ExternalCreditsTable";
-import ModalX from "../modal/ModalX";
-import UserCreditsConfs from "./UserCreditsConfs";
-import ExternalCreditsForm from "./ExternalCreditsForm";
-import SelectFormType3 from "../reselect/SelectFormType3";
+import ExternalCreditsTable from './ExternalCreditsTable';
+import ModalX from '../modal/ModalX';
+import UserCreditsConfs from './UserCreditsConfs';
+import ExternalCreditsForm from './ExternalCreditsForm';
+import SelectFormType3 from '../reselect/SelectFormType3';
 
-import AddIcon from "../icons/AddIcon";
+import AddIcon from '../icons/AddIcon';
 
 import {
   loadUserCreditConferencesAction,
   loadUserExternalCreditsAction,
-} from "../../redux/user-profile/userProfileAction";
-import api from "../../utility/api";
+  loadUserTotalCreditsAction,
+} from '../../redux/user-profile/userProfileAction';
+import api from '../../utility/api';
 
-import "./usercredits.styles.scss";
-import CreditsTable from "./CreditsTable";
+import './usercredits.styles.scss';
+import CreditsTable from './CreditsTable';
 
 const options1 = [
-  { value: 1, label: "1 month" },
-  { value: 3, label: "3 months" },
-  { value: 6, label: "6 months" },
+  { value: 1, label: '1 month' },
+  { value: 3, label: '3 months' },
+  { value: 6, label: '6 months' },
 ];
 
 const UserCredits = () => {
-  const [filterText, setFilterText] = useState("");
+  const [filterText, setFilterText] = useState('');
   const [showExternalCreditForm, setShowExternalCreditForm] = useState(false);
 
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+  const totalCredits = useSelector(
+    (state) => state.userProfile.userTotalCredits
+  );
 
   const getAllExternalCredits = async (userID) => {
     try {
@@ -39,7 +43,7 @@ const UserCredits = () => {
         loadUserExternalCreditsAction(response.data.data.externalCredits)
       );
     } catch (error) {
-      dispatch(alertAction(error.response.data.message, "danger"));
+      dispatch(alertAction(error.response.data.message, 'danger'));
     }
   };
 

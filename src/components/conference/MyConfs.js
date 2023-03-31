@@ -78,23 +78,24 @@ export default function MyConfs() {
     }
   };
 
+  let todaysUtcMiliSecond = Date.parse(new Date().toUTCString());
   const getConfStatus = (confData) => {
     if (!confData.completedAllMandatorySteps) {
       return 'Draft';
     } else if (
-      Date.parse(confData.startDate) >= new Date() &&
-      Date.parse(confData.endDate) <= new Date() &&
+      Date.parse(confData.startDate) >= todaysUtcMiliSecond &&
+      Date.parse(confData.endDate) <= todaysUtcMiliSecond &&
       confData.completedAllMandatorySteps
     ) {
       return 'Live';
     } else if (
-      Date.parse(confData.activeDate) <= new Date() &&
+      Date.parse(confData.activeDate) <= todaysUtcMiliSecond &&
       confData.completedAllMandatorySteps
     ) {
       return 'Published';
     } else if (
-      Date.parse(confData.startDate) > new Date() &&
-      Date.parse(confData.endDate) > new Date() &&
+      Date.parse(confData.startDate) > todaysUtcMiliSecond &&
+      Date.parse(confData.endDate) > todaysUtcMiliSecond &&
       confData.completedAllMandatorySteps
     ) {
       return 'Upcoming';
@@ -157,21 +158,21 @@ export default function MyConfs() {
         }
       } else if (value === 'expiredConfs') {
         if (
-          Date.parse(item.endDate) < new Date() &&
+          Date.parse(item.endDate) < todaysUtcMiliSecond &&
           item.completedAllMandatorySteps
         ) {
           if (filterText2) {
             if (filterText2 === 'self') {
               // FILTRING DATA FROM SECOND FILTER
               if (
-                Date.parse(item.endDate) < new Date() &&
+                Date.parse(item.endDate) < todaysUtcMiliSecond &&
                 item.host === 'user'
               ) {
                 filteredconfs.push(item);
               }
             } else if (
               item?.hotedBy?.organization?._id === filterText2 &&
-              Date.parse(item.endDate) < new Date()
+              Date.parse(item.endDate) < todaysUtcMiliSecond
             ) {
               filteredconfs.push(item);
             }
@@ -181,24 +182,24 @@ export default function MyConfs() {
         }
       } else if (value === 'futureConfs') {
         if (
-          Date.parse(item.startDate) > new Date() &&
-          Date.parse(item.endDate) > new Date() &&
+          Date.parse(item.startDate) > todaysUtcMiliSecond &&
+          Date.parse(item.endDate) > todaysUtcMiliSecond &&
           item.completedAllMandatorySteps
         ) {
           if (filterText2) {
             if (filterText2 === 'self') {
               // FILTRING DATA FROM SECOND FILTER
               if (
-                Date.parse(item.startDate) > new Date() &&
-                Date.parse(item.endDate) > new Date() &&
+                Date.parse(item.startDate) > todaysUtcMiliSecond &&
+                Date.parse(item.endDate) > todaysUtcMiliSecond &&
                 item.host === 'user'
               ) {
                 filteredconfs.push(item);
               }
             } else if (
               item?.hostedBy?.organization?._id === filterText2 &&
-              Date.parse(item.startDate) > new Date() &&
-              Date.parse(item.endDate) > new Date()
+              Date.parse(item.startDate) > todaysUtcMiliSecond &&
+              Date.parse(item.endDate) > todaysUtcMiliSecond
             ) {
               filteredconfs.push(item);
             } else {
@@ -216,7 +217,7 @@ export default function MyConfs() {
             } else if (filterText1 === 'expiredConfs') {
               if (
                 item.host === 'user' &&
-                Date.parse(item.endDate) < new Date() &&
+                Date.parse(item.endDate) < todaysUtcMiliSecond &&
                 item.completedAllMandatorySteps
               ) {
                 filteredconfs.push(item);
@@ -224,8 +225,8 @@ export default function MyConfs() {
             } else if (filterText1 === 'futureConfs') {
               if (
                 item.host === 'user' &&
-                Date.parse(item.startDate) > new Date() &&
-                Date.parse(item.endDate) > new Date() &&
+                Date.parse(item.startDate) > todaysUtcMiliSecond &&
+                Date.parse(item.endDate) > todaysUtcMiliSecond &&
                 item.completedAllMandatorySteps
               ) {
                 filteredconfs.push(item);
@@ -247,14 +248,14 @@ export default function MyConfs() {
             } else if (filterText1 === 'expiredConfs') {
               if (
                 item.completedAllMandatorySteps &&
-                Date.parse(item.endDate) < new Date()
+                Date.parse(item.endDate) < todaysUtcMiliSecond
               ) {
                 filteredconfs.push(item);
               }
             } else if (filterText1 === 'futureConfs') {
               if (
-                Date.parse(item.startDate) > new Date() &&
-                Date.parse(item.endDate) > new Date() &&
+                Date.parse(item.startDate) > todaysUtcMiliSecond &&
+                Date.parse(item.endDate) > todaysUtcMiliSecond &&
                 item.completedAllMandatorySteps
               ) {
                 filteredconfs.push(item);

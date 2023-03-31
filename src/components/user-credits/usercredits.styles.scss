@@ -1,4 +1,4 @@
-@import "../../utility/utility.styles.scss";
+@import '../../utility/utility.styles.scss';
 
 .user-credit-wrap {
   width: 119.6rem;
@@ -8,7 +8,6 @@
 
 .uc-dropdown {
   background: $shade-1;
-
 }
 
 .ec-form-wrap {
@@ -59,17 +58,17 @@
   }
 }
 
-.uc-conf-input{
+.uc-conf-input {
   width: 170px;
   height: 45px;
   border: 2px solid $shade-1;
   border-radius: 5px;
-  :focus{
+  :focus {
     border-radius: 2px solid $info;
   }
 }
 
-.btn{
+.btn {
   width: 200px;
   height: 40px;
   border: none;
