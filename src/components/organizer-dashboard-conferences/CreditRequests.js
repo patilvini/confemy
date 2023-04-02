@@ -225,54 +225,15 @@ export default function CreditRequests() {
     <>
       <div className="org-credit-reqst">
         <h1>Credit Requests</h1>
-        <div className="org-credit-reqst-filters">
-          <div className="form-type-3 ">
-            <div className="position-relative">
-              <input
-                type="text"
-                id="searchtickets"
-                placeholder="Search Credits"
-                name="searchText"
-                value={searchText}
-                onChange={onInputChange}
-              />
-              <i
-                className={
-                  searchText?.length > 0
-                    ? "display-none"
-                    : "conf-search-input-icon"
-                }
-              >
-                <SearchIcon width="2.4rem" height="2.4rem" />
-              </i>
-            </div>
-          </div>
-          <div>
-            <SelectFormType3
-              id="filterText1"
-              isClearable
-              isSearchable
-              name="filuterText1"
-              options={options}
-              onChange={(value) => filter1Data(value?.value)}
-              value={filterText1}
-              placeholder="Filter"
-              isDisabled={false}
-              isMulti={false}
-            />
-          </div>
-          <div>
-            <SelectFormType3
-              id="filterText2"
-              isClearable
-              isSearchable
-              name="filuterText2"
-              options={options2}
-              onChange={(value) => filter2Data(value?.value)}
-              value={filterText2}
-              placeholder="Filter"
-              isDisabled={false}
-              isMulti={false}
+        <div className="form-type-3 mr-24">
+          <div className="position-relative">
+            <input
+              type="text"
+              id="searchtickets"
+              placeholder="Search Credits"
+              name="searchText"
+              value={searchText}
+              onChange={onInputChange}
             />
             <i
               className={
@@ -314,7 +275,7 @@ export default function CreditRequests() {
           />
         </div>
       </div>
-      <div className="mt-24" style={{ overflowX: "scoll", width: "100%" }}>
+      <div className="mt-24">
         <table className="org-credit-table">
           <thead>
             <tr>
