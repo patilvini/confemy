@@ -1,7 +1,10 @@
-@import "../../utility/utility.styles.scss";
+@import '../../utility/utility.styles.scss';
 
 .my-orgs-wrap {
   margin: 20px 100px 64px 64px;
+  @media screen and (max-width: 632px) {
+    margin: 20px 5px 64px 5px;
+  }
 
   h2 {
     // margin-bottom: 32px;
@@ -58,6 +61,13 @@
   h2 {
     flex-grow: 1;
   }
+  @media screen and (max-width: 632px) {
+    display: block;
+    button {
+      margin-top: 20px;
+    }
+  }
+
   button {
     background-color: $shade-2;
   }

@@ -3,6 +3,9 @@
   button {
     min-height: 52px;
     min-width: 212px;
+    @media screen and (max-width: 632px) {
+      min-width: auto;
+    }
   }
 }
 
@@ -13,6 +16,19 @@
   button {
     min-height: 52px;
     min-width: 212px;
+    @media screen and (max-width: 750px) {
+      min-width: auto;
+    }
+  }
+}
+
+.flex-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+    align-items: start;
   }
 }
 

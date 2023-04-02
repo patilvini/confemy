@@ -8,14 +8,14 @@ import "./tabs.styles.scss";
 
 export default function Tabs({ tabs, showRadioButtons }) {
   return (
-    <div className="flex-vc">
+    <div className="tabs-flex">
       {tabs.map((tab) => (
-        <div>
+        <div className="mb-8">
           <NavLink key={tab.label} to={tab.path}>
             {({ isActive }) => (
               <>
                 {showRadioButtons && (
-                  <div className="text-align-center mr-36">
+                  <div className="text-align-center tabs-margin">
                     {tab.completed ? (
                       <RadioCompletedIcon className="icon-size" />
                     ) : isActive ? (
@@ -26,7 +26,7 @@ export default function Tabs({ tabs, showRadioButtons }) {
                   </div>
                 )}
                 <div
-                  className={`inactive-shared-tab mr-32 mt-8 ${
+                  className={`inactive-shared-tab tabs-margin mt-8 ${
                     tab.completed
                       ? isActive
                         ? "completed-active-shared-tab"

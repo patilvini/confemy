@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import api from "../../utility/api";
-import ConfCard from "../conf-card/ConfCard";
+import { useEffect, useState } from 'react';
+import api from '../../utility/api';
+import ConfCard from '../conf-card/ConfCard';
 
-import "./searchComponent.scss";
-import "../../utility/utility.styles.scss";
+import './searchComponent.scss';
+import '../../utility/utility.styles.scss';
 
-import NextIcon from "../icons/NextIcon";
-import BackIcon from "../icons/BackIcon";
+import NextIcon from '../icons/NextIcon';
+import BackIcon from '../icons/BackIcon';
 
-import DateSelect from "./DateSelect";
-import TabButton from "./TabButton";
-import LocationSelect from "./LocationSelect";
-import ProfessionSelect from "./ProfessionSelect";
-import CreditsSelect from "./CreditsSelect";
-import PriceSelect from "./PriceSelect";
-import MultiTabButton from "./MultiTabButton";
+import DateSelect from './DateSelect';
+import TabButton from './TabButton';
+import LocationSelect from './LocationSelect';
+import ProfessionSelect from './ProfessionSelect';
+import CreditsSelect from './CreditsSelect';
+import PriceSelect from './PriceSelect';
+import MultiTabButton from './MultiTabButton';
 
-import SpecialitySelect from "./SpecialitySelect";
-import SearchBar from "./SearchBar";
+import SpecialitySelect from './SpecialitySelect';
+import SearchBar from './SearchBar';
 
 export default function SearchComponent() {
   const [data, setData] = useState([]);
@@ -44,7 +44,7 @@ export default function SearchComponent() {
   const loadData = async () => {
     try {
       const r = await api.post(
-        "homePage/conferences/text=page=" + page + "&limit=10"
+        'homePage/conferences/text=page=' + page + '&limit=10'
       );
       setData(r.data.data.conferences);
     } catch (err) {
@@ -64,7 +64,7 @@ export default function SearchComponent() {
     const call = async () => {
       try {
         const r = await api.post(
-          "homePage/conferences/search?page=" + page + "&limit=10",
+          'homePage/conferences/search?page=' + page + '&limit=10',
           {
             filters: filters,
           }
@@ -82,7 +82,7 @@ export default function SearchComponent() {
     setPage(1);
     try {
       const r = await api.post(
-        "homePage/conferences/search?page=" + page + "&limit=10&text=" + search
+        'homePage/conferences/search?page=' + page + '&limit=10&text=' + search
       );
       setData(r.data.data.conferences);
     } catch (err) {
@@ -95,9 +95,9 @@ export default function SearchComponent() {
       if (search?.length > 0) {
         try {
           const r = await api.post(
-            "homePage/conferences/search?page=" +
+            'homePage/conferences/search?page=' +
               page +
-              "&limit=10&text=" +
+              '&limit=10&text=' +
               search
           );
           setData(r.data.data.conferences);
@@ -107,7 +107,7 @@ export default function SearchComponent() {
       } else if (filters.length > 0) {
         try {
           const r = await api.post(
-            "homePage/conferences/search?page=" + page + "&limit=10&text=",
+            'homePage/conferences/search?page=' + page + '&limit=10&text=',
             { filters }
           );
           setData(r.data.data.conferences);
@@ -117,7 +117,7 @@ export default function SearchComponent() {
       } else {
         try {
           const r = await api.post(
-            "homePage/conferences/search?page=" + page + "&limit=10&text="
+            'homePage/conferences/search?page=' + page + '&limit=10&text='
           );
           setData(r.data.data.conferences);
         } catch (err) {
@@ -164,7 +164,7 @@ export default function SearchComponent() {
                   setDateValue();
 
                   const values = filters.filter((item) => {
-                    if (item.label !== "date") {
+                    if (item.label !== 'date') {
                       return item;
                     }
                   });
@@ -187,7 +187,7 @@ export default function SearchComponent() {
                   setFilter([
                     ...filters,
                     {
-                      label: "date",
+                      label: 'date',
                       start: value.startDate,
                       end: value.endDate,
                     },
@@ -227,8 +227,8 @@ export default function SearchComponent() {
                 clear={() => {
                   const values = filters.filter((item) => {
                     if (
-                      item.label !== "profession" &&
-                      item.label !== "specialities"
+                      item.label !== 'profession' &&
+                      item.label !== 'specialities'
                     ) {
                       return item;
                     }
@@ -252,7 +252,7 @@ export default function SearchComponent() {
                   setProfessionValue(value);
                   setFilter([
                     ...filters,
-                    { label: "profession", value: value.value },
+                    { label: 'profession', value: value.value },
                   ]);
                 }}
                 close={() => {
@@ -281,14 +281,14 @@ export default function SearchComponent() {
 
                   if (specialities.length < 1) {
                     let filterState = filters.filter((item) => {
-                      if (item.label !== "specialities") {
+                      if (item.label !== 'specialities') {
                         return item;
                       }
                     });
                     setFilter(filterState);
                   } else {
                     let filterState = filters.filter((item) => {
-                      if (item.label === "specialities") {
+                      if (item.label === 'specialities') {
                         item.values = specialities;
                       }
 
@@ -302,7 +302,7 @@ export default function SearchComponent() {
                   setSpecialityValue([]);
 
                   const values = filters.filter((item) => {
-                    if (item.label !== "specialities") {
+                    if (item.label !== 'specialities') {
                       return item;
                     }
                   });
@@ -328,7 +328,7 @@ export default function SearchComponent() {
                   }
                   setFilter([
                     ...filters,
-                    { label: "specialities", values: values },
+                    { label: 'specialities', values: values },
                   ]);
                 }}
                 close={() => {
@@ -345,7 +345,7 @@ export default function SearchComponent() {
                   setCreditsValue();
 
                   const values = filters.filter((item) => {
-                    if (item.label !== "credits") {
+                    if (item.label !== 'credits') {
                       return item;
                     }
                   });
@@ -368,7 +368,7 @@ export default function SearchComponent() {
                   setFilter([
                     ...filters,
                     {
-                      label: "credits",
+                      label: 'credits',
                       value: {
                         type: value.value.type.value,
                         quantity: value.value.amount,
@@ -391,7 +391,7 @@ export default function SearchComponent() {
                   setPriceValue();
 
                   const values = filters.filter((item) => {
-                    if (item.label !== "price") {
+                    if (item.label !== 'price') {
                       return item;
                     }
                   });
@@ -412,7 +412,7 @@ export default function SearchComponent() {
                   setFilter([
                     ...filters,
                     {
-                      label: "price",
+                      label: 'price',
                       currency: value.value.currency.value,
                       min: value.value.min,
                       max: value.value.max,
@@ -436,14 +436,14 @@ export default function SearchComponent() {
             <SearchBar
               value={search}
               onClear={() => {
-                setSearch("");
+                setSearch('');
               }}
               setValue={(value) => setSearch(value)}
             />
           </div>
           <div className="search-grid-item">
             <button
-              style={{ margin: "1.6rem 2rem" }}
+              style={{ margin: '1.6rem 2rem' }}
               onClick={submit}
               className="button button-secondary"
             >
@@ -472,7 +472,7 @@ export default function SearchComponent() {
         </div>
 
         {data.length > 0 && (
-          <div style={{ textAlign: "center", margin: "4rem" }}>
+          <div style={{ textAlign: 'center', margin: '4rem' }}>
             <button
               onClick={() => {
                 if (page === 1) {
@@ -484,7 +484,7 @@ export default function SearchComponent() {
             >
               <BackIcon className="icon-size" fill="#fff" />
             </button>
-            <span style={{ fontSize: "2rem", margin: "2rem" }}>
+            <span style={{ fontSize: '2rem', margin: '2rem' }}>
               Page {page}
             </span>
             <button
@@ -505,7 +505,7 @@ export default function SearchComponent() {
               onClick={() => {
                 setPage(1);
               }}
-              style={{ margin: "2rem" }}
+              style={{ margin: '2rem' }}
               className="button button-green"
             >
               Back to search
@@ -516,7 +516,7 @@ export default function SearchComponent() {
                 setPage(1);
                 loadData();
               }}
-              style={{ margin: "2rem" }}
+              style={{ margin: '2rem' }}
               className="button button-green"
             >
               New Search

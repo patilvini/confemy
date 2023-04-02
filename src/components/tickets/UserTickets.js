@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux/es/exports";
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux/es/exports';
 
-import api from "../../utility/api";
-import UserTicket from "./UserTicket";
-import Loader from "../loader/Loader";
-import NoPasses from "../SVG-assets/NoPasses";
+import api from '../../utility/api';
+import UserTicket from './UserTicket';
+import Loader from '../loader/Loader';
+import NoPasses from '../SVG-assets/NoPasses';
 
-import "./ticketForm.styles.scss";
-import SearchIcon from "../icons/SearchIcon";
+import './ticketForm.styles.scss';
+import SearchIcon from '../icons/SearchIcon';
 
 export default function UserTickets() {
   const [formData, setFormData] = useState({
-    searchText: "",
+    searchText: '',
   });
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState(null);
@@ -32,7 +32,7 @@ export default function UserTickets() {
       setFiltered(data?.data?.bookingDetails);
       setIsLoading(false);
     } catch (err) {
-      console.log("Error", err);
+      console.log('Error', err);
     }
   };
 
@@ -42,6 +42,7 @@ export default function UserTickets() {
 
   useEffect(() => {
     if (data) {
+      console.log('runn');
       const dataSet = data.filter((item) => {
         if (
           item.conference.title
@@ -61,7 +62,7 @@ export default function UserTickets() {
       <div className="passes-list">
         <h2>You haven't booked any conference</h2>
         <button
-          style={{ margin: "2rem 0 6rem 0" }}
+          style={{ margin: '2rem 0 6rem 0' }}
           className="button button-primary"
         >
           Explore Trending Conferences
@@ -91,7 +92,7 @@ export default function UserTickets() {
           />
           <i
             className={
-              searchText?.length > 0 ? "display-none" : "conf-search-input-icon"
+              searchText?.length > 0 ? 'display-none' : 'conf-search-input-icon'
             }
           >
             <SearchIcon width="2.4rem" height="2.4rem" />

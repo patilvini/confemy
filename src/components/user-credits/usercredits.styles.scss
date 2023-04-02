@@ -1,14 +1,22 @@
-@import "../../utility/utility.styles.scss";
+@import '../../utility/utility.styles.scss';
 
 .user-credit-wrap {
-  width: 119.6rem;
+  max-width: 119.6rem;
   margin: 0 auto;
   padding: 7.6rem 0rem 6rem;
+  @media screen and (max-width:1230px) {
+    padding: 7.6rem 5rem;
+  }
+}
+
+.user-credit-filters{
+  @media screen and (max-width:490px) {
+    width: 315px;
+  }
 }
 
 .uc-dropdown {
   background: $shade-1;
-
 }
 
 .ec-form-wrap {
@@ -59,17 +67,17 @@
   }
 }
 
-.uc-conf-input{
+.uc-conf-input {
   width: 170px;
   height: 45px;
   border: 2px solid $shade-1;
   border-radius: 5px;
-  :focus{
+  :focus {
     border-radius: 2px solid $info;
   }
 }
 
-.btn{
+.btn {
   width: 200px;
   height: 40px;
   border: none;

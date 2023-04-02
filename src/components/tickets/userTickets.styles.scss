@@ -21,53 +21,51 @@
   box-shadow: 0 0.2rem 0.8rem 0 rgba(52, 40, 40, 0.08);
   cursor: pointer;
   overflow-wrap: break-word;
+  @media screen and (max-width: 732px) {
+    min-width: auto;
+  }
 }
-  
+
 .user-ticket-btn {
   background: $primary;
   color: white;
   height: 4.8rem;
 }
 
-.user-ticket-resend{
+.user-ticket-resend {
   border-radius: 0 0rem 0rem 0.8rem;
-
 }
 .user-ticket-print {
-    border-radius: 0 0rem 0.8rem 0rem;
+  border-radius: 0 0rem 0.8rem 0rem;
 }
 
 .ut-modal-wrap {
-  width: 62.4rem;
+  max-width: 62.4rem;
   padding: 0rem 2.4rem;
 }
 
-.print-ticket-grid{
+.print-ticket-grid {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:10px;
-  word-wrap: break-word;  
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  word-wrap: break-word;
 }
-.print-ticket{
+.print-ticket {
   text-overflow: hidden;
 
- width: 70%;
+  width: 70%;
   margin: 0 auto;
-
-
 }
-.print-ticket-container{
+.print-ticket-container {
   border: 2px solid black;
   padding: 24px 56px;
 }
-.print-ticket-content{
-  grid-column: 2/span 4;
+.print-ticket-content {
+  grid-column: 2 / span 4;
 }
-.print-ticket-text-1{
+.print-ticket-text-1 {
   grid-column: 2/3;
-
 }
-.print-ticket-text-2{
+.print-ticket-text-2 {
   grid-column: 3/4;
 }
-

@@ -3,8 +3,12 @@
 .myconfs-header {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   h1 {
     color: $primary;
+  }
+  @media screen and (max-width:650px) {
+    width: 400px;
   }
 }
 
@@ -14,6 +18,10 @@
   grid-template-columns: 2fr 1fr 1fr;
   grid-template-rows: auto;
   gap: 16px;
+  @media screen and (max-width:650px) {
+    grid-template-columns: 1fr;
+    max-width: 315px;
+  }
 }
 
 .myconfs-table {

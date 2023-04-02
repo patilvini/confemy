@@ -1,30 +1,30 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useFormik } from "formik";
-import PropTypes from "prop-types";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import PropTypes from 'prop-types';
 
-import * as yup from "yup";
-import TextError from "../formik/TextError";
+import * as yup from 'yup';
+import TextError from '../formik/TextError';
 
-import SelectFormType1 from "../reselect/SelectFormType1";
-import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
+import SelectFormType1 from '../reselect/SelectFormType1';
+import ReloadableSelectFormType1 from '../reselect/ReloadableSelectFormType1';
 
-import api from "../../utility/api";
-import { alertAction } from "../../redux/alert/alertAction";
-import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
+import api from '../../utility/api';
+import { alertAction } from '../../redux/alert/alertAction';
+import { loadUserProfileAction } from '../../redux/user-profile/userProfileAction';
 import {
   loadCountryListAction,
   loadStateListAction,
   loadCityListAction,
-} from "../../redux/list/listAction";
+} from '../../redux/list/listAction';
 
 const validationSchema = yup.object().shape({
-  practiceName: yup.string().required("Required"),
-  street1: yup.string().required("Required"),
-  city: yup.string().required("Required"),
-  state: yup.string().required("Required"),
-  country: yup.string().required("Required"),
-  zipcode: yup.string().required("Required"),
+  practiceName: yup.string().required('Required'),
+  street1: yup.string().required('Required'),
+  city: yup.string().required('Required'),
+  state: yup.string().required('Required'),
+  country: yup.string().required('Required'),
+  zipcode: yup.string().required('Required'),
 });
 
 export default function PracticeAddressForm({
@@ -44,7 +44,7 @@ export default function PracticeAddressForm({
     const formAddress = {
       name: values.practiceName,
       addressLine1: values.street1,
-      addressLine2: values.street2 || "",
+      addressLine2: values.street2 || '',
       state: values.state,
       country: values.country,
       city: values.city,
@@ -81,18 +81,18 @@ export default function PracticeAddressForm({
         }
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
 
   const initialValues = {
-    practiceName: practice?.name || "",
-    street1: practice?.addressLine1 || "",
-    street2: practice?.addressLine2 || "",
-    state: practice?.state || "",
-    country: practice?.country || "",
-    city: practice?.city || "",
-    zipcode: practice?.zipcode || "",
+    practiceName: practice?.name || '',
+    street1: practice?.addressLine1 || '',
+    street2: practice?.addressLine2 || '',
+    state: practice?.state || '',
+    country: practice?.country || '',
+    city: practice?.city || '',
+    zipcode: practice?.zipcode || '',
   };
   const formik = useFormik({
     initialValues: initialValues,
@@ -116,7 +116,7 @@ export default function PracticeAddressForm({
         }
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
 
@@ -128,7 +128,7 @@ export default function PracticeAddressForm({
         dispatch(loadStateListAction(response.data.data.states));
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
 
@@ -140,7 +140,7 @@ export default function PracticeAddressForm({
         dispatch(loadCityListAction(response.data.data.cities));
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
 
@@ -181,8 +181,8 @@ export default function PracticeAddressForm({
         autoComplete="off"
         onSubmit={formik.handleSubmit}
       >
-        <div className="grid-col-2">
-          <div style={{ gridColumn: "1/-1" }}>
+        <div className="account-setting-grid-col-2">
+          <div style={{ gridColumn: '1/-1' }}>
             <div className="material-textfield">
               <input
                 id="practiceName"
@@ -248,10 +248,10 @@ export default function PracticeAddressForm({
               isMulti={false}
               onChange={(value) => {
                 if (formik.values.country !== value?.value) {
-                  formik.setFieldValue("state", "");
-                  formik.setFieldValue("city", "");
+                  formik.setFieldValue('state', '');
+                  formik.setFieldValue('city', '');
                 }
-                formik.setFieldValue("country", value?.value);
+                formik.setFieldValue('country', value?.value);
                 loadStateList(value?.countryId);
               }}
               // onBlur={() => formik.setFieldTouched("country")}
@@ -274,9 +274,9 @@ export default function PracticeAddressForm({
               isMulti={false}
               onChange={(value) => {
                 if (formik.values.state !== value?.value) {
-                  formik.setFieldValue("city", "");
+                  formik.setFieldValue('city', '');
                 }
-                formik.setFieldValue("state", value?.value);
+                formik.setFieldValue('state', value?.value);
                 loadCityList(value?.stateId);
               }}
               placeholder="Select state"
@@ -296,7 +296,7 @@ export default function PracticeAddressForm({
               value={formik.values.city}
               isMulti={false}
               onChange={(value) => {
-                formik.setFieldValue("city", value?.value);
+                formik.setFieldValue('city', value?.value);
               }}
               placeholder="Select city"
               isDisabled={false}

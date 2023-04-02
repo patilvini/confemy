@@ -1,15 +1,15 @@
-import { useSelector } from "react-redux";
-import { NavLink, Outlet } from "react-router-dom";
-import "./userProfileLayout.scss";
+import { useSelector } from 'react-redux';
+import { NavLink, Outlet } from 'react-router-dom';
+import './userProfileLayout.scss';
 
 export default function UserProfileLayoutPage() {
   const user = useSelector((state) => state.auth?.user);
 
   const tabs = [
-    { path: "tickets", label: "Tickets" },
-    { path: "saved-conference", label: "Saved Conference" },
-    { path: "credits", label: "Credits" },
-    { path: "account-settings", label: "Account Settings" },
+    { path: 'tickets', label: 'Tickets' },
+    { path: 'saved-conference', label: 'Saved Conference' },
+    { path: 'credits', label: 'Credits' },
+    { path: 'account-settings', label: 'Account Settings' },
   ];
 
   return (
@@ -24,13 +24,13 @@ export default function UserProfileLayoutPage() {
             <p>{user?.profession}</p>
           </div>
         </div>
-        <div className="flex-vchc">
+        <div className="user-profile-flex-vchc ">
           {tabs.map((tab) => (
             <NavLink key={tab.label} to={tab.path}>
               {({ isActive }) => (
                 <div
                   className={`up-tab mx-16 caption-1-heavy-gray2 ${
-                    isActive ? "up-active-tab" : " "
+                    isActive ? 'up-active-tab' : ' '
                   }`}
                 >
                   {tab.label}

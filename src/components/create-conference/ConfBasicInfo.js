@@ -359,7 +359,7 @@ export default function ConfBasicInfo() {
               />
               <label htmlFor="conf-org">
                 <div
-                  className={`mr-20 ${
+                  className={`mr-20 mb-18 ${
                     formik.values.host === "organization"
                       ? "button-outlined-active"
                       : "button-outlined-inactive"
@@ -379,7 +379,7 @@ export default function ConfBasicInfo() {
               />
               <label htmlFor="conf-myself">
                 <div
-                  className={`mr-20 ${
+                  className={`mr-20  ${
                     formik.values.host === "user"
                       ? "button-outlined-active"
                       : "button-outlined-inactive"
@@ -421,8 +421,8 @@ export default function ConfBasicInfo() {
           <div className="conf-schedule mb-72">
             <h2>Conference Schedule</h2>
 
-            <div className="grid-col-2">
-              <div className="grid-1st-col">
+            <div className="basicInfo-grid">
+              <div className="">
                 <h4>Start Date and Time</h4>
                 <CustomDatepicker
                   id="startDate"
@@ -461,7 +461,7 @@ export default function ConfBasicInfo() {
                     )}
                 </div>
               </div> */}
-              <div className="grid-2nd-col">
+              <div className="">
                 <h4>End Date and Time</h4>
                 <CustomDatepicker
                   id="endDate"
@@ -533,7 +533,7 @@ export default function ConfBasicInfo() {
               />
               <label htmlFor="conf-venue">
                 <div
-                  className={`mr-20 ${
+                  className={`mr-20 mb-18 ${
                     formik.values.mode.includes("venue")
                       ? "button-outlined-active"
                       : "button-outlined-inactive"
@@ -580,7 +580,7 @@ export default function ConfBasicInfo() {
                 }`}
               >
                 <h4>Venue Details</h4>
-                <div className="grid-col-2">
+                <div className="basicInfo-grid">
                   <div style={{ gridColumn: "1/-1" }}>
                     <div className="material-textfield">
                       <input
@@ -602,7 +602,7 @@ export default function ConfBasicInfo() {
                     </div>
                   </div>
 
-                  <div className="grid-1st-col">
+                  <div className="">
                     <div className="material-textfield">
                       <input
                         id="street1"
@@ -622,7 +622,7 @@ export default function ConfBasicInfo() {
                         )}
                     </div>
                   </div>
-                  <div className="grid-2nd-col">
+                  <div className="">
                     <div className="material-textfield">
                       <input
                         id="street2"
@@ -642,7 +642,7 @@ export default function ConfBasicInfo() {
                         )}
                     </div>
                   </div>
-                  <div className="grid-1st-col">
+                  <div className="">
                     <SelectFormType1
                       options={countryList}
                       value={formik.values.country}
@@ -678,7 +678,7 @@ export default function ConfBasicInfo() {
                     </div>
                   </div>
 
-                  <div className="grid-2nd-col">
+                  <div className="">
                     <ReloadableSelectFormType1
                       options={stateList}
                       value={formik.values.state}
@@ -711,7 +711,7 @@ export default function ConfBasicInfo() {
                       )}
                     </div>
                   </div>
-                  <div className="grid-1st-col">
+                  <div className="">
                     <ReloadableSelectFormType1
                       options={cityList}
                       value={formik.values.city}
@@ -740,7 +740,7 @@ export default function ConfBasicInfo() {
                       )}
                     </div>
                   </div>
-                  <div className="grid-2nd-col">
+                  <div className="">
                     <div className="material-textfield">
                       <input
                         id="zipcode"

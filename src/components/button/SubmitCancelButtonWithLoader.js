@@ -8,7 +8,7 @@ export default function SubmitCancelButtonWithLoader({
   cancelButtonClass,
 }) {
   return (
-    <section className="submit-cancel-loader-wrap flex-vc">
+    <section className="submit-cancel-loader-wrap flex-btn">
       <div className="position-relative">
         <button
           style={{

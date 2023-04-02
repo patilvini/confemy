@@ -26,6 +26,8 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.7.0",
+    "react-share": "^4.4.1",
+    "react-to-print": "^2.14.12",
     "react-transition-group": "^4.4.5",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",

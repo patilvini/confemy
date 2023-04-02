@@ -1,57 +1,57 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
-import SelectFormType1 from "../reselect/SelectFormType1";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import TextError from "../formik/TextError";
-import SubmitCancelButtonWithLoader from "../button/SubmitCancelButtonWithLoader";
+import ReloadableSelectFormType1 from '../reselect/ReloadableSelectFormType1';
+import SelectFormType1 from '../reselect/SelectFormType1';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import TextError from '../formik/TextError';
+import SubmitCancelButtonWithLoader from '../button/SubmitCancelButtonWithLoader';
 
-import api from "../../utility/api";
-import { alertAction } from "../../redux/alert/alertAction";
-import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
+import api from '../../utility/api';
+import { alertAction } from '../../redux/alert/alertAction';
+import { loadUserProfileAction } from '../../redux/user-profile/userProfileAction';
 
-import { professions, subspecialties } from "../../utility/commonUtil";
+import { professions, subspecialties } from '../../utility/commonUtil';
 
 const validationSchema = yup.object().shape(
   {
     firstName: yup
       .string()
-      .max(15, "Must be 15 characters or less")
-      .required("Required"),
+      .max(15, 'Must be 15 characters or less')
+      .required('Required'),
     lastName: yup
       .string()
-      .max(20, "Must be 20 characters or less")
-      .required("Required"),
-    profession: yup.string().required("Required"),
-    countryCode: yup.string().when("mobile", {
+      .max(20, 'Must be 20 characters or less')
+      .required('Required'),
+    profession: yup.string().required('Required'),
+    countryCode: yup.string().when('mobile', {
       is: (v) => v?.length > 0,
-      then: yup.string().required("Required"),
+      then: yup.string().required('Required'),
     }),
-    mobile: yup.string().when("countryCode", {
+    mobile: yup.string().when('countryCode', {
       is: (v) => v?.length > 0,
-      then: yup.string().required("Required"),
+      then: yup.string().required('Required'),
     }),
   },
-  ["countryCode", "mobile"]
+  ['countryCode', 'mobile']
 );
 
 yup.object().shape({
   location: yup.object().shape(
     {
-      state: yup.string().when("county", {
-        is: "",
+      state: yup.string().when('county', {
+        is: '',
         then: yup.string().required(),
         otherwise: yup.string(),
       }),
-      county: yup.string().when("state", {
-        is: "",
+      county: yup.string().when('state', {
+        is: '',
         then: yup.string().required(),
         otherwise: yup.string(),
       }),
     },
-    ["county", "state"]
+    ['county', 'state']
   ),
 });
 
@@ -67,9 +67,9 @@ export default function BasicProfileInfo() {
       firstName: values.firstName,
       lastName: values.lastName,
       profession: values.profession,
-      speciality: values.specialty || "",
-      countryCode: values.countryCode || "",
-      mobile: values.mobile || "",
+      speciality: values.specialty || '',
+      countryCode: values.countryCode || '',
+      mobile: values.mobile || '',
     };
 
     // if (values.specialty) {
@@ -91,17 +91,17 @@ export default function BasicProfileInfo() {
         setDisplayButton(false);
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
 
   const initialValues = {
-    firstName: userProfile?.firstName || "",
-    lastName: userProfile?.lastName || "",
-    profession: userProfile?.profession || "",
-    specialty: userProfile?.speciality || "",
-    countryCode: userProfile?.countryCode || "",
-    mobile: userProfile?.mobile || "",
+    firstName: userProfile?.firstName || '',
+    lastName: userProfile?.lastName || '',
+    profession: userProfile?.profession || '',
+    specialty: userProfile?.speciality || '',
+    countryCode: userProfile?.countryCode || '',
+    mobile: userProfile?.mobile || '',
   };
   const formik = useFormik({
     initialValues: initialValues,
@@ -118,10 +118,10 @@ export default function BasicProfileInfo() {
         setCountryCodeList(response.data.data.countries);
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
-  console.log("dhhhhhhh", countryCodeList);
+  console.log('dhhhhhhh', countryCodeList);
 
   const onInputChange = (e) => {
     setDisplayButton(true);
@@ -146,7 +146,7 @@ export default function BasicProfileInfo() {
       autoComplete="off"
     >
       <h2 className="mb-30 color-primary">Basic information</h2>
-      <div className="grid-col-2">
+      <div className="account-setting-grid-col-2">
         <div className="grid-1st-col">
           <div className="material-textfield">
             <input
@@ -192,7 +192,7 @@ export default function BasicProfileInfo() {
             placeholder="Choose Profession"
             value={formik.values.profession}
             onChange={(value) => {
-              formik.setFieldValue("profession", value?.value);
+              formik.setFieldValue('profession', value?.value);
               setDisplayButton(true);
             }}
           />
@@ -210,7 +210,7 @@ export default function BasicProfileInfo() {
             placeholder="Choose specialty"
             value={formik.values.specialty}
             onChange={(value) => {
-              formik.setFieldValue("specialty", value?.value);
+              formik.setFieldValue('specialty', value?.value);
               setDisplayButton(true);
             }}
           />
@@ -229,7 +229,7 @@ export default function BasicProfileInfo() {
             value={formik.values.countryCode}
             isMulti={false}
             onChange={(value) => {
-              formik.setFieldValue("countryCode", value?.value);
+              formik.setFieldValue('countryCode', value?.value);
               setDisplayButton(true);
             }}
             placeholder="Country Code"
@@ -267,7 +267,7 @@ export default function BasicProfileInfo() {
       >
         Save
       </button> */}
-      <div className={displayButton ? "" : "display-none"}>
+      <div className={displayButton ? '' : 'display-none'}>
         <SubmitCancelButtonWithLoader
           isSubmitting={formik.isSubmitting}
           onCancel={onCancel}
