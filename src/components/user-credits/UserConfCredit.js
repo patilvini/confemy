@@ -23,7 +23,6 @@ export default function UserConfCredit({ data }) {
     data?.conference?.credits[0]?.quantity
   );
   const dispatch = useDispatch();
-  console.log("data", data);
   const selectChangeHandler = (id) => {
     let creditTypeID = data?.conference?.credits?.find(
       (credit) => id.toString() === credit.creditId._id.toString()
@@ -33,7 +32,6 @@ export default function UserConfCredit({ data }) {
   };
 
   const handleSubmit = async (e) => {
-    console.log("total credit", totalCredit);
     e.preventDefault();
     let formData = {
       atteendeeDetails: {

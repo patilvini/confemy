@@ -67,22 +67,25 @@ const ExternalCreditsTable = () => {
       dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
+
   return (
     <div className="mb-40">
       <div className="flex-vc-sb mb-24">
         <h4 className="mb-24">External Credits</h4>
-        <SelectFormType3
-          id="filterText1"
-          isClearable
-          isSearchable
-          name="filterText1"
-          options={options1}
-          onChange={(value) => setFilterText(value?.value)}
-          value={filterText}
-          placeholder="Filter Data"
-          isDisabled={false}
-          isMulti={false}
-        />
+        <div className="user-credit-filters">
+          <SelectFormType3
+            id="filterText1"
+            isClearable
+            isSearchable
+            name="filterText1"
+            options={options1}
+            onChange={(value) => setFilterText(value?.value)}
+            value={filterText}
+            placeholder="Filter Data"
+            isDisabled={false}
+            isMulti={false}
+          />
+        </div>
       </div>
       <table className="uc-table">
         <thead>

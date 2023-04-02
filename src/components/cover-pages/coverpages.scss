@@ -23,6 +23,7 @@
     }
     @media screen and (max-width:600px) {
         text-align: center;
+        margin-bottom: 3rem;
     }
 }
 
@@ -59,9 +60,8 @@
     margin:5.8rem auto;
     
     max-width: 52.2rem; 
-    @media screen and (max-width:1170px) {
-        margin:0rem auto;
-        
+    @media screen and (max-width:1170px) and (min-width:650px) {
+        margin:0rem 20vw;
 
     }
 }
