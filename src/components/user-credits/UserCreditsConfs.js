@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import UserConfCredit from "./UserConfCredit";
-import SelectFormType3 from "../reselect/SelectFormType3";
-import { alertAction } from "../../redux/alert/alertAction";
+import UserConfCredit from './UserConfCredit';
+import SelectFormType3 from '../reselect/SelectFormType3';
+import { alertAction } from '../../redux/alert/alertAction';
 
-import { loadUserCreditConferencesAction } from "../../redux/user-profile/userProfileAction";
-import api from "../../utility/api";
-
-const options1 = [
-  { value: 1, label: "1 month" },
-  { value: 3, label: "3 months" },
-  { value: 6, label: "6 months" },
+import { loadUserCreditConferencesAction } from '../../redux/user-profile/userProfileAction';
+import api from '../../utility/api';
+const options2 = [
+  { value: 1, label: '1 month' },
+  { value: 3, label: '3 months' },
+  { value: 6, label: '6 months' },
 ];
-
 const UserCreditsConfs = () => {
-  const [filterText, setFilterText] = useState("");
+  const [filterText, setFilterText] = useState('');
+  const [confList, setConfList] = useState([]);
   const user = useSelector((state) => state.auth.user);
   const userConfs = useSelector(
     (state) => state.userProfile.userCreditConferences
@@ -25,10 +24,25 @@ const UserCreditsConfs = () => {
   const getConfs = async (userID) => {
     try {
       const response = await api.get(`/attendees/credits/users/${userID}`);
+      console.log({ response });
+      setConfList(response.data.data.allCredits);
       dispatch(loadUserCreditConferencesAction(response.data.data.allCredits));
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
+  };
+
+  const dateWiseUserCreditFilter = (event) => {
+    let startDate = new Date();
+    let selectedDate = startDate.setMonth(
+      startDate.getMonth() - event.target.value
+    );
+    // setStartDate(startDate.toUTCString());
+    let startDateMili = Date.parse(selectedDate);
+    let fiteredCredit = confList.filter((conf) => {
+      return Date.parse(conf.startDate) > startDateMili;
+    });
+    return fiteredCredit;
   };
 
   useEffect(() => {
@@ -40,12 +54,15 @@ const UserCreditsConfs = () => {
       <div className="flex-vc-sb mb-24">
         <h4 className="mb-24">Conference</h4>
         <SelectFormType3
-          id="filterText1"
+          id="f1"
           isClearable
           isSearchable
-          name="filterText1"
-          options={options1}
-          onChange={(value) => setFilterText(value?.value)}
+          name="f1"
+          options={options2}
+          onChange={(value) =>
+            // setConfList(dateWiseUserCreditFilter(value.value))
+            setFilterText(value?.value)
+          }
           value={filterText}
           placeholder="Filter Data"
           isDisabled={false}
@@ -64,7 +81,7 @@ const UserCreditsConfs = () => {
           </tr>
         </thead>
         <tbody>
-          {userConfs?.map((data) => (
+          {confList?.map((data) => (
             <UserConfCredit data={data} />
           ))}
         </tbody>

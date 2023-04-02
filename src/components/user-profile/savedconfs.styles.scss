@@ -1,21 +1,23 @@
-@import "../../utility/utility.styles.scss";
+@import '../../utility/utility.styles.scss';
 
 .savedconfs-container {
   max-width: 102.3rem;
   margin: 0 2.4rem 0 12.4rem;
   padding-top: 7.6rem;
+  @media screen and (max-width: 750px) {
+    margin: 1rem 2.4rem 0 1rem;
+  }
 }
 
 .savedconfs-card {
   display: flex;
   flex-wrap: wrap;
   max-width: 102.3rem;
-    // height: 21.1rem;
+  // height: 21.1rem;
   background-color: $shade-2;
   border-radius: 0.5rem;
   padding: 2.4rem;
   position: relative;
-
 }
 
 .savedconfs-title {
@@ -28,8 +30,7 @@
   align-items: center;
 }
 
-
-.share-card{
+.share-card {
   width: 250px;
   height: 60px;
   border-radius: 10px;
@@ -39,12 +40,15 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  transform: translate(25%,-110%);
+  transform: translate(25%, -110%);
   // top:4;
   right: 0;
   z-index: 1;
+  @media screen and (max-width: 750px) {
+    transform: translate(5%, -10%);
+  }
 }
 
-.share-btn{
+.share-btn {
   margin: 0 12px 5px;
 }

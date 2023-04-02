@@ -1,16 +1,17 @@
-import axios from "axios";
-import StoreAndPersistStore from "../redux/store";
-import { LOGOUT } from "../redux/auth/authTypes";
+import axios from 'axios';
+import StoreAndPersistStore from '../redux/store';
+import { LOGOUT } from '../redux/auth/authTypes';
 // import { logoutAction } from "../redux/auth/authAction";
 const { store } = StoreAndPersistStore;
 
 const api = axios.create({
   withCredentials: true,
-  baseURL: "https://dev.confemy.com/api/",
+  baseURL: 'https://dev.confemy.com/api/',
+  // baseURL: 'http://localhost:5000/api/',
   headers: {
     // "Access-Control-Allow-Credentials": true,
     // "Access-Control-Allow-Origin": "https://dev.confemy.com",
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
@@ -29,10 +30,10 @@ const api = axios.create({
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    console.log("api error data", err.response.data);
+    console.log('api error data', err.response.data);
     // if (err.response.data.msg === "Invalid Credentials") {
     //   store.dispatch({ type: LOGOUT });
-    if (err.response.data.message === "Invalid Credentials") {
+    if (err.response.data.message === 'Invalid Credentials') {
       store.dispatch({ type: LOGOUT });
       // store.dispatch(logoutAction());
     }

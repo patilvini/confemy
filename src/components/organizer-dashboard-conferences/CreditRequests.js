@@ -22,13 +22,14 @@ const options = [
 
 export default function CreditRequests() {
   const creditData = useSelector((state) => state.organizer.allCredits);
-  const [initialData, setInitialData] = useState(creditData);
+
+  //remove this state
+  const [initialData, setInitialData] = useState([]);
   const [filterText1, setFilterText1] = useState("");
   const [filterText2, setFilterText2] = useState("");
-  const [formData, setFormData] = useState({
-    searchText: "",
-  });
-  const { searchText } = formData;
+  const [filteredList, setFilteredList] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [creditList, setCreditList] = useState(creditData);
 
   const [filter1, setfilter1] = useState("");
 
@@ -37,137 +38,158 @@ export default function CreditRequests() {
     (state) => state.myOrganizations.organizationsListForSelect
   );
   const dispatch = useDispatch();
-  const options2 = [{ value: "user", label: "User" }];
+  const options2 = [{ value: "self", label: "User" }, ...organizationsList];
 
-  const onInputChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onInputChange = (e) => setSearchText(e.target.value);
 
-  const searchData = (data) => {
-    if (data) {
-      const dataSet = data?.filter((item) => {
-        if (
-          item.conference.title
-            .toLowerCase()
-            .indexOf(searchText.toLocaleLowerCase()) >= 0
-        ) {
-          return item;
-        }
-        if (
-          item.firstName
-            .toLowerCase()
-            .indexOf(searchText.toLocaleLowerCase()) >= 0
-        ) {
-          return item;
-        }
-      });
-      return dataSet;
-    }
+  const searchFilter = (data, value) => {
+    let filteredConfs = data?.filter((item) => {
+      if (
+        item.conference.title.toLowerCase().indexOf(value.toLowerCase()) >= 0
+      ) {
+        return item;
+      }
+    });
+    console.log(filteredConfs);
+
+    setCreditList(filteredConfs);
   };
 
-  const filter1Data = (value) => {
-    setFilterText1(value);
-    let filtredData = creditData?.filter((item) => {
+  let todaysUtcMiliSecond = Date.parse(new Date().toUTCString());
+  const filterCredits = (value) => {
+    let filteredconfs = [];
+    console.log({ value });
+    if (value === "all") {
+      setFilterText1(value);
+    } else if (value === "pending") {
+      setFilterText1(value);
+    } else if (value === "approved") {
+      setFilterText1(value);
+    } else if (value === "self") {
+      setFilterText2(value);
+    } else {
+      setFilterText2(value);
+    }
+    const pendingStatusCode = 2;
+    const approvedStatusCode = 1;
+
+    creditData?.forEach((item) => {
       if (value === "all") {
         if (filterText2) {
-          if (item.conference.host === filterText2) {
-            return item;
+          if (filterText2 === "self") {
+            // FILTRING DATA FROM SECOND FILTER
+            if (item.conference.host === "user") {
+              filteredconfs.push(item);
+            }
+          } else {
+            // FILTER DATA IF SECOND FILTER WILL BE ORG FILTER
+            if (item?.conference?.hostedBy?.organization === filterText2) {
+              filteredconfs.push(item);
+            }
           }
         } else {
-          return item;
+          // IF SECOND FILTER IS NOT APPLIED
+          filteredconfs = creditData;
         }
-      }
-      if (value === "pending" && item.creditStatus === 2) {
-        if (filterText2) {
-          if (item.conference.host === filterText2) {
-            return item;
+      } else if (value === "pending") {
+        if (item.creditStatus == pendingStatusCode) {
+          if (filterText2) {
+            if (filterText2 === "self") {
+              // FILTRING DATA FROM SECOND FILTER
+              if (
+                item.conference.host === "user" &&
+                item.creditStatus === pendingStatusCode
+              ) {
+                filteredconfs.push(item);
+              }
+            } else if (
+              item?.conference.hostedBy?.organization === filterText2
+            ) {
+              filteredconfs.push(item);
+            }
+          } else {
+            filteredconfs.push(item);
           }
-        } else {
-          return item;
         }
-      }
-      if (value === "approved" && item.creditStatus === 1) {
-        if (filterText2) {
-          if (item.conference.host === filterText2) {
-            return item;
+      } else if (value === "approved") {
+        if (item.creditStatus == approvedStatusCode) {
+          if (filterText2) {
+            if (filterText2 === "self") {
+              // FILTRING DATA FROM SECOND FILTER
+              if (item.conference.host === "user") {
+                filteredconfs.push(item);
+              }
+            } else if (item?.conference.hotedBy?.organization === filterText2) {
+              filteredconfs.push(item);
+            }
+          } else {
+            filteredconfs.push(item);
           }
-        } else {
-          return item;
+        }
+      } else if (value === "self") {
+        if (item.conference.host === "user") {
+          if (filterText1) {
+            if (filterText1 === "pending") {
+              if (
+                item.conference.host === "user" &&
+                item.creditStatus === pendingStatusCode
+              ) {
+                filteredconfs.push(item);
+              }
+            } else if (filterText1 === "approved") {
+              if (
+                item.conference.host === "user" &&
+                item.creditStatus === approvedStatusCode
+              ) {
+                filteredconfs.push(item);
+              }
+            } else if (filterText1 === "all") {
+              filteredconfs.push(item);
+            }
+          } else {
+            console.log("rinnn");
+            filteredconfs.push(item);
+          }
+        }
+      } else {
+        if (item?.conference.hostedBy?.organization === value) {
+          if (filterText1) {
+            if (filterText1 === "pending") {
+              if (item.creditStatus === pendingStatusCode) {
+                filteredconfs.push(item);
+              }
+            } else if (filterText1 === "approved") {
+              if (item.creditStatus === approvedStatusCode) {
+                filteredconfs.push(item);
+              }
+            } else if (filterText1 === "all") {
+              filteredconfs.push(item);
+            }
+          } else {
+            filteredconfs.push(item);
+          }
         }
       }
     });
-    setInitialData(filtredData);
-  };
-  const filter2Data = (value) => {
-    setFilterText2(value);
-    if (initialData.length === 0) {
-      console.log("initial val");
-      let filtredData = creditData?.filter((item) => {
-        if (value === "user" && item.conference.host === "user") {
-          if (filterText1) {
-            if (filterText1 === "pending" && item.creditStatus === 2) {
-              console.log("2");
-              return item;
-            } else if (filterText1 === "approved" && item.creditStatus === 1) {
-              console.log("2");
-              return item;
-            } else {
-              console.log("3");
-              return item;
-            }
-          } else {
-            return item;
-          }
-        }
-        if (value !== "user") {
-          if (value === item.conference.hostedBy.organization) {
-            return item;
-          }
-        }
-      });
-      setInitialData(filtredData);
-    } else {
-      let filtredData = initialData?.filter((item) => {
-        console.log("conf", item.conference.host);
 
-        if (value === "user" && item.conference.host === "user") {
-          console.log("value", value);
-          if (filterText1) {
-            console.log("1");
-            if (filterText1 === "pending" && item.creditStatus === 2) {
-              return item;
-            } else if (filterText1 === "approved" && item.creditStatus === 1) {
-              console.log("2");
-              return item;
-            } else {
-              console.log("3");
-              return item;
-            }
-          } else {
-            return item;
-          }
-        }
-        if (value !== "user") {
-          if (value === item.conference.hostedBy.organization) {
-            return item;
-          }
-        }
-      });
-      setInitialData(filtredData);
-    }
+    setFilteredList(filteredconfs);
+    // console.log({ filteredconfs });
+    searchText
+      ? searchFilter(filteredconfs, searchText)
+      : setCreditList(filteredconfs);
   };
-
-  //   const combineFilters = (...filters) => (item) => {
-  //     return filters.map((filter) => filter(item)).every((x) => x === true);
-  // };
-  // const filteredArray = creditData.filter(combineFilters(filter1Data, filter2Data));
 
   const getOrganizerCredits = async (userId) => {
     try {
       const response = await api.get(
         `organizers/conferences/credits/users/${userId}`
       );
+      console.log({ response });
       if (response) {
+        setFilteredList(response.data.data.allCredits);
+        setCreditList(response.data.data.allCredits);
         dispatch(loadAllOrganizerCreditsAction(response.data.data.allCredits));
+
         // setData(response.data.data.allCredits);
       }
     } catch (error) {
@@ -192,11 +214,12 @@ export default function CreditRequests() {
 
   useEffect(() => {
     loadMyOrgnizations(user._id);
-  }, []);
+    getOrganizerCredits(user._id);
+  }, [user._id]);
 
   useEffect(() => {
-    getOrganizerCredits(user._id);
-  }, []);
+    searchFilter(filteredList, searchText);
+  }, [searchText]);
 
   return (
     <>
@@ -251,7 +274,44 @@ export default function CreditRequests() {
               isDisabled={false}
               isMulti={false}
             />
+            <i
+              className={
+                searchText?.length > 0
+                  ? "display-none"
+                  : "conf-search-input-icon"
+              }
+            >
+              <SearchIcon width="2.4rem" height="2.4rem" />
+            </i>
           </div>
+        </div>
+        <div className="mr-18">
+          <SelectFormType3
+            id="filterText1"
+            isClearable
+            isSearchable
+            name="filuterText1"
+            options={options}
+            onChange={(value) => filterCredits(value.value)}
+            value={filterText1}
+            placeholder="Filter"
+            isDisabled={false}
+            isMulti={false}
+          />
+        </div>
+        <div>
+          <SelectFormType3
+            id="filterText2"
+            isClearable
+            isSearchable
+            name="filuterText2"
+            options={options2}
+            onChange={(value) => filterCredits(value.value)}
+            value={filterText2}
+            placeholder="Filter"
+            isDisabled={false}
+            isMulti={false}
+          />
         </div>
       </div>
       <div className="mt-24" style={{ overflowX: "scoll", width: "100%" }}>
@@ -266,7 +326,7 @@ export default function CreditRequests() {
             </tr>
           </thead>
           <tbody>
-            {searchData(initialData)?.map((data) => {
+            {creditList?.map((data) => {
               return (
                 <tr key={data._id}>
                   <td>{`${data.firstName}  ${data.lastName}`}</td>

@@ -1,4 +1,4 @@
-@import "../../utility/utility.styles.scss";
+@import '../../utility/utility.styles.scss';
 
 .sidemenu-container {
   width: $organizersNavbarWidth;
@@ -79,7 +79,7 @@
   }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1122px) {
   .sidemenu-container {
     display: none;
 

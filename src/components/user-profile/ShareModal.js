@@ -1,25 +1,25 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import { FacebookShareButton, FacebookIcon } from "react-share";
-import { TwitterShareButton, TwitterIcon } from "react-share";
-import { EmailShareButton, EmailIcon } from "react-share";
-import { WhatsappShareButton, WhatsappIcon } from "react-share";
+import { FacebookShareButton, FacebookIcon } from 'react-share';
+import { TwitterShareButton, TwitterIcon } from 'react-share';
+import { EmailShareButton, EmailIcon } from 'react-share';
+import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 
-import "./savedconfs.styles.scss";
+import './savedconfs.styles.scss';
 
 const ShareModal = ({ data, showPopUp, setShowPopUp }) => {
   const ref = useRef();
 
-  console.log("data", data);
+  console.log('data', data);
   useEffect(() => {
     const onBodyClick = (event) => {
       if (ref.current.contains(event.target)) return;
       setShowPopUp(false);
     };
 
-    document.body.addEventListener("click", onBodyClick, { capture: true });
+    document.body.addEventListener('click', onBodyClick, { capture: true });
     return () => {
-      document.body.removeEventListener("click", onBodyClick, {
+      document.body.removeEventListener('click', onBodyClick, {
         capture: true,
       });
     };
@@ -41,12 +41,12 @@ const ShareModal = ({ data, showPopUp, setShowPopUp }) => {
     window.open(url);
   };
   return (
-    <div className="share-card " ref={ref}>
+    <div className="share-card" ref={ref}>
       <span className="share-btn">
          
         <FacebookShareButton
           url={`http://localhost:3000/search-conference/${data._id}`}
-          quote={"Dummy text!"}
+          quote={'Dummy text!'}
           hashtag="#muo"
         >
                   
@@ -57,7 +57,7 @@ const ShareModal = ({ data, showPopUp, setShowPopUp }) => {
       <span className="share-btn">
         <TwitterShareButton
           url={`http://localhost:3000/search-conference/${data._id}`}
-          quote={"Dummy text!"}
+          quote={'Dummy text!'}
           hashtag="#muo"
         >
             
@@ -67,7 +67,7 @@ const ShareModal = ({ data, showPopUp, setShowPopUp }) => {
       <span className="share-btn">
         <EmailShareButton
           url={`http://localhost:3000/search-conference/${data._id}`}
-          quote={"Dummy text!"}
+          quote={'Dummy text!'}
           hashtag="#muo"
         >
             
@@ -77,7 +77,7 @@ const ShareModal = ({ data, showPopUp, setShowPopUp }) => {
       <span className="share-btn">
         <WhatsappShareButton
           url={`http://localhost:3000/search-conference/${data._id}`}
-          quote={"Dummy text!"}
+          quote={'Dummy text!'}
           hashtag="#muo"
         >
             

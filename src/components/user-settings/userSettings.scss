@@ -1,10 +1,24 @@
 .as-form-wrap {
-    max-width: 86rem;
-    margin: 8.4rem 2.4rem 4rem 12.2rem;
-    // padding: 2rem;
+  max-width: 86rem;
+  margin: 8.4rem 2.4rem 4rem 12.2rem;
+  @media screen and (max-width: 750px) {
+    margin: 8.4rem 1rem 4rem 1rem;
   }
+  // padding: 2rem;
+}
 .as-basicinfo-wrap {
-    & > .grid-col-2 {
-      gap: 2.4rem;
-    }
+  & > .account-setting-grid-col-2 {
+    gap: 2.4rem;
   }
+}
+
+.account-setting-grid-col-2 {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 8px;
+  @media screen and (max-width: 750px) {
+    display: block;
+  }
+}

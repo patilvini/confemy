@@ -1,26 +1,26 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useFormik } from "formik";
-import PropTypes from "prop-types";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import PropTypes from 'prop-types';
 
-import * as yup from "yup";
-import TextError from "../formik/TextError";
+import * as yup from 'yup';
+import TextError from '../formik/TextError';
 
-import SelectFormType1 from "../reselect/SelectFormType1";
-import ReloadableSelectFormType1 from "../reselect/ReloadableSelectFormType1";
+import SelectFormType1 from '../reselect/SelectFormType1';
+import ReloadableSelectFormType1 from '../reselect/ReloadableSelectFormType1';
 
-import api from "../../utility/api";
-import { alertAction } from "../../redux/alert/alertAction";
-import { loadUserProfileAction } from "../../redux/user-profile/userProfileAction";
+import api from '../../utility/api';
+import { alertAction } from '../../redux/alert/alertAction';
+import { loadUserProfileAction } from '../../redux/user-profile/userProfileAction';
 import {
   loadCountryListAction,
   loadStateListAction,
-} from "../../redux/list/listAction";
+} from '../../redux/list/listAction';
 
 const validationSchema = yup.object().shape({
-  licenseNumber: yup.string().required("Required"),
-  country: yup.string().required("Required"),
-  state: yup.string().required("Required"),
+  licenseNumber: yup.string().required('Required'),
+  country: yup.string().required('Required'),
+  state: yup.string().required('Required'),
 });
 
 export default function LicenseForm({
@@ -62,12 +62,12 @@ export default function LicenseForm({
       },
     };
 
-    console.log("formData", formData);
+    console.log('formData', formData);
 
     try {
       const response = await api.patch(`/users/${userProfile._id}`, formData);
       if (response) {
-        console.log("submit res", response);
+        console.log('submit res', response);
         dispatch(loadUserProfileAction(response.data.data.user));
         if (editMode) {
           setEditMode(false);
@@ -76,14 +76,14 @@ export default function LicenseForm({
         }
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
 
   const initialValues = {
-    country: license?.country || "",
-    state: license?.state || "",
-    licenseNumber: license?.licenseNumber || "",
+    country: license?.country || '',
+    state: license?.state || '',
+    licenseNumber: license?.licenseNumber || '',
   };
   const formik = useFormik({
     initialValues: initialValues,
@@ -107,7 +107,7 @@ export default function LicenseForm({
         }
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
 
@@ -119,7 +119,7 @@ export default function LicenseForm({
         dispatch(loadStateListAction(response.data.data.states));
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, "danger"));
+      dispatch(alertAction(err.response.data.message, 'danger'));
     }
   };
 
@@ -141,7 +141,7 @@ export default function LicenseForm({
     }
   }, []);
 
-  console.log("formik:", formik);
+  console.log('formik:', formik);
   return (
     <>
       <form
@@ -150,7 +150,7 @@ export default function LicenseForm({
         onSubmit={formik.handleSubmit}
       >
         <div className="form-type-1 as-basicinfo-wrap">
-          <div className="grid-col-2">
+          <div className="account-setting-grid-col-2">
             <div className="grid-1st-col">
               <SelectFormType1
                 options={countryList}
@@ -158,10 +158,10 @@ export default function LicenseForm({
                 isMulti={false}
                 onChange={(value) => {
                   if (formik.values.country !== value?.value) {
-                    formik.setFieldValue("state", "");
-                    formik.setFieldValue("city", "");
+                    formik.setFieldValue('state', '');
+                    formik.setFieldValue('city', '');
                   }
-                  formik.setFieldValue("country", value?.value);
+                  formik.setFieldValue('country', value?.value);
                   loadStateList(value?.countryId);
                 }}
                 placeholder="Select country"
@@ -181,9 +181,9 @@ export default function LicenseForm({
                 value={formik.values.state}
                 onChange={(value) => {
                   if (formik.values.state !== value?.value) {
-                    formik.setFieldValue("city", "");
+                    formik.setFieldValue('city', '');
                   }
-                  formik.setFieldValue("state", value?.value);
+                  formik.setFieldValue('state', value?.value);
                 }}
                 placeholder="Select state"
                 isDisabled={false}
@@ -196,7 +196,7 @@ export default function LicenseForm({
                 )}
               </div>
             </div>
-            <div style={{ gridColumn: "1/-1" }}>
+            <div style={{ gridColumn: '1/-1' }}>
               <div className="material-textfield">
                 <input
                   id="licenseNumber"

@@ -3,11 +3,10 @@
   button {
     min-height: 52px;
     min-width: 212px;
-    @media screen and (max-width:500px) {
-      margin: 1rem auto;
+    @media screen and (max-width: 632px) {
+      min-width: auto;
     }
   }
-  
 }
 
 .submit-loader-wrap {
@@ -17,17 +16,19 @@
   button {
     min-height: 52px;
     min-width: 212px;
+    @media screen and (max-width: 750px) {
+      min-width: auto;
+    }
   }
 }
 
-.flex-btn{
+.flex-btn {
   display: flex;
   flex-direction: row;
   align-items: center;
-  @media screen and (max-width:500px) {
+  @media screen and (max-width: 500px) {
     flex-direction: column;
     align-items: start;
-    
   }
 }
 

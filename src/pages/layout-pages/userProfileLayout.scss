@@ -1,16 +1,29 @@
-@import "../../utility/utility.styles.scss";
+@import '../../utility/utility.styles.scss';
 
 .up-tabs-wrap {
   border-bottom: solid 0.5px $shade-1;
   padding-top: 16rem;
 }
 .up-tab {
-  padding-bottom: 1.6rem;
+  padding-bottom: 1rem;
   border-bottom: solid 0.4rem $colour-white;
+  @media screen and (max-width: 732px) {
+    margin-bottom: 1rem;
+  }
 }
 
 .up-active-tab {
   border-bottom-color: $primary;
   color: $primary;
   font-weight: 900;
+}
+
+.user-profile-flex-vchc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media screen and (max-width: 732px) {
+    display: block;
+    text-align: center;
+  }
 }

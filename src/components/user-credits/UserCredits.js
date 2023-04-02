@@ -13,6 +13,7 @@ import AddIcon from "../icons/AddIcon";
 import {
   loadUserCreditConferencesAction,
   loadUserExternalCreditsAction,
+  loadUserTotalCreditsAction,
 } from "../../redux/user-profile/userProfileAction";
 import api from "../../utility/api";
 
@@ -26,8 +27,7 @@ const options1 = [
 ];
 
 const UserCredits = () => {
-  const [filterText, setFilterText] = useState(null);
-  const [filteredData, setFilteredData] = useState([]);
+  const [filterText, setFilterText] = useState("");
   const [showExternalCreditForm, setShowExternalCreditForm] = useState(false);
   const [currentDate, setCurrentDate] = useState(null);
   const totalCredits = useSelector(
@@ -76,7 +76,7 @@ const UserCredits = () => {
       }
       return item;
     });
-    setFilteredData(data);
+    // setFilteredData(data);
   };
 
   useEffect(() => {
