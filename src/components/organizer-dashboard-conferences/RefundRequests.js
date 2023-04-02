@@ -1,23 +1,23 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import api from '../../utility/api';
-import SearchIcon from '../icons/SearchIcon';
-import SelectFormType3 from '../reselect/SelectFormType3';
-import { alertAction } from '../../redux/alert/alertAction';
-import { loadMyOrganizationsSelectListAction } from '../../redux/organization/myOrganizationsAction';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import api from "../../utility/api";
+import SearchIcon from "../icons/SearchIcon";
+import SelectFormType3 from "../reselect/SelectFormType3";
+import { alertAction } from "../../redux/alert/alertAction";
+import { loadMyOrganizationsSelectListAction } from "../../redux/organization/myOrganizationsAction";
 
 const options = [
-  { label: 'All', value: 'all' },
-  { label: 'Pending', value: 'pending' },
-  { label: 'Approved', value: 'approved' },
+  { label: "All", value: "all" },
+  { label: "Pending", value: "pending" },
+  { label: "Approved", value: "approved" },
 ];
 
 export default function RefundRequests() {
-  const [filterText1, setFilterText1] = useState('');
-  const [filterText2, setFilterText2] = useState('');
+  const [filterText1, setFilterText1] = useState("");
+  const [filterText2, setFilterText2] = useState("");
   const [filteredList, setFilteredList] = useState([]);
-  const [searchText, setSearchText] = useState('');
-  const [price, setPrice] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [price, setPrice] = useState("");
   const [refunds, setRefunds] = useState([]);
   const [refundList, setRefundList] = useState([]);
 
@@ -30,20 +30,20 @@ export default function RefundRequests() {
     (state) => state.myOrganizations.organizationsListForSelect
   );
 
-  const options2 = [{ value: 'self', label: 'User' }, ...organizationsList];
+  const options2 = [{ value: "self", label: "User" }, ...organizationsList];
 
   const filterData = (data) => {
     let filteredData = data?.filter((item) => {
-      if (filterText1 === '') {
+      if (filterText1 === "") {
         return item;
       }
-      if (filterText1 === 'all') {
+      if (filterText1 === "all") {
         return item;
       }
-      if (filterText1 === 'pending' && item.creditStatus === 2) {
+      if (filterText1 === "pending" && item.creditStatus === 2) {
         return item;
       }
-      if (filterText1 === 'approved' && item.creditStatus === 1) {
+      if (filterText1 === "approved" && item.creditStatus === 1) {
         return item;
       }
     });
@@ -52,11 +52,11 @@ export default function RefundRequests() {
 
   const handleChange = (data) => {
     if (price <= data) {
-      dispatch(alertAction('Approved', 'success'));
+      dispatch(alertAction("Approved", "success"));
     }
     if (price > data) {
       dispatch(
-        alertAction('Please select price less than actual price', 'error')
+        alertAction("Please select price less than actual price", "error")
       );
     }
   };
@@ -85,7 +85,7 @@ export default function RefundRequests() {
         );
       }
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, 'danger'));
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
@@ -93,13 +93,13 @@ export default function RefundRequests() {
   const filterRefundList = (value) => {
     let filteredconfs = [];
 
-    if (value === 'all') {
+    if (value === "all") {
       setFilterText1(value);
-    } else if (value === 'pending') {
+    } else if (value === "pending") {
       setFilterText1(value);
-    } else if (value === 'approved') {
+    } else if (value === "approved") {
       setFilterText1(value);
-    } else if (value === 'self') {
+    } else if (value === "self") {
       setFilterText2(value);
     } else {
       setFilterText2(value);
@@ -108,11 +108,11 @@ export default function RefundRequests() {
     const approvedStatusCode = true;
 
     refunds?.forEach((item) => {
-      if (value === 'all') {
+      if (value === "all") {
         if (filterText2) {
-          if (filterText2 === 'self') {
+          if (filterText2 === "self") {
             // FILTRING DATA FROM SECOND FILTER
-            if (item.conference.host === 'user') {
+            if (item.conference.host === "user") {
               filteredconfs.push(item);
             }
           } else {
@@ -125,13 +125,13 @@ export default function RefundRequests() {
           // IF SECOND FILTER IS NOT APPLIED
           filteredconfs = refunds;
         }
-      } else if (value === 'pending') {
+      } else if (value === "pending") {
         if (item.refunded == pendingStatusCode) {
           if (filterText2) {
-            if (filterText2 === 'self') {
+            if (filterText2 === "self") {
               // FILTRING DATA FROM SECOND FILTER
               if (
-                item.conference.host === 'user' &&
+                item.conference.host === "user" &&
                 item.refunded === pendingStatusCode
               ) {
                 filteredconfs.push(item);
@@ -145,12 +145,12 @@ export default function RefundRequests() {
             filteredconfs.push(item);
           }
         }
-      } else if (value === 'approved') {
+      } else if (value === "approved") {
         if (item.refunded == approvedStatusCode) {
           if (filterText2) {
-            if (filterText2 === 'self') {
+            if (filterText2 === "self") {
               // FILTRING DATA FROM SECOND FILTER
-              if (item.conference.host === 'user') {
+              if (item.conference.host === "user") {
                 filteredconfs.push(item);
               }
             } else if (item?.conference.hotedBy?.organization === filterText2) {
@@ -160,43 +160,43 @@ export default function RefundRequests() {
             filteredconfs.push(item);
           }
         }
-      } else if (value === 'self') {
-        if (item.conference.host === 'user') {
+      } else if (value === "self") {
+        if (item.conference.host === "user") {
           if (filterText1) {
-            if (filterText1 === 'pending') {
+            if (filterText1 === "pending") {
               if (
-                item.conference.host === 'user' &&
+                item.conference.host === "user" &&
                 item.refunded === pendingStatusCode
               ) {
                 filteredconfs.push(item);
               }
-            } else if (filterText1 === 'approved') {
+            } else if (filterText1 === "approved") {
               if (
-                item.conference.host === 'user' &&
+                item.conference.host === "user" &&
                 item.refunded === approvedStatusCode
               ) {
                 filteredconfs.push(item);
               }
-            } else if (filterText1 === 'all') {
+            } else if (filterText1 === "all") {
               filteredconfs.push(item);
             }
           } else {
-            console.log('rinnn');
+            console.log("rinnn");
             filteredconfs.push(item);
           }
         }
       } else {
         if (item?.conference.hostedBy?.organization === value) {
           if (filterText1) {
-            if (filterText1 === 'pending') {
+            if (filterText1 === "pending") {
               if (item.refunded === pendingStatusCode) {
                 filteredconfs.push(item);
               }
-            } else if (filterText1 === 'approved') {
+            } else if (filterText1 === "approved") {
               if (item.refunded === approvedStatusCode) {
                 filteredconfs.push(item);
               }
-            } else if (filterText1 === 'all') {
+            } else if (filterText1 === "all") {
               filteredconfs.push(item);
             }
           } else {
@@ -240,7 +240,7 @@ export default function RefundRequests() {
       <div className="flex-vc-sb">
         <h1>Refund Requests</h1>
         <div className="flex-vc-sb ">
-          <div className="form-type-3 mr-4" style={{ width: '50%' }}>
+          <div className="form-type-3 mr-4" style={{ width: "50%" }}>
             <div className="position-relative ">
               <input
                 type="text"
@@ -253,8 +253,8 @@ export default function RefundRequests() {
               <i
                 className={
                   searchText?.length > 0
-                    ? 'display-none'
-                    : 'conf-search-input-icon'
+                    ? "display-none"
+                    : "conf-search-input-icon"
                 }
               >
                 <SearchIcon width="2.4rem" height="2.4rem" />
@@ -336,6 +336,6 @@ export default function RefundRequests() {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 }
