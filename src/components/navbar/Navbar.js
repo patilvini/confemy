@@ -19,10 +19,12 @@ export default function Navbar() {
             <LogoDark className="logo" />
           </Link>
         </div>
-        <div className="search-box">
-          <SearchIcon height="1.4rem" width="1.4rem" />
-          <span className="explore-conferences">Explore Conferences</span>
-        </div>
+        <Link to="search-conference">
+          <div className="search-box">
+            <SearchIcon height="1.4rem" width="1.4rem" />
+            <span className="explore-conferences">Explore Conferences</span>
+          </div>
+        </Link>
       </div>
       <div className="navbar-second-container">
         <div>

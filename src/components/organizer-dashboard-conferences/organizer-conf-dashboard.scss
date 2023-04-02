@@ -1,0 +1,480 @@
+@import "../../utility/utility.styles.scss";
+
+.dash-wrapper {
+  // margin: 0rem 2rem 3rem 12.2rem;
+  // max-width: 119.6rem;
+  border-radius: 0.5rem;
+  width: 90%;
+
+  @media screen and (max-width: 400px) {
+    width: 95%;
+  }
+
+  @media screen and (max-width: 560px) {
+    h1 {
+      font-size: 25px;
+    }
+  }
+}
+
+.dash-table {
+  margin: 1rem 0 0 0;
+  font-family: Avenir-Roman;
+  display: grid;
+  grid-template-columns: 2.5fr 0.5fr 0.5fr 1fr;
+  align-items: center;
+
+  @media screen and (max-width: 860px) {
+    grid-template-columns: 2fr 0.5fr 0.5fr 1fr;
+  }
+}
+
+.dash-right-item {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.dash-table:hover {
+  background-color: $shade-2;
+}
+
+.dash-options {
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  width: 29.6rem;
+
+  &-item {
+    // padding-left: 2rem;
+    // align-self:center;
+    padding: 2.1rem;
+    justify-self: center;
+    font-size: 18px;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: $gray-1;
+    }
+  }
+}
+
+.dash-table-heading {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 2.5fr 0.5fr 0.5fr 1fr;
+  background-color: $shade-1;
+  border-radius: 0.4rem;
+  height: 5.2rem;
+
+  @media screen and (max-width: 860px) {
+    grid-template-columns: 2fr 0.5fr 0.5fr 1fr;
+  }
+}
+
+.dash-table-item {
+  font-family: Avenir;
+  font-size: 2rem;
+  align-self: center;
+  // text-align: center;
+  padding-left: 1rem;
+  font-weight: bold;
+
+  @media screen and (max-width: 860px) {
+    font-size: 1.5rem;
+  }
+}
+
+.conference-card-dash {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+
+  @media screen and (max-width: 860px) {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  img {
+    width: 100%;
+    border-radius: 0.1rem;
+
+    @media screen and (max-width: 860px) {
+      display: none;
+    }
+  }
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 10fr;
+  gap: 1rem;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+// .dash-conf-details {
+//   padding: 1rem 0 0rem 1rem;
+// }
+
+.data-grid {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  margin: 3.8rem 0;
+}
+
+.data-grid-3 {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  margin: 3.8rem 0;
+}
+
+.data-container {
+  background-color: white;
+  border: solid 1px $shade-1;
+  height: 10.9rem;
+  width: 100%;
+  text-align: center;
+  padding: 1.6rem;
+}
+
+.overview-table {
+  margin: 1rem 0 0 0;
+  font-family: Avenir-Roman;
+  display: grid;
+  grid-template-columns: 40% 20% 20% 20%;
+}
+
+.overview-table-heading {
+  margin: 4.4rem 0 0 0;
+  display: grid;
+  grid-template-columns: 40% 20% 20% 20%;
+  background-color: $shade-1;
+  border-radius: 0.4rem;
+}
+
+
+.overview-table-item {
+  // font-family: Avenir;
+  font-size: 1.4rem;
+  align-self: center;
+  text-align: center;
+  font-weight: bold;
+  padding: 1.2rem;
+}
+
+.overview-table:hover {
+  background-color: $shade-2;
+}
+
+.request-table {
+  margin: 1rem 0 0 0;
+  font-family: Avenir-Roman;
+  display: grid;
+  grid-template-columns: 20% 30% 15% 15% 20%;
+}
+
+.request-table-heading {
+  margin: 4.4rem 0 0 0;
+  display: grid;
+  grid-template-columns: 20% 30% 15% 15% 20%;
+  background-color: $shade-1;
+  border-radius: 0.4rem;
+}
+
+.card-icons {
+  width: 1.5rem;
+}
+
+.request-table-item {
+  // font-family: Avenir;
+  font-size: 1.45rem;
+  align-self: center;
+  // margin-left:rem ;
+  font-weight: bold;
+  padding: 1.2rem;
+
+  button {
+    width: 90%;
+    text-align: center;
+    background-color: $accent;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+  }
+
+  button:hover {
+    background-color: rgb(50, 150, 50);
+  }
+}
+
+.request-table-name {
+  font-size: 1.6rem;
+  align-self: center;
+  margin-left: 2rem;
+  font-weight: bold;
+}
+
+.request-table-conf {
+  width: 90%;
+
+  align-self: center;
+
+  font-weight: bold;
+}
+
+.request-table-date {
+  font-size: 1.4rem;
+  align-self: center;
+
+  font-weight: bold;
+}
+
+.request-table-registration {
+  font-size: 1.4rem;
+  align-self: center;
+
+  font-weight: bold;
+}
+
+.request-table:hover {
+  background-color: $shade-2;
+}
+
+.credits-button {
+  font-weight: bold;
+  // padding: 1.5rem 0rem;
+}
+
+.credit-request-table {
+  margin: 1rem 0 0 0;
+  font-family: Avenir-Roman;
+  display: grid;
+  grid-template-columns: 20% 25% 15% 15% 25%;
+}
+
+.credit-request-table-heading {
+  margin: 4.4rem 0 0 0;
+  display: grid;
+  grid-template-columns: 20% 25% 15% 15% 25%;
+  background-color: $shade-1;
+  border-radius: 0.4rem;
+}
+
+.live-dash {
+  display: grid;
+  grid-template-columns: 45% 55%;
+}
+
+.org-credit-reqst{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+  @media screen and (max-width:1200px) {
+    grid-template-columns: 1fr;
+  }
+}
+.org-credit-reqst-filters{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1rem;
+  @media screen and (max-width:540px) {
+    grid-template-columns: 1fr;
+    gap:3rem;
+    width:300px
+  }
+}
+.org-credit-table {
+  width: 100%;
+  border-spacing: 0;
+  @include avenir-heavy-18;
+  color: $gray-3;
+  thead {
+    tr {
+      background-color: $shade-1;
+      th {
+        padding: 16px;
+        text-align: left;
+        &:last-child {
+          text-align: left;
+        }
+      }
+    }
+  }
+  tbody {
+    td {
+      padding: 16px;
+      text-align: left;
+      color: $gray-2;
+    }
+
+    tr {
+      & > td:nth-child(5n + 5) {
+        text-align: left;
+      }
+    }
+  }
+}
+
+
+.org-refund-grid-1{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:1rem;
+  @media screen and (max-width:1200px) and (min-width:1000px),(max-width:810px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width:400px) {
+  .org-refund-grid-1{
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width:300px;
+  }
+}
+.org-refund-grid-2{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:1rem;
+  @media screen and (max-width:810px)  {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.org-refund-table {
+  width: 100%;
+  border-spacing: 0;
+  
+  @include avenir-heavy-18;
+  color: $gray-3;
+  thead {
+    tr {
+      background-color: $shade-1;
+      th {
+        padding: 16px;
+        text-align: left;
+        &:last-child {
+          text-align: left;
+        }
+      }
+    }
+  }
+  tbody {
+    td {
+      padding: 16px;
+      text-align: left;
+      color: $gray-2;
+    }
+
+    tr {
+      & > td:nth-child(5n + 5) {
+        text-align: left;
+      }
+    }
+  }
+}
+.earnings-card{
+  width: 235px;
+  border: 1px solid $shade-1;
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 1.6rem;
+  
+  
+}
+
+.earnings-withdraw{
+  display: flex;
+  align-items: center;
+  @media screen and (max-width:600px) {
+    flex-direction: column;
+    justify-content: left;
+    align-items: start;
+    
+  }
+}
+
+.earnings-btn{
+  width: 19rem;
+  height: 4.8rem;
+  border: 1px solid $shade-1;
+  text-align: center;
+  border-radius: 0.5rem;
+  margin: 0 12px;
+  @media screen and (max-width:600px){
+    margin: 2rem 0;
+  }
+}
+
+.earnings-table {
+  border-spacing: 0;
+  width: 100%;
+  @include avenir-heavy-18;
+  color: $gray-3;
+  thead {
+    tr {
+      background-color: $shade-1;
+      th {
+        padding: 16px;
+        text-align: left;
+        &:last-child {
+          text-align: left;
+        }
+        &:nth-child(4n+4){
+          text-align: right;
+        }
+        &:nth-child(4n+5){
+          text-align: right;
+        }
+      }
+    }
+  }
+  tbody {
+    td {
+      padding: 16px;
+      text-align: left;
+      color: $gray-2;
+     
+      &:nth-child(5n + 3) {
+        text-align: left;
+        max-width: 200px;
+        overflow: hidden;
+
+      }
+      &:nth-child(5n + 4) {
+        text-align: right;
+    
+      }
+      &:nth-child(5n + 5) {
+        text-align: right;
+    
+      }
+ 
+    }
+
+    tr {
+      & > td:nth-child(6n + 6) {
+        text-align: left;
+
+      }
+      
+    }
+  }
+}
+
+.refund-approve-btn{
+  width:180px;
+  height: 50px;
+  background-color: $accent;
+  border: 1px solid $accent;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  padding: 4px 8px;
+}

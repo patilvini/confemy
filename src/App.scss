@@ -1,7 +1,10 @@
+@use "./utility/media.mixins.scss" as media;
 @import "./utility/utility.styles.scss";
 @import "./utility/form.styles.scss";
 @import "./utility/font.styles.scss";
 @import "./utility/button.styles.scss";
+@import "./utility/images.styles.scss";
+@import "./utility/confCard.styles.scss";
 
 /* Universal set up */
 
@@ -77,17 +80,40 @@ a {
 .container {
   width: 100%;
   max-width: $containerWidth;
-  min-height: calc(100vh - 6.4rem);
+  // min-height: calc(100vh - 6.4rem);
+  min-height: 100vh;
   margin: 0 auto;
   overflow: hidden;
+  background-color: $background;
 }
+
 .container-offSidemenu {
   max-width: calc(
     #{$containerWidth} - #{$organizersNavbarWidth + $mrContainerOffSidemenu + $mlContainerOffSidemenu}
   );
+
   margin: 96px $mrContainerOffSidemenu 64px $mlContainerOffSidemenu;
   overflow: hidden;
+  @media screen and (max-width: 1000px) {
+    margin: 0;
+  }
+  // @media screen and (max-width: 1125px) {
+  //   margin: 0;
+  //   margin-top: 96px;
+  // }
 }
+
+// .container-offSidemenu {
+//   max-width: calc(
+//     #{$containerWidth} - #{$organizersNavbarWidth + $mrContainerOffSidemenu + $mlContainerOffSidemenu}
+//   );
+//   margin: 96px $mrContainerOffSidemenu 64px $mlContainerOffSidemenu;
+//   overflow: hidden;
+
+//   // @media screen and (max-width: 1000px) {
+//   //   margin: 3.4rem 0 64px 0;
+//   // }
+// }
 
 // grids
 
@@ -97,6 +123,14 @@ a {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   gap: 8px;
+
+  &-2_1 {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    grid-template-rows: auto;
+    gap: 8px;
+  }
 }
 
 .grid-1st-col {
@@ -111,10 +145,33 @@ a {
   grid-column: 3/4;
 }
 
+.grid-col-3 {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+}
+
+.conf-search-grid {
+  margin-top: 3.1rem;
+  grid-gap: 4.2rem;
+  height: 34.1rem;
+}
+
 .grid-col-4 {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  @media screen and (max-width: 620px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.grid-col-5 {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: auto;
 }
 
@@ -133,10 +190,20 @@ a {
 
 // common classes
 
+.color-primary {
+  color: $primary;
+}
+
 .conf-display {
   padding-left: 9.7rem;
   padding-right: 9.7rem;
   padding-bottom: 7rem;
+  @media screen and (max-width: 320px) {
+    padding: 2.2rem;
+  }
+  @media screen and (max-width: 500px) and (min-width: 350px) {
+    padding: 2rem;
+  }
 }
 
 .position-relative {
@@ -147,6 +214,10 @@ a {
   display: none;
 }
 
+.visibility-hidden {
+  visibility: hidden;
+}
+
 .margin-0-auto {
   margin: 0 auto;
 }
@@ -155,11 +226,27 @@ a {
   text-align: center;
 }
 
+.flex {
+  display: flex;
+}
 // flexbox, vertical center
 
 .flex-vc {
   display: flex;
   align-items: center;
+
+  &-sb {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  &-se {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
 }
 // flexbox, horizontal center
 
@@ -176,7 +263,40 @@ a {
   justify-content: center;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+//
+.conf-search-input-icon {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  transform-origin: left top;
+  pointer-events: none;
+
+  svg {
+    position: relative;
+    padding-top: 5px;
+  }
+}
+
 // regular icon size
+.icon-xxs {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+.icon-xs {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.icon-sm {
+  width: 2rem;
+  height: 2rem;
+}
 
 .icon-size {
   width: 2.4rem;
@@ -185,9 +305,21 @@ a {
 
 // large icon size
 
-.large-icon {
+.icon-lg {
   width: 2.8rem;
   height: 2.8rem;
+}
+
+.icon-xxl {
+  width: 40px;
+  height: 40px;
+}
+
+.camera-icon {
+  // width: 50px;
+  // height: 45px;
+  width: 80px;
+  height: 72px;
 }
 
 .right-input-icon {
@@ -208,11 +340,25 @@ a {
 
 .left-input-icon {
   position: absolute;
-  left: 24px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
   transform-origin: left top;
   pointer-events: none;
+}
+
+.vimeo-icon-size {
+  width: 46px;
+  height: 40px;
+}
+.youtube-icon-size {
+  width: 57px;
+  height: 40px;
+}
+
+.facebook-icon-size {
+  width: 44px;
+  height: 44px;
 }
 
 // modal classes
@@ -234,10 +380,34 @@ a {
 .modal-body {
   margin: 0 auto;
   position: fixed;
-  z-index: 110;
+  z-index: 101;
   max-width: 100%;
   max-height: 100%;
   overflow: auto;
+}
+
+.modalx-body {
+  display: flex;
+  min-width: 36rem;
+  max-width: 80%;
+  max-height: 80%;
+  flex-direction: column;
+  overflow: auto;
+  background-color: white;
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
+}
+
+.modalx-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1.2rem 1.2rem 0rem;
+}
+
+.modalx-content {
+  width: 100%;
+  height: auto;
 }
 
 .white-modal {
@@ -250,17 +420,15 @@ a {
 .modal-form-wrapper {
   width: 80%;
   margin: 0 auto;
-  padding: 56px 0 48px;
+  padding-bottom: 4.8rem;
 
   h2 {
     text-align: center;
     color: $primary;
-    margin-bottom: 4.8rem;
   }
 
   button {
     width: 100%;
-    // margin-bottom: 3.4rem;
   }
 }
 
@@ -268,6 +436,22 @@ a {
   text-align: center;
   border-top: solid 1px $shade-1;
   padding-top: 3rem;
+}
+
+.or-container {
+  opacity: 0.67;
+  display: flex;
+  align-items: center;
+  margin: 3.2rem auto;
+  text-align: center;
+}
+
+.or-line {
+  margin: auto 2.2rem;
+  display: inline-block;
+  width: 175px;
+  height: 1px;
+  background-color: $shade-1;
 }
 
 // Margin & Padding
@@ -322,7 +506,10 @@ $spaceamounts: (
   68,
   72,
   76,
-  80
+  80,
+  84,
+  88,
+  92
 );
 
 @each $space in $spaceamounts {
@@ -395,60 +582,24 @@ $spaceamounts: (
 .zero-height {
   height: 0px;
 }
-.slow-height {
-  height: 450px;
-  transition: all ease-in 0.4s;
-}
-
-// using material UI breakpoints for differnet screen sizes.
-
-@mixin small() {
-  @media only screen and (max-width: 600px) {
-    @content;
-  }
-}
-
-@mixin medium() {
-  @media only screen and (min-width: 601px) and (max-width: 960px) {
-    @content;
-  }
-}
-
-@mixin large() {
-  @media only screen and (min-width: 961px) and (max-width: 1280px) {
-    @content;
-  }
-}
-
-@mixin xlarge {
-  @media only screen and (min-width: 1281px) and (max-width: 1920px) {
-    @content;
-  }
-}
-
-@mixin xxlarge {
-  @media only screen and (min-width: 1921px) {
-    @content;
-  }
-}
 
 // drag box
 
-.drag-box {
-  width: 600px;
-  height: 260px;
-  border-radius: 15px;
-  margin: 32px 0;
-  padding: 100px 150px;
-  background-color: #ecf0f2;
-  text-align: center;
-  font-family: Avenir-Roman;
-  font-size: 18px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.33;
-  letter-spacing: 0.2px;
-  text-align: center;
-  color: lightgray;
-}
+// .drag-box {
+//   width: 600px;
+//   height: 260px;
+//   border-radius: 15px;
+//   margin: 32px 0;
+//   padding: 100px 150px;
+//   background-color: #ecf0f2;
+//   text-align: center;
+//   font-family: Avenir-Roman;
+//   font-size: 18px;
+//   font-weight: normal;
+//   font-stretch: normal;
+//   font-style: normal;
+//   line-height: 1.33;
+//   letter-spacing: 0.2px;
+//   text-align: center;
+//   color: lightgray;
+// }

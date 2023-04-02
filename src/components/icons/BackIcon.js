@@ -4,8 +4,8 @@ function BackIcon({ className, fill }) {
   return (
     <svg
       className={className}
-      //   width='38px'
-      //   height='38px'
+        width='38px'
+        height='38px'
       viewBox='0 0 38 38'
       version='1.1'
       xmlns='http://www.w3.org/2000/svg'

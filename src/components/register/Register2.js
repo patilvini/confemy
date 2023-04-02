@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { Link, useHistory, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as yup from "yup";
+import { Link } from "react-router-dom";
+import { Field, ErrorMessage } from "formik";
 import TextError from "../formik/TextError";
-import GoogleIcon from "../icons/GoogleIcon";
 import ClosedEyeIcon from "../icons/ClosedEyeIcon";
 import OpenEyeIcon from "../icons/OpenEyeIcon";
 
-import { registerAction } from "../../redux/auth/authAction";
 import "./register.styles.scss";
 import "../signin/signin.styles.scss";
 import { Fragment } from "react";
@@ -65,14 +60,14 @@ function Register() {
             onClick={togglePassword}
             className={showPassword ? "display-none" : "right-input-icon"}
           >
-            <ClosedEyeIcon className="large-icon" />
+            <ClosedEyeIcon className="icon-lg" />
           </i>
 
           <i
             onClick={togglePassword}
             className={showPassword ? "right-input-icon" : "display-none"}
           >
-            <OpenEyeIcon className="large-icon" />
+            <OpenEyeIcon className="icon-lg" />
           </i>
         </div>
         <ErrorMessage name="password" component={TextError} />
@@ -92,7 +87,7 @@ function Register() {
               showConfirmPassword ? "display-none" : "right-input-icon"
             }
           >
-            <ClosedEyeIcon className="large-icon" />
+            <ClosedEyeIcon className="icon-lg" />
           </i>
 
           <i
@@ -101,7 +96,7 @@ function Register() {
               showConfirmPassword ? "right-input-icon" : "display-none"
             }
           >
-            <OpenEyeIcon className="large-icon" />
+            <OpenEyeIcon className="icon-lg" />
           </i>
         </div>
         <ErrorMessage name="confirmPassword" component={TextError} />

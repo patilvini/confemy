@@ -1,32 +1,65 @@
-import axios from 'axios';
-import { CONFERENCE_ERROR, GET_CONFERENCE } from './conferenceTypes';
-import { alertAction } from '../alert/alertAction';
+import axios from "axios";
+import {
+  CONFERENCE_ERROR,
+  GET_CONFERENCE,
+  CREATE_CONFERENCE,
+  REMOVE_NEWCONF_STATE,
+  LOAD_INCOMPLETE_CONFS,
+  LOAD_INCOMPLETE_CONF,
+  LOAD_ALL_MY_CONFS,
+  CONF_SEARCH_DONE,
+  CONF_SEARCH_INITIATED,
+} from "./conferenceTypes";
 
 // Creat a conference
-export const createConferenceAction = (formData, history) => async (
-  dispatch
-) => {
-  try {
-    const res = await axios({
-      method: 'POST',
-      data: formData,
-      withCredentials: true,
-      url: 'http://localhost:5000/api/conferences',
-    });
-    // dispatch({ type: GET_CONFERENCE, payload: res.data });
-    const message = 'Conference Created Successfully';
-    dispatch(alertAction(message, 'success'));
-    history.push('/organizer-dashboard');
-  } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => dispatch(alertAction(error.msg, 'danger')));
-    }
-    dispatch({
-      type: CONFERENCE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
+export const createConferenceAction = (data) => (dispatch) => {
+  dispatch({
+    type: CREATE_CONFERENCE,
+    payload: data,
+  });
+};
+
+// remove new conference redux state
+export const removeConferenceStateAction = () => (dispatch) => {
+  dispatch({
+    type: REMOVE_NEWCONF_STATE,
+  });
+};
+
+//  load one incomplete conference
+export const loadOneIncopleteConfAction = (data) => (dispatch) => {
+  dispatch({
+    type: LOAD_INCOMPLETE_CONF,
+    payload: data,
+  });
+};
+//  load all incomplete conferences
+
+export const loadIncopleteConfsAction = (data) => (dispatch) => {
+  dispatch({
+    type: LOAD_INCOMPLETE_CONFS,
+    payload: data,
+  });
+};
+
+export const loadAllMyConfsAction = (data) => (dispatch) => {
+  dispatch({
+    type: LOAD_ALL_MY_CONFS,
+    payload: data,
+  });
+};
+
+export const searchConfsAction = (data) => (dispatch) => {
+  dispatch({
+    type: CONF_SEARCH_DONE,
+    payload: data,
+  });
+};
+
+export const confSearchInitiatedAction = () => (dispatch) => {
+  dispatch({
+    type: CONF_SEARCH_INITIATED,
+  });
 };
 
 // get a conference
@@ -34,9 +67,9 @@ export const createConferenceAction = (formData, history) => async (
 export const getConferenceAction = () => async (dispatch) => {
   try {
     const res = await axios({
-      method: 'GET',
+      method: "GET",
       withCredentials: true,
-      url: 'http://localhost:5000/api/conferences/:conference_id',
+      url: "http://localhost:5000/api/conferences/:conference_id",
     });
     dispatch({ type: GET_CONFERENCE, payload: res.data });
   } catch (err) {

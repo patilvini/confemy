@@ -35,7 +35,6 @@ function AttendeeProfileForm({ createProfileAction }) {
               name="occupation"
               value={occupation}
               onChange={onInputChange}
-              //   required
             />
           </div>
           <div className="mb-1">
@@ -45,7 +44,6 @@ function AttendeeProfileForm({ createProfileAction }) {
               name="specialty"
               value={specialty}
               onChange={onInputChange}
-              //   required
             />
           </div>
           <div className="mb-1">
@@ -64,7 +62,6 @@ function AttendeeProfileForm({ createProfileAction }) {
               name="degrees"
               value={degrees}
               onChange={onInputChange}
-              // required
             />
           </div>
           <div className="mb-1">

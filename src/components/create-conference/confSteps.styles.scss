@@ -1,0 +1,53 @@
+@import "../../utility/utility.styles.scss";
+
+.conf-steps-container {
+  width: 100%;
+  margin-bottom: 64px;
+
+  h2 {
+    margin-bottom: 50px;
+    color: $primary;
+  }
+}
+
+.conf-steps {
+  display: flex;
+  align-items: center;
+  li {
+    display: flex;
+    align-items: center;
+    // margin-right: 24px;
+    svg {
+      margin-right: 2px;
+    }
+  }
+  & > li:last-child .steps-line {
+    display: none;
+  }
+}
+
+.active-conf-step {
+  @include avenir-heavy-18;
+  color: $primary;
+  white-space: nowrap;
+}
+
+.inactive-conf-step {
+  @include avenir-heavy-18;
+  color: $gray-2;
+  white-space: nowrap;
+}
+
+.completed-conf-step {
+  @include avenir-heavy-18;
+  color: $accent;
+  white-space: nowrap;
+}
+
+.steps-line {
+  margin-left: 4px;
+  display: inline-block;
+  width: 16px;
+  height: 2px;
+  background-color: $gray-1;
+}

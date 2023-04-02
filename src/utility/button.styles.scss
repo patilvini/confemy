@@ -58,6 +58,19 @@
       border-color: #063449;
     }
   }
+
+  &.button-red {
+    background: $warning;
+    border-color: $warning;
+    &:hover {
+      background: $warning;
+      border-color: $warning;
+    }
+    &:active {
+      background-color: $warning;
+      border-color: $warning;
+    }
+  }
 }
 
 .button-text {
@@ -87,6 +100,7 @@
 
     &:hover {
       color: #c6000b;
+      background-color: #fdf2f2;
       //   border-color: #c6000b;
     }
     &:active {
@@ -158,6 +172,8 @@
   outline: none;
   border: 1px solid rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  // cursor: not-allowed;
+  // pointer-events: all !important;
   transition: all 0.12s ease-in;
   min-width: 10rem;
   padding: 16px 32px;
@@ -176,10 +192,10 @@
   text-align: center;
   color: $confemy-black;
 
-  &:hover {
-    color: #45a93e;
-    border-color: #45a93e;
-  }
+  // &:hover {
+  //   color: #45a93e;
+  //   border-color: #45a93e;
+  // }
 }
 
 .button-outlined-active {
@@ -188,7 +204,7 @@
   cursor: pointer;
   transition: all 0.12s ease-in;
   min-width: 10rem;
-  padding: 16px 32px;
+  padding: 18px 34px;
   border-radius: 4px;
   // border: 1px solid rgba(0, 0, 0, 0.2);
   // background-color: #fff;
@@ -208,4 +224,8 @@
   text-align: center;
 
   color: #00529b;
+  @media screen and (max-width:430px) {
+    margin: 1rem 0;
+    
+  }
 }

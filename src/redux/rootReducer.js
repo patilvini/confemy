@@ -9,6 +9,10 @@ import profileReducer from "./profile/profileReducer";
 
 import myOrganizationsReducer from "./organization/myOrganizationsReducer";
 import organizationReducer from "./organization/organizationReducer";
+import conferenceReducer from "./conference/conferenceReducer";
+import userProfileReducer from "./user-profile/userProfileReducer";
+import listReducer from "./list/listReducer";
+import organizerCreditReducer from "./organizer-dashboard/organizerCreditReducer";
 
 const persistConfig = {
   key: "root",
@@ -23,6 +27,10 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   myOrganizations: myOrganizationsReducer,
   organization: organizationReducer,
+  conference: conferenceReducer,
+  userProfile: userProfileReducer,
+  list: listReducer,
+  organizer: organizerCreditReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

@@ -6,6 +6,7 @@ $shade-3: #fcfdfd;
 $shade-1: #ced9de;
 $shade-4: #aabdc7;
 $accent: #4cb944;
+$colour-white: #ffffff;
 $confemy-black: #000000;
 $gray-1: #c4c4c4;
 $gray-2: #757575;
@@ -14,7 +15,7 @@ $warning: #d8000c;
 $background: #fafbfc;
 $marine-34: rgba(8, 65, 92, 0.35);
 $info: #55a0fa;
-$colour-white: #ffffff;
+
 $modal-background: rgba(0, 0, 0, 0.4);
 
 // main website container width
@@ -34,6 +35,12 @@ $mrContainerOffSidemenu: 20px;
   letter-spacing: 0.2px;
 }
 
+@mixin body-regular-gray3 {
+  @include body-regular;
+  color: $gray-3;
+
+}
+
 @mixin body-regular-a {
   font-family: Avenir;
   font-size: 18px;
@@ -43,11 +50,6 @@ $mrContainerOffSidemenu: 20px;
 
 @mixin body-regular-a-gray3 {
   @include body-regular-a;
-  color: $gray-3;
-}
-
-@mixin body-regular-gray3 {
-  @include body-regular;
   color: $gray-3;
 }
 
@@ -115,4 +117,15 @@ $mrContainerOffSidemenu: 20px;
   font-style: normal;
   line-height: 1;
   letter-spacing: 0.01px;
+}
+
+@mixin avenir-heavy-20 {
+  font-family: Avenir-Heavy;
+  font-size: 2rem;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: 0.22px;
+  color: $confemy-black;
 }

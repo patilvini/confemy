@@ -80,7 +80,6 @@ function EditOrganizerProfile({
                   name="contactName"
                   value={contactName}
                   onChange={onInputChange}
-                  //   required
                 />
               </td>
             </tr>
@@ -93,7 +92,6 @@ function EditOrganizerProfile({
                   name="contactEmail"
                   value={contactEmail}
                   onChange={onInputChange}
-                  //   required
                 />
               </td>
             </tr>
@@ -119,7 +117,6 @@ function EditOrganizerProfile({
                     name="street"
                     value={street}
                     onChange={onInputChange}
-                    // required
                   />
                 </span>
                 <br />
@@ -130,7 +127,6 @@ function EditOrganizerProfile({
                     name="city"
                     value={city}
                     onChange={onInputChange}
-                    // required
                   />
                 </span>
 
@@ -141,7 +137,6 @@ function EditOrganizerProfile({
                     name="state"
                     value={state}
                     onChange={onInputChange}
-                    // required
                   />
                 </span>
                 <br />
@@ -152,7 +147,6 @@ function EditOrganizerProfile({
                     name="country"
                     value={country}
                     onChange={onInputChange}
-                    // required
                   />
                 </span>
                 <span>
@@ -162,7 +156,6 @@ function EditOrganizerProfile({
                     name="zipcode"
                     value={zipcode}
                     onChange={onInputChange}
-                    // required
                   />
                 </span>
               </td>

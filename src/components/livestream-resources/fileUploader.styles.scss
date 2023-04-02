@@ -1,0 +1,151 @@
+@import "../../utility/utility.styles.scss";
+
+.filesdz-section-wrap {
+  border: 1px solid $shade-1;
+}
+.filesdz-section-innerwrap {
+  padding: 8px;
+  background-color: $shade-3;
+}
+.filesdz-wrap {
+  padding-top: 8px;
+  background-color: $shade-3;
+}
+.files-dz {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  padding: 50px;
+  background-color: $shade-2;
+  cursor: pointer;
+}
+
+.filesdz-label-container {
+  width: 100%;
+  min-height: 120px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $primary;
+
+  font-family: Avenir-Roman;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: 0.01px;
+
+  div {
+    span {
+      &:nth-child(2) {
+        font-weight: 900;
+        color: $confemy-black;
+      }
+    }
+  }
+}
+
+.filesdz-files-container {
+  background-color: $shade-2;
+  width: 100%;
+  height: auto;
+}
+
+.filesdz-files-row {
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Avenir-Roman;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.01px;
+  color: $primary;
+  i {
+    padding-top: 5px;
+  }
+
+  input[type="text"] {
+    height: 4.4rem;
+    min-width: 25rem;
+    display: block;
+    padding: 1.2rem 0.1rem 0.4rem;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid $gray-1;
+    background-color: $shade-2;
+    font-size: 1.4rem;
+    color: $gray-2;
+    transition: 0.1s ease-out;
+    &:hover {
+      border-bottom-color: $shade-4;
+    }
+    &:focus {
+      border-bottom: 2px solid $info;
+    }
+  }
+}
+
+.filesdz-default-lable {
+  display: flex;
+  align-items: center;
+}
+
+.resource-media-preview {
+  border-radius: 4px;
+  max-height: 120px;
+  width: auto;
+}
+
+.resource-media-display-wrap {
+  ul {
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
+.resource-image-display {
+  border-radius: 4px;
+  max-height: 250px;
+  width: auto;
+}
+
+.file-material-textfield {
+  position: relative;
+}
+
+.file-material-textfield label {
+  position: absolute;
+  font-size: 1.6rem;
+  left: 0.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  // background-color: $colour-white;
+  color: $gray-2;
+  transition: 0.1s ease-out;
+  transform-origin: left top;
+  pointer-events: none;
+}
+
+.file-material-textfield input:focus + label {
+  top: 10px;
+  transform: translateY(-50%) scale(0.8);
+}
+
+.file-material-textfield input:not(:placeholder-shown) + label {
+  top: 10px;
+  transform: translateY(-50%) scale(0.8);
+}
+
+// end of file-material textfield scss

@@ -1,12 +1,14 @@
 import {
   MYORGANIZATIONS_LOADED,
   MYORGANIZATIONS_ERROR,
-} from "./myOrganizationsTypes";
+  MYORGANIZATIONS_SELECTLIST_LOADED,
+} from './myOrganizationsTypes';
 
 const initialState = {
   isLoading: true,
   isError: false,
   organizations: null,
+  organizationsListForSelect: [],
 };
 
 export default function myOrganizationsReducer(state = initialState, action) {
@@ -26,6 +28,12 @@ export default function myOrganizationsReducer(state = initialState, action) {
         isLoading: false,
         isError: true,
         organizations: null,
+      };
+
+    case MYORGANIZATIONS_SELECTLIST_LOADED:
+      return {
+        ...state,
+        organizationsListForSelect: payload || [],
       };
 
     default:

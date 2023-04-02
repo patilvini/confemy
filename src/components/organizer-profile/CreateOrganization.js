@@ -1,13 +1,10 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
-import Select from "react-select";
 import { useDropzone } from "react-dropzone";
 import TextError from "../formik/TextError";
 import * as yup from "yup";
 import api from "../../utility/api";
-
-const SelectOptions = [];
 
 const validationSchema = yup.object({
   name: yup.string().required("Required"),
@@ -31,7 +28,6 @@ export default function CreateOrganization() {
   const user = useSelector((state) => state.auth.user.id);
 
   const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles);
     formik.setFieldValue("bannerImage", acceptedFiles);
   }, []);
 
@@ -39,11 +35,9 @@ export default function CreateOrganization() {
 
   const onSubmit = async (values, actions) => {
     const organization = values;
-    console.log(values);
 
     try {
       const res = await api.post("/organizations", { organization });
-      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -65,8 +59,6 @@ export default function CreateOrganization() {
     handleChange,
     setFieldValue,
   } = formik;
-
-  //   console.log(formik.values);
 
   return (
     <>

@@ -20,12 +20,9 @@ export default function Modal(props) {
       const res = await api.post("/organizations/organizers", {
         organizerDetails,
       });
-      console.log(res);
     } catch (err) {
       console.log(err);
     }
-
-    // console.log("form values form onSubmit", values);
   };
 
   const formik = useFormik({

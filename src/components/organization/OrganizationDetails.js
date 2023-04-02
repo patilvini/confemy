@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../utility/api";
-import SaveInput from "./SaveInput";
 import LogoUploader from "./LogoUploader";
 import SocialMedia from "./SocialMedia";
 import Spinner from "../spinner/Spinner";
@@ -20,13 +19,18 @@ import { loadOrganization } from "./organizationUtil";
 import { removeOrganizationAction } from "../../redux/organization/organizationAction";
 import { store } from "../../redux/store";
 import "./organizationDetails.styles.scss";
+import EditOrgBasicInfo from "./EditOrgBasicInfo";
+import EditIcon from "../icons/EditIcon";
+import ModalX from "../modal/ModalX";
 
 export default function OrganizationDetails() {
   const [open, setopen] = useState(false);
+  const [openLogoUploader, setOpenLogoUploader] = useState(false);
 
-  const { organizationId } = useParams();
   const user = useSelector((state) => state.auth.user);
   const { organization } = useSelector((state) => state.organization);
+
+  const { organizationId } = useParams();
   const navigate = useNavigate();
 
   const yesAction = async () => {
@@ -54,35 +58,38 @@ export default function OrganizationDetails() {
     <>
       {organization ? (
         <div className="create-org-wrap">
-          <section className="mb-60">
+          {/* <section className="mb-60">
             <LogoUploader
               apiLogo={organization?.logo}
               organizationId={organizationId}
             />
+          </section> */}
+          <section className="mb-40">
+            {organization?.logo?.length > 0 ? (
+              <div className="org-logo-wrap">
+                <div className="org-logo-innerwrap">
+                  <img
+                    alt="organization logo"
+                    src={organization?.logo[0].Location}
+                  />
+                  <div className="org-logo-overlay"></div>
+                  <div
+                    onClick={() => {
+                      setOpenLogoUploader(true);
+                    }}
+                    className="org-logo-edit-circle"
+                  >
+                    <EditIcon className="icon-size" />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <LogoUploader organizationId={organizationId} />
+            )}
           </section>
           <section>
-            <SaveInput
-              label="Organization name*"
-              inputName="name"
-              inputApiValue={organization?.name}
-              organizationId={organizationId}
-            />
-            <SaveInput
-              label="City*"
-              inputName="city"
-              inputApiValue={organization?.city}
-              organizationId={organizationId}
-            />
-            <SaveInput
-              label="Country*"
-              inputName="country"
-              inputApiValue={organization?.country}
-              organizationId={organizationId}
-            />
-            <SaveInput
-              label="Website"
-              inputName="website"
-              inputApiValue={organization?.website}
+            <EditOrgBasicInfo
+              organization={organization}
               organizationId={organizationId}
             />
           </section>
@@ -105,7 +112,7 @@ export default function OrganizationDetails() {
               Connect your social media accounts for better reachability.
             </p>
             <SocialMedia
-              socialMediaIcon={<FacebookBlueCircle className="large-icon" />}
+              socialMediaIcon={<FacebookBlueCircle className="icon-lg" />}
               name="facebook"
               removeName="removeFacebook"
               label="Facebook link"
@@ -113,7 +120,7 @@ export default function OrganizationDetails() {
               organizationId={organizationId}
             />
             <SocialMedia
-              socialMediaIcon={<LinkedinBlueIcon className="large-icon" />}
+              socialMediaIcon={<LinkedinBlueIcon className="icon-lg" />}
               name="linkedin"
               removeName="removeLinkedin"
               label="Linkedin link"
@@ -121,7 +128,7 @@ export default function OrganizationDetails() {
               organizationId={organizationId}
             />
             <SocialMedia
-              socialMediaIcon={<TwitterBlueIcon className="large-icon" />}
+              socialMediaIcon={<TwitterBlueIcon className="icon-lg" />}
               name="twitter"
               removeName="removeTwitter"
               label="Twitter link"
@@ -129,7 +136,7 @@ export default function OrganizationDetails() {
               organizationId={organizationId}
             />
             <SocialMedia
-              socialMediaIcon={<InstagramGradientIcon className="large-icon" />}
+              socialMediaIcon={<InstagramGradientIcon className="icon-lg" />}
               name="instagram"
               removeName="removeInstagram"
               label="Instagram link"
@@ -159,6 +166,16 @@ export default function OrganizationDetails() {
               closeDialogue={closeDialogue}
               yesAction={yesAction}
             />
+          )}
+          {openLogoUploader && (
+            <ModalX onDismiss={() => setOpenLogoUploader(false)}>
+              <div className="px-40 pb-40">
+                <LogoUploader
+                  setOpenLogoUploader={setOpenLogoUploader}
+                  organizationId={organizationId}
+                />
+              </div>
+            </ModalX>
           )}
         </div>
       ) : (

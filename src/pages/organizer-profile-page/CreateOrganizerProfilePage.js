@@ -1,4 +1,3 @@
-import React, { Fragment } from "react";
 import CreateOrganizeProfile from "../../components/organizer-profile/CreateOrganizerProfile";
 
 function CreateOrganizerProfilePage() {

@@ -1,0 +1,539 @@
+@import "../../utility/utility.styles.scss";
+
+// create conference form
+.required-label {
+  font-size: 18px;
+  &::after {
+    content: " *";
+    color: #ff0000;
+    font-weight: bolder;
+    font-size: 16px;
+  }
+}
+
+.conf-form-wrap {
+  margin-right: 24px;
+  h2 {
+    color: $primary;
+    margin-bottom: 32px;
+  }
+
+  h4 {
+    font-family: Avenir;
+    font-weight: normal;
+    color: $primary;
+    margin-bottom: 16px;
+  }
+}
+
+.items-makeline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.items-makeline-left {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+.big-checkbox {
+  width: 1rem;
+  height: 1rem;
+}
+
+.border-medium-grey {
+  border: 1px solid #d8d8d8;
+}
+
+// ConfBasicInfo classes
+
+.conf-schedule {
+  grid {
+    grid-gap: 8px;
+  }
+}
+// display styles
+
+.display-enter {
+  border-radius: 4px;
+  padding: 20px;
+  width: 100%;
+  height: 0px;
+  color: transparent;
+  opacity: 0;
+  background-color: $background;
+}
+
+.display-enter-active {
+  border-radius: 4px;
+  padding: 20px;
+  opacity: 1;
+  width: 100%;
+  height: 140px;
+  color: black;
+  background-color: $shade-2;
+  transition: all 300ms;
+}
+
+.display-enter-done {
+  border-radius: 4px;
+  padding: 20px;
+  opacity: 1;
+  width: 100%;
+  height: 140px;
+  color: black;
+  background-color: $shade-2;
+}
+.display-exit {
+  border-radius: 4px;
+  padding: 20px;
+  opacity: 1;
+  width: 100%;
+  height: 140px;
+  color: black;
+  background-color: $shade-2;
+}
+
+.display-exit-active {
+  border-radius: 4px;
+  padding: 20px;
+  opacity: 0;
+  width: 100%;
+  height: 0px;
+  color: transparent;
+  background-color: $background;
+  transition: all 300ms;
+}
+
+.display-exit-done {
+  border-radius: 4px;
+  padding: 20px;
+  opacity: 0;
+  width: 100%;
+  height: 0px;
+  color: transparent;
+  background-color: $background;
+}
+
+// styles for details page 1
+
+.tags-modal-contentwrap {
+  width: 400px;
+  h2 {
+    text-align: center;
+    color: $primary;
+  }
+}
+
+.tags-display {
+  display: flex;
+  flex-wrap: wrap;
+ 
+
+  li {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    list-style: none;
+
+    font-family: Avenir-Heavy;
+    font-size: 16px;
+    font-weight: 900;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: 0.01px;
+    color: $gray-3;
+
+    padding: 12px;
+    margin: 4px;
+    // margin-bottom: 12px;
+    border-radius: 4px;
+    background-color: $shade-2;
+
+    svg {
+      margin-left: 8px;
+    }
+  }
+  
+}
+
+.details2-venue-wrap {
+  margin-bottom: 200px;
+}
+
+.details2-venue {
+  padding: 24px;
+  background-color: $colour-white;
+  margin-bottom: 32px;
+}
+
+.details2-image-dropzone {
+  width: 100%;
+  height: 356px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  // margin: 24px 222px 24px 79.5px;
+  // padding: 139px 331px 141px 334px;
+  border-radius: 8px;
+  background-color: $shade-2;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.details2-camera-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  padding: 11px 11px 11px 9px;
+  border-radius: 50%;
+  background-color: $colour-white;
+}
+
+.details2-camera-icon {
+  width: 32px;
+  height: 28px;
+  // width: 24px;
+  // height: 21px;
+}
+
+.add-speaker-button {
+  max-width: 492px;
+  height: 304px;
+  max-width: 392px;
+  max-height: 304px;
+
+  border: 1px solid $shade-1;
+  border-radius: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ecf0f2;
+  cursor: pointer;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $colour-white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+}
+
+// conference banner
+// The banner aspect ratio is 16:9 ie 1.7777
+// 1920 x 1080 pixels, its standard HD ratio for HD TVs, presentations, and social media cover photos.
+// 1280 x 720 pixels, its standard HD format in photography and film.
+
+.confbanner-container {
+  position: relative;
+  width: 817.77px;
+  height: 460px;
+  background-color: $colour-white;
+  &:hover {
+    & > .confbanner-overlay {
+      opacity: 0.4;
+      transition: all 300ms ease;
+    }
+
+    & > .confbanner-wrap {
+      padding: 8px;
+      transition: padding 300ms ease;
+      background-color: $shade-2;
+    }
+
+    & > .confbanner-delete-circle {
+      opacity: 1;
+      transition: opacity 300ms ease;
+    }
+  }
+}
+
+.confbanner-wrap {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  padding: 0px;
+  transition: padding 400ms ease;
+}
+
+.confbanner-delete-circle {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $colour-white;
+  border-radius: 50%;
+
+  position: absolute;
+  transition: 300ms ease;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.confbanner-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 300ms ease;
+  border-radius: 4px;
+  background-color: $confemy-black;
+}
+
+.confbanner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  opacity: 1;
+  transition: opacity 300ms ease;
+  backface-visibility: hidden;
+}
+// images are in aspect ratio of 16:9
+.confbanner-dropzone-container {
+  max-width: 917.77px;
+  height: 460px;
+}
+
+// live stream designs
+
+.livestream-container {
+  margin-right: 24px;
+  h2 {
+    color: $primary;
+  }
+}
+
+.livestream-tabs-container {
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin livestream-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  
+}
+
+.livestream-tab {
+  @include livestream-tab;
+  background-color: $shade-2;
+
+  &:hover {
+    background-color: $shade-1;
+  }
+ 
+}
+
+.active-livestream-tab {
+  @include livestream-tab;
+  background-color: $shade-1;
+}
+
+.livestream-tab-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+//  conference tickets styles
+
+.conf-notickets-container {
+  width: 100%;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  h2 {
+    margin-top: 40px;
+    margin-bottom: 30px;
+  }
+}
+
+.planeticket-icon-size {
+  // width: 239px;
+  // height: 160px;
+  width: 191px;
+  height: 128px;
+}
+
+.conftickets-table-wrap {
+  h2 {
+    color: $primary;
+  }
+
+  h4 {
+    color: $primary;
+  }
+
+  table {
+    width: 100%;
+    border-spacing: 0;
+    @include avenir-heavy-18;
+    thead {
+      tr {
+        background-color: $shade-1;
+        th {
+          padding: 16px;
+          text-align: left;
+          &:last-child {
+            text-align: center;
+          }
+        }
+      }
+    }
+    tbody {
+      td {
+        padding: 16px;
+        text-align: left;
+        color: $gray-2;
+      }
+
+      tr {
+        background-color: $shade-2;
+
+        // every odd row is backcolor white
+        &:nth-child(odd) {
+          background-color: #fff;
+        }
+
+        // first td of every row as there are 4 tds in each row
+        & > td:nth-child(4n + 1) {
+          color: $confemy-black;
+        }
+
+        // 4th td of every row as there are 4 tds in each row
+        & > td:nth-child(4n + 4) {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+.inactive-isitfree {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: 16px;
+  border-radius: 4px;
+  color: $gray-3;
+  background-color: $shade-1;
+  margin-bottom: 2.4rem;
+  @include caption-1-regular;
+}
+
+.ticket-form-container {
+  width: 520px;
+}
+
+// Preview page
+
+.preview-imgcard-wrap {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  @media screen and (max-width:1190px) {
+    grid-template-columns: 1fr;
+  }
+}
+.preview-img-wrap {
+  width: 100%;
+  height: 261px;
+  background-color: $colour-white;
+  overflow: hidden;
+}
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-card {
+  display: flex;
+  flex-direction: column;
+  width:100%;
+  height: 261px;
+  padding: 16px 16px 12px;
+  background-color: $colour-white;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.08);
+  button {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+.preview-label-wrap {
+  label {
+    display: inline-block;
+  }
+}
+
+.publish-date-wrap {
+  max-width: 300px;
+}
+
+
+.basicInfo-grid{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:2rem;
+  @media screen and (max-width:550px) {
+    grid-template-columns: 1fr;
+    
+  }
+}
+
+.live-stream{
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: 1rem;
+  @media screen and (max-width:650px){
+    grid-template-columns: repeat(3,1fr);
+    gap:1rem
+  }
+ 
+}
+ @media screen and (max-width:480px) {
+   .live-stream{
+    grid-template-columns: repeat(2,1fr);
+    gap:1rem
+   }
+  }
+
+.add-credit-btn{
+  margin-left: 16px;
+  @media screen and (max-width:660px) {
+    margin-left: 0;
+  }
+}

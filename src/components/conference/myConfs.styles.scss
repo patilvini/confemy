@@ -1,0 +1,92 @@
+@import "../../utility//utility.styles.scss";
+
+.myconfs-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  h1 {
+    color: $primary;
+  }
+  @media screen and (max-width:650px) {
+    width: 400px;
+  }
+}
+
+.myconfs-sort {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 16px;
+  @media screen and (max-width:650px) {
+    grid-template-columns: 1fr;
+    max-width: 315px;
+  }
+}
+
+.myconfs-table {
+  width: 100%;
+  border-spacing: 0;
+  @include avenir-heavy-18;
+  color: $gray-3;
+  thead {
+    tr {
+      background-color: $shade-1;
+      th {
+        padding: 16px;
+        text-align: left;
+        &:last-child {
+          text-align: center;
+        }
+      }
+    }
+  }
+  tbody {
+    td {
+      padding: 16px;
+      text-align: left;
+      color: $gray-2;
+    }
+
+    tr {
+      // background-color: $shade-2;
+
+      // every odd row is backcolor white
+      // &:nth-child(odd) {
+      //   background-color: #fff;
+      // }
+
+      // first td of every row as there are 4 tds in each row
+      // & > td:nth-child(4n + 1) {
+      //   color: $confemy-black;
+      // }
+
+      // 5th td of every row as there are 5 tds in each row
+      & > td:nth-child(5n + 5) {
+        text-align: center;
+      }
+    }
+  }
+}
+
+#myConfsSearchText {
+  padding-left: 5.2rem;
+}
+
+.myconfs-actions {
+  background-color: #fff;
+  text-align: left;
+  ul {
+    list-style: none;
+    border: 2px solid red;
+
+    li {
+      width: 296px;
+      padding: 1rem 2rem;
+      @include body-regular-gray3;
+      &:hover {
+        background-color: $shade-2;
+      }
+    }
+  }
+}

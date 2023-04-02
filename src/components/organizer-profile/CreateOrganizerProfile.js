@@ -53,7 +53,6 @@ function CreateOrganizerProfile({ createProfileAction }) {
               name="contactName"
               value={contactName}
               onChange={onInputChange}
-              //   required
             />
           </div>
           <div className="mb-1">
@@ -63,7 +62,6 @@ function CreateOrganizerProfile({ createProfileAction }) {
               name="contactEmail"
               value={contactEmail}
               onChange={onInputChange}
-              //   required
             />
           </div>
           <div className="mb-1">
@@ -84,7 +82,6 @@ function CreateOrganizerProfile({ createProfileAction }) {
               name="street"
               value={street}
               onChange={onInputChange}
-              // required
             />
           </div>
           <div className="mb-1">
@@ -94,7 +91,6 @@ function CreateOrganizerProfile({ createProfileAction }) {
               name="city"
               value={city}
               onChange={onInputChange}
-              // required
             />
           </div>
           <div className="mb-1">
@@ -104,7 +100,6 @@ function CreateOrganizerProfile({ createProfileAction }) {
               name="state"
               value={state}
               onChange={onInputChange}
-              // required
             />
           </div>
           <div className="mb-1">
@@ -114,7 +109,6 @@ function CreateOrganizerProfile({ createProfileAction }) {
               name="zipcode"
               value={zipcode}
               onChange={onInputChange}
-              // required
             />
           </div>
           <div className="mb-1">
@@ -124,7 +118,6 @@ function CreateOrganizerProfile({ createProfileAction }) {
               name="country"
               value={country}
               onChange={onInputChange}
-              // required
             />
           </div>
           <div className="mb-1">
