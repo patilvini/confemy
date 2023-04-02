@@ -32,3 +32,22 @@
 .completed-inactive-shared-tab {
   color: #4cb944;
 }
+
+.tabs-margin{
+  margin-right: 32px;
+  @media screen and  (max-width:436px)and (min-width:411px){
+    margin-right: 28px;
+  }
+}
+
+@media screen and (max-width:410px) and (min-width:360px){
+  .tabs-margin{
+    margin-right: 16px;
+  }
+}
+
+@media screen and (max-width:360px)  {
+  .tabs-margin{
+    margin-right: 10px;
+  }
+}

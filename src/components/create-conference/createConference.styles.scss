@@ -517,13 +517,19 @@
 .live-stream{
   display: grid;
   grid-template-columns: repeat(5,1fr);
-  @media screen and (max-width:600px){
+  gap: 1rem;
+  @media screen and (max-width:650px){
     grid-template-columns: repeat(3,1fr);
+    gap:1rem
   }
-  // @media screen and (max-width:600px) {
-  //   grid-template-columns: repeat(2,1fr);
-  // }
+ 
 }
+ @media screen and (max-width:480px) {
+   .live-stream{
+    grid-template-columns: repeat(2,1fr);
+    gap:1rem
+   }
+  }
 
 .add-credit-btn{
   margin-left: 16px;

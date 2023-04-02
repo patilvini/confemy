@@ -87,11 +87,11 @@ export default function RefundRequests() {
   }, [user._id]);
 
   return (
-    <div>
-      <div className="flex-vc-sb">
-        <h1 className="mr-24">Refund Requests</h1>
-        <div className="flex-vc-sb ">
-          <div className="form-type-3 mr-4" style={{ width: "50%" }}>
+    <>
+      <div className="org-refund-grid-1">
+        <h1>Refund Requests</h1>
+        <div className="org-refund-grid-2">
+          <div className="form-type-3">
             <div className="position-relative ">
               <input
                 type="text"
@@ -112,7 +112,7 @@ export default function RefundRequests() {
               </i>
             </div>
           </div>
-          <div style={{ width: "45%" }}>
+          <div>
             <SelectFormType3
               id="filterText1"
               isClearable
@@ -128,7 +128,7 @@ export default function RefundRequests() {
           </div>
         </div>
       </div>
-      <div className="mt-24">
+      <div className="mt-24 " style={{ overflowX: "scroll" }}>
         <table className="org-refund-table">
           <thead>
             <tr>
@@ -176,6 +176,6 @@ export default function RefundRequests() {
           </tbody>
         </table>
       </div>
-    </div>
+    </>
   );
 }

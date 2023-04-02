@@ -12,10 +12,10 @@ import { loadUserTotalCreditsAction } from "../../redux/user-profile/userProfile
 
 import api from "../../utility/api";
 
-const CreditsTable = () => {
-  const totalCredits = useSelector(
-    (state) => state.userProfile.userTotalCredits
-  );
+const CreditsTable = ({ totalCredits }) => {
+  // const totalCredits = useSelector(
+  //   (state) => state.userProfile.userTotalCredits
+  // );
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [singleCredit, setSingleCredit] = useState("");
@@ -54,7 +54,6 @@ const CreditsTable = () => {
         <tbody>
           {totalCredits.length > 0 &&
             totalCredits?.map((credit) => {
-              console.log("credit", credit);
               return (
                 <tr>
                   <td>{credit.creditName}</td>
