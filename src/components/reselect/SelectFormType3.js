@@ -142,5 +142,5 @@ SelectFormType3.propTypes = {
   isDisabled: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
   isMulti: PropTypes.bool,
-  // value: PropTypes.string,
+  value: PropTypes.string,
 };

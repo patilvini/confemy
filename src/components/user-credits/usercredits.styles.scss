@@ -25,6 +25,8 @@
   max-width: 42.2rem;
 }
 .uc-table {
+  // position: relative;
+  // z-index: 800;
   width: 100%;
   border-spacing: 0;
   @include avenir-heavy-18;

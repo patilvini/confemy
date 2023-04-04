@@ -137,16 +137,20 @@ export default function TicketForm({ onClose }) {
           )}
         </div>
 
-        <div className={"ticket-form-price-wrap"}>
-          <SelectFormType1
-            label="currency"
-            options={currencylist}
-            name="currency"
-            onChange={(value) => formik.setFieldValue("currency", value?.value)}
-            placeholder="Select currency"
-            value={formik.values.currency}
-            isDisabled={false}
-          />
+        <div>
+          <div className="mb-8">
+            <SelectFormType1
+              label="currency"
+              options={currencylist}
+              name="currency"
+              onChange={(value) =>
+                formik.setFieldValue("currency", value?.value)
+              }
+              placeholder="Select currency"
+              value={formik.values.currency}
+              isDisabled={false}
+            />
+          </div>
           <div className="mb-8">
             <div className="material-textfield">
               <input

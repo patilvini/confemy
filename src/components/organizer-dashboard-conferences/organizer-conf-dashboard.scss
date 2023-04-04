@@ -339,7 +339,7 @@
 }
 .org-refund-grid-2{
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(3,1fr);
   gap:1rem;
   @media screen and (max-width:810px)  {
     grid-template-columns: 1fr;
@@ -375,6 +375,8 @@
     tr {
       & > td:nth-child(5n + 5) {
         text-align: left;
+        max-width: 200px;
+        overflow: hidden;
       }
     }
   }

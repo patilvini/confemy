@@ -3,6 +3,9 @@
 .user-ticket-list {
   max-width: 55.8rem;
   margin: 0 auto;
+  @media screen and (max-width:600px) {
+    padding: 16px 0;
+  }
 }
 #searchtickets {
   padding-left: 5.2rem;

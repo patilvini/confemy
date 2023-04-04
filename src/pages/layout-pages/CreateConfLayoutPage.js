@@ -61,7 +61,7 @@ export default function CreateConfLayoutPage() {
   }
 
   return (
-    <div className="ml-32">
+    <div>
       <ConfSteps />
       <div>
         <Outlet />

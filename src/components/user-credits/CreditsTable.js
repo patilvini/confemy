@@ -8,12 +8,23 @@ import SetGoalModal from "./SetGoalModal";
 import ModalX from "../modal/ModalX";
 
 import EditIcon from "../icons/EditIcon";
+import AddIcon from "../icons/AddIcon";
+
 import { loadUserTotalCreditsAction } from "../../redux/user-profile/userProfileAction";
 
 import api from "../../utility/api";
 import SelectFormType3 from "../reselect/SelectFormType3";
 
+const options1 = [
+  { id: 1, label: "1 month" },
+  { value: 3, label: "3 months" },
+  { value: 6, label: "6 months" },
+];
+
 const CreditsTable = (allCredits) => {
+  const [showExternalCreditForm, setShowExternalCreditForm] = useState(false);
+  const [filterText, setFilterText] = useState("");
+
   const totalCredits = useSelector(
     (state) => state.userProfile.userTotalCredits
   );
@@ -41,85 +52,111 @@ const CreditsTable = (allCredits) => {
   }, [user?._id]);
 
   return (
-    <>
-      <div className="mb-80">
-        <table className="uc-table">
-          <thead>
-            <tr>
-              <th>Credit Type</th>
-              <th>Total Credits</th>
-              <th>Earned Credits</th>
-              <th>Pending Clearance</th>
-              <th>To Goal</th>
-              <th>Goal Duration</th>
-            </tr>
-          </thead>
-          <tbody>
-            {totalCredits.length > 0 &&
-              totalCredits?.map((credit) => {
-                return (
-                  <tr>
-                    <td>{credit.creditName}</td>
-                    <td>{credit.totalCreditQuantity}</td>
-                    <td>{credit.earnedCreditQuantity}</td>
-                    <td>{credit.pendingCreditQuantity}</td>
-                    <td>
-                      {credit?.goal ? (
-                        <div className="flex-vchc">
-                          <span className="mr-24">{credit.goal}</span>
-                          <i
-                            onClick={() => {
-                              setSingleCredit(credit);
-                              setEditMode(true);
-                              setShowGoalModal(true);
-                            }}
-                          >
-                            <EditIcon />
-                          </i>
-                        </div>
-                      ) : (
-                        <button
-                          className="button button-green"
+    <div className="mb-80">
+      <div className="flex-vc-sb mb-24">
+        <div className="flex-vc my-24">
+          <button
+            onClick={() => {
+              setShowExternalCreditForm(true);
+            }}
+            className="circle-button mr-4"
+          >
+            <AddIcon />
+          </button>
+          <p className="caption-1-regular-gray3 ml-5">Add external credits</p>
+        </div>
+        {/* change to select */}
+        <div className="user-credit-filters">
+          <SelectFormType3
+            id="filterText1"
+            isClearable
+            isSearchable
+            name="filuterText1"
+            options={options1}
+            onChange={(e) => setFilterText(e?.value)}
+            value={filterText}
+            placeholder="Filter Data"
+            isDisabled={false}
+            isMulti={false}
+          />
+        </div>
+      </div>
+      <table className="uc-table">
+        <thead>
+          <tr>
+            <th>Credit Type</th>
+            <th>Total Credits</th>
+            <th>Earned Credits</th>
+            <th>Pending Clearance</th>
+            <th>To Goal</th>
+            <th>Goal Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          {totalCredits.length > 0 &&
+            totalCredits?.map((credit) => {
+              return (
+                <tr>
+                  <td>{credit.creditName}</td>
+                  <td>{credit.totalCreditQuantity}</td>
+                  <td>{credit.earnedCreditQuantity}</td>
+                  <td>{credit.pendingCreditQuantity}</td>
+                  <td>
+                    {credit?.goal ? (
+                      <div className="flex-vchc">
+                        <span className="mr-24">{credit.goal}</span>
+                        <i
                           onClick={() => {
                             setSingleCredit(credit);
-                            console.log("credit", credit);
+                            setEditMode(true);
                             setShowGoalModal(true);
-                            setEditMode(false);
                           }}
                         >
-                          Set goal
-                        </button>
-                      )}
-                    </td>
-                    <td>
-                      {`${formatInTimeZone(
-                        new Date(credit.creditGoalStartDate),
-                        Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        "MMM dd yyyy",
-                        { locale: enGB }
-                      )}  -  ${formatInTimeZone(
-                        new Date(credit.creditGoalEndDate),
-                        Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        "MMM dd yyyy",
-                        { locale: enGB }
-                      )}`}
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-        {showGoalModal && (
-          <ModalX onDismiss={() => setShowGoalModal(false)}>
-            <SetGoalModal
-              setShowGoalModal={setShowGoalModal}
-              data={singleCredit}
-              editMode={editMode}
-            />
-          </ModalX>
-        )}
-      </div>
-    </>
+                          <EditIcon />
+                        </i>
+                      </div>
+                    ) : (
+                      <button
+                        className="button button-green"
+                        onClick={() => {
+                          setSingleCredit(credit);
+                          console.log("credit", credit);
+                          setShowGoalModal(true);
+                          setEditMode(false);
+                        }}
+                      >
+                        Set goal
+                      </button>
+                    )}
+                  </td>
+                  <td>
+                    {`${formatInTimeZone(
+                      new Date(credit.creditGoalStartDate),
+                      Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      "MMM dd yyyy",
+                      { locale: enGB }
+                    )}  -  ${formatInTimeZone(
+                      new Date(credit.creditGoalEndDate),
+                      Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      "MMM dd yyyy",
+                      { locale: enGB }
+                    )}`}
+                  </td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
+      {showGoalModal && (
+        <ModalX onDismiss={() => setShowGoalModal(false)}>
+          <SetGoalModal
+            setShowGoalModal={setShowGoalModal}
+            data={singleCredit}
+            editMode={editMode}
+          />
+        </ModalX>
+      )}
+    </div>
   );
 };
 

@@ -4,6 +4,9 @@
   width: 100%;
   margin: 6.8rem auto;
   text-align: center;
+  @media screen and (max-width:625px) {
+    padding: 10px;
+  }
 }
 
 .how-it-works-heading {
@@ -11,7 +14,7 @@
   @media screen and (max-width:500px) {
     font-size: medium;
     margin: 0 auto 1.7rem;
-    
+        
   }
 }
 
