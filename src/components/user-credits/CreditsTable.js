@@ -14,6 +14,7 @@ import { loadUserTotalCreditsAction } from "../../redux/user-profile/userProfile
 
 import api from "../../utility/api";
 import SelectFormType3 from "../reselect/SelectFormType3";
+import ExternalCreditsForm from "./ExternalCreditsForm";
 
 const options1 = [
   { id: 1, label: "1 month" },
@@ -153,6 +154,14 @@ const CreditsTable = (allCredits) => {
             setShowGoalModal={setShowGoalModal}
             data={singleCredit}
             editMode={editMode}
+          />
+        </ModalX>
+      )}
+      {showExternalCreditForm && (
+        <ModalX onDismiss={() => setShowExternalCreditForm(false)}>
+          <ExternalCreditsForm
+            editMode={false}
+            setShowExternalCreditForm={setShowExternalCreditForm}
           />
         </ModalX>
       )}

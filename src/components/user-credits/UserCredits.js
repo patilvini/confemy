@@ -42,19 +42,9 @@ const UserCredits = () => {
   return (
     <div className="user-credit-wrap">
       <h1>Credits</h1>
-
       <CreditsTable />
-
       <UserCreditsConfs />
       <ExternalCreditsTable />
-      {showExternalCreditForm && (
-        <ModalX onDismiss={() => setShowExternalCreditForm(false)}>
-          <ExternalCreditsForm
-            editMode={false}
-            setShowExternalCreditForm={setShowExternalCreditForm}
-          />
-        </ModalX>
-      )}
     </div>
   );
 };
