@@ -327,7 +327,7 @@ export default function ConfPreview() {
           <div>
             <SubmitButtonWithLoader
               isSubmitting={formik.isSubmitting}
-              className="button button-primary"
+              className="button button-primary mb-24"
               text="Publish conference"
             />
           </div>

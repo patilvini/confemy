@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import UserConfCredit from './UserConfCredit';
-import SelectFormType3 from '../reselect/SelectFormType3';
-import { alertAction } from '../../redux/alert/alertAction';
+import UserConfCredit from "./UserConfCredit";
+import SelectFormType3 from "../reselect/SelectFormType3";
+import { alertAction } from "../../redux/alert/alertAction";
 
-import { loadUserCreditConferencesAction } from '../../redux/user-profile/userProfileAction';
-import api from '../../utility/api';
-const options2 = [
-  { value: 1, label: '1 month' },
-  { value: 3, label: '3 months' },
-  { value: 6, label: '6 months' },
+import { loadUserCreditConferencesAction } from "../../redux/user-profile/userProfileAction";
+import api from "../../utility/api";
+const options1 = [
+  { value: 1, label: "1 month" },
+  { value: 3, label: "3 months" },
+  { value: 6, label: "6 months" },
 ];
 const UserCreditsConfs = () => {
-  const [filterText, setFilterText] = useState('');
+  const [filterValue, setFilterValue] = useState([]);
   const [confList, setConfList] = useState([]);
   const user = useSelector((state) => state.auth.user);
   const userConfs = useSelector(
@@ -28,7 +28,7 @@ const UserCreditsConfs = () => {
       setConfList(response.data.data.allCredits);
       dispatch(loadUserCreditConferencesAction(response.data.data.allCredits));
     } catch (err) {
-      dispatch(alertAction(err.response.data.message, 'danger'));
+      dispatch(alertAction(err.response.data.message, "danger"));
     }
   };
 
@@ -54,38 +54,38 @@ const UserCreditsConfs = () => {
       <div className="flex-vc-sb mb-24">
         <h4 className="mb-24">Conference</h4>
         <SelectFormType3
-          id="f1"
+          id="filterText1"
           isClearable
           isSearchable
-          name="f1"
-          options={options2}
-          onChange={(value) =>
-            // setConfList(dateWiseUserCreditFilter(value.value))
-            setFilterText(value?.value)
-          }
-          value={filterText}
+          name="filuterText1"
+          options={options1}
+          onChange={(e) => setFilterValue(e?.value)}
+          value={filterValue}
           placeholder="Filter Data"
           isDisabled={false}
           isMulti={false}
         />
       </div>
-      <table className="uc-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Conference</th>
-            <th>Credit Type</th>
-            <th>Conference Credits</th>
-            <th>Total Credits</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {confList?.map((data) => (
-            <UserConfCredit data={data} />
-          ))}
-        </tbody>
-      </table>
+
+      <div className="credits-table-wrap">
+        <table className="uc-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Conference</th>
+              <th>Credit Type</th>
+              <th>Conference Credits</th>
+              <th>Total Credits</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {confList?.map((data) => (
+              <UserConfCredit data={data} />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

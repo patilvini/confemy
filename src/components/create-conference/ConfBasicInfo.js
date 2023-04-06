@@ -359,7 +359,7 @@ export default function ConfBasicInfo() {
               />
               <label htmlFor="conf-org">
                 <div
-                  className={`mr-20 mb-18 ${
+                  className={`mr-20 mb-18 basicInfo-btn ${
                     formik.values.host === "organization"
                       ? "button-outlined-active"
                       : "button-outlined-inactive"
@@ -379,7 +379,7 @@ export default function ConfBasicInfo() {
               />
               <label htmlFor="conf-myself">
                 <div
-                  className={`mr-20  ${
+                  className={`mr-20 basicInfo-btn ${
                     formik.values.host === "user"
                       ? "button-outlined-active"
                       : "button-outlined-inactive"
@@ -533,7 +533,7 @@ export default function ConfBasicInfo() {
               />
               <label htmlFor="conf-venue">
                 <div
-                  className={`mr-20 mb-18 ${
+                  className={`mr-20 mb-18 basicInfo-btn ${
                     formik.values.mode.includes("venue")
                       ? "button-outlined-active"
                       : "button-outlined-inactive"
@@ -555,7 +555,7 @@ export default function ConfBasicInfo() {
               <label htmlFor="online-conf">
                 <div
                   type="button"
-                  className={`mr-20 ${
+                  className={`mr-20  basicInfo-btn ${
                     formik.values.mode.includes("onlineConf")
                       ? "button-outlined-active"
                       : "button-outlined-inactive"

@@ -35,19 +35,19 @@
 
 .tabs-margin{
   margin-right: 32px;
-  @media screen and  (max-width:436px)and (min-width:411px){
-    margin-right: 28px;
+  @media screen and  (max-width:460px)and (min-width:411px){
+    margin-right: 26px;
   }
 }
 
 @media screen and (max-width:410px) and (min-width:360px){
   .tabs-margin{
-    margin-right: 16px;
+    margin-right: 12px;
   }
 }
 
 @media screen and (max-width:360px)  {
   .tabs-margin{
-    margin-right: 10px;
+    margin-right: 8px;
   }
 }

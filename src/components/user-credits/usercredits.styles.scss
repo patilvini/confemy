@@ -25,6 +25,8 @@
   max-width: 42.2rem;
 }
 .uc-table {
+  // position: relative;
+  // z-index: 800;
   width: 100%;
   border-spacing: 0;
   @include avenir-heavy-18;
@@ -84,4 +86,11 @@
   border-radius: 4px;
   background: $shade-3;
   color: $gray-3;
+}
+
+.credits-table-wrap{
+  @media screen and (max-width:750px) {
+    overflow-x: scroll;
+    width: 83vw;
+  }
 }

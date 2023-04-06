@@ -62,13 +62,13 @@ function TrendingConfs() {
             keyBoardControl={true}
             transitionDuration={500}
             containerClass="carousel-container"
-            // removeArrowOnDeviceType={["tablet", "mobile"]}
+            removeArrowOnDeviceType={["tablet", "mobile"]}
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
+            centerMode={true}
           >
             {data?.length > 0 ? (
               data?.map((item) => {
-                console.log("ddddddddd", item);
                 return (
                   <div key={item._id}>
                     <ConfCard

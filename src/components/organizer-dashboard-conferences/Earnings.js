@@ -83,7 +83,7 @@ export default function Earnings() {
           <BankIcon />
         </div>
       </div>
-      <div style={{ overflowX: "scroll", width: "100%" }}>
+      <div className="earnings-table-wrap">
         <table className="earnings-table">
           <thead>
             <tr>

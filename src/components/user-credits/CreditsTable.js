@@ -8,12 +8,24 @@ import SetGoalModal from "./SetGoalModal";
 import ModalX from "../modal/ModalX";
 
 import EditIcon from "../icons/EditIcon";
+import AddIcon from "../icons/AddIcon";
+
 import { loadUserTotalCreditsAction } from "../../redux/user-profile/userProfileAction";
 
 import api from "../../utility/api";
 import SelectFormType3 from "../reselect/SelectFormType3";
+import ExternalCreditsForm from "./ExternalCreditsForm";
+
+const options1 = [
+  { id: 1, label: "1 month" },
+  { value: 3, label: "3 months" },
+  { value: 6, label: "6 months" },
+];
 
 const CreditsTable = (allCredits) => {
+  const [showExternalCreditForm, setShowExternalCreditForm] = useState(false);
+  const [filterText, setFilterText] = useState("");
+
   const totalCredits = useSelector(
     (state) => state.userProfile.userTotalCredits
   );
@@ -41,8 +53,36 @@ const CreditsTable = (allCredits) => {
   }, [user?._id]);
 
   return (
-    <>
-      <div className="mb-80">
+    <div className="mb-80">
+      <div className="flex-vc-sb mb-24">
+        <div className="flex-vc my-24">
+          <button
+            onClick={() => {
+              setShowExternalCreditForm(true);
+            }}
+            className="circle-button mr-4"
+          >
+            <AddIcon />
+          </button>
+          <p className="caption-1-regular-gray3 ml-5">Add external credits</p>
+        </div>
+        {/* change to select */}
+        <div className="user-credit-filters">
+          <SelectFormType3
+            id="filterText1"
+            isClearable
+            isSearchable
+            name="filuterText1"
+            options={options1}
+            onChange={(e) => setFilterText(e?.value)}
+            value={filterText}
+            placeholder="Filter Data"
+            isDisabled={false}
+            isMulti={false}
+          />
+        </div>
+      </div>
+      <div className="credits-table-wrap">
         <table className="uc-table">
           <thead>
             <tr>
@@ -109,17 +149,25 @@ const CreditsTable = (allCredits) => {
               })}
           </tbody>
         </table>
-        {showGoalModal && (
-          <ModalX onDismiss={() => setShowGoalModal(false)}>
-            <SetGoalModal
-              setShowGoalModal={setShowGoalModal}
-              data={singleCredit}
-              editMode={editMode}
-            />
-          </ModalX>
-        )}
       </div>
-    </>
+      {showGoalModal && (
+        <ModalX onDismiss={() => setShowGoalModal(false)}>
+          <SetGoalModal
+            setShowGoalModal={setShowGoalModal}
+            data={singleCredit}
+            editMode={editMode}
+          />
+        </ModalX>
+      )}
+      {showExternalCreditForm && (
+        <ModalX onDismiss={() => setShowExternalCreditForm(false)}>
+          <ExternalCreditsForm
+            editMode={false}
+            setShowExternalCreditForm={setShowExternalCreditForm}
+          />
+        </ModalX>
+      )}
+    </div>
   );
 };
 

@@ -237,10 +237,10 @@ export default function RefundRequests() {
 
   return (
     <div>
-      <div className="flex-vc-sb">
+      <div className="org-refund-grid-1">
         <h1>Refund Requests</h1>
-        <div className="flex-vc-sb ">
-          <div className="form-type-3 mr-4" style={{ width: "50%" }}>
+        <div className="org-refund-grid-2">
+          <div className="form-type-3 mr-4">
             <div className="position-relative ">
               <input
                 type="text"
@@ -291,7 +291,7 @@ export default function RefundRequests() {
           </div>
         </div>
       </div>
-      <div className="mt-24 " style={{ overflowX: "scroll" }}>
+      <div className="mt-24 org-refund-table-wrap">
         <table className="org-refund-table">
           <thead>
             <tr>

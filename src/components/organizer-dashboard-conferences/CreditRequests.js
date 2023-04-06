@@ -223,59 +223,62 @@ export default function CreditRequests() {
 
   return (
     <>
-      <div className="org-credit-reqst">
+      <div className="org-credit-reqst-1">
         <h1>Credit Requests</h1>
-        <div className="form-type-3 mr-24">
-          <div className="position-relative">
-            <input
-              type="text"
-              id="searchtickets"
-              placeholder="Search Credits"
-              name="searchText"
-              value={searchText}
-              onChange={onInputChange}
+        <div className="org-credit-reqst-filters">
+          {" "}
+          <div className="form-type-3 ">
+            <div className="position-relative">
+              <input
+                type="text"
+                id="searchtickets"
+                placeholder="Search Credits"
+                name="searchText"
+                value={searchText}
+                onChange={onInputChange}
+              />
+              <i
+                className={
+                  searchText?.length > 0
+                    ? "display-none"
+                    : "conf-search-input-icon"
+                }
+              >
+                <SearchIcon width="2.4rem" height="2.4rem" />
+              </i>
+            </div>
+          </div>
+          <div className="">
+            <SelectFormType3
+              id="filterText1"
+              isClearable
+              isSearchable
+              name="filuterText1"
+              options={options}
+              onChange={(value) => filterCredits(value.value)}
+              value={filterText1}
+              placeholder="Filter"
+              isDisabled={false}
+              isMulti={false}
             />
-            <i
-              className={
-                searchText?.length > 0
-                  ? "display-none"
-                  : "conf-search-input-icon"
-              }
-            >
-              <SearchIcon width="2.4rem" height="2.4rem" />
-            </i>
+          </div>
+          <div>
+            <SelectFormType3
+              id="filterText2"
+              isClearable
+              isSearchable
+              name="filuterText2"
+              options={options2}
+              onChange={(value) => filterCredits(value.value)}
+              value={filterText2}
+              placeholder="Filter"
+              isDisabled={false}
+              isMulti={false}
+            />
           </div>
         </div>
-        <div className="mr-18">
-          <SelectFormType3
-            id="filterText1"
-            isClearable
-            isSearchable
-            name="filuterText1"
-            options={options}
-            onChange={(value) => filterCredits(value.value)}
-            value={filterText1}
-            placeholder="Filter"
-            isDisabled={false}
-            isMulti={false}
-          />
-        </div>
-        <div>
-          <SelectFormType3
-            id="filterText2"
-            isClearable
-            isSearchable
-            name="filuterText2"
-            options={options2}
-            onChange={(value) => filterCredits(value.value)}
-            value={filterText2}
-            placeholder="Filter"
-            isDisabled={false}
-            isMulti={false}
-          />
-        </div>
       </div>
-      <div className="mt-24">
+      <div className="mt-24 org-credits-table-wrap">
         <table className="org-credit-table">
           <thead>
             <tr>
