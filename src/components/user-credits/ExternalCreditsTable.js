@@ -87,78 +87,80 @@ const ExternalCreditsTable = () => {
           />
         </div>
       </div>
-      <table className="uc-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Conference</th>
-            <th>Credit Type</th>
-            <th>Total Credits</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {externalCredits.length > 0 &&
-            externalCredits?.map((data) => (
-              <tr key={data._id}>
-                <td>
-                  {formatInTimeZone(
-                    new Date(data.startDate),
-                    Intl.DateTimeFormat().resolvedOptions().timeZone,
-                    "MMM dd yyyy",
-                    { locale: enGB }
-                  )}
-                </td>
-                <td>{data.conferenceTitle}</td>
-                <td>{data.credit.name}</td>
-                <td>{data.quantity}</td>
-                <td>
-                  <div className="flex-vc" style={{ cursor: "pointer" }}>
-                    <i
-                      className="mr-8 "
-                      style={{ position: "relative", paddingTop: "5px" }}
-                    ></i>
-                    <div>
-                      {data?.certificate ? (
-                        <div
-                          className="flex-vc"
-                          onClick={() => viewCertificate(data.certificate)}
-                        >
-                          <i className="position-relative pt-8 mr-8">
-                            <DucumentIcon className="icon-sm" />
-                          </i>{" "}
-                          <span>View certificate</span>
-                        </div>
-                      ) : (
-                        <div className="flex-vc">
-                          <i className="position-relative pt-8 mr-8">
-                            <UploadArrowIcon className="icon-sm" />
-                          </i>{" "}
-                          <span>Upload certificate</span>
-                        </div>
-                      )}
+      <div className="credits-table-wrap">
+        <table className="uc-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Conference</th>
+              <th>Credit Type</th>
+              <th>Total Credits</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {externalCredits.length > 0 &&
+              externalCredits?.map((data) => (
+                <tr key={data._id}>
+                  <td>
+                    {formatInTimeZone(
+                      new Date(data.startDate),
+                      Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      "MMM dd yyyy",
+                      { locale: enGB }
+                    )}
+                  </td>
+                  <td>{data.conferenceTitle}</td>
+                  <td>{data.credit.name}</td>
+                  <td>{data.quantity}</td>
+                  <td>
+                    <div className="flex-vc" style={{ cursor: "pointer" }}>
+                      <i
+                        className="mr-8 "
+                        style={{ position: "relative", paddingTop: "5px" }}
+                      ></i>
+                      <div>
+                        {data?.certificate ? (
+                          <div
+                            className="flex-vc"
+                            onClick={() => viewCertificate(data.certificate)}
+                          >
+                            <i className="position-relative pt-8 mr-8">
+                              <DucumentIcon className="icon-sm" />
+                            </i>{" "}
+                            <span>View certificate</span>
+                          </div>
+                        ) : (
+                          <div className="flex-vc">
+                            <i className="position-relative pt-8 mr-8">
+                              <UploadArrowIcon className="icon-sm" />
+                            </i>{" "}
+                            <span>Upload certificate</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td>
-                  <i
-                    className="mr-10"
-                    onClick={() => {
-                      dispatch(loadUserSingleExternalCreditAction(data));
-                      setEditMode(true);
-                    }}
-                  >
-                    <EditIcon />
-                  </i>
-                  <i className="ml-10" onClick={() => handleDelete(data._id)}>
-                    <DeleteIcon />
-                  </i>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+                  </td>
+                  <td>
+                    <i
+                      className="mr-10"
+                      onClick={() => {
+                        dispatch(loadUserSingleExternalCreditAction(data));
+                        setEditMode(true);
+                      }}
+                    >
+                      <EditIcon />
+                    </i>
+                    <i className="ml-10" onClick={() => handleDelete(data._id)}>
+                      <DeleteIcon />
+                    </i>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
       {editMode && (
         <ModalX onDismiss={() => setEditMode(false)}>
           <ExternalCreditsForm editMode={editMode} setEditMode={setEditMode} />

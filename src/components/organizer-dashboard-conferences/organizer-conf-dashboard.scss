@@ -249,12 +249,20 @@
   // padding: 1.5rem 0rem;
 }
 
+.org-credits-table-wrap{
+  @media screen and (max-width:650px) {
+    overflow-x: scroll;
+    width: 80vw;
+  }
+}
+
 .credit-request-table {
   margin: 1rem 0 0 0;
   font-family: Avenir-Roman;
   display: grid;
   grid-template-columns: 20% 25% 15% 15% 25%;
 }
+
 
 .credit-request-table-heading {
   margin: 4.4rem 0 0 0;
@@ -269,23 +277,24 @@
   grid-template-columns: 45% 55%;
 }
 
-.org-credit-reqst{
+.org-credit-reqst-1{
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 3rem;
-  @media screen and (max-width:1200px) {
+  @media screen and (max-width:1180px)  {
     grid-template-columns: 1fr;
+
   }
 }
 .org-credit-reqst-filters{
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 1rem;
-  @media screen and (max-width:540px) {
+  @media screen and (max-width:650px) {
     grid-template-columns: 1fr;
     gap:3rem;
-    width:300px
+    width: 80vw;
   }
 }
 .org-credit-table {
@@ -325,7 +334,7 @@
   display: grid;
   grid-template-columns: repeat(2,1fr);
   gap:1rem;
-  @media screen and (max-width:1200px) and (min-width:1000px),(max-width:810px) {
+  @media screen and (max-width:1200px) ,(max-width:810px) {
     grid-template-columns: 1fr;
   }
 }
@@ -334,7 +343,7 @@
   .org-refund-grid-1{
     display: grid;
     grid-template-columns: 1fr;
-    max-width:300px;
+    max-width:80vw;
   }
 }
 .org-refund-grid-2{
@@ -343,9 +352,17 @@
   gap:1rem;
   @media screen and (max-width:810px)  {
     grid-template-columns: 1fr;
+    width:80vw
   }
 }
 
+.org-refund-table-wrap{
+  overflow-x: scroll;
+  @media screen and (max-width:900px) {
+    overflow-x: scroll;
+    width: 80vw;
+  }
+}
 
 .org-refund-table {
   width: 100%;
@@ -414,6 +431,14 @@
   }
 }
 
+.earnings-table-wrap{
+  @media screen and (max-width:600px) {
+    overflow-x: scroll;
+    width: 80vw;
+  }
+}
+
+
 .earnings-table {
   border-spacing: 0;
   width: 100%;
@@ -480,3 +505,4 @@
   color: white;
   padding: 4px 8px;
 }
+

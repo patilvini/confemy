@@ -82,72 +82,74 @@ const CreditsTable = (allCredits) => {
           />
         </div>
       </div>
-      <table className="uc-table">
-        <thead>
-          <tr>
-            <th>Credit Type</th>
-            <th>Total Credits</th>
-            <th>Earned Credits</th>
-            <th>Pending Clearance</th>
-            <th>To Goal</th>
-            <th>Goal Duration</th>
-          </tr>
-        </thead>
-        <tbody>
-          {totalCredits.length > 0 &&
-            totalCredits?.map((credit) => {
-              return (
-                <tr>
-                  <td>{credit.creditName}</td>
-                  <td>{credit.totalCreditQuantity}</td>
-                  <td>{credit.earnedCreditQuantity}</td>
-                  <td>{credit.pendingCreditQuantity}</td>
-                  <td>
-                    {credit?.goal ? (
-                      <div className="flex-vchc">
-                        <span className="mr-24">{credit.goal}</span>
-                        <i
+      <div className="credits-table-wrap">
+        <table className="uc-table">
+          <thead>
+            <tr>
+              <th>Credit Type</th>
+              <th>Total Credits</th>
+              <th>Earned Credits</th>
+              <th>Pending Clearance</th>
+              <th>To Goal</th>
+              <th>Goal Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {totalCredits.length > 0 &&
+              totalCredits?.map((credit) => {
+                return (
+                  <tr>
+                    <td>{credit.creditName}</td>
+                    <td>{credit.totalCreditQuantity}</td>
+                    <td>{credit.earnedCreditQuantity}</td>
+                    <td>{credit.pendingCreditQuantity}</td>
+                    <td>
+                      {credit?.goal ? (
+                        <div className="flex-vchc">
+                          <span className="mr-24">{credit.goal}</span>
+                          <i
+                            onClick={() => {
+                              setSingleCredit(credit);
+                              setEditMode(true);
+                              setShowGoalModal(true);
+                            }}
+                          >
+                            <EditIcon />
+                          </i>
+                        </div>
+                      ) : (
+                        <button
+                          className="button button-green"
                           onClick={() => {
                             setSingleCredit(credit);
-                            setEditMode(true);
+                            console.log("credit", credit);
                             setShowGoalModal(true);
+                            setEditMode(false);
                           }}
                         >
-                          <EditIcon />
-                        </i>
-                      </div>
-                    ) : (
-                      <button
-                        className="button button-green"
-                        onClick={() => {
-                          setSingleCredit(credit);
-                          console.log("credit", credit);
-                          setShowGoalModal(true);
-                          setEditMode(false);
-                        }}
-                      >
-                        Set goal
-                      </button>
-                    )}
-                  </td>
-                  <td>
-                    {`${formatInTimeZone(
-                      new Date(credit.creditGoalStartDate),
-                      Intl.DateTimeFormat().resolvedOptions().timeZone,
-                      "MMM dd yyyy",
-                      { locale: enGB }
-                    )}  -  ${formatInTimeZone(
-                      new Date(credit.creditGoalEndDate),
-                      Intl.DateTimeFormat().resolvedOptions().timeZone,
-                      "MMM dd yyyy",
-                      { locale: enGB }
-                    )}`}
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
+                          Set goal
+                        </button>
+                      )}
+                    </td>
+                    <td>
+                      {`${formatInTimeZone(
+                        new Date(credit.creditGoalStartDate),
+                        Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        "MMM dd yyyy",
+                        { locale: enGB }
+                      )}  -  ${formatInTimeZone(
+                        new Date(credit.creditGoalEndDate),
+                        Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        "MMM dd yyyy",
+                        { locale: enGB }
+                      )}`}
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
       {showGoalModal && (
         <ModalX onDismiss={() => setShowGoalModal(false)}>
           <SetGoalModal

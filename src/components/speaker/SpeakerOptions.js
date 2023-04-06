@@ -1,7 +1,7 @@
 export default function SpeakerOptions(props) {
   return (
     <div className="register-modal white-modal">
-      <div className="modal-form-wrapper">
+      <div className="modal-form-wrapper pt-24">
         <div
           style={{
             display: "flex",
@@ -10,7 +10,7 @@ export default function SpeakerOptions(props) {
           }}
         >
           <div style={{ flexGrow: 1 }}>
-            <h2>Add Speakers</h2>
+            <h2 className="mb-24">Add Speakers</h2>
             <button
               onClick={() => {
                 props.setShowSpeakerForm(true);

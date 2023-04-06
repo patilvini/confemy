@@ -52,7 +52,7 @@ const UserCreditsConfs = () => {
   return (
     <div className="mb-80">
       <div className="flex-vc-sb mb-24">
-        <h4 className="mb-24">Conference-----</h4>
+        <h4 className="mb-24">Conference</h4>
         <SelectFormType3
           id="filterText1"
           isClearable
@@ -67,23 +67,25 @@ const UserCreditsConfs = () => {
         />
       </div>
 
-      <table className="uc-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Conference</th>
-            <th>Credit Type</th>
-            <th>Conference Credits</th>
-            <th>Total Credits</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {confList?.map((data) => (
-            <UserConfCredit data={data} />
-          ))}
-        </tbody>
-      </table>
+      <div className="credits-table-wrap">
+        <table className="uc-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Conference</th>
+              <th>Credit Type</th>
+              <th>Conference Credits</th>
+              <th>Total Credits</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {confList?.map((data) => (
+              <UserConfCredit data={data} />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

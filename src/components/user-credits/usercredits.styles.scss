@@ -87,3 +87,10 @@
   background: $shade-3;
   color: $gray-3;
 }
+
+.credits-table-wrap{
+  @media screen and (max-width:750px) {
+    overflow-x: scroll;
+    width: 83vw;
+  }
+}

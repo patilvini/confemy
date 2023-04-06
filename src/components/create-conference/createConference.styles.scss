@@ -545,3 +545,9 @@
     margin-left: 0;
   }
 }
+
+@media screen and (max-width:408px) {
+  .basicInfo-btn{
+    width: 70%;
+  }
+}

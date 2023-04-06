@@ -19,12 +19,10 @@
 }
 .hero-btn{
   width: 60%;
-  height: 30%;
-  @media screen and (max-width:900px) and (min-width:490px) {
-    width: 80%;
-    height: 30%;
-    
-  }
+  height: auto;
+  @media screen and (max-width:900px) and (min-width:320px) {
+    width: 85%;
+   }
 }
 
 .hero-sketch {

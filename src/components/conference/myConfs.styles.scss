@@ -3,12 +3,12 @@
 .myconfs-header {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
   h1 {
     color: $primary;
   }
   @media screen and (max-width:650px) {
-    width: 400px;
+    flex-direction: column;
+    width: 50vw;
   }
 }
 
@@ -88,5 +88,12 @@
         background-color: $shade-2;
       }
     }
+  }
+}
+
+@media screen and (max-width:700px) {
+  .myconfs-table-wrap{
+  overflow-x: scroll;
+  width:89vw
   }
 }

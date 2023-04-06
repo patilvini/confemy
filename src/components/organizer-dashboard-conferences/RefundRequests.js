@@ -291,7 +291,7 @@ export default function RefundRequests() {
           </div>
         </div>
       </div>
-      <div className="mt-24 " style={{ overflowX: "scroll" }}>
+      <div className="mt-24 org-refund-table-wrap">
         <table className="org-refund-table">
           <thead>
             <tr>
